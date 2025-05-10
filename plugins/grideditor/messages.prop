@@ -1,0 +1,29 @@
+[messages]
+misc.nonnumericfield.label=The field must only contain digits 0-9
+misc.emptyfield.label=The field cannot be empty
+dialog.autosaveinterval.label=Auto-Save Interval:
+dialog.restoredefaults.label=Restore Defaults
+dialog.preferences.title=Grid Editor
+dialog.autosaveinterval.help=seconds. (0 to disable it)
+dialog.autosaveintervalenable.label=Enable Auto-Save
+dialog.recipeoptions.title=Recipe Options
+dialog.adddevice.title=Add Device ...
+view.title=Grid Editor
+executionview.close.label=Close View
+executionview.title=Running Recipe
+recipeoptions.messages.start=Manage Recipe Devices
+recipeoptions.messages.info=Select a device or click Add to create a new device
+recipeoptions.messages.selected=Click delete to remove the device or edit to modify it
+recipeoptions.messages.empty=Click add to create a new device
+
+dialog.errorviewer.title=Error Viewer
+dialog.errorviewer.column.step=Step #
+dialog.errorviewer.column.description=Description
+dialog.preferences.tab.acquires.previous.label=Tab Acquires Value From Cell Above
+dialog.preferences.tab.acquires.previous.help=Pressing tab will replace the value of the current cell with the value from the cell above it on the grid editor
+dialog.preferences.grid.selection.color=Grid Selection Color:
+
+dialog.errorviewer.title=Error Viewer
+dialog.errorviewer.column.step=Steps
+dialog.errorviewer.column.description=Description
+

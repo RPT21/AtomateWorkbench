@@ -1,0 +1,87 @@
+# uncompyle6 version 3.9.1
+# Python bytecode version base 2.3 (62011)
+# Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
+# Embedded file name: ../plugins/ui/src/ui/widgets/led.py
+# Compiled at: 2004-11-04 21:38:28
+import wx, poi.utils.LEDdisplay
+
+class LEDSetpointDisplay(wx.Panel):
+    """LED Display with setpoint on top-right corner"""
+    __module__ = __name__
+
+    def __init__(self, *args, **kwargs):
+        bgcolor = (
+         0, 0, 0)
+        fgcolor = (255, 255, 255)
+        spfgcolor = (255, 255, 255)
+        myargs = [
+         'bgcolor', 'fgcolor']
+        if kwargs.has_key('bgcolor'):
+            bgcolor = kwargs['bgcolor']
+            del kwargs['bgcolor']
+        if kwargs.has_key('fgcolor'):
+            fgcolor = kwargs['fgcolor']
+            del kwargs['fgcolor']
+        if kwargs.has_key('spfgcolor'):
+            spfgcolor = kwargs['spfgcolor']
+            del kwargs['spfgcolor']
+        self.showSetpoint = False
+        if kwargs.has_key('showSetpoint'):
+            self.showSetpoint = kwargs['showSetpoint']
+            del kwargs['showSetpoint']
+        wx.Panel.__init__(self, *args, **kwargs)
+        self.createUI()
+        self.setBackgroundColor(bgcolor)
+        self.setForegroundColor(fgcolor)
+        self.setSetpointForegroundColor(spfgcolor)
+
+    def createUI(self):
+        self.valueCtrl = poi.utils.LEDdisplay.LEDDisplay(self, -1)
+        if self.showSetpoint:
+            self.setpointCtrl = poi.utils.LEDdisplay.LEDDisplay(self, -1, size=(100, 25))
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(self.valueCtrl, 1, wx.GROW | wx.RIGHT | wx.ALIGN_RIGHT, 5)
+        if self.showSetpoint:
+            sizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.GROW | wx.LEFT | wx.RIGHT, 1)
+            hsizer = wx.BoxSizer(wx.VERTICAL)
+            self.setpointLabel = wx.StaticText(self, -1, 'Setpoint')
+            hsizer.Add(self.setpointLabel, 0, wx.GROW | wx.BOTTOM | wx.TOP, 2)
+            hsizer.Add(self.setpointCtrl, 0, wx.ALL, 0)
+            sizer.Add(hsizer, 0, wx.ALL | wx.GROW, 0)
+        self.SetSizer(sizer)
+        self.SetAutoLayout(True)
+
+    def setBackgroundColor(self, color):
+        self.bgcolor = color
+        self.SetBackgroundColour(apply(wx.Color, self.bgcolor))
+        apply(self.valueCtrl.setBackgroundColor, color)
+        if self.showSetpoint:
+            apply(self.setpointCtrl.setBackgroundColor, color)
+            if color[0] < 50 and color[1] < 50 and color[2] < 50:
+                self.setpointLabel.SetForegroundColour(wx.WHITE)
+            else:
+                self.setpointLabel.SetForegroundColour(wx.BLACK)
+        self.__internalUpdate()
+
+    def setSetpointForegroundColor(self, color):
+        if not self.showSetpoint:
+            return
+        self.spfgcolor = color
+        apply(self.setpointCtrl.setLEDColor, color)
+        self.__internalUpdate()
+
+    def setForegroundColor(self, color):
+        self.fgcolor = color
+        apply(self.valueCtrl.setLEDColor, color)
+        self.__internalUpdate()
+
+    def setSetpointValue(self, value):
+        if not self.showSetpoint:
+            return
+        self.setpointCtrl.SetValue(value)
+
+    def setValue(self, value):
+        self.valueCtrl.SetValue(value)
+
+    def __internalUpdate(self):
+        wx.CallAfter(self.Refresh)

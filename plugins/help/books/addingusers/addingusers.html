@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Adding Users</title>
+</head>
+<body>
+<h1>Adding Users</h1>
+<p>
+The Workbench supports multiple users through the use of the Operating System's (OS) own user management mechanism.  The procedure for adding and removing users varies for each OS.  Please consult the appropriate section.
+</p>
+<a name="linux"></a><h2>Adding Users Under Linux</h2>
+<p>
+Root login or knowledge of the root password is required in order to accomplish the following steps.
+    <ol>
+		<li>Go to the Start Menu, select System Settings, then select Users and Groups.</li>
+		<li>You will be asked for the root password if you are not already logged in as root.  Enter it.</li>
+		<li>Click on "Add User"</li>
+		<li>Enter the appropriate information in the window that pops up.</li>
+		<li>Uncheck "Create Private Group For User"</li>
+		<li>Click OK</li>
+		<li>The user shows up on the "Users" list.  Select the user name then click "Properties".  A new window appears.</li>
+		<li>Select the "Groups" tab in this new window.</li>
+		<li>Select the "atomate" group.</li>
+		<li>From the "Primary Group" drop down menu, select "atomate" as the primary group.</li>
+		<li>Click OK</li>
+		<li>The first time the user logs in, the Atomate Workbench icon will appear on their desktop.</li>
+	</ol>
+</p>
+<h3>Tips For Linux</h2>
+<p>
+The Workbench uses the "atomate" group to provide a shared directory for users.  Make sure new users are added to the "atomate" group.
+</p>
+<p>
+If the "atomate" group does not appear on the "Groups" tab of the "Users and Groups" window, simply add a new group called "atomate".  
+</p>
+<p>
+Deletion of the "atomate" group may occur when you remove a user.
+</p>
+
+<a name="windows"></a><h2>Adding Users Under Windows</h2>
+<p>
+Administrator privileges are necessary to accomplish the following steps.
+	<ol>
+		<li>Go to the Start Menu and select Settings &gt; Control Panel</li>
+		<li>Select "User Accounts".</li>
+		<li>Add a new user.</li>
+		<li>Make sure that the user has administrator privileges or that the directory "C:\Documents and Users\All  Users\Application Data\AtomateWorkbench" has read and write privileges for all users.  If either one of these options is not used, the new user will be unable to run the Workbench.</li>
+</p>
+
+	
+</body>
+</html>

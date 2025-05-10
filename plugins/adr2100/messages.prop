@@ -1,0 +1,5 @@
+[messages]
+dialog.rs485driver.hardwareids.label=RS485 Driver
+dialog.rs485driver.address.label=Address
+dialog.rs485driver.lockout.label=Lockout Panel
+

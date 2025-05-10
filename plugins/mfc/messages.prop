@@ -1,0 +1,10 @@
+[messages]
+exted.setpoint.label=Set Point:
+device.config.gcf.label=Gas Conversion Factor:
+device.config.hardware.label=Hardware:
+device.config.purge.setpoint.label=Purge Setpoint:
+device.config.purge.duration.label=Purge Duration:
+device.config.hardwarebox.label=Hardware
+device.config.purge.checkbox.label=Activate Purge
+device.conflictingchannels.message=The channel you have chosen is already taken
+device.conflictingchannels.title=Conflicting Channels

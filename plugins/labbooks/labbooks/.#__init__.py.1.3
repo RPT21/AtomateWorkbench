@@ -1,0 +1,139 @@
+import ui
+import ui.context
+import poi.views
+
+import executionengine
+import resources.workspace
+import kernel.plugin
+import kernel.pluginmanager as PluginManager
+
+import logging
+import time
+
+
+# logger
+logger = logging.getLogger("labbooks")
+
+def getDefault():
+	global instance
+	return instance
+
+
+class LabBooksPlugin(kernel.plugin.Plugin):
+	def __init__(self):
+		global instance
+		instance = self
+		kernel.plugin.Plugin.__init__(self)
+		self.contextBundle = None
+		self.engine = None
+		self.participants = []
+		self.stepLabel = 'step'
+		self.stepTimeLabel = 'step time'
+		self.recipeTimeLabel = 'recipe time'
+		self.totalTimeLabel = 'total time'
+		
+	def startup(self, contextBundle):
+		self.contextBundle = contextBundle
+		ui.getDefault().addInitListener(self)
+		executionengine.getDefault().addEngineInitListener(self)
+		
+	def engineInit(self, engine):
+		self.engine = engine
+		self.engine.addEngineListener(self)
+		self.startEventFile()
+		self.createRunLog()
+		
+	def startEventFile(self):
+		self.eventFile = file(str(int(time.time()))+'.txt', 'w')
+		logger.debug('\tyo, represent: writing events to file: %s'%self.eventFile.name)
+		self.eventFile.write('run events file\n\n')
+	
+	def createRunLog(self):
+		recipe = ui.context.getProperty('recipe')
+		version = recipe.getUnderlyingResource()
+		self.runlog = resources.workspace.getRunLog(version, int(time.time()))
+		#self.runlog.setLocation('')
+		self.runlog.create()
+		logger.debug('represent, runlog created')
+		"""
+		for participant in self.participants:
+			for label in participant.getLabel():
+				self.runlog.appendBuffer('\t'+str(label))
+		self.runlog.writeEndOfLine()
+		"""
+	
+	def createRunLogHeaders(self):
+		self.runlog.appendBuffer('%s\t%s\t%s\t%s'%(self.stepLabel, self.stepTimeLabel, self.recipeTimeLabel, self.totalTimeLabel))
+		self.orderedDevices = self.engine.getOrderedDevices()
+		for device in self.orderedDevices:
+			self.runlog.appendBuffer('\t%s'%str(device.getLabel()))
+		self.runlog.writeEndOfLine()
+		
+	def engineEvent(self, event):
+		logger.debug("Engine event: %s" % event)
+		eventType = event.getType()
+		self.writeEventEntryToFile(event)
+		if eventType == executionengine.engine.TYPE_DEVICE_RESPONSE:
+			self.writeToRunLog(event.getData())
+			return
+		elif eventType == executionengine.engine.TYPE_STARTING:
+			self.createRunLogHeaders()
+			return
+		elif event.getType() == executionengine.engine.TYPE_ENDING:
+			self.engine.removeEngineListener(self)
+			self.eventFile.close()
+			logger.debug('\tfile written: %s'%self.eventFile.name)
+			self.disposeDeviceParticipants()
+	
+	def writeToRunLog(self, envelope):
+		stepIndex = str(envelope.getStepIndex()+1)
+		stepTime = str(envelope.getStepTime())
+		recipeTime = str(envelope.getRecipeTime())
+		totalTime = str(envelope.getTotalTime())
+		self.runlog.appendBuffer('%s\t%s\t%s\t%s'%(stepIndex, stepTime, recipeTime, totalTime))
+		for device in self.orderedDevices:
+			response = envelope.getReply(device)
+			map(lambda participant:participant.handleEngineEvent(response, self.runlog), self.participants)
+		self.runlog.writeEndOfLine()
+	
+	def writeEventEntryToFile(self, event):
+		eventType = str(event.getType())
+		stepIndex = str(self.engine.getCurrentStepIndex())
+		loopCount = str(self.engine.getCurrentLoopCount())
+		stepTime = str(self.engine.getStepTime())
+		recipeTime = str(self.engine.getRecipeTime())
+		totalTime = str(self.engine.getTotalTime())
+		if eventType == executionengine.engine.TYPE_ENTERING_STEP:
+			currentStep = '\t'+repr(self.engine.getCurrentStep())
+		else:
+			currentStep = ''
+			
+		eventEntry = 'type: %s\n\tstep index: %s%s\n\tloop count: %s\n\tstep time: %ss\n\trecipe time: %ss\n\ttotal time: %ss\n\n'%(eventType, stepIndex, currentStep, loopCount, stepTime, recipeTime, totalTime)
+		self.eventFile.write(eventEntry)
+	
+	def handlePartInit(self, part):
+		#global VIEW_ID
+		ui.getDefault().removeInitListener(self)
+		#ui.getDefault().registerViewProvider(VIEW_ID, self)
+		
+
+	def createView(self, viewID, parent):
+		#view = SchematicsPanelView()
+		#view.createControl(parent)
+		#return view
+		pass
+
+	def registerDeviceParticipant(self, participant):
+		self.participants.append(participant)
+	
+	def disposeDeviceParticipants(self):
+		del self.participants[0:]
+
+
+class RunLogParticipant(object):
+    def __init__(self):
+		pass
+        
+    def handleEngineEvent(self, event, runlogFile):
+        pass
+	

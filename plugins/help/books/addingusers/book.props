@@ -1,0 +1,22 @@
+[book]
+title=Adding Users
+bookid=adding_users
+id=index
+numchapters=2
+
+[chapter.1]
+title=Linux
+numsections=0
+id=chapter1
+
+[chapter.2]
+title=Windows
+numsections=0
+id=chapter2
+
+
+[ids]
+index=addingusers.html
+
+chapter1=addingusers.html#linux
+chapter2=addingusers.html#windows

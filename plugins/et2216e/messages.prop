@@ -1,0 +1,7 @@
+[messages]
+dialog.rs485driver.hardwareids.label=RS485 Driver
+dialog.rs485driver.address.label=Address
+dialog.rs485driver.lockout.label=Lockout Panel
+
+dialog.hwconfig.default.device.color.label=Plot Color:
+dialog.hwconfig.default.device.range.label=Range:

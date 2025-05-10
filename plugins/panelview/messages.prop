@@ -1,0 +1,7 @@
+[messages]
+view.title=Panel View
+panelview.status.label=Status:
+panelview.stepindex.label=Step Index:
+panelview.steptime.label=Step Time:
+panelview.recipetime.label=Recipe Time:
+panelview.totaltime.label=Total Time:

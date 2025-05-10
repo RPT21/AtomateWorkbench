@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Heating Zone</title>
+</head>
+<body>
+<h1>Heating Zone</h1>
+<p>
+The heating zone or furnace links to Yokogawa UP 150 or Eurotherm hardware driver to control temperature in the reaction chamber.
+</p>
+<a name="additions"></a><h2>Workbench additions</h2>
+<a name="deviceeditor"></a><h3>Device Editor</h3>
+<p>
+Choose <b>Recipe &gt; Recipe Options</b> and click <b>Add</b>. A "heating zone" appears in the type column of the list.  Double click this type or select it and click <b>Edit</b>.  The device editor window appears.
+</p>
+<p>
+<p>
+The User Interface panel contains:
+<ul>
+	<li>Label: the user-defined device name</li>
+</ul>
+</p>
+<p>
+The hardware panel contains:
+	<ul>
+		<li>Range: the full range the heat zone is expected to use</li>
+		<li>Purge Setpoint: setpoint after recipe ends or is aborted</li>
+		<li>Purge Duration: duration of purge after recipe ends or is aborted</li>
+		<li>Hardware: the hardware to which this device is linked (need to have the driver)</li>
+	</ul>
+</p>
+<a name="statusmonitor"></a><h3>Status Monitor</h3>
+<p>
+Panel with name <i>device name</i> and a temperature read-out appears.
+</p>
+
+<a name="grideditor"></a><h3>Grid Editor</h3>
+<p>
+One column appears corresponding to the heating element.
+</p>
+<a name="extendededitor"></a><h3>Extended Editor</h3>
+<p>
+Panel with name <i>device name</i> appears below Step Properties.  The display shows the setpoint.  The ramp option contains:
+	<ul>
+		<li>
+			linear ramp (checkbox): if checked, select a ramp to the setpoint
+			<ul>
+				<li>previous setpoint (radio button): starts the ramp from the previous step's setpoint</li>
+				<li>last temperature (radio button): starts the ramp at the most recent temperature</li>
+			</ul>
+		</li>
+	</ul>
+</p>
+<br>
+<img src="images/deviceedit8.png">
+<br>
+<i>Figure 10-Heat Zone</i>
+</body>
+</html>

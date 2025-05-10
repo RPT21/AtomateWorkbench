@@ -1,0 +1,5 @@
+[main]
+
+hwid=adr2100	# id of hardware
+mandatory=true  # prevent running if hwid is not present
+

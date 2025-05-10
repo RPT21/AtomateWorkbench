@@ -1,0 +1,101 @@
+<html>
+<head>
+	<title>User's Guide</title>
+</head>
+<body>
+
+<h1>User's Guide</h1>
+<a name="workbench"></a><h2>The Workbench</h2>
+<p>
+The Workbench is an integrated environment for nanostructure synthesis.  It provides a friendly graphical user interface (GUI) to control efficiently various hardware connected to the computer.  It saves and manages process recipes, and it automatically acquires, stores, and manages data gathered during the process.
+</p>
+<p>
+An important safety feature to the Workbench program is the <b>Safety Interlock</b>, accessed through the <b>View</b> menu or red or green circular button in the toolbar.  The dialog that appears shows a list of devices associated with hardware that form part of the interlock.  Clicking an item lets you see details and what type of error, if any, is occurring.  It is unsafe to run the recipe if the button is red and the Workbench will not allow the system to run.
+</p>
+<p>
+The Workbench shows the Edit Perspective window separated into the following panels: Grid Editor, Graph Editor, Extended Editor and Status Monitor.
+</p>
+<a name="grideditor"></a><h2>Grid Editor</h2>
+<p>
+Each row of the Grid Editor represents a step in the recipe. Each cell in that row represents the setpoint of a device for that step, and, in particular, the duration cell indicates how long a step will last. 
+</p>
+<p>
+The arrow keys move the cursor between adjacent cells.  Changing rows changes the current selected step.  The &lt;Enter&gt; key and &lt;Tab&gt; key moves the cursor to the next cell.
+</p>
+<p>
+Clicking on a cell will select that cell, and double clicking or hitting the space bar will allow editing of the cell.</p>
+
+<b>(see fig. 2-edit perspective)LINK ME</b>
+
+
+<h2>Graph Editor</h2>
+<p>
+The graph editor shows a graphical representation of the recipe.  It contains colored plots corresponding to each device's setpoints. 
+</p>
+<h2>Extended Editor</h2>
+<p>The Extended Editor provides options for each step.  It consists of "Step Properties" and device-specific options.  
+</p>
+<p>
+Step Properties are:
+</p>
+<ul>
+	<li><i>Duration</i> which provides another place at which to enter the duration for a step.</li>
+	<li><i>Loop Step</i> allows multiple loops with the following parameters:
+		<ul>
+			<li><i>Enclosing Steps</i> are the number of steps to be included in the loop beginning with the step that is chosen. </li>
+			<li><i>Number of Loops</i> is the number of times the looped steps are <i>repeated</i>.
+			<br>Example:  To repeat a sequence of 3 steps 4 times, enter "3" for <i.Enclosing Steps</i> and "3" for <i>Number of Loops</i>.</li>
+		</ul>
+		</li>
+	<li><i>Conditionals</i> is a list of programmable conditional tests (if…then…) with which each step can be altered while the recipe is running. See below for more information.</li>
+</ul>
+<p>
+<b>LINK ME</b>
+(seefig. 4-hold)
+</p>
+
+<h2>Status Monitor</h2>
+
+<p>
+Illustrates the status of each device by use of an LED display at the bottom of the panel. 
+</p>
+<p>
+<b>LINK ME</b>
+(seefig. 5-run)
+</p>
+
+<h2>Conditionals Editor</h2>
+<p>
+Conditionals are sets of <i>if ... then ...</i> statements whose evaluation, when True, results in an in-situ alteration of the recipe.  Multiple sets of conditionals may be used in a single step.
+</p>
+<p>
+Click the <b>Edit</b> button in the Extended Editor to open the window "Conditional Tests".  To add new conditional tests , click <b>Add</b>.  The window "Tests Group Editor" opens.
+</p>
+<p>
+Each set of conditionals has a user-defined <i>Action Group Name</i> that appears in the conditionals field in the Step Properties of the Extended Editor.  All statements within a set are joined with AND/OR by selecting <i>All/Any of these must be true</i> radio button, respectively.  New statements are added by clicking the <b>More</b> button.  Conditionals may be added, modified, or deleted.
+</p>
+<p>
+Three fields appear: the first is the name of the heating device (heating zone / UP150 or Eurotherm) in the recipe, the second is a comparator ("&lt;", "&gt;", etc.), and the third is the value to which the device's output is compared.  These statements are deleted by clicking the <b>Fewer</b> button.  The three consequent actions of a test with a "true" result are selected with the following radio buttons:
+<ul>
+	<li><i>Abort Recipe</i>, which shuts down the current recipe and begins purging,</li>
+	<li><i>Hold Step</i>, which extends the current step, and</li>
+	<li><i>Advance to next step</i>, which shortens the current step.</li>
+</ul>
+<p>
+Return to the recipe is forbidden without a name for the conditional set.
+</p>
+<br>
+<img src="images/conditionedit6.png" alt="Figure 6 - Conditional Edit">
+<br>
+<i>Figure 6-Conditional Edit</i>
+
+<h2>Device Editor</h2>
+<p>
+The device editor allows the user to manage the devices in the system.  The heating element contains options such as ramp rate and the gas flow elements show the flow rate with use of the gas correction factor (GCF) once the hardware has been selected.  (See Device  section for more information).
+</p>
+<br>
+<img src="images/deviceedit7.png" alt="Figure 7 - Device Edit">
+<br>
+<i>Figure 7-Device Edit</i>
+</body>
+</html>

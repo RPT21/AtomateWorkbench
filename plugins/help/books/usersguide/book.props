@@ -1,0 +1,56 @@
+[book]
+title=User's Guide
+bookid=usersguide
+id=index
+numchapters=7
+
+[chapter.1]
+title=The Workbench
+numsections=0
+id=chapter1
+
+[chapter.2]
+title=Grid Editor
+numsections=0
+id=chapter2
+
+[chapter.3]
+title=Graph Editor
+numsections=0
+id=chapter3
+
+[chapter.4]
+title=Extended Editor
+numsections=0
+id=chapter4
+
+[chapter.5]
+title=Status Monitor
+numsections=0
+id=chapter5
+
+[chapter.6]
+title=Conditionals Editor
+numsections=0
+id=chapter6
+
+[chapter.7]
+title=Device Editor
+numsections=0
+id=chapter7
+
+
+
+
+[ids]
+index=usersguide.html
+
+chapter1=usersguide.html#workbench
+chapter2=usersguide.html#grideditor
+chapter3=usersguide.html#grapheditor
+chapter4=usersguide.html#extendededitor
+chapter5=usersguide.html#statusmonitor
+chapter6=usersguide.html#conditionalseditor
+chapter7=usersguide.html#deviceeditor
+
+

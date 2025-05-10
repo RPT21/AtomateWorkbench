@@ -1,0 +1,18 @@
+[messages]
+exted.setpoint.label=Set Point:
+
+device.config.hardwarebox.label=Hardware Configuration
+device.config.range.label=Range:
+device.config.purge.setpoint.label=Purge Setpoint:
+device.config.purge.duration.label=Purge Duration:
+device.config.hardware.label=Hardware:
+device.config.purge.notice=The use of setpoints above room temperature during purge are not recommended for most cases.
+device.config.purge.active=Purge Temperature Setpoint
+device.plot.color.label=Plot Color:
+
+exted.linearramp.label=Linear Ramp:
+exted.linearramp_prevsetpoint.label=Previous Setpoint
+exted.linearramp_lasttemp.label=Last Temperature
+
+
+conflictinghardware.message=That hardware is in use

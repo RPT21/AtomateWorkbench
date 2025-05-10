@@ -1,0 +1,27 @@
+[book]
+title=Help
+bookid=help
+id=index
+numchapters=1
+
+[chapter.1]
+title=About Help
+numsections=1
+id=chapter1
+
+[chapter.1.section.1]
+title=Introduction
+id=c1sec1
+
+[chapter.1.section.2]
+title=Something
+id=c1sec2
+
+
+[ids]
+index=index.html
+chapter1=chapter1.html
+c1sec1=c1sec1.html
+c1sec2=c1sec2.html
+
+

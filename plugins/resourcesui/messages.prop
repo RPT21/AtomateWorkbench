@@ -1,0 +1,61 @@
+[messages]
+frame.title=Process Manager
+
+actions.openmostrecentversion.label=Open Recent Varsion
+actions.openmostrecentversion.help=Open the most resent version of this project for editing
+actions.openversion.label=Open Version
+actions.openversion.help=Open selected recipe version for editing
+actions.deleterecipe.label=Delete Recipe
+actions.deleterecipe.help=Delete selected recipe
+actions.deleteversion.label=Delete Recipe
+actions.deleteversion.help=Delete selected recipe
+actions.createinitialversion.label=Create Initial Version
+actions.createinitialversion.help=Create an initial version in this empty recipe
+
+actions.promote.label=Promote Version
+actions.promote.help=Take the current version and create a new version from it
+actions.shareproject.label=Share
+actions.shareproject.help=Place the selected project in the shared workspace
+actions.unshareproject.label=Unshare
+actions.unshareproject.help=Remove the selected project from the shared workspace
+actions.export.label=Export ...
+actions.export.help=Export the selected resource
+actions.exportrunlog.label=Export Run Log
+actions.exportrunlog.help=Export the selected Run Log
+actions.import.label=Import
+actions.import.help=Import a resource into the workspace
+
+actions.exportwizard.label=Export ...
+actions.importwizard.label=Import ...
+
+actions.recipewizard.label=New Recipe ...\tCtrl+N
+actions.recipewizard.help=Create a new recipe with the New Recipe Wizard
+actions.recipewizard.tip=Open the New Recipe Wizard
+
+actions.recipemanager.label=Process Manager\tCtrl+O
+actions.recipemanager.help=Open the process manager
+actions.recipemanager.tip=Open Process Manager
+
+
+actions.closerecipe.label=Close Recipe\tCtrl+W
+actions.closerecipe.help=Close the current recipe
+actions.closerecipe.tip=Close Recipe
+
+
+preferences.title=Recipe Management & Versioning
+preferences.browse.label=Browse ...
+preferences.localworkspace.label=Local Workspace Path:
+preferences.localworkspace.warning=Recipes, versions and run logs for individual users are stored in a directory with the user's loggin name inside the Local Workspace Path.\n  Please click here to see more information about the workspaces and the workbench.
+preferences.localworkspace.browse.title=Browse
+
+
+newrecipewizard.name.label=Name:
+newrecipewizard.comment.label=Comment:
+newrecipewizard.sharedoption.label=Share Recipe
+newrecipewizard.createdefaultdevices.label=Create Default Devices
+
+views.recipes.title=Recipes
+views.runlogs.title=Process Runs
+views.versions.title=Versions
+views.snapshot.title=Snapshot
+

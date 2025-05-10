@@ -1,0 +1,27 @@
+[book]
+title=Devices
+bookid=devices
+id=index
+numchapters=3
+
+[chapter.1]
+title=Introduction
+numsections=0
+id=chapter1
+
+[chapter.2]
+title=Editing Devices
+numsections=0
+id=chapter2
+
+[chapter.3]
+title=General
+numsections=0
+id=chapter3
+
+[ids]
+index=devices.html
+
+chapter1=devices.html#devices
+chapter2=devices.html#editing
+chapter3=devices.html#general

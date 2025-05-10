@@ -1,0 +1,33 @@
+[messages]
+exted.title=Step Properties
+exted.duration.label=Duration:
+exted.repeats.label=Loop Step
+exted.enclosingsteps.label=Enclosing Steps:
+exted.repeatcount.label=Number of Loops:
+exted.conditionals.label=Conditionals
+exted.linearramp.label=Linear Ramp:
+exted.linearramp_prevsetpoint.label=from previous setpoint
+exted.linearramp_lasttemp.label=from last step's temperature
+exted.conditional.edit.label=Edit ...
+view.title=Extended Editor
+
+dialog.testeditor.name.label=Action Group Name:
+dialog.testeditor.and.label=All these test are true
+dialog.testeditor.or.label=Any of these tests is true
+dialog.testeditor.more.label=&More
+dialog.testeditor.fewer.label=&Fewer
+dialog.testeditor.actiongrid.label= ... then perform these actions:
+dialog.testeditor.title=Tests Group Editor
+dialog.testeditor.label=Test Editor
+
+dialog.conditionals.title=Conditional Tests
+dialog.conditionals.add.label=Add ...
+dialog.conditionals.edit.label=Edit ...
+dialog.conditionals.delete.label=Delete
+dialog.conditionals.moveup.label=Move Up
+dialog.conditionals.movedown.label=Move Down
+
+global.action.abort=Abort Recipe
+global.action.hold=Hold step
+global.action.advance=Advance to next step
+global.action.advance.help= 

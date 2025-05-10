@@ -1,0 +1,9 @@
+[book]
+title=Heating Zone
+bookid=furnacezone
+id=index
+numchapters=0
+
+[ids]
+index=furnacezone.html
+

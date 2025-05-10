@@ -1,0 +1,44 @@
+[channel.1]
+colors.plot = 100,0,0
+purge.setpoint = 0
+label = Channel 1
+purge = false
+conversion-factor = 100
+range = 1
+purge.duration = 0
+units = sccm
+column-use-gcf = true
+
+[channel.2]
+colors.plot = 0,100,0
+purge.setpoint = 0
+label = Channel 2
+purge = false
+conversion-factor = 100
+range = 1
+purge.duration = 0
+units = sccm
+column-use-gcf = true
+
+[channel.3]
+colors.plot = 0,0,100
+purge.setpoint = 0
+label = Channel 3
+purge = false
+conversion-factor = 100
+range = 1
+purge.duration = 0
+units = sccm
+column-use-gcf = true
+
+[channel.4]
+colors.plot = 100,100,0
+purge.setpoint = 0
+label = Channel 4
+purge = false
+conversion-factor = 100
+range = 1
+purge.duration = 0
+units = sccm
+column-use-gcf = true
+

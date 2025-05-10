@@ -1,0 +1,74 @@
+[messages]
+version=2.2a
+mainmenu.file=&File
+mainmenu.edit=&Edit
+mainmenu.help=&Help
+mainmenu.tools=&Tools
+mainmenu.run=&Run
+mainmenu.views=&Views
+
+viewmenu.grideditor=&Grid Editor\tCtrl+1
+viewmenu.grideditor.tip=Grid Editor
+viewmenu.grapheditor=G&raph Editor\tCtrl+2
+viewmenu.grapheditor.tip=Graph Editor
+viewmenu.extendededitor=&Extended Editor\tCtrl+3
+viewmenu.extendededitor.tip=Extended Editor
+
+filemenu.recipemanager=&Recipe Manager\tCtrl+O
+filemenu.recipemanager.tip=Open Recipe Manager
+filemenu.exit=E&xit
+filemenu.exit.tip=Exit workbench
+filemenu.exportwizard=&Export ...
+filemenu.exportwizard.tip=Export Recipe
+filemenu.importwizard=&Import ...
+filemenu.importwizard.tip=Import
+filemenu.newrecipewizard=&New Recipe ...
+filemenu.newrecipewizard.tip=New Recipe
+
+editmenu.undo=&Undo\tCtrl+Z
+editmenu.undo.tip=Undo
+editmenu.redo=&Redo\tCtrl+Y
+editmenu.redo.tip=Redo
+editmenu.cut=Cu&t\tCtrl+X
+editmenu.cut.tip=Cut
+editmenu.copy=&Copy\tCtrl+C
+editmenu.copy.tip=Copy
+editmenu.paste=&Paste\tCtrl+V
+editmenu.paste.tip=Paste
+editmenu.insert=&Insert\tCtrl+I
+editmenu.insert.tip=Insert
+editmenu.delete=&Delete\tDelete
+editmenu.delete.tip=Delete
+
+editmenu.recipeoptions=&Recipe Options ...
+
+toolsmenu.preferences=&Preferences ...
+toolsmenu.preferences.tip=Preferences
+
+toolsmenu.hardware=&Hardware Configuration
+toolsmenu.hardware.tip=Configure hardware
+
+toolsmenu.manualmode=&ManualMode
+toolsmenu.manualmode.tip=Manual Mode
+
+runmenu.run=&Run\tF6
+runmenu.run.tip=Run
+runmenu.pause=&Pause\tF7
+runmenu.pause.tip=Pause
+runmenu.resume=R&esume\tF8
+runmenu.resume.tip=Resume
+runmenu.abort=&Abort\tF10
+runmenu.abort.tip=Abort
+runmenu.runlogs=Run &Logs
+runmenu.runlogs.tip=Run logs
+runmenu.runlogs.manager=Run Log &Manager ...
+runmenu.runlogs.manager.tip=Open run log manager
+
+helpmenu.about=&About the Atomate Workbench
+helpmenu.about.tip=About the Atomate Workbench
+helpmenu.help=&Help Contents
+helpmenu.help.tip=Open help browser
+
+frame.title.prefix=Atomate Workbench 2.2a
+
+preferences.frame.title=User Preferences

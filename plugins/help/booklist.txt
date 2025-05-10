@@ -1,0 +1,7 @@
+books/addingusers
+books/devices
+books/furnacezone
+books/getting_started
+books/mfc
+books/usersguide
+books/recipes

@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>Recipes</title>
+</head>
+<body>
+<h1>Recipes</h1>
+<h2>Editing</h2>
+<a name="new"></a><h3>New Recipe</h3>
+<p>
+Use <b>File &gt; New</b> or &lt;Ctrl+N&gt; to create a new recipe.  The "New Recipe" dialog appears.  A name and a description must be specified.  If you choose to share the recipe, it is available to all users, otherwise it will be considered local and only accessible to the creator.  Each recipe is created within the specified directory (<b>Tools &gt; Preferences &gt; Recipe Management &amp; Versioning </b>) and, by default, is not shared.
+</p>
+
+<a name="steps"></a><h3>Steps</h3>
+<p>
+To enter steps, use Edit &gt; Insert Step or &lt;Ctrl+I&gt;.  A new row appears in the Grid Editor.  If no steps exist, this row will be the first row.  If rows exist and one is selected, the new row will appear before the selected row.
+</p>
+<p>
+To select a cell, click once, and to edit that cell, click again or press space bar.  Moving between cells can be done with the arrow keys.  Pressing &lt;Enter&gt; enters the value and moves to the next cell.  Pressing &lt;Tab&gt; in a cell copies the value from the previous step in the same column.
+</p>
+
+<h3>Saving</h3>
+<p>
+If a recipe is modified, an asterisk (*) will appear after the user recipe name in the Workbench title bar.  All new recipes have an asterisk after the name.  Use <b>File &gt; Save</b> to save.  If the recipe is modified after it has run, a new version is created, so be sure to check the date and time of each recipe version.  Autosave mode can be set through <b>Tools &gt; Preferences &gt; Grid editor</b>.  Choose the desired options in order to automatically update and save recipe modifications. 
+</p>
+<a name="running"></a><h2>Running Recipe</h2>
+<p>
+To execute the recipe, click the "Run" button, select <b>Run &gt; Run</b>, or press &lt;F6&gt;.  Before the execution of recipe, the Workbench initializes all devices required for the recipe.  If any errors occur, the recipe notifies the user and aborts.
+</p>
+<p>
+The errors can be viewed through the <b>View &gt; Error Viewer</b>, or by clicking the green check or red triangle with an exclamation point inside icon in the toolbar.  If there are no errors, the toolbar displays a green check to verify the recipe, and if there are errors the toolbar displays a red triangle with an exclamation point and the recipe cannot be run until the errors are corrected.  The Error Viewer will display where the error is occurring in the recipe (i. e. which step) with a detailed explanation in a list.  Once the errors have been corrected, the program will allow the user to run the recipe. 
+</p>
+<p>
+Once all devices have been initialized and the recipe is running, the Run Perspective window comes up showing the progression of the run through the panel view.
+</p>
+<a name="panelview"></a><h2>Panel View</h2>
+<p>
+The Panel View is a representation of the current recipe conditions.  Devices associated with the recipe have readout displays below these conditions.
+</p>
+<p>
+The current recipe conditions are:
+</p>
+<ul>
+	<li><i>Status</i> describes the current state of the recipe engine.</li>
+	<li><i>Step Index</i> is the current step, starting with "1".</li>
+	<li><i>Step Time</i> is the interval of time that the recipe has been running.  This time does take into account manual (user) pauses.</li>
+	<li><i>Recipe Time</i> is the sum of these Step Times.  Both the Step Time and Recipe Time include programmed advances and pauses.</li>
+	<li><i>Total Time</i> is the time since the recipe was started.  It runs continuously, regardless of programmed or user actions.</li>
+</ul>
+<p>
+When a new recipe is created without default devices, the rest of the Panel View is blank.  When the user adds a device to the recipe (<b>Recipe &gt; Recipe Options</b>), a LED display appears with the device name as well as the status of that device.  When the device driver is started upon running a recipe (<b>Tools</b>), the associated display in the Panel View becomes active and the perspective is switched from Edit to Run.
+</p>
+<p>
+The components of the Panel View are passive.
+</p>
+
+<a name="manual_run"></a><h3>Manual Execution Control</h3>
+<p>
+To <u>pause</u> recipe execution, select <b>Run &gt; Pause</b>, click the "Pause" button or press &lt;F7&gt;.  This will prevent the Workbench from advancing to the next step.  This action also stops the Step Time and Recipe Time, and all programmed conditionals for that step are ignored until the "Resume" button is clicked, <b>Run &gt; Resume</b> is selected or &lt;F8&gt; is pressed.  For example, if the furnace has an "Advance recipe" conditional set, and that conditional test evaluates to true while paused, then the recipe ignores this and remains paused.  All data gathered during the hold is saved.
+</p>
+<p>
+To <u>advance</u> the step, select <b>Run &gt; Advance</b>, click the "Advance" button or press &lt;F9&gt;.  This action will immediately push the recipe to the next step, regardless of any conditionals for that step. 
+</p>
+<p>
+To <u>abort</u> the recipe, select <b>Run &gt; Abort</b>, click the red square "Abort" button or press &lt;F10&gt;.  This interrupts and aborts the recipe and begins the purge, defined in <b>Recipe &gt; Recipe Options</b>.  All data gathered to this point is saved.
+</p>
+<p>
+The <u>purge</u> may be aborted by clicking the "Abort Purge" button.  This interrupts the purge and returns all devices to their initial state.
+</p>
+
+<a name="process_manager"></a><h2>Management &amp; Versions</h2>
+<h3>Opening a Previous Recipe</h3>
+<p>
+All recipes are accessible through the Process Manager, under <b>File &gt; Process Manager</b> or by pressing &lt;Ctrl+O&gt;.  The Process Manager is divided into three panels: Recipes, Versions, and Run Logs including details for each version such as snapshots of the run. 
+</p>
+<p>
+To open a recipe, choose a recipe and open a version by clicking OK, or by double clicking the recipe version number.
+</p>
+<p>
+Recipes may be Shared or Local.  Recipes can be place in the shared or local folder by choosing the folder icon in the top left corner under Process Manager.
+</p>
+<br>
+<img src="images/procmang8a.png" alt="Figure 8 - Process Manager">
+<br>
+<i>Figure 8-Process Manager</i>
+
+<a name="versioning"></a><h3>Versioning</h3>
+<p>
+Recipe versioning is automatic and works in the following way: The first version created is marked as the baseline version.  Each time a modification is made to this recipe, a new version is created and saved separately from the original.  Subsequent saves are made to this version only.  This allows the user to make changes without losing previously created recipes.  Different versions are accessed through the Process Manager menu and are organized by the date and time of creation.
+</p>
+<p>
+Note: When a recipe is modified, the new version number is saved as the next smallest available integer, which may not be a consecutive integer of the version being modified.  For example, there may be 6 versions of a recipe, and version number 2 is modified.  This will be saved as version 7, not version 3.  Remember to check dates and times to verify that the correct recipe is chosen.
+</p>
+
+<a name="sharing"><h3>Sharing Your Recipes</h3>
+<p>
+Recipes can be shared through the Process Manager.  Select the recipe and click folder in the upper left to place it in the shared recipes folder.   <img src="images/share_recipe_icon.png">
+</p>
+<p>
+All versions and data from the recipe will become accessible to all users.
+</p>
+<p>
+To make a shared recipe only available locally, select the recipe and click the folder in the upper left.  
+<img src="images/unshare_recipe_icon.png">
+</p>
+<a name="datalogs"></a><h2>Data Logs</h2>
+<p>
+A data log, or saved run log, is created automatically each time a recipe is run.  Data from all devices is recorded with the recipe time and can be accessed and used for recipe analysis.
+</p>
+<a name="openingversion"></a><h3>Opening Previous Versions</h3>
+<p>
+Choose <b>File &gt; Process Manager</b> and open the desired recipe.  
+</p>
+<a name="exporting"></a><h3>Exporting a Run Data Log</h3>
+<p>
+Data logs can be exported to programs such as Excel to create spreadsheets of the data in a process run.  To export a run data log, open the Process Manager, select the desired data log and click on the Export button.  
+<img src="images/export_runlog_icon.png">
+</p>
+<p>
+ Select the directory and filename and click Finish.  The run log data is exported in a tab delimited format.
+</p>
+
+
+</body>
+</html>

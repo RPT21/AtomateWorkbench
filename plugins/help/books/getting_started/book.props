@@ -1,0 +1,42 @@
+[book]
+title=Atomate Workbench
+bookid=getting_started
+id=index
+numchapters=1
+
+[chapter.1]
+title=Getting Started
+numsections=5
+id=chapter1
+
+[chapter.1.section.1]
+title=Workbench
+id=c1sec1
+
+[chapter.1.section.2]
+title=A Quick Recipe
+id=c1sec2
+
+[chapter.1.section.3]
+title=Adding Steps
+id=c1sec3
+
+[chapter.1.section.4]
+title=Using the Extended Editor
+id=c1sec4
+
+[chapter.1.section.4]
+title=Running the Recipe
+id=c1sec5
+
+
+[ids]
+index=getting_started.html
+
+chapter1=getting_started.html
+c1sec1=getting_started.html#workbench
+c1sec2=getting_started.html#quick_recipe
+c1sec3=getting_started.html#adding_steps
+c1sec4=getting_started.html#extended_editor
+c1sec5=getting_started.html#running
+

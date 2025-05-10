@@ -1,0 +1,8 @@
+[messages]
+exted.title=Step Properties
+exted.duration.label=Duration:
+exted.repeats.label=Loop Step
+exted.enclosingsteps.label=Enclosing Steps:
+exted.repeatcount.label=Number of Loops:
+exted.conditionals.label=Conditionals
+view.title=Schematics Panel

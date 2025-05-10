@@ -1,0 +1,8 @@
+[messages]
+dialog.restoredefaults.label=Restore Defaults
+dialog.preferences.title=Recipe Validation
+dialog.validationdelay.label=Validation Delay (ms):
+dialog.validationdelay.help=Delay, in milliseconds, for validation of the loaded recipe after a modification
+dialog.emptyfield=Empty Field
+dialog.error.nonnumeric=Non numeric value in field
+

@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>Mass Flow Controller</title>
+</head>
+<body>
+<h1>Mass Flow Controller</h1>
+<p>
+The MFC's link to MKS 647B/C or 146C hardware driver to control gas flow during a run.
+</p>
+<a name="additions"></a><h2>Workbench additions</h2>
+<a name="deviceeditor"></a><h3>Device Editor</h3>
+<p>
+Choose <b>Recipe &gt; Recipe Options</b> and click <b>Add</b>.  An "MFC" appears in the type column of the list.  Double click this type or select it and click <b>Edit</b>.  The device editor window appears.
+</p>
+<p>
+<p>
+The User Interface panel contains:
+<ul>
+	<li>Label: the user-defined device name</li>
+	<li>Grid Editor Field: determines what the entered value means
+		<ul>
+			<li>Raw Setpoint (radio button): the nitrogen equivalent flow</li>
+			<li>GCF Converted Setpoint (radio button): the real gas flow (need to set the GCF)</li>
+		</ul>
+	</li>
+</ul>
+</p>
+<p>
+The hardware panel contains:
+<ul>
+	<li>Gas Conversion Factor: coefficient needed to obtain the real gas flow of each specific gas</li>
+	<li>Purge Setpoint: gas flow setpoint after recipe ends or is aborted</li>
+	<li>Purge Duration: duration of purge after recipe ends or is aborted</li>
+	<li>Hardware: the hardware to which this device is linked (need to have the driver) MKS 647B/C or 146C</li>
+	<li>Channel: MFC number, which port it is hooked into on MKS controller 1-8 channel for 647 and 1-4 channel for 146</li>
+	<li>Units: units used to read flow value (sccm, slm, etc.)</li>
+	<li>Range: maximum value that can be achieved for each MFC specified on hardware</li>
+</ul>
+</p>
+<p>
+<b>LINK ME</b>
+(see fig. 7-device edit)
+</p>
+<a name="statusmonitor"></a><h3>Status Monitor</h3>
+<p>
+Panel with name device name and a gas flow read-out appears.
+</p>
+
+<a name="grideditor"></a><h3>Grid Editor</h3>
+<p>
+One column appears with label for the specific device.
+</p>
+<a name="extendededitor"></a><h3>Extended Editor</h3>
+<p>
+Panel with name device name appears below Step Properties.  The display shows the true gas flow setpoint and the equivalent nitrogen flow setpoint.  The gas correction factor is displayed between the two setpoints.
+</p>
+
+</body>
+</html>

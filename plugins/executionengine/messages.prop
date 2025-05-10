@@ -1,0 +1,43 @@
+[messages]
+mainmenu.run=&Recipe
+
+
+runmenu.run=&Run\tF6
+runmenu.run.tip=Run the current recipe
+
+runmenu.pause=&Pause\tF7
+runmenu.pause.tip=Pause the current recipe
+
+runmenu.resume=R&esume\tF8
+runmenu.resume.tip=Resume a paused recipe
+
+runmenu.advance=A&dvance\tF9
+runmenu.advance.tip=Advance to the next step
+
+runmenu.abort=&Abort\tF10
+runmenu.abort.tip=Abort the current run
+
+runmenu.runlogs=Run &Logs
+runmenu.runlogs.tip=Show the run logs for this recipe
+
+runmenu.stoppurge=Stop Purge
+runmenu.stoppurge.tip=Stop Purge
+
+runmenu.runlogs.manager=Run Log &Manager ...
+
+
+perspective.run.label.history=Run History
+
+perspective.label.status=Status:
+perspective.label.stepnumber=Step Number:
+perspective.label.loopcount=Loop Count:
+perspective.label.steptime=Step Time:
+perspective.label.recipetime=Recipe Time:
+perspective.label.totaltime=Total Time:
+perspective.label.close=Close View
+
+engine.init.error.title=Initialization Error
+
+
+preferences.data.resolution=Data Resolution: 
+preferences.data.resolution.units=in Seconds

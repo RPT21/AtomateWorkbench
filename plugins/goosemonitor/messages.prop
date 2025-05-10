@@ -1,0 +1,7 @@
+[messages]
+actions.helpcontents.label=Help Contents\tF1
+actions.helpcontents.help=Show the online help
+
+
+label.safe = All Systems Go!
+label.unsafe = Error
