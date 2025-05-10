@@ -4,8 +4,8 @@
 # Embedded file name: ../lib/kernel/boot.py
 # Compiled at: 2005-07-11 23:45:06
 import threading
-from kernel.debug import DEBUG
-import os, sys, ConfigParser, kernel, logging, logging.config, logger, traceback, kernel.pluginmanager as pluginmanager
+from lib.kernel.debug import DEBUG
+import os, sys, configparser, lib.kernel, logging, logging.config, lib.kernel.logger, traceback, lib.kernel.pluginmanager as pluginmanager
 PLUGIN_PROPERTIES_FILENAME = 'plugin.ini'
 app = None
 _pluginBootList = {}
@@ -46,9 +46,9 @@ def getPluginPath():
 
 
 def debugPrintPluginList(pluginList):
-    print 'Num plugins:', len(pluginList)
+    print('Num plugins:', len(pluginList))
     for plugin in pluginList:
-        print '\t', plugin
+        print('\t', plugin)
 
 
 def oldbuildBootOrder(pluginList):
@@ -59,7 +59,7 @@ def oldbuildBootOrder(pluginList):
         plugin = pluginList[name]
         pluginName = plugin.configuration.get('Plugin', 'name')
         dependencies = plugin.configuration.get('Plugin', 'depends').split(',')
-        if len(dependencies[0].strip()) is 0:
+        if len(dependencies[0].strip()) == 0:
             if not pluginName in orderedList:
                 orderedList.append(pluginName)
             continue
@@ -81,8 +81,8 @@ def recursiveBuildBootOrder(pluginList, name, orderedList):
     try:
         pluginName = plugin.configuration.get('Plugin', 'name')
         dependencies = plugin.configuration.get('Plugin', 'depends').split(',')
-    except Exception, msg:
-        print '*WARNING: ', msg
+    except Exception as msg:
+        print('*WARNING: ', msg)
         return
 
     for dep in dependencies:
@@ -106,14 +106,14 @@ def buildBootOrder(pluginList):
     for name in namesList:
         recursiveBuildBootOrder(pluginList, name, orderedList)
 
-    logger.rootLog.debug('Pluing Boot Order: %s' % str(orderedList))
+    lib.kernel.logger.rootLog.debug('Pluing Boot Order: %s' % str(orderedList))
     if True:
         return orderedList
     for name in pluginList.keys():
         plugin = pluginList[name]
         pluginName = plugin.configuration.get('Plugin', 'name')
         dependencies = plugin.configuration.get('Plugin', 'depends').split(',')
-        if len(dependencies[0].strip()) is 0:
+        if len(dependencies[0].strip()) == 0:
             if not pluginName in orderedList:
                 orderedList.append(pluginName)
             continue
@@ -131,7 +131,7 @@ def buildBootOrder(pluginList):
 
 def getPluginContextBundle(propertiesPath):
     """Will throw a ConfigParser.ParsingError.  Returns the config object otherwise"""
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.RawConfigParser()
     config.read([propertiesPath])
     return ContextBundle(os.path.dirname(propertiesPath), config)
 
@@ -143,18 +143,18 @@ def scanPluginsDirectory():
     for dirname in os.listdir(getPluginPath()):
         fullpath = os.path.join(getPluginPath(), dirname)
         if not os.path.exists(os.path.join(fullpath, PLUGIN_PROPERTIES_FILENAME)):
-            logger.rootLog.warn('No %s defined for %s, skipping' % (PLUGIN_PROPERTIES_FILENAME, fullpath))
+            lib.kernel.logger.rootLog.warn('No %s defined for %s, skipping' % (PLUGIN_PROPERTIES_FILENAME, fullpath))
             continue
         try:
             ctx = getPluginContextBundle(os.path.join(fullpath, PLUGIN_PROPERTIES_FILENAME))
             _pluginBootList[ctx.configuration.get('Plugin', 'name')] = ctx
-        except ConfigParser.ParsingError, msg:
-            logger.rootLog.error("Unable to parse plugin description file '%s'-'%s'" % (fullpath, msg))
-            logger.rootLog.exception(msg)
+        except configparser.ParsingError as msg:
+            lib.kernel.logger.rootLog.error("Unable to parse plugin description file '%s'-'%s'" % (fullpath, msg))
+            lib.kernel.logger.rootLog.exception(msg)
             continue
-        except ConfigParser.NoSectionError, msg:
-            logger.rootLog.error("Unable to parse plugin description file '%s'-'%s'" % (fullpath, msg))
-            logger.rootLog.exception(msg)
+        except configparser.NoSectionError as msg:
+            lib.kernel.logger.rootLog.error("Unable to parse plugin description file '%s'-'%s'" % (fullpath, msg))
+            lib.kernel.logger.rootLog.exception(msg)
             continue
 
     bootOrderList = buildBootOrder(_pluginBootList)
@@ -163,13 +163,13 @@ def scanPluginsDirectory():
 
 def bootPlugins(bootOrderList, plugins):
     """Boot up all plugins"""
-    import kernel.splash, wx
-    kernel.splash.bringup()
-    kernel.splash.increment('Scanning plugins ...')
+    import lib.kernel.splash, wx
+    lib.kernel.splash.bringup()
+    lib.kernel.splash.increment('Scanning plugins ...')
     cleanGlobals = globals().copy()
     for pluginName in bootOrderList:
         wx.Yield()
-        logger.rootLog.debug("Booting plugin '%s'" % pluginName)
+        lib.kernel.logger.rootLog.debug("Booting plugin '%s'" % pluginName)
         ctx = plugins[pluginName]
         sourcePath = ctx.configuration.get('Plugin', 'source')
         pluginPath = ctx.dirname
@@ -179,9 +179,9 @@ def bootPlugins(bootOrderList, plugins):
         classNS = classPath[0:classPath.rfind('.')]
         try:
             module = __import__(classNS, globals(), locals(), ['*'])
-        except Exception, msg:
-            logger.rootLog.exception(msg)
-            logger.rootLog.debug('Exiting with 12')
+        except Exception as msg:
+            lib.kernel.logger.rootLog.exception(msg)
+            lib.kernel.logger.rootLog.debug('Exiting with 12')
             sys.exit(12)
 
         clazz = getattr(module, className)
@@ -189,20 +189,20 @@ def bootPlugins(bootOrderList, plugins):
         try:
             inst.startup(ctx)
             pluginmanager.addPlugin(pluginName, inst)
-        except Exception, msg:
-            logger.rootLog.exception(msg)
-            logger.rootLog.debug('Exiting with 13')
-            kernel.splash.bringdown()
+        except Exception as msg:
+            lib.kernel.logger.rootLog.exception(msg)
+            lib.kernel.logger.rootLog.debug('Exiting with 13')
+            lib.kernel.splash.bringdown()
             sys.exit(13)
 
     fireBootSequenceComplete()
 
 
 def initBaseLogger():
-    kernel.setAtomateGroupID()
-    logger.init()
-    logger.rootLog.info('Starting up')
-    kernel.resetUserGroupID()
+    lib.kernel.setAtomateGroupID()
+    lib.kernel.logger.init()
+    lib.kernel.logger.rootLog.info('Starting up')
+    lib.kernel.resetUserGroupID()
 
 
 def createApp():
@@ -231,7 +231,7 @@ def startapp():
 
 
 def continueLoad():
-    print 'continuing load'
+    print('continuing load')
     scanPluginsDirectory()
     f.Destroy()
 
@@ -248,16 +248,16 @@ def prepareOS():
 
 
 def prepareBuildInfo():
-    buildinfoname = os.path.join(os.getcwd(), 'lib', '.buildinfo')
+    buildinfoname = os.path.join(os.getcwd(), '.buildinfo')
     f = open(buildinfoname, 'r')
     num = -1
     try:
         num = int(f.readlines()[0])
         f.close()
-    except Exception, msg:
-        print 'ERROR READING BUILD NUMBER:', msg
+    except Exception as msg:
+        print('ERROR READING BUILD NUMBER:', msg)
 
-    kernel.BUILD_INFO = tuple([num])
+    lib.kernel.BUILD_INFO = tuple([num])
 
 
 def initDebugger():
@@ -274,8 +274,8 @@ def prepareSite():
     if not os.path.exists('logs'):
         try:
             os.makedirs('logs')
-        except Exception, msg:
-            print "* ERROR: Unable to create logging folder 'logs'. Please check directory permissions"
+        except Exception as msg:
+            print("* ERROR: Unable to create logging folder 'logs'. Please check directory permissions")
             sys.exit(13)
 
 

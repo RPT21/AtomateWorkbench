@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../lib/kernel/__init__.py
 # Compiled at: 2005-07-11 23:42:46
-import os, traceback, sys, pwd, grp
+import os, traceback, sys, pwdpy
 VERSION_MAJOR = 2
 VERSION_MINOR = 2
 BUILD_INFO = 0

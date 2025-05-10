@@ -4,4 +4,4 @@
 # Embedded file name: ../base.py
 # Compiled at: 2004-08-10 09:09:39
 __doc__ = '\nPlace import files that should be built into the distributable executable\n'
-import ConfigParser, threading, shutil, socket, select, serial, logging, logging.config, re, xml, xml.dom, xml.parsers, xml.dom.minidom, difflib, pickle, encodings
+import configparser, threading, shutil, socket, select, serial, logging, logging.config, re, xml, xml.dom, xml.parsers, xml.dom.minidom, difflib, pickle, encodings

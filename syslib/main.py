@@ -4,13 +4,13 @@
 # Embedded file name: ../main.py
 # Compiled at: 2005-07-11 23:40:38
 import sys, base, os
-print 'pid:', os.getpid()
+print('pid:', os.getpid())
 sys.path.insert(0, 'syslib')
 sys.path.insert(0, 'lib')
-import kernel.boot
+import lib.kernel.boot
 
 def init():
-    kernel.boot.boot()
+    lib.kernel.boot.boot()
 
 
 if __name__ == '__main__':

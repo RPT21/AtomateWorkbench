@@ -20,8 +20,8 @@ def initDefaultConfig():
         rootLog.addHandler(handler)
         rootLog.setLevel(logging.NOTSET)
         rootLog.info('Default file logger created')
-    except Exception, msg:
-        print '* ERROR: Unable to create file formatter.  Defaulting to console!'
+    except Exception as msg:
+        print('* ERROR: Unable to create file formatter.  Defaulting to console!')
         handler = logging.StreamHandler(os.path.join(os.getcwd(), 'errors.log'))
         formatter = logging.Formatter(basicFormat)
         handler.setFormatter(formatter)
@@ -34,9 +34,9 @@ def init():
     global rootLog
     try:
         logging.config.fileConfig('logging.cfg')
-    except Exception, msg:
-        print "* WARNING: Unable to read logging configuration. Using default log configuration with filename 'errors.log'"
-        print "\t'%s-%s'" % (Exception, msg)
+    except Exception as msg:
+        print("* WARNING: Unable to read logging configuration. Using default log configuration with filename 'errors.log'")
+        print("\t'%s-%s'" % (Exception, msg))
         initDefaultConfig()
         return
 
@@ -45,9 +45,9 @@ def init():
 
 
 def loggingExceptionHook(type, value, tb):
-    print 'Unhandled exception'
+    print('Unhandled exception')
     lst = traceback.format_exception(type, value, tb)
     for e in lst:
-        print e
+        print(e)
 
     del tb

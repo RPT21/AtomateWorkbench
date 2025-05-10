@@ -16,15 +16,15 @@ app = None
 frame = None
 
 def bringup():
-    print 'Bringing up splash'
+    print('Bringing up splash')
 
 
 def increment(jobDescription):
-    print jobDescription
+    print(jobDescription)
 
 
 def bringdown():
-    print 'Bringing down splash'
+    print('Bringing down splash')
 
 
 # global app ## Warning: Unused global
