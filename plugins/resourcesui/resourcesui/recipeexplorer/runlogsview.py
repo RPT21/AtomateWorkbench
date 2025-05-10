@@ -3,17 +3,17 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/recipeexplorer/runlogsview.py
 # Compiled at: 2004-11-20 00:15:21
-import poi.views, wx, kernel, resources, resourcesui.messages as messages, time, poi.views, poi.views.viewers, poi.views.contentprovider
+import plugins.poi.poi.views, wx, lib.kernel, plugins.resources.resources, plugins.resourcesui.resourcesui.messages as messages
+import time, plugins.poi.poi.views, plugins.poi.poi.views.viewers, plugins.poi.poi.views.contentprovider
 
-class RunlogLabelProvider(poi.views.contentprovider.LabelProvider):
+class RunlogLabelProvider(plugins.poi.poi.views.contentprovider.LabelProvider):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.contentprovider.LabelProvider.__init__(self)
+        plugins.poi.poi.views.contentprovider.LabelProvider.__init__(self)
 
     def getImage(self, element):
         return None
-        return
 
     def getText(self, element):
         return time.strftime('%m/%d/%Y - %I:%M:%S %p', time.localtime(element.getModificationDate()))
@@ -23,11 +23,11 @@ class RunlogLabelProvider(poi.views.contentprovider.LabelProvider):
         return text
 
 
-class RunlogContentProvider(poi.views.contentprovider.ContentProvider):
+class RunlogContentProvider(plugins.poi.poi.views.contentprovider.ContentProvider):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.contentprovider.ContentProvider.__init__(self)
+        plugins.poi.poi.views.contentprovider.ContentProvider.__init__(self)
         self.tinput = None
         return
 
@@ -39,17 +39,17 @@ class RunlogContentProvider(poi.views.contentprovider.ContentProvider):
         return
 
     def getElements(self, inputElement):
-        return resources.getDefault().getWorkspace().getRunLogs(self.tinput)
+        return plugins.resources.resources.getDefault().getWorkspace().getRunLogs(self.tinput)
 
 
-class RunLogsView(poi.views.StackedView):
+class RunLogsView(plugins.poi.poi.views.StackedView):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.StackedView.__init__(self)
+        plugins.poi.poi.views.StackedView.__init__(self)
 
     def createBody(self, parent):
-        self.viewer = poi.views.viewers.TableViewer(parent)
+        self.viewer = plugins.poi.poi.views.viewers.TableViewer(parent)
         control = self.viewer.getControl()
         control.InsertColumn(0, 'Date')
         self.setTitle(messages.get('views.runlogs.title'))

@@ -4,9 +4,10 @@
 # Embedded file name: ../plugins/grideditor/src/grideditor/durationcolumn.py
 # Compiled at: 2004-09-21 02:56:07
 import wx.lib.masked.timectrl as timectrl
-from wxPython.grid import *
-from wxPython.wx import *
-import wx, grideditor, grideditor.tablecolumn
+from wx.grid import *
+from wx import *
+import wx, plugins.grideditor.grideditor, plugins.grideditor.grideditor.tablecolumn
+from plugins.grideditor.grideditor.tablecolumn import CellEditor, StringCellRenderer, TableColumn
 
 class DurationChangeHandler(wx.EvtHandler):
     __module__ = __name__
@@ -21,11 +22,11 @@ class DurationChangeHandler(wx.EvtHandler):
         self.owner.controlUpdate()
 
 
-class DurationCellEditor(grideditor.tablecolumn.CellEditor):
+class DurationCellEditor(CellEditor):
     __module__ = __name__
 
     def __init__(self, column):
-        grideditor.tablecolumn.CellEditor.__init__(self, column)
+        CellEditor.__init__(self, column)
         self.oldValue = None
         self.acceptedStartKeys = [wx.WXK_SPACE, ord('1'), ord('2'), ord('3'), ord('4'), ord('5'), ord('6'), ord('7'), ord('8'), ord('9'), ord('0')]
         return
@@ -45,7 +46,7 @@ class DurationCellEditor(grideditor.tablecolumn.CellEditor):
     def controlUpdate(self):
         try:
             value = self.getValue().GetSeconds()
-        except Exception, msg:
+        except Exception as msg:
             return
 
         self.validate()
@@ -77,14 +78,13 @@ class DurationCellEditor(grideditor.tablecolumn.CellEditor):
             ov.Seconds(oldValue)
             oldValue = ov
         return newValue != oldValue
-        return
 
 
-class DurationCellRenderer(grideditor.tablecolumn.StringCellRenderer):
+class DurationCellRenderer(StringCellRenderer):
     __module__ = __name__
 
     def __init__(self):
-        grideditor.tablecolumn.StringCellRenderer.__init__(self)
+        StringCellRenderer.__init__(self)
 
     def getBackgroundColor(self, value):
         if value > self.range:
@@ -96,14 +96,14 @@ class DurationCellRenderer(grideditor.tablecolumn.StringCellRenderer):
         self.range = range
 
     def getSelectedRowColor(self, grid):
-        return grideditor.getDefault().getHighlightStepColor()
+        return plugins.grideditor.grideditor.getDefault().getHighlightStepColor()
 
     def getNormalRowColor(self, grid):
         return grid.GetDefaultCellBackgroundColour()
 
     def drawBackground(self, grid, dc, rect, isSelected, isColSelected, isRowSelected, value):
         if value < 1:
-            color = grideditor.getDefault().getInvalidCellColor()
+            color = plugins.grideditor.grideditor.getDefault().getInvalidCellColor()
         elif isRowSelected and not isColSelected:
             color = self.getSelectedRowColor(grid)
         else:
@@ -125,16 +125,16 @@ class DurationCellRenderer(grideditor.tablecolumn.StringCellRenderer):
         dc.DrawText(text, rect.x + x, rect.y + y)
 
 
-class DurationColumn(grideditor.tablecolumn.TableColumn):
+class DurationColumn(TableColumn):
     __module__ = __name__
 
     def __init__(self, recipeModel):
-        grideditor.tablecolumn.TableColumn.__init__(self)
+        TableColumn.__init__(self)
         self.recipeModel = recipeModel
         self.durationCellEditor = DurationCellEditor(self)
         self.durationCellRenderer = DurationCellRenderer()
-        self.cellEditorWrapper = grideditor.tablecolumn.CellEditorWrapper(self.durationCellEditor, self)
-        self.cellRendererWrapper = grideditor.tablecolumn.CellRendererWrapper(self.durationCellRenderer, self)
+        self.cellEditorWrapper = plugins.grideditor.grideditor.tablecolumn.CellEditorWrapper(self.durationCellEditor, self)
+        self.cellRendererWrapper = plugins.grideditor.tablecolumn.CellRendererWrapper(self.durationCellRenderer, self)
         self.hookToRecipeModel()
 
     def hookToRecipeModel(self):

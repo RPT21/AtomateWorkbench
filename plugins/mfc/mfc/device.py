@@ -37,9 +37,9 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
 
     def getHardwareChoices(self):
         choices = []
-        hw = hardware.hardwaremanager.getHardware()
+        hw = plugins.hardware.hardware.hardwaremanager.getHardware()
         for item in hw:
-            hwtype = hardware.hardwaremanager.getHardwareType(item.getHardwareType())
+            hwtype = plugins.hardware.hardware.hardwaremanager.getHardwareType(item.getHardwareType())
             deviceTypes = hwtype.getDeviceTypes()
             for dtype in deviceTypes:
                 if dtype == 'mfc':
@@ -99,8 +99,8 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         value = self.gcfText.GetValue()
         try:
             value = float(value)
-        except Exception, msg:
-            logger.warn('Invalid value for gcf. Setting to 1.00')
+        except Exception as msg:
+            logger.warning('Invalid value for gcf. Setting to 1.00')
             value = 1
 
         self.gcfText.SetValue(str(value))
@@ -155,38 +155,38 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         hwhints = data.getHardwareHints()
         try:
             gcf = int(hwhints.getChildNamed('conversion-factor').getValue()) / 100.0
-        except Exception, msg:
-            logger.warn("Unable to get value for gas conversion factor from recipe. Defaulting to 100%%: '%s'" % msg)
+        except Exception as msg:
+            logger.warning("Unable to get value for gas conversion factor from recipe. Defaulting to 100%%: '%s'" % msg)
             gcf = 1.0
 
         self.gcfText.SetValue(self.float2str(gcf))
         try:
             hwid = hwhints.getChildNamed('id').getValue()
             self.selectHardware(hwid)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set hardware: %s' % msg)
+            logger.warning('Cannot set hardware: %s' % msg)
 
         try:
             colors = uihints.getChildNamed('colors')
             self.plotColor.SetValue(parseColor(colors.getChildNamed('plot').getValue()))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set color: %s' % msg)
+            logger.warning('Cannot set color: %s' % msg)
 
         try:
             label = uihints.getChildNamed('label').getValue()
             self.labelField.SetValue(label)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set hardware: %s' % msg)
+            logger.warning('Cannot set hardware: %s' % msg)
 
         usegcf = True
         try:
             usegcf = uihints.getChildNamed('column-use-gcf').getValue().lower() == 'true'
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set choice for column: %s' % msg)
+            logger.warning('Cannot set choice for column: %s' % msg)
 
         purgeSetpoint = '0.0'
         purgeDuration = 0
@@ -196,9 +196,9 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
             purgeActive = purgeNode.getAttribute('active').lower() == 'true'
             purgeSetpoint = purgeNode.getAttribute('setpoint')
             purgeDuration = int(purgeNode.getAttribute('duration'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set purge setpoint')
+            logger.warning('Cannot set purge setpoint')
 
         self.purgeCheckbox.SetValue(purgeActive)
         self.columnActualFlowRadio.SetValue(usegcf)
@@ -212,7 +212,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
 
     def channelSelected(self, channel):
         hwid = self.getSelectedHardwareInstance()
-        recipe = ui.context.getProperty('recipe')
+        recipe = plugins.ui.ui.context.getProperty('recipe')
         valid = True
         if channel == 0:
             return True
@@ -238,11 +238,11 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         try:
             idx = self.getHardwareChoicesName().index(hwid)
             self.hardwareChoice.SetSelection(idx)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
-        description = hardware.hardwaremanager.getHardwareByName(hwid)
-        hwtype = hardware.hardwaremanager.getHardwareType(description.getHardwareType())
+        description = plugins.hardware.hardware.hardwaremanager.getHardwareByName(hwid)
+        hwtype = plugins.hardware.hardware.hardwaremanager.getHardwareType(description.getHardwareType())
         self.description = description
         self.setHardwareEditor(hwtype.getDeviceHardwareEditor())
 
@@ -282,8 +282,8 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         val = self.gcfText.GetValue()
         try:
             return int(float(val) * 100)
-        except Exception, msg:
-            logger.warn("Invalid value for gas conversion factor '%s', setting to 100" % val)
+        except Exception as msg:
+            logger.warning("Invalid value for gas conversion factor '%s', setting to 100" % val)
             return 100
 
     def getData(self, data):
@@ -309,7 +309,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
             purgeSetpoint = self.purgeSetpointText.GetValue()
             try:
                 purgeSetpoint = str(float(purgeSetpoint))
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
                 purgeSetpoint = '0.0'
 
@@ -318,7 +318,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
             purgeDuration = self.purgeDuration.GetValue(as_wxTimeSpan=True)
             try:
                 purgeDuration = str(purgeDuration.GetSeconds())
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
                 purgeDuration = 0
 
@@ -327,22 +327,22 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
             uihints.createChildIfNotExists('column-use-gcf').setValue(str(usegcf))
             if self.currentHardwareEditor is not None:
                 self.currentHardwareEditor.getData(hwhints)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Unable to save device data to recipe: '%s'" % msg)
 
         return
 
 
-class MFCDevice(core.device.Device):
+class MFCDevice(plugins.core.core.device.Device):
     __module__ = __name__
 
     def __init__(self):
         global DEVICE_ID
-        core.device.Device.__init__(self, DEVICE_ID)
+        plugins.core.core.device.Device.__init__(self, DEVICE_ID)
         self.haspurge = False
         self.channelNum = -1
-        self.colors = {'plot': (wx.Color(0, 0, 0))}
+        self.colors = {'plot': (wx.Colour(0, 0, 0))}
 
     def hasPurge(self):
         try:
@@ -360,7 +360,7 @@ class MFCDevice(core.device.Device):
             hwhints = self.getHardwareHints()
             purgeNode = hwhints.getChildNamed('purge')
             setpoint = float(purgeNode.getAttribute('setpoint'))
-        except Exception, msg:
+        except Exception as msg:
             return 1
 
         return setpoint
@@ -371,7 +371,7 @@ class MFCDevice(core.device.Device):
             hwhints = self.getHardwareHints()
             purgeNode = hwhints.getChildNamed('purge')
             length = int(purgeNode.getAttribute('duration'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             return 20
 
@@ -385,18 +385,18 @@ class MFCDevice(core.device.Device):
             hwhints = self.getHardwareHints()
             hardwareName = hwhints.getChildNamed('id').getValue()
             hardwareChannel = int(hwhints.getChildNamed('channel').getValue())
-            description = hardware.hardwaremanager.getHardwareByName(hardwareName)
+            description = plugins.hardware.hardware.hardwaremanager.getHardwareByName(hardwareName)
             hwtype = description.getHardwareType()
-            hwtype = hardware.hardwaremanager.getHardwareType(hwtype)
+            hwtype = plugins.hardware.hardware.hardwaremanager.getHardwareType(hwtype)
             description = hwtype.getDescription()
             return '%s (%s) - Channel %s' % (hardwareName, description, str(hardwareChannel))
-        except Exception, msg:
-            print '* WARNING:', msg
+        except Exception as msg:
+            print('* WARNING:', msg)
 
         return '*NOT CONFIGURED*'
 
     def parseColor(self, val):
-        return apply(wx.Color, map(int, val.split(',')))
+        return apply(wx.Colour, map(int, val.split(',')))
 
     def getPlotColor(self):
         """
@@ -414,54 +414,53 @@ class MFCDevice(core.device.Device):
         return self.colors['plot']
 
     def configurationUpdated(self):
-        core.device.Device.configurationUpdated(self)
+        plugins.core.core.device.Device.configurationUpdated(self)
         hwhints = self.getHardwareHints()
         try:
             self.channelNum = int(hwhints.getChildNamed('channel').getValue())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def getRange(self):
         try:
             return float(self.getHardwareHints().getChildNamed('range').getValue())
-        except Exception, msg:
+        except Exception as msg:
             return 1
 
     def getUnits(self):
         try:
             return self.getHardwareHints().getChildNamed('units').getValue()
-        except Exception, msg:
+        except Exception as msg:
             return 1
 
     def getGCF(self):
         try:
             return int(self.getHardwareHints().getChildNamed('conversion-factor').getValue())
-        except Exception, msg:
+        except Exception as msg:
             return 100
 
     def updateUIHints(self):
-        core.device.Device.updateUIHints(self)
+        plugins.core.core.device.Device.updateUIHints(self)
         uihints = self.getUIHints()
         try:
             colors = uihints.getChildNamed('colors')
             self.colors['plot'] = self.parseColor(colors.getChildNamed('plot').getValue())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            self.colors['plot'] = wx.Color(0, 0, 0)
+            self.colors['plot'] = wx.Colour(0, 0, 0)
 
     def parseFromNode(self, node):
-        result = mfc.stepentry.parseFromNode(node)
+        result = plugins.mfc.mfc.stepentry.parseFromNode(node)
         self.configurationUpdated()
         return result
 
     def convertToNode(self, root):
-        core.device.Device.convertToNode(self, root)
+        plugins.core.core.device.Device.convertToNode(self, root)
 
     def createNewStepEntry(self, fromExisting=None):
         if fromExisting is not None:
             return fromExisting.clone()
-        return mfc.stepentry.MFCStepEntry()
-        return
+        return plugins.mfc.mfc.stepentry.MFCStepEntry()
 
     def getDeviceEditor(self):
         return MFCDeviceEditor()

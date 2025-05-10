@@ -3,14 +3,15 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/panelviewitem.py
 # Compiled at: 2004-12-09 00:49:30
-import wx, mfc.hardwarestatusprovider, wx.gizmos, hardware.hardwaremanager, panelview.devicemediator, logging, ui.widgets.led, ui.widgets
+import wx, plugins.mfc.mfc.hardwarestatusprovider, wx.gizmos, plugins.hardware.hardware.hardwaremanager
+import plugins.panelview.panelview.devicemediator, logging, plugins.ui.ui.widgets.led, plugins.ui.ui.widgets
 logger = logging.getLogger('mfc.panelview')
 
-class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
+class MFCPanelViewItem(plugins.panelview.panelview.devicemediator.DevicePanelViewContribution):
     __module__ = __name__
 
     def __init__(self):
-        panelview.devicemediator.DevicePanelViewContribution.__init__(self)
+        plugins.panelview.panelview.devicemediator.DevicePanelViewContribution.__init__(self)
         self.hwinst = None
         self.range = 1
         self.gcf = 100
@@ -18,9 +19,9 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
         return
 
     def createControl(self, parent, horizontal=False):
-        self.control = wx.Panel(parent, -1, size=(-1, 80))
-        self.deviceLabel = ui.widgets.GradientLabel(self.control, wx.GREEN)
-        self.ledCtrl = ui.widgets.led.LEDSetpointDisplay(self.control, bgcolor=(145, 145, 96), fgcolor=(0, 0, 0), showSetpoint=not horizontal)
+        self.control = wx.Panel(parent, -1, size=wx.Size(-1, 80))
+        self.deviceLabel = plugins.ui.ui.widgets.GradientLabel(self.control, wx.GREEN)
+        self.ledCtrl = plugins.ui.ui.widgets.led.LEDSetpointDisplay(self.control, bgcolor=(145, 145, 96), fgcolor=(0, 0, 0), showSetpoint=not horizontal)
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(wx.StaticLine(self.control, -1), 0, wx.GROW)
         sizer.Add(self.deviceLabel, 0, wx.GROW | wx.ALL, 0)
@@ -31,7 +32,7 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
         return self.control
 
     def setDevice(self, device):
-        panelview.devicemediator.DevicePanelViewContribution.setDevice(self, device)
+        plugins.panelview.panelview.devicemediator.DevicePanelViewContribution.setDevice(self, device)
         self.deviceChanged()
 
     def deviceChanged(self):
@@ -44,7 +45,7 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
             return
         try:
             self.deviceLabel.SetLabel(self.device.getLabel())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.deviceLabel.setColor(self.device.getPlotColor())
@@ -53,17 +54,16 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
     def getConfiguredHardware(self):
         try:
             hwid = self.device.hardwarehints.getChildNamed('id').getValue()
-            desc = hardware.hardwaremanager.getHardwareByName(hwid)
+            desc = plugins.hardware.hardware.hardwaremanager.getHardwareByName(hwid)
             inst = desc.getInstance()
             return inst
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return None
-        return
 
     def dispose(self):
-        panelview.devicemediator.DevicePanelViewContribution.dispose(self)
+        plugins.panelview.panelview.devicemediator.DevicePanelViewContribution.dispose(self)
         self.unhookDeviceFromHardware()
 
     def unhookDeviceFromHardware(self):
@@ -81,13 +81,13 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
         try:
             self.range = self.device.getRange()
             self.gcf = self.device.getGCF()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return
 
     def hardwareStatusChanged(self, event):
-        if event.etype == mfc.hardwarestatusprovider.FLOW:
+        if event.etype == plugins.mfc.mfc.hardwarestatusprovider.FLOW:
             if not event.channel == self.device.getChannelNumber():
                 return
         wx.CallAfter(self.internalHardwareUpdate, event)
@@ -101,16 +101,15 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
             leftover = 0
         frmt = '%%0.0%df' % leftover
         return frmt % flow
-        return
 
     def internalHardwareUpdate(self, event):
         try:
             flowval = 0
-            if event.etype == mfc.hardwarestatusprovider.FLOW:
+            if event.etype == plugins.mfc.mfc.hardwarestatusprovider.FLOW:
                 flowval = event.data
                 if flowval is None:
                     flowval = ''
-            elif event.etype == mfc.hardwarestatusprovider.STOPPED:
+            elif event.etype == plugins.mfc.mfc.hardwarestatusprovider.STOPPED:
                 flowval = ''
             if flowval == '':
                 flow = None
@@ -121,7 +120,7 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
             if setpoint is None:
                 setpoint = ''
             self.ledCtrl.setSetpointValue(str(setpoint))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return

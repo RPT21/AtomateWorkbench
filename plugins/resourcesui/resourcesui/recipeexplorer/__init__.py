@@ -3,24 +3,27 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/recipeexplorer/__init__.py
 # Compiled at: 2004-11-20 00:28:57
-import wx, os, sys, string, ConfigParser, logging, kernel, resourcesui, resourcesui.actions, resourcesui.recipeexplorer.recipesview, resourcesui.recipeexplorer.versionsview, resourcesui.recipeexplorer.runlogsview, resourcesui.recipeexplorer.snapshotview, resources, poi.actions.toolbarmanager, poi.actions.statusbarmanager, poi.dialogs, poi.views, resourcesui.messages as messages, resourcesui.recipeexplorer.actions
+import wx, os, sys, string, configparser, logging, lib.kernel, plugins.resourcesui.resourcesui, plugins.resourcesui.resourcesui.actions
+import plugins.resourcesui.resourcesui.recipeexplorer.recipesview, plugins.resourcesui.resourcesui.recipeexplorer.versionsview, plugins.resourcesui.resourcesui.recipeexplorer.runlogsview
+import plugins.resourcesui.resourcesui.recipeexplorer.snapshotview, plugins.resources.resources, plugins.poi.poi.actions.toolbarmanager, plugins.poi.poi.actions.statusbarmanager
+import plugins.poi.poi.dialogs, plugins.poi.poi.views, plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.recipeexplorer.actions
 logger = logging.getLogger('resources.ui')
 DIALOG_PREFS_FILE = 'recipeexplorer.prefs'
 
-class RecipeExplorer(poi.dialogs.Dialog):
+class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
     __module__ = __name__
 
     def __init__(self):
-        poi.dialogs.Dialog.__init__(self)
+        plugins.poi.poi.dialogs.Dialog.__init__(self)
         self.control = None
         self.setSaveLayout(True)
         self.counts = 0
         self.setStyle(wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
-        resources.getDefault().getWorkspace().addWorkspaceChangeListener(self)
+        plugins.resources.resources.getDefault().getWorkspace().addWorkspaceChangeListener(self)
         return
 
     def handleClosing(self, id):
-        resources.getDefault().getWorkspace().removeWorkspaceChangeListener(self)
+        plugins.resources.resources.getDefault().getWorkspace().removeWorkspaceChangeListener(self)
 
     def workspaceChanged(self, event):
         resource = event.getRoot()
@@ -28,21 +31,21 @@ class RecipeExplorer(poi.dialogs.Dialog):
         if len(selection) == 0:
             return
         selection = selection[0]
-        if isinstance(resource, resources.version.RecipeVersion):
+        if isinstance(resource, plugins.resources.resources.version.RecipeVersion):
             project = resource.getProject()
             if not selection.equals(project):
                 return
             self.updateVersions(project)
-        elif isinstance(resource, resources.project.Project):
+        elif isinstance(resource, plugins.resources.resources.project.Project):
             self.updateRecipes()
-        elif isinstance(resource, resources.project.RunLog):
+        elif isinstance(resource, plugins.resources.resources.project.RunLog):
             pass
 
     def updateRunlogs(self, selection):
         self.views['runlogs'].showRunLogs(selection)
 
     def updateRecipes(self):
-        self.getView('recipes').getViewer().setInput(resources.getDefault().getWorkspace())
+        self.getView('recipes').getViewer().setInput(plugins.resources.resources.getDefault().getWorkspace())
 
     def performLayout(self):
         la = wx.LayoutAlgorithm()
@@ -50,19 +53,18 @@ class RecipeExplorer(poi.dialogs.Dialog):
         self.stage.Refresh()
 
     def createContent(self, parent):
-        b = poi.views.OneChildWindow(self.control, -1)
+        b = plugins.poi.poi.views.OneChildWindow(self.control, -1)
         return b
 
     def createStatusBar(self):
-        self.statusbarManager = poi.actions.statusbarmanager.StatusBarManager('#STATUSBAR')
+        self.statusbarManager = plugins.poi.poi.actions.statusbarmanager.StatusBarManager('#STATUSBAR')
         self.statusbar = self.statusbarManager.createControl(self.control)
         return self.statusbar
 
     def createToolBar(self):
-        self.toolbarManager = poi.actions.toolbarmanager.ToolBarManager(None, '#TOOLBAR')
+        self.toolbarManager = plugins.poi.poi.actions.toolbarmanager.ToolBarManager(None, '#TOOLBAR')
         self.toolbar = self.toolbarManager.createControl(self.control, wx.TB_HORZ_TEXT)
         return self.toolbar
-        return
 
     def getToolBarManager(self):
         return self.toolbarManager
@@ -80,10 +82,10 @@ class RecipeExplorer(poi.dialogs.Dialog):
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         self.createBody(self.content)
-        poi.dialogs.Dialog.createControl(self, parent)
+        plugins.poi.poi.dialogs.Dialog.createControl(self, parent)
 
     def OnClose(self, event):
-        resourcesui.recipeexplorer.actions.destroyActions()
+        plugins.resourcesui.resourcesui.recipeexplorer.actions.destroyActions()
         event.Skip()
 
     def createBody(self, parent):
@@ -98,17 +100,17 @@ class RecipeExplorer(poi.dialogs.Dialog):
         self.createViews()
         self.restoreLayout()
         self.performLayout()
-        resourcesui.recipeexplorer.actions.createAction(self)
+        plugins.resourcesui.resourcesui.recipeexplorer.actions.createAction(self)
 
     def createViews(self):
         self.views = {}
-        recipes = resourcesui.recipeexplorer.recipesview.RecipesView()
+        recipes = plugins.resourcesui.resourcesui.recipeexplorer.recipesview.RecipesView()
         recipes.createControl(self.sectors['west'])
-        versions = resourcesui.recipeexplorer.versionsview.VersionsView()
+        versions = plugins.resourcesui.resourcesui.recipeexplorer.versionsview.VersionsView()
         versions.createControl(self.sectors['center'])
-        runlogs = resourcesui.recipeexplorer.runlogsview.RunLogsView()
+        runlogs = plugins.resourcesui.resourcesui.recipeexplorer.runlogsview.RunLogsView()
         runlogs.createControl(self.sectors['east'])
-        snapshot = resourcesui.recipeexplorer.snapshotview.SnapshotView()
+        snapshot = plugins.resourcesui.resourcesui.recipeexplorer.snapshotview.SnapshotView()
         snapshot.createControl(self.sectors['snapshot'])
 
         class RecipeViewerEventHandler(object):
@@ -152,10 +154,9 @@ class RecipeExplorer(poi.dialogs.Dialog):
         self.updateRecipes()
 
     def getView(self, key):
-        if not self.views.has_key(key):
+        if not key in self.views:
             return None
         return self.views[key]
-        return
 
     def handleRunlogSelectionChanged(self, selection):
         if len(selection) == 0:
@@ -173,14 +174,14 @@ class RecipeExplorer(poi.dialogs.Dialog):
 
     def handleVersionDoubleClick(self, selection):
         try:
-            resourcesui.actions.openRecipeVersion(selection[0])
+            plugins.resourcesui.resourcesui.actions.openRecipeVersion(selection[0])
             self.endModal(wx.ID_OK)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Cannot open recipe: '%s'" % msg)
 
     def handleProjectDoubleClick(self, selection):
-        print 'double click', selection
+        print('double click', selection)
 
     def handleProjectSelectionChanged(self, selection):
         if len(selection) == 0:
@@ -212,7 +213,7 @@ class RecipeExplorer(poi.dialogs.Dialog):
         runsnap.SetOrientation(wx.LAYOUT_VERTICAL)
         runsnap.SetDefaultSize((600, 30))
         runsnap.SetSashVisible(wx.SASH_LEFT, True)
-        center = poi.views.OneChildWindow(self.stage, -1)
+        center = plugins.poi.poi.views.OneChildWindow(self.stage, -1)
         east = wx.SashLayoutWindow(runsnap, 1001, size=(200, 30))
         east.SetAlignment(wx.LAYOUT_LEFT)
         east.SetOrientation(wx.LAYOUT_VERTICAL)
@@ -246,7 +247,7 @@ class RecipeExplorer(poi.dialogs.Dialog):
             if key is 'versions':
                 continue
             width = view.GetSize()[0]
-            memento.set('layout', string.join(['sector', key], '.'), '%i' % width)
+            memento.set('layout', '.'.join(['sector', key]), '%i' % width)
 
     def createDefaultLayout(self):
         self.control.SetSize((800, 600))
@@ -257,7 +258,7 @@ class RecipeExplorer(poi.dialogs.Dialog):
         for (key, view) in self.sectors.items():
             if not isinstance(view, wx.SashLayoutWindow):
                 continue
-            width = int(memento.get('layout', string.join(['sector', key], '.')))
+            width = int(memento.get('layout', '.'.join(['sector', key])))
             if width < 20:
                 width = 20
             view.SetDefaultSize((width, -1))

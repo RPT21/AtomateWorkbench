@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/stepentry.py
 # Compiled at: 2004-09-17 02:44:24
-import core.stepentry, logging
+import plugins.core.core.stepentry, logging
 logger = logging.getLogger('mfc')
 
 def parseFromNode(node):

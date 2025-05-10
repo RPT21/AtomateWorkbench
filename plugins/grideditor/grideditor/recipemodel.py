@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/recipemodel.py
 # Compiled at: 2004-11-02 21:50:14
-import threading, wx, grideditor.events, copy, logging
+import threading, wx, plugins.grideditor.grideditor.events, copy, logging
+from plugins.grideditor.grideditor.events import EventObject
 logger = logging.getLogger('recipemodel')
 
 class RecipeModelEventListener:
@@ -24,7 +25,7 @@ ADD_DEVICE = 5
 REMOVE_DEVICE = 6
 CHANGE_DEVICE = 7
 
-class RecipeModelEvent(grideditor.events.EventObject):
+class RecipeModelEvent(EventObject):
     __module__ = __name__
 
     def __init__(self, source, eventType, rowOffset=ALL, numRows=ALL, colOffset=ALL, numCols=ALL, device=None):
@@ -35,7 +36,7 @@ class RecipeModelEvent(grideditor.events.EventObject):
         self.ADD_DEVICE = ADD_DEVICE
         self.REMOVE_DEVICE = REMOVE_DEVICE
         self.CHANGE_DEVICE = CHANGE_DEVICE
-        grideditor.events.EventObject.__init__(self, source)
+        EventObject.__init__(self, source)
         self.eventType = eventType
         self.rowOffset = rowOffset
         self.numRows = numRows
@@ -173,7 +174,7 @@ class RecipeModel(object):
         if False:
             logger.debug('*** PRE MODIFY LISTENERS ***')
             for listener in self.preModifyListeners:
-                print listener
+                print(listener)
 
             logger.debug('*** END PREMODIFY LISTENERS ***')
         map((lambda p: p.recipeModelAboutToChange(event)), self.preModifyListeners)
@@ -188,14 +189,14 @@ class RecipeModel(object):
         if False:
             logger.debug('*** MODIFY LISTENERS ***')
             for listener in self.modifyListeners:
-                print listener
+                print(listener)
 
             logger.debug('*** END MODIFY LISTENERS ***')
         listeners = copy.copy(self.modifyListeners)
         for listener in listeners:
             try:
                 listener.recipeModelChanged(event)
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
 
     def moveRow(self, fromRow, toRow):

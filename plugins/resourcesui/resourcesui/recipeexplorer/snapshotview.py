@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/recipeexplorer/snapshotview.py
 # Compiled at: 2004-11-19 21:54:36
-import wx, time, poi.views, poi.utils.scrolledpanel, resourcesui.messages as messages
+import wx, time, plugins.poi.poi.views, plugins.poi.poi.utils.scrolledpanel, plugins.resourcesui.resourcesui.messages as messages
 
 class MainLabel(wx.StaticText):
     __module__ = __name__
@@ -98,7 +98,7 @@ class VersionInfoPane(wx.Panel):
     __module__ = __name__
 
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, size=(1, 1))
+        wx.Panel.__init__(self, parent, size=wx.Size(1, 1))
         self.createUI()
 
     def setVersionInfo(self, version):
@@ -125,7 +125,7 @@ class RunlogInfoPane(wx.Panel):
     __module__ = __name__
 
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, size=(1, 1))
+        wx.Panel.__init__(self, parent, size=wx.Size(1, 1))
         self.bmps = []
         self.createUI()
         self.sproks = False
@@ -168,11 +168,11 @@ class RunlogInfoPane(wx.Panel):
         self.SetAutoLayout(True)
 
 
-class SnapshotView(poi.views.StackedView):
+class SnapshotView(plugins.poi.poi.views.StackedView):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.StackedView.__init__(self)
+        plugins.poi.poi.views.StackedView.__init__(self)
         self.project = None
         self.version = None
         self.runlog = None
@@ -232,12 +232,12 @@ class SnapshotView(poi.views.StackedView):
         return
 
     def createBody(self, parent):
-        self.viewer = poi.utils.scrolledpanel.ScrolledPanel(parent)
+        self.viewer = plugins.poi.poi.utils.scrolledpanel.ScrolledPanel(parent)
         self.viewer.SetupScrolling()
         self.sps = []
         self.mainsizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        self.p1 = wx.Panel(self.viewer, size=(1, 1))
+        self.p1 = wx.Panel(self.viewer, size=wx.Size(1, 1))
         box = wx.StaticBox(self.p1, -1, ' Project ')
         p = ProjectInfoPane(self.p1)
         self.projectPanel = p
@@ -248,7 +248,7 @@ class SnapshotView(poi.views.StackedView):
         self.p1.SetSizer(ps)
         self.p1.SetAutoLayout(True)
         sizer.Add(self.p1, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
-        self.p2 = wx.Panel(self.viewer, size=(1, 1))
+        self.p2 = wx.Panel(self.viewer, size=wx.Size(1, 1))
         box = wx.StaticBox(self.p2, -1, ' Version ')
         p = VersionInfoPane(self.p2)
         self.versionPanel = p
@@ -260,7 +260,7 @@ class SnapshotView(poi.views.StackedView):
         self.p2.SetSizer(ps)
         self.p2.SetAutoLayout(True)
         sizer.Add(self.p2, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
-        self.p3 = wx.Panel(self.viewer, size=(1, 1))
+        self.p3 = wx.Panel(self.viewer, size=wx.Size(1, 1))
         box = wx.StaticBox(self.p3, -1, ' Runlog ')
         p = RunlogInfoPane(self.p3)
         self.runlogPanel = p
@@ -280,7 +280,7 @@ class SnapshotView(poi.views.StackedView):
 
     def OnButton(self, event):
         if self.prick:
-            p = wx.Panel(self.p2, -1, size=(20, 400))
+            p = wx.Panel(self.p2, -1, size=wx.Size(20, 400))
             self.bs.Add(p, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
             self.stick = p
         else:

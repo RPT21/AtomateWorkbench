@@ -3,13 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/recipeexplorer/recipesview.py
 # Compiled at: 2004-11-05 00:50:54
-import wx, kernel, resources, poi.views, poi.views.viewers, poi.views.contentprovider, resourcesui.messages as messages, resourcesui.images as images
+import wx, lib.kernel, plugins.resources.resources, plugins.poi.poi.views, plugins.poi.poi.views.viewers, plugins.poi.poi.views.contentprovider
+import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.images as images
 
-class RecipeLabelProvider(poi.views.contentprovider.LabelProvider):
+class RecipeLabelProvider(plugins.poi.poi.views.contentprovider.LabelProvider):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.contentprovider.LabelProvider.__init__(self)
+        plugins.poi.poi.views.contentprovider.LabelProvider.__init__(self)
 
     def getImage(self, element):
         if element.isShared():
@@ -27,14 +28,13 @@ class RecipeLabelProvider(poi.views.contentprovider.LabelProvider):
             if len(comment) > 0:
                 tt += '\n%s' % comment
         return tt
-        return
 
 
-class RecipeContentProvider(poi.views.contentprovider.ContentProvider):
+class RecipeContentProvider(plugins.poi.poi.views.contentprovider.ContentProvider):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.contentprovider.ContentProvider.__init__(self)
+        plugins.poi.poi.views.contentprovider.ContentProvider.__init__(self)
         self.tinput = None
         return
 
@@ -49,16 +49,16 @@ class RecipeContentProvider(poi.views.contentprovider.ContentProvider):
         return self.tinput.getProjects(True)
 
 
-class RecipesView(poi.views.StackedView):
+class RecipesView(plugins.poi.poi.views.StackedView):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.StackedView.__init__(self)
+        plugins.poi.poi.views.StackedView.__init__(self)
         self.viewer = None
         return
 
     def createBody(self, parent):
-        self.viewer = poi.views.viewers.TableViewer(parent)
+        self.viewer = plugins.poi.poi.views.viewers.TableViewer(parent)
         control = self.viewer.getControl()
         control.InsertColumn(0, 'Name')
         self.viewer.setContentProvider(RecipeContentProvider())

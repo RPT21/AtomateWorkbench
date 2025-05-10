@@ -7,7 +7,7 @@ import wx, pickle
 PYTHONDATA_MIME_TYPE = 'py/binary'
 PYTHON_OBJECT = PYTHONDATA_MIME_TYPE
 TEXT = 'text'
-pyDataFormat = wx.CustomDataFormat(PYTHONDATA_MIME_TYPE)
+pyDataFormat = wx.DataFormat(PYTHONDATA_MIME_TYPE)
 clipboardListeners = []
 currentObject = None
 objects = {}

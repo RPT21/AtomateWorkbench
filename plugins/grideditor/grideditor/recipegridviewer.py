@@ -3,26 +3,31 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/recipegridviewer.py
 # Compiled at: 2004-12-07 12:28:55
-from wxPython.grid import *
-from wxPython.wx import *
-import logging, poi.views.viewers, wx, ui, poi.actions.menumanager, poi.actions, ui.undomanager, grideditor.recipegridviewercontentprovider, grideditor.recipegrideditortable, grideditor.durationcolumn, grideditor.recipemodel, grideditor.selections, grideditor.images as images, grideditor.messages as messages, grideditor.actions, grideditor.gutter, resourcesui.utils
+from wx.grid import *
+from wx import *
+import logging, plugins.poi.poi.views.viewers, wx, plugins.ui.ui, plugins.poi.poi.actions.menumanager
+import plugins.poi.poi.actions, plugins.ui.ui.undomanager, plugins.grideditor.grideditor.recipegridviewercontentprovider
+import plugins.grideditor.grideditor.recipegrideditortable, plugins.grideditor.grideditor.durationcolumn
+import plugins.grideditor.grideditor.recipemodel, plugins.grideditor.grideditor.selections
+import plugins.grideditor.grideditor.images as images, plugins.grideditor.grideditor.messages as messages
+import plugins.grideditor.grideditor.actions, plugins.grideditor.grideditor.gutter, plugins.resourcesui.resourcesui.utils
 DEBUG = False
 logger = logging.getLogger('grideditor')
 
-class ActionGroup(poi.actions.ActionContributionItem):
+class ActionGroup(plugins.poi.poi.actions.ActionContributionItem):
     __module__ = __name__
 
     def fillMenu(self, parent):
         if not self.isEnabled():
             return
-        poi.actions.ActionContributionItem.fillMenu(self, parent)
+        plugins.poi.poi.actions.ActionContributionItem.fillMenu(self, parent)
 
 
-class DeleteSelectedAction(grideditor.actions.SelectionDispatchAction):
+class DeleteSelectedAction(plugins.grideditor.grideditor.actions.SelectionDispatchAction):
     __module__ = __name__
 
     def __init__(self, editor):
-        grideditor.actions.SelectionDispatchAction.__init__(self, 'Remove Selected Step')
+        plugins.grideditor.grideditor.actions.SelectionDispatchAction.__init__(self, 'Remove Selected Step')
         self.editor = editor
 
     def runWithSelection(self, selection):
@@ -33,18 +38,18 @@ class DeleteSelectedAction(grideditor.actions.SelectionDispatchAction):
         self.editor.removeSteps(stepIndex, len(selection))
 
 
-class InsertStepAfterSelectionAction(grideditor.actions.SelectionDispatchAction):
+class InsertStepAfterSelectionAction(plugins.grideditor.grideditor.actions.SelectionDispatchAction):
     __module__ = __name__
 
     def __init__(self, editor):
-        grideditor.actions.SelectionDispatchAction.__init__(self, 'Insert After Selection')
+        plugins.grideditor.grideditor.actions.SelectionDispatchAction.__init__(self, 'Insert After Selection')
         self.editor = editor
 
     def runWithSelection(self, selection):
-        print 'Insert After Selection', selection, self.editor
+        print('Insert After Selection', selection, self.editor)
 
 
-class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.views.viewers.SelectionProvider):
+class RecipeGridViewer(plugins.grideditor.grideditor.recipemodel.RecipeModelEventListener, poi.views.viewers.SelectionProvider):
     __module__ = __name__
 
     def __init__(self):
@@ -109,7 +114,7 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
             if recipe.isDirty():
                 suffix = '*'
             text = '%s-%s %s' % (project.getName(), version.getNumber(), suffix)
-        ui.getDefault().getMainFrame().setTitle(text)
+        plugins.ui.ui.getDefault().getMainFrame().setTitle(text)
         return
 
     def addDevice(self, device):
@@ -133,7 +138,7 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
         try:
             self.contentprovider.setInput(input)
             self.fireInputChanged(oldInput, input)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Unable to parse and display recipe: '%s'" % msg)
 
@@ -181,15 +186,15 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
         self.hasFocus = False
 
     def createControl(self, composite):
-        view = poi.views.StackedView()
+        view = plugins.poi.poi.views.StackedView()
         view.createControl(composite)
         self.view = view
         self.control = wx.Panel(view.getContent(), -1)
-        self.contentprovider = grideditor.recipegridviewercontentprovider.RecipeGridViewerContentProvider()
-        self.wxtable = grideditor.recipegrideditortable.RecipeGridEditorTable(self.contentprovider)
+        self.contentprovider = plugins.grideditor.grideditor.recipegridviewercontentprovider.RecipeGridViewerContentProvider()
+        self.wxtable = plugins.grideditor.grideditor.recipegrideditortable.RecipeGridEditorTable(self.contentprovider)
         self.contentprovider.setManagedTable(self.wxtable)
         self.grid = wxGrid(self.control, -1)
-        self.grid.SetHelpText(grideditor.constants.HELP_GRIDEDITOR)
+        self.grid.SetHelpText(plugins.grideditor.grideditor.constants.HELP_GRIDEDITOR)
         self.grid.SetScrollRate(10, 10)
         self.grid.SetDefaultRowSize(20, True)
         self.grid.SetGridLineColour(wxSystemSettings_GetColour(wxSYS_COLOUR_3DDKSHADOW))
@@ -197,9 +202,9 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
         self.grid.SetTable(self.wxtable)
         self.grid.SetColLabelSize(10)
         self.grid.SetCellHighlightPenWidth(1)
-        self.grid.SetCellHighlightColour(grideditor.getDefault().getHighlightStepColor())
+        self.grid.SetCellHighlightColour(plugins.grideditor.grideditor.getDefault().getHighlightStepColor())
         self.pork = False
-        self.gutter = grideditor.gutter.Gutter()
+        self.gutter = plugins.grideditor.grideditor.gutter.Gutter()
         self.gutter.setGrid(self)
         gtrctrl = self.gutter.createControl(self.control)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -207,8 +212,8 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
         sizer.Add(self.grid, 1, wx.GROW | wx.ALL, 0)
         if DEBUG:
             hsizer = wx.BoxSizer(wx.HORIZONTAL)
-            deleteButton = grideditor.actions.ActionButton(self.deleteSelectedAction, self.control)
-            insertAfterButton = grideditor.actions.ActionButton(self.insertAfterAction, self.control)
+            deleteButton = plugins.grideditor.grideditor.actions.ActionButton(self.deleteSelectedAction, self.control)
+            insertAfterButton = plugins.grideditor.grideditor.actions.ActionButton(self.insertAfterAction, self.control)
             hsizer.Add(deleteButton.getControl(), 0, wx.ALL, 5)
             hsizer.Add(insertAfterButton.getControl(), 0, wx.ALL, 5)
             sizer.Add(hsizer, 0, wx.GROW | wx.ALL, 5)
@@ -234,18 +239,18 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
 
     def createDefaultGutterColumns(self):
         ctrl = self.gutter.getControl()
-        looper = grideditor.gutter.LoopColumn(ctrl)
-        errorer = grideditor.gutter.ErrorColumn(ctrl)
+        looper = plugins.grideditor.grideditor.gutter.LoopColumn(ctrl)
+        errorer = plugins.grideditor.grideditor.gutter.ErrorColumn(ctrl)
         self.gutter.addColumn(errorer)
         self.gutter.addColumn(looper)
 
     def OnGridCellChange(self, event):
         event.Skip()
         if False:
-            print 'Grid Cell Change:', event.GetCol()
+            print('Grid Cell Change:', event.GetCol())
             row = event.GetRow()
             column = self.contentprovider.getRealIndexOfCol(event.GetCol())
-            print '\tfor', col
+            print('\tfor', col)
 
     def OnShowColumnContextMenu(self, event):
         logger.debug("Show Column Context Menu: '%s'" % event.GetCol())
@@ -301,9 +306,9 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
         Draw the labels
         """
         dc = wx.PaintDC(window)
-        dc.DrawRectangle((0, 0), (10, 10))
+        dc.DrawRectangle(wx.Point(0, 0), wx.Size(10, 10))
         rect = window.GetClientRect()
-        dc.DrawRectangle((rect[0], rect[1]), (rect[2], rect[3]))
+        dc.DrawRectangle(wx.Point(rect[0], rect[1]), wx.Size(rect[2], rect[3]))
 
     def onInsertRow(self):
         self.fixRowLabelWidth()
@@ -344,10 +349,10 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
         self.grid.PopupMenu(menu, event.GetPosition())
 
     def createContextMenu(self):
-        self.contextMenuManager = poi.actions.menumanager.MenuManager(None, '#POPUP')
+        self.contextMenuManager = plugins.poi.poi.actions.menumanager.MenuManager(None, '#POPUP')
         mng = self.contextMenuManager
-        mng.addItem(poi.actions.ActionContributionItem(ui.undomanager.UNDO_ACTION))
-        mng.addItem(ActionGroup(ui.undomanager.REDO_ACTION))
+        mng.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.ui.ui.undomanager.UNDO_ACTION))
+        mng.addItem(ActionGroup(plugins.ui.ui.undomanager.REDO_ACTION))
         return
 
     def isNavigationKey(self, keycode):
@@ -416,7 +421,7 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
     def preferencesChanged(self):
         if self.grid is None:
             return
-        self.grid.SetCellHighlightColour(grideditor.getDefault().getHighlightStepColor())
+        self.grid.SetCellHighlightColour(plugins.grideditor.grideditor.getDefault().getHighlightStepColor())
         return
 
     def closeCellEditor(self):
@@ -425,10 +430,10 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
             self.grid.HideCellEditControl()
 
     def tabPressed(self):
-        prefs = grideditor.getDefault().getPreferencesStore().getPreferences()
+        prefs = plugins.grideditor.grideditor.getDefault().getPreferencesStore().getPreferences()
         try:
             acquire = prefs.get('tab-acquires-previous').tolower() == 'true'
-        except Exception, msg:
+        except Exception as msg:
             acquire = True
 
         if not acquire:
@@ -495,7 +500,6 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
         row = self.currentGridCursorRow
         step = self.input.getStepAt(row)
         return step
-        return
 
     def OnGridRangeSelect(self, event):
         event.Skip()
@@ -535,7 +539,6 @@ class RecipeGridViewer(grideditor.recipemodel.RecipeModelEventListener, poi.view
             return self.input.getStepCount()
         index = self.getIndexOfStep(step)
         return index
-        return
 
     def removeSteps(self, pos, number):
         self.input.removeSteps(pos, number)

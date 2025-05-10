@@ -3,12 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/recipegridviewercontentprovider.py
 # Compiled at: 2004-11-19 02:29:39
-from wxPython.grid import *
-from wxPython.wx import *
-import wx, logging, grideditor, grideditor.durationcolumn, grideditor.recipemodel
+from wx.grid import *
+from wx import *
+import wx, logging, plugins.grideditor.grideditor, plugins.grideditor.grideditor.durationcolumn, plugins.grideditor.grideditor.recipemodel
 logger = logging.getLogger('grideditor.contentprovider')
+from plugins.grideditor.grideditor.recipemodel import RecipeModelEventListener
 
-class RecipeGridViewerContentProvider(grideditor.recipemodel.RecipeModelEventListener):
+class RecipeGridViewerContentProvider(RecipeModelEventListener):
     __module__ = __name__
 
     def __init__(self):
@@ -40,20 +41,20 @@ class RecipeGridViewerContentProvider(grideditor.recipemodel.RecipeModelEventLis
         if self.suppress:
             return
         etype = event.getEventType()
-        if etype == grideditor.recipemodel.ADD:
-            if event.getRowOffset() != grideditor.recipemodel.ALL:
+        if etype == plugins.grideditor.grideditor.recipemodel.ADD:
+            if event.getRowOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
                 self.managedTable.insertRows(event.getRowOffset(), event.getNumRows())
-            elif event.getColOffset() != grideditor.recipemodel.ALL:
+            elif event.getColOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
                 pass
-        elif etype == grideditor.recipemodel.ADD_DEVICE:
+        elif etype == plugins.grideditor.grideditor.recipemodel.ADD_DEVICE:
             self.addDeviceColumnContribution(event.getDevice())
-        elif etype == grideditor.recipemodel.REMOVE_DEVICE:
+        elif etype == plugins.grideditor.grideditor.recipemodel.REMOVE_DEVICE:
             self.removeDeviceColumnContribution(event.getDevice())
-        elif etype == grideditor.recipemodel.REMOVE:
-            if event.getRowOffset() != grideditor.recipemodel.ALL:
+        elif etype == plugins.grideditor.grideditor.recipemodel.REMOVE:
+            if event.getRowOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
                 self.managedTable.removeRows(event.getRowOffset(), event.getNumRows())
-        elif etype == grideditor.recipemodel.CHANGE:
-            if event.getRowOffset() != grideditor.recipemodel.ALL:
+        elif etype == plugins.grideditor.grideditor.recipemodel.CHANGE:
+            if event.getRowOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
                 pass
             else:
                 self.managedTable.updateAll()
@@ -64,7 +65,7 @@ class RecipeGridViewerContentProvider(grideditor.recipemodel.RecipeModelEventLis
     def getAttribute(self, row, col, extra):
         realIndex = self.getRealIndexOfCol(col)
         column = self.visibleColumns[col]
-        if not self.colattrs.has_key(column):
+        if not column in self.colattrs:
             attr = wxGridCellAttr()
             self.colattrs[column] = attr
             attr.SetEditor(column.getCellEditor())
@@ -77,7 +78,6 @@ class RecipeGridViewerContentProvider(grideditor.recipemodel.RecipeModelEventLis
             attr.SetEditor(column.getCellEditor())
             attr.SetRenderer(column.getCellRenderer())
         return attr.Clone()
-        return
 
     def hideColumn(self, columnIndex):
         pass
@@ -109,7 +109,6 @@ class RecipeGridViewerContentProvider(grideditor.recipemodel.RecipeModelEventLis
         if self.input is not None:
             return self.input.getStepCount()
         return 0
-        return
 
     def getColumnCount(self):
         return len(self.visibleColumns)
@@ -209,18 +208,16 @@ class RecipeGridViewerContentProvider(grideditor.recipemodel.RecipeModelEventLis
             order = int(columnhints.getAttribute('order'))
             visible = columnhints.getAttribute('visible') == 'true'
             width = int(columnhints.getAttribute('width'))
-        except Exception, msg:
-            print '* WARNING: Missing column node in uihints for', device
+        except Exception as msg:
+            print('* WARNING: Missing column node in uihints for', device)
             order = 0
-            visible = true
+            visible = True
             width = 100
 
         return (
          order, visible, width, column)
-        return
 
     def loadColumnContributions(self):
-        self.contributions
         contributions = {}
         deviceIndex = 0
         ordering = []

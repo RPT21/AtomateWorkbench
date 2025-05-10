@@ -3,7 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/__init__.py
 # Compiled at: 2004-12-08 01:13:43
-import os, help, kernel, kernel.plugin, kernel.pluginmanager as PluginManager, wx, ui, ui.preferences, core, core.recipe, core.preferencesstore, ui.context, poi.views, poi.actions, ConfigParser, grideditor.images, grideditor.recipegridviewer, grideditor.executiongridviewer, grideditor.preferences, grideditor.messages, grideditor.utils, grapheditor, extendededitor, panelview, logging, resourcesui.actions, resources, validator, grideditor.utils.validation, grideditor.autosaver, threading, grideditor.utils.errorviewer
+import os, plugins.help, lib.kernel, lib.kernel.plugin, lib.kernel.pluginmanager as PluginManager, wx, plugins.ui.ui
+import plugins.ui.ui.preferences, plugins.core.core, plugins.core.core.recipe, plugins.core.core.preferencesstore
+import plugins.ui.ui.context, plugins.poi.poi.views, plugins.poi.poi.actions, configparser, plugins.grideditor.grideditor.images
+import plugins.grideditor.grideditor.recipegridviewer, plugins.grideditor.grideditor.executiongridviewer, plugins.grideditor.grideditor.preferences
+import plugins.grideditor.grideditor.messages, plugins.grideditor.grideditor.utils, plugins.grapheditor.grapheditor
+import plugins.extendededitor.extendededitor, plugins.panelview.panelview, logging, plugins.resourcesui.resourcesui.actions
+import plugins.resources.resources, plugins.validator.validator, plugins.grideditor.grideditor.utils.validation
+import plugins.grideditor.grideditor.autosaver, threading, plugins.grideditor.grideditor.utils.errorviewer
 CONFIG_FILENAME = '.config'
 PLUGIN_ID = 'grideditor'
 VIEW_ID = 'grideditor'
@@ -22,33 +29,33 @@ def getActiveEditor():
 
 def addColumnContributionFactory(name, contributionFactory):
     global columnContributions
-    if not columnContributions.has_key(name):
+    if not name in columnContributions:
         columnContributions[name] = contributionFactory
 
 
 def removeColumnContributionFactory(name):
-    if columnContributions.has_key(name):
+    if name in columnContributions:
         del columnContributions[name]
 
 
 def getColumnContributionFactory(name):
-    if columnContributions.has_key(name):
+    if name in columnContributions:
         return columnContributions[name]
 
 
-class DebugRemoveEditorAction(poi.actions.Action):
+class DebugRemoveEditorAction(plugins.poi.poi.actions.Action):
     __module__ = __name__
 
     def __init__(self):
-        poi.actions.Action.__init__(self, 'Debug Hide Editor', '', '')
+        plugins.poi.poi.actions.Action.__init__(self, 'Debug Hide Editor', '', '')
 
     def run(self):
         global VIEW_ID
-        result = ui.getDefault().getMainFrame().findView(VIEW_ID)
+        result = plugins.ui.ui.getDefault().getMainFrame().findView(VIEW_ID)
         if result is None:
-            ui.getDefault().createView('center', VIEW_ID)
+            plugins.ui.ui.getDefault().createView('center', VIEW_ID)
         else:
-            ui.getDefault().getMainFrame().clearSector(result[1])
+            plugins.ui.ui.getDefault().getMainFrame().clearSector(result[1])
         return
 
 
@@ -80,16 +87,16 @@ class ShowGridEditorEvent(wx.PyEvent):
         self.SetEventType(ID_SHOW_GRIDEDITOR)
 
 
-class GridEditorPlugin(kernel.plugin.Plugin):
+class GridEditorPlugin(lib.kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
         global instance
-        kernel.plugin.Plugin.__init__(self)
+        lib.kernel.plugin.Plugin.__init__(self)
         instance = self
         self.recipeModel = None
         self.viewer = None
-        self.config = ConfigParser.SafeConfigParser()
+        self.config = configparser.RawConfigParser()
         self.colors = {'invalidcell': (wx.RED), 'highlight': (wx.BLUE)}
         return
 
@@ -101,12 +108,12 @@ class GridEditorPlugin(kernel.plugin.Plugin):
 
     def startup(self, contextBundle):
         self.contextBundle = contextBundle
-        ui.getDefault().addInitListener(self)
-        ui.getDefault().addCloseListener(self)
-        grideditor.messages.init(contextBundle)
-        grideditor.images.init(contextBundle)
-        ui.context.addContextChangeListener(self)
-        grideditor.utils.validation.init()
+        plugins.ui.ui.getDefault().addInitListener(self)
+        plugins.ui.ui.getDefault().addCloseListener(self)
+        plugins.grideditor.grideditor.messages.init(contextBundle)
+        plugins.grideditor.grideditor.images.init(contextBundle)
+        plugins.ui.ui.context.addContextChangeListener(self)
+        plugins.grideditor.grideditor.utils.validation.init()
         self.setupHelp()
         self.setupPreferencesStore()
         self.autosaver = autosaver.AutoSaver()
@@ -120,7 +127,7 @@ class GridEditorPlugin(kernel.plugin.Plugin):
     def closing(self):
         """fired by ui when closing"""
         global logger
-        validator.getDefault().removeValidationListener(self)
+        plugins.validator.validator.getDefault().removeValidationListener(self)
         self.autosaver.stop()
         try:
             self.saveConfiguration()
@@ -129,10 +136,10 @@ class GridEditorPlugin(kernel.plugin.Plugin):
             logger.error("Unable to save configuration: '%s'" % self.getConfigurationFilename())
 
         logger.debug('Saving recipe ...')
-        grideditor.utils.saveCurrentRecipe()
+        plugins.grideditor.grideditor.utils.saveCurrentRecipe()
 
     def getDefaultPreferences(self):
-        config = ConfigParser.SafeConfigParser()
+        config = configparser.RawConfigParser()
         self.fillDefaultPreferences(config)
         return config
 
@@ -167,19 +174,19 @@ class GridEditorPlugin(kernel.plugin.Plugin):
 
     def setupPreferencesStore(self):
         global PLUGIN_ID
-        preferencesStore = core.preferencesstore.PreferencesStore(PLUGIN_ID)
+        preferencesStore = plugins.core.core.preferencesstore.PreferencesStore(PLUGIN_ID)
         self.preferencesStore = preferencesStore
         self.sanityCheck()
         preferencesStore.setDefaultPreferences(self.getDefaultPreferences())
-        ui.preferences.getDefault().addPage(grideditor.preferences.PreferencesPage(preferencesStore))
+        ui.preferences.getDefault().addPage(plugins.grideditor.grideditor.preferences.PreferencesPage(preferencesStore))
         self.preferencesStore.addPreferencesStoreListener(self)
         self.cacheColorPrefs()
 
     def cacheColorPrefs(self):
         prefs = self.preferencesStore.getPreferences()
         try:
-            self.colors['invalidcell'] = grideditor.utils.parseColorOption(prefs.get('editor', 'colors.invalidcell'))
-            self.colors['highlight'] = grideditor.utils.parseColorOption(prefs.get('editor', 'colors.highlight'))
+            self.colors['invalidcell'] = plugins.grideditor.grideditor.utils.parseColorOption(prefs.get('editor', 'colors.invalidcell'))
+            self.colors['highlight'] = plugins.grideditor.grideditor.utils.parseColorOption(prefs.get('editor', 'colors.highlight'))
         except Exception as msg:
             logger.warning('No valid colors. Defaulting')
 
@@ -211,53 +218,53 @@ class GridEditorPlugin(kernel.plugin.Plugin):
                     oldvalue = event.getOldValue()
                     oldvalue.dispose()
                 recipe = event.getNewValue()
-                recipeModel = grideditor.recipemodel.RecipeModel()
+                recipeModel = plugins.grideditor.grideditor.recipemodel.RecipeModel()
                 recipeModel.setRecipe(recipe)
                 self.recipeModel = recipeModel
                 logger.debug('Adding stuffs %s' % threading.currentThread())
-                (view, where) = ui.getDefault().getMainFrame().findView(VIEW_ID)
+                (view, where) = plugins.ui.ui.getDefault().getMainFrame().findView(VIEW_ID)
                 if view is None:
-                    ui.getDefault().createView('center', VIEW_ID)
-                    ui.getDefault().createView('south', panelview.VIEW_ID)
-                    ui.getDefault().createView('east', extendededitor.VIEW_ID)
-                    ui.getDefault().createView('west', grapheditor.VIEW_ID)
-                mainframe = ui.getDefault().getMainFrame()
+                    plugins.ui.ui.getDefault().createView('center', VIEW_ID)
+                    plugins.ui.ui.getDefault().createView('south', plugins.panelview.panelview.VIEW_ID)
+                    plugins.ui.ui.getDefault().createView('east', plugins.extendededitor.extendededitor.VIEW_ID)
+                    plugins.ui.ui.getDefault().createView('west', plugins.grapheditor.grapheditor.VIEW_ID)
+                mainframe = plugins.ui.ui.getDefault().getMainFrame()
                 (view, where) = mainframe.findView(VIEW_ID)
                 editor = view.getViewer()
                 editor.setInput(recipeModel)
-                (view, where) = mainframe.findView(extendededitor.VIEW_ID)
+                (view, where) = mainframe.findView(plugins.extendededitor.extendededitor.VIEW_ID)
                 view.getViewer().setEditor(editor)
-                (view, where) = mainframe.findView(grapheditor.VIEW_ID)
+                (view, where) = mainframe.findView(plugins.grapheditor.grapheditor.VIEW_ID)
                 view.getViewer().setEditor(editor)
-                validator.getDefault().setupRecipe(None, recipeModel)
+                plugins.validator.validator.getDefault().setupRecipe(None, recipeModel)
             elif event.getOldValue() is None:
                 return
-            (view, where) = ui.getDefault().getMainFrame().findView(VIEW_ID)
-            ui.getDefault().removeView(VIEW_ID)
-            ui.getDefault().removeView(grapheditor.VIEW_ID)
-            ui.getDefault().removeView(extendededitor.VIEW_ID)
-            ui.getDefault().removeView(panelview.VIEW_ID)
+            (view, where) = plugins.ui.ui.getDefault().getMainFrame().findView(VIEW_ID)
+            plugins.ui.ui.getDefault().removeView(VIEW_ID)
+            plugins.ui.ui.getDefault().removeView(plugins.grapheditor.grapheditor.VIEW_ID)
+            plugins.ui.ui.getDefault().removeView(plugins.extendededitor.extendededitor.VIEW_ID)
+            plugins.ui.ui.getDefault().removeView(plugins.panelview.panelview.VIEW_ID)
             self.recipeModel = None
-            validator.getDefault().setupRecipe(None, None)
-            grideditor.actions.handleActionContextChange(value, event.getOldValue())
+            plugins.validator.validator.getDefault().setupRecipe(None, None)
+            plugins.grideditor.grideditor.actions.handleActionContextChange(value, event.getOldValue())
         return
 
     def handlePartInit(self, part):
-        ui.getDefault().removeInitListener(self)
-        ui.getDefault().registerViewProvider(VIEW_ID, self)
-        grideditor.utils.errorviewer.init()
-        frame = ui.getDefault().getMainFrame().getControl()
-        accel = poi.actions.acceleratortable.frames[frame]
+        plugins.ui.ui.getDefault().removeInitListener(self)
+        plugins.ui.ui.getDefault().registerViewProvider(VIEW_ID, self)
+        plugins.grideditor.grideditor.utils.errorviewer.init()
+        frame = plugins.ui.ui.getDefault().getMainFrame().getControl()
+        accel = plugins.poi.poi.actions.acceleratortable.frames[frame]
         accel.addEntry((wx.ACCEL_CTRL | wx.ACCEL_ALT, ord('1'), ID_SHOW_GRIDEDITOR))
 
         def doOpen(event):
-            ui.getDefault().getMainFrame().showPerspective('edit')
+            plugins.ui.ui.getDefault().getMainFrame().showPerspective('edit')
 
         wx.EVT_MENU(frame, ID_SHOW_GRIDEDITOR, doOpen)
         accel.addEntry((wx.ACCEL_CTRL | wx.ACCEL_ALT, ord('2'), ID_SHOW_RUNPERSPECTIVE))
 
         def doOpen(event):
-            ui.getDefault().getMainFrame().showPerspective('run')
+            plugins.ui.ui.getDefault().getMainFrame().showPerspective('run')
 
         wx.EVT_MENU(frame, ID_SHOW_RUNPERSPECTIVE, doOpen)
         self.restorePreviousRecipe()
@@ -285,12 +292,12 @@ class GridEditorPlugin(kernel.plugin.Plugin):
 
         if projectName is None:
             return
-        workspace = resources.getDefault().getWorkspace()
+        workspace = plugins.resources.resources.getDefault().getWorkspace()
         project = workspace.getProject(projectName, shared)
         project.load()
-        version = workspace.getRecipeVersion(project, resources.version.getVersionWithNumber(versionNumber))
+        version = workspace.getRecipeVersion(project, plugins.resources.resources.version.getVersionWithNumber(versionNumber))
         version.load()
-        resourcesui.actions.openRecipeVersion(version)
+        plugins.resourcesui.resourcesui.actions.openRecipeVersion(version)
         return
 
     def xclosing(self):
@@ -298,10 +305,10 @@ class GridEditorPlugin(kernel.plugin.Plugin):
 
     def getConfigurationFilename(self):
         global CONFIG_FILENAME
-        return os.path.join(kernel.getPluginWorkspacePath(PLUGIN_ID), CONFIG_FILENAME)
+        return os.path.join(lib.kernel.getPluginWorkspacePath(PLUGIN_ID), CONFIG_FILENAME)
 
     def getLocalConfigurationFilename(self):
-        return os.path.join(kernel.getLocalSite(), CONFIG_FILENAME)
+        return os.path.join(lib.kernel.getLocalSite(), CONFIG_FILENAME)
 
     def saveConfiguration(self):
         configpath = self.getLocalConfigurationFilename()
@@ -310,7 +317,7 @@ class GridEditorPlugin(kernel.plugin.Plugin):
         projectName = ''
         versionNumber = ''
         shared = False
-        recipe = ui.context.getProperty('recipe')
+        recipe = plugins.ui.ui.context.getProperty('recipe')
         if recipe is not None:
             version = recipe.getUnderlyingResource()
             project = version.getProject()
@@ -350,7 +357,7 @@ class GridEditorPlugin(kernel.plugin.Plugin):
                     kid.Show(child == kid)
 
                 self.activeWindow = child
-                if not wx.IsMainThread():
+                if not wx.IsMainThread(self):
                     wx.CallAfter(self.resizeActiveWindow)
                 else:
                     self.resizeActiveWindow()
@@ -367,10 +374,10 @@ class GridEditorPlugin(kernel.plugin.Plugin):
                 return
 
             def x__del__(self):
-                kernel.debugDumpStack()
+                lib.kernel.debugDumpStack()
                 logger.debug('****** DEL *******')
 
-        class SomeView(poi.views.SectorView):
+        class SomeView(plugins.poi.poi.views.SectorView):
             __module__ = __name__
 
             def createControl(self, parent):
@@ -379,10 +386,10 @@ class GridEditorPlugin(kernel.plugin.Plugin):
                 def closelistener(event):
                     event.Skip()
                     logger.debug('CLOSE LISTENER')
-                    kernel.debugDumpStack()
+                    lib.kernel.debugDumpStack()
 
                 wx.EVT_CLOSE(self.control, closelistener)
-                viewer = grideditor.recipegridviewer.RecipeGridViewer()
+                viewer = plugins.grideditor.grideditor.recipegridviewer.RecipeGridViewer()
                 viewer.createControl(self.control)
                 self.control.show(viewer.getControl())
                 self.viewer = viewer
@@ -392,7 +399,7 @@ class GridEditorPlugin(kernel.plugin.Plugin):
                 if show:
                     self.control.show(self.viewer.getControl())
                     self.viewer.show(True)
-                grideditor.actions.updateActions()
+                plugins.grideditor.grideditor.actions.updateActions()
 
             def setFocus(self, focus):
                 self.viewer.setFocus(focus)

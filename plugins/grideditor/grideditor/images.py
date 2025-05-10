@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/images.py
 # Compiled at: 2004-11-05 01:53:14
-import kernel.pluginmanager, os, wx, logging
+import lib.kernel.pluginmanager, os, wx, logging
 inited = False
 imagesTable = {}
 logger = logging.getLogger('resources.ui')
@@ -28,16 +28,14 @@ def init(contextBundle):
     for (key, filename) in imagesFilenames.items():
         try:
             imagesTable[key] = wx.Bitmap(os.path.join(contextBundle.dirname, filename))
-        except Exception, msg:
-            logger.warn("Could not load '%s' for '%s': '%s'" % (filename, key, msg))
+        except Exception as msg:
+            logger.warning("Could not load '%s' for '%s': '%s'" % (filename, key, msg))
 
 
 def getImage(key):
-    if imagesTable.has_key(key):
+    if key in imagesTable:
         return imagesTable[key]
     return None
-    return
-
 
 def dispose():
     pass

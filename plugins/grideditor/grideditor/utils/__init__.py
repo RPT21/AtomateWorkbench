@@ -3,18 +3,19 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/utils/__init__.py
 # Compiled at: 2004-11-19 02:30:04
-import wx, ui, ui.context, resourcesui, executionengine, executionengine.engine, grideditor, grideditor.recipeoptionsdialog, logging
+import wx, plugins.ui.ui, plugins.ui.ui.context, plugins.resourcesui.resourcesui, plugins.executionengine.executionengine
+import plugins.executionengine.executionengine.engine, plugins.grideditor.grideditor, plugins.grideditor.grideditor.recipeoptionsdialog, logging
 saving = False
 logger = logging.getLogger('grideditor')
 
 def parseColorOption(optionstr):
     try:
         rgb = optionstr.split(',')
-        rgb = map(int, rgb)
+        rgb = list(map(int, rgb))
         return wx.Colour(rgb[0], rgb[1], rgb[2])
-    except Exception, msg:
+    except Exception as msg:
         logger.exception(msg)
-        logger.warn("Invalid color string option '%s'. Returning RED" % optionstr)
+        logger.warning("Invalid color string option '%s'. Returning RED" % optionstr)
         return wx.RED
 
 
@@ -25,7 +26,7 @@ class ExecutionListener(object):
 
     def __init__(self):
         self.engine = None
-        executionengine.getDefault().addEngineInitListener(self)
+        plugins.executionengine.executionengine.getDefault().addEngineInitListener(self)
         return
 
     def engineInit(self, engine):
@@ -34,13 +35,13 @@ class ExecutionListener(object):
 
     def engineEvent(self, event):
         t = event.getType()
-        if t == executionengine.engine.TYPE_STARTING:
+        if t == plugins.executionengine.executionengine.engine.TYPE_STARTING:
             logger.debug('setting has run to true')
-            resourcesui.utils.setHasRun(True)
-        elif t == executionengine.engine.TYPE_HARDWARE_INIT_ERROR:
+            plugins.resourcesui.resourcesui.utils.setHasRun(True)
+        elif t == plugins.executionengine.executionengine.engine.TYPE_HARDWARE_INIT_ERROR:
             logger.debug('Setting has run to false')
-            resourcesui.utils.setHasRun(False)
-        if t == executionengine.engine.TYPE_ENDING:
+            plugins.resourcesui.resourcesui.utils.setHasRun(False)
+        if t == plugins.executionengine.executionengine.engine.TYPE_ENDING:
             self.engine.removeEngineListener(self)
 
 
@@ -87,7 +88,7 @@ def saveCurrentRecipe():
         buff = recipe.getRaw()
         version.setBuffer(buff)
         version.writeBuffer()
-    except Exception, msg:
+    except Exception as msg:
         logger.exception(msg)
         logger.error("Cannot save recipe '%s':'%s'" % (version, msg))
 
@@ -98,13 +99,13 @@ def saveCurrentRecipe():
 
 
 def markRecipeModelDirty():
-    recipeModel = grideditor.getDefault().getEditor().getInput()
+    recipeModel = plugins.grideditor.grideditor.getDefault().getEditor().getInput()
     recipeModel.touch()
 
 
 def showRecipeOptions(device):
-    editor = grideditor.getActiveEditor()
-    dlg = grideditor.recipeoptionsdialog.RecipeOptionsDialog(editor)
-    dlg.createControl(ui.getDefault().getMainFrame().getControl())
+    editor = plugins.grideditor.grideditor.getActiveEditor()
+    dlg = plugins.grideditor.grideditor.recipeoptionsdialog.RecipeOptionsDialog(editor)
+    dlg.createControl(plugins.ui.ui.getDefault().getMainFrame().getControl())
     dlg.setShowDevice(device)
     dlg.showModal()

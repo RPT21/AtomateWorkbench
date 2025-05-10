@@ -10,7 +10,7 @@ import plugins.grideditor.grideditor, plugins.grapheditor.grapheditor, plugins.m
 import plugins.mfc.mfc.messages as messages, plugins.mfc.mfc.validation, plugins.mfc.mfc.hardwarestatusprovider
 import plugins.mfc.mfc.executiongridviewcolumn, plugins.mfc.mfc.execgraphitem
 import plugins.graphview.graphview, plugins.labbooks.labbooks, logging
-import plugins.mfc.mfc.execgraphitem.graphViewFactory
+from  plugins.mfc.mfc.execgraphitem import graphViewFactory
 logger = logging.getLogger('mfc')
 
 class MFCDevicePlugin(lib.kernel.plugin.Plugin):
@@ -31,36 +31,36 @@ class MFCDevicePlugin(lib.kernel.plugin.Plugin):
         plugins.extendededitor.extendededitor.addContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCExtendedEditorContributionFactory())
 
     plugins.mfc.mfc.validation.init()
-    plugins.graphview.graphview.getDefault().registerViewFactory(plugins.mfc.mfc.device.DEVICE_ID, plugins.mfc.mfc.execgraphitem.graphViewFactory)
-    labbooks.getDefault().registerDeviceParticipant(mfc.participant.MFCRunLogParticipant())
+    plugins.graphview.graphview.getDefault().registerViewFactory(plugins.mfc.mfc.device.DEVICE_ID, graphViewFactory)
+    plugins.labbooks.labbooks.getDefault().registerDeviceParticipant(mfc.participant.MFCRunLogParticipant())
 
 
 class MFCPanelViewContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return mfc.panelviewitem.MFCPanelViewItem()
+        return plugins.mfc.mfc.panelviewitem.MFCPanelViewItem()
 
 
 class MFCExtendedEditorContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return mfc.extendededitoritem.MFCExtendedEditorItem()
+        return plugins.mfc.mfc.extendededitoritem.MFCExtendedEditorItem()
 
 
 class MFCGraphEditorContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return mfc.graphitem.MFCGraphItem()
+        return plugins.mfc.mfc.graphitem.MFCGraphItem()
 
 
 class MFCColumnContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return mfc.column.MFCColumn()
+        return plugins.mfc.mfc.column.MFCColumn()
 
 
 class MFCDeviceFactory(object):
@@ -70,7 +70,7 @@ class MFCDeviceFactory(object):
         pass
 
     def getInstance(self):
-        return mfc.device.MFCDevice()
+        return plugins.mfc.mfc.device.MFCDevice()
 
     def getTypeString(self):
         return 'mfc'
@@ -80,7 +80,6 @@ class MFCDeviceFactory(object):
 
     def getImage(self):
         return None
-        return
 
     def getSmallImage(self):
         return images.getImage(images.SMALL_ICON)

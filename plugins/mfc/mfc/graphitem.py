@@ -3,14 +3,15 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/graphitem.py
 # Compiled at: 2004-11-19 21:59:25
-import wx, grapheditor.contributor, grideditor.recipemodel, executionengine, logging
+import wx, plugins.grapheditor.grapheditor.contributor, plugins.grideditor.grideditor.recipemodel
+import plugins.executionengine.executionengine, logging
 logger = logging.getLogger('mfc.ui.graphitem')
 
-class MFCGraphItem(grapheditor.contributor.GraphContributor):
+class MFCGraphItem(plugins.grapheditor.grapheditor.contributor.GraphContributor):
     __module__ = __name__
 
     def __init__(self):
-        grapheditor.contributor.GraphContributor.__init__(self)
+        plugins.grapheditor.grapheditor.contributor.GraphContributor.__init__(self)
         self.facecolor = wx.WHITE
         self.setTitle('')
         self.engine = None
@@ -27,17 +28,17 @@ class MFCGraphItem(grapheditor.contributor.GraphContributor):
 
     def engineEvent(self, event):
         logger.debug('Engine event: %s' % event)
-        if event.getType() == executionengine.engine.TYPE_ENDING:
+        if event.getType() == plugins.executionengine.executionengine.engine.TYPE_ENDING:
             self.engine.removeEngineListener(self)
 
     def setDevice(self, device):
-        grapheditor.contributor.GraphContributor.setDevice(self, device)
+        plugins.grapheditor.grapheditor.contributor.GraphContributor.setDevice(self, device)
         self.updateDeviceInfo()
         self.maxRange = self.device.getRange()
         self.populateEvents()
 
     def prepareItem(self, owner, recipeModel):
-        grapheditor.contributor.GraphContributor.prepareItem(self, owner, recipeModel)
+        plugins.grapheditor.grapheditor.contributor.GraphContributor.prepareItem(self, owner, recipeModel)
         recipeModel.addModifyListener(self)
 
     def populateEvents(self):
@@ -52,7 +53,7 @@ class MFCGraphItem(grapheditor.contributor.GraphContributor):
         return
 
     def recipeModelChanged(self, event):
-        if event.getEventType() == grideditor.recipemodel.CHANGE_DEVICE:
+        if event.getEventType() == plugins.grideditor.grideditor.recipemodel.CHANGE_DEVICE:
             if not self.device == event.getDevice():
                 return
             self.updateDeviceInfo()

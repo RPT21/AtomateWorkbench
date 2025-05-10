@@ -3,9 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/tablecolumn.py
 # Compiled at: 2004-10-14 00:26:32
-from wxPython.grid import *
-from wxPython.wx import *
+from wx.grid import *
+from wx import *
 import wx
+import wx.grid as gridlib
 
 class TableColumn(object):
     __module__ = __name__
@@ -39,14 +40,12 @@ class TableColumn(object):
 
     def getHeaderImage(self):
         return None
-        return
 
     def getHeaderRenderer(self):
         return self.headerRenderer
 
     def getHeaderLabel(self):
         return None
-        return
 
     def setWidth(self, width):
         self.width = width
@@ -141,7 +140,6 @@ class CellEditor(object):
 
     def getValue(self):
         return None
-        return
 
     def setSize(self, rect):
         self.control.SetPosition((rect[0], rect[1]))
@@ -241,7 +239,6 @@ class StringHeaderCellRenderer(HeaderCellRenderer):
         if image is None:
             return 0
         return image.GetWidth() + self.insets[0]
-        return
 
     def drawText(self, dc, x, y, width, height, text):
         indent = self.getTextLeftPos()
@@ -274,7 +271,6 @@ class CellRenderer(object):
 
     def getBestSize(self, value):
         return None
-        return
 
 
 class StringCellRenderer(CellRenderer):
@@ -317,11 +313,11 @@ class StringCellRenderer(CellRenderer):
          w, h)
 
 
-class CellRendererWrapper(wxPyGridCellRenderer):
+class CellRendererWrapper(gridlib.GridCellRenderer):
     __module__ = __name__
 
     def __init__(self, renderer, column):
-        wxPyGridCellRenderer.__init__(self)
+        gridlib.GridCellRenderer.__init__(self)
         self.renderer = renderer
         self.column = column
 
@@ -339,12 +335,12 @@ class CellRendererWrapper(wxPyGridCellRenderer):
         return CellRendererWrapper(self.renderer, self.column)
 
 
-class CellEditorWrapper(wxPyGridCellEditor):
+class CellEditorWrapper(gridlib.GridCellEditor):
     __module__ = __name__
 
     def __init__(self, control, column):
         """Create a wrapper around the control which is of type"""
-        wxPyGridCellEditor.__init__(self)
+        gridlib.GridCellEditor.__init__(self)
         self.oldValue = None
         self.control = control
         self.column = column
@@ -456,7 +452,6 @@ class ColumnContribution(object):
 
     def getHeaderImage(self):
         return None
-        return
 
     def getHeaderRenderer(self):
         return self.headerRenderer

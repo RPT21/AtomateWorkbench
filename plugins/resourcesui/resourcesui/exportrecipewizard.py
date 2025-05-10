@@ -3,14 +3,16 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/exportrecipewizard.py
 # Compiled at: 2004-11-02 05:40:32
-import re, wx, sys, os, ui, threading, poi.wizards, poi.operation, poi.dialogs.progress, poi.views.viewers, poi.views, resources, resourcesui.messages as messages, resourcesui.actions, logging
+import re, wx, sys, os, plugins.ui.ui, threading, plugins.poi.poi.wizards, plugins.poi.poi.operation
+import plugins.poi.poi.dialogs.progress, plugins.poi.poi.views.viewers, plugins.poi.poi.views
+import plugins.resources.resources, plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, logging
 logger = logging.getLogger('resourcesui.exportrecipewizard')
 
-class ExportRecipeWizard(poi.wizards.Wizard):
+class ExportRecipeWizard(plugins.poi.poi.wizards.Wizard):
     __module__ = __name__
 
     def __init__(self):
-        poi.wizards.Wizard.__init__(self)
+        plugins.poi.poi.wizards.Wizard.__init__(self)
 
     def setResource(self, resource):
         pass
@@ -25,7 +27,7 @@ class ExportRecipeWizard(poi.wizards.Wizard):
         self.setStartingPage(firstPage)
 
     def createControl(self, parent):
-        poi.wizards.Wizard.createControl(self, parent)
+        plugins.poi.poi.wizards.Wizard.createControl(self, parent)
         self.control.SetSize((600, 600))
         self.control.CentreOnScreen()
 
@@ -33,11 +35,11 @@ class ExportRecipeWizard(poi.wizards.Wizard):
         pass
 
 
-class SecondPage(poi.wizards.WizardPage):
+class SecondPage(plugins.poi.poi.wizards.WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        poi.wizards.WizardPage.__init__(self, 'second', 'Second Page')
+        plugins.poi.poi.wizards.WizardPage.__init__(self, 'second', 'Second Page')
         self.setMessage('Second Page Yeah')
         self.setDescription('This is the second page')
 
@@ -45,17 +47,17 @@ class SecondPage(poi.wizards.WizardPage):
         pass
 
     def createControl(self, composite):
-        self.control = wx.Panel(composite, -1, size=(100, 100))
+        self.control = wx.Panel(composite, -1, size=wx.Size(100, 100))
         self.setPageComplete(True)
         self.setFinished(False)
         return self.control
 
 
-class FirstRecipeWizardPage(poi.wizards.WizardPage):
+class FirstRecipeWizardPage(plugins.poi.poi.wizards.WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        poi.wizards.WizardPage.__init__(self, 'first', 'Export Recipe')
+        plugins.poi.poi.wizards.WizardPage.__init__(self, 'first', 'Export Recipe')
         self.setMessage('Select Destination')
         self.setDescription('Click browse to select a destination for the project')
 
@@ -63,7 +65,7 @@ class FirstRecipeWizardPage(poi.wizards.WizardPage):
         pass
 
     def createControl(self, composite):
-        self.control = wx.Panel(composite, -1, size=(100, 100))
+        self.control = wx.Panel(composite, -1, size=wx.Size(100, 100))
         self.destinationDirField = wx.TextCtrl(self.control, -1)
         self.destinationDirField.SetBackgroundColour(wx.WHITE)
         browseButton = wx.Button(self.control, -1, 'B&rowse')
@@ -98,7 +100,7 @@ class FirstRecipeWizardPage(poi.wizards.WizardPage):
         return os.path.exists(rp) and os.path.isdir(rp)
 
     def projectExists(self, name):
-        project = resources.getDefault().getWorkspace().getProject(name)
+        project = plugins.resources.resources.getDefault().getWorkspace().getProject(name)
         return project.exists()
 
     def updateValidControls(self, valid):

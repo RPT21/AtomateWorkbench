@@ -3,14 +3,16 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/newrecipewizard.py
 # Compiled at: 2004-11-19 02:47:44
-import re, wx, sys, os, ui, threading, poi.wizards, poi.operation, poi.dialogs.progress, poi.views.viewers, poi.views, hardware.hardwaremanager, resources, resourcesui.messages as messages, resourcesui.actions, resourcesui.utils, logging
+import re, wx, sys, os, plugins.ui.ui, threading, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.hardware.hardware.hardwaremanager, plugins.resources.resources
+import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.utils, logging
 logger = logging.getLogger('resourcesui.newrecipewizard')
 
-class NewRecipeWizard(poi.wizards.Wizard):
+class NewRecipeWizard(plugins.poi.poi.wizards.Wizard):
     __module__ = __name__
 
     def __init__(self):
-        poi.wizards.Wizard.__init__(self)
+        plugins.poi.poi.wizards.Wizard.__init__(self)
 
     def addPages(self):
         firstPage = FirstRecipeWizardPage()
@@ -26,11 +28,11 @@ class NewRecipeWizard(poi.wizards.Wizard):
         pass
 
 
-class FirstRecipeWizardPage(poi.wizards.WizardPage):
+class FirstRecipeWizardPage(plugins.poi.poi.wizards.WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        poi.wizards.WizardPage.__init__(self, 'first', 'New Recipe')
+        plugins.poi.poi.wizards.WizardPage.__init__(self, 'first', 'New Recipe')
         self.setMessage('General Recipe Information')
         self.setDescription('Enter a name for the recipe')
 
@@ -40,7 +42,7 @@ class FirstRecipeWizardPage(poi.wizards.WizardPage):
         shared = self.sharedCheck.GetValue()
         defaultDevices = self.createDefaultDevicesCheck.GetValue()
 
-        class NewRecipeRunner(poi.operation.RunnableWithProgress):
+        class NewRecipeRunner(plugins.poi.poi.operation.RunnableWithProgress):
             __module__ = __name__
 
             def run(self, monitor):
@@ -48,38 +50,38 @@ class FirstRecipeWizardPage(poi.wizards.WizardPage):
                 if defaultDevices:
                     numTasks += 1
                 monitor.beginTask('Creating new recipe', numTasks)
-                project = resources.getDefault().getWorkspace().getProject(name, shared)
+                project = plugins.resources.resources.getDefault().getWorkspace().getProject(name, shared)
                 desc = project.getDescription()
                 desc.comment = comment
                 monitor.subTask('Creating project')
                 project.create()
                 monitor.worked(1)
                 monitor.subTask('Creating initial version')
-                version = resourcesui.actions.createInitialVersionAction(project)
+                version = plugins.resourcesui.resourcesui.actions.createInitialVersionAction(project)
                 monitor.worked(1)
                 if defaultDevices:
                     monitor.subTask('Creating default devices')
-                    lst = hardware.hardwaremanager.createDevicesForConfiguredHardware()
-                    recipe = resourcesui.actions.getRecipeFromVersion(version)
+                    lst = plugins.hardware.hardware.hardwaremanager.createDevicesForConfiguredHardware()
+                    recipe = plugins.resourcesui.resourcesui.actions.getRecipeFromVersion(version)
                     for device in lst:
                         recipe.addDevice(device)
 
-                    resourcesui.utils.writeRecipe(recipe, version)
+                    plugins.resourcesui.resourcesui.utils.writeRecipe(recipe, version)
                     monitor.worked(1)
                 monitor.subTask('Opening new version in editor')
-                resourcesui.actions.openRecipeVersion(version)
+                plugins.resourcesui.resourcesui.actions.openRecipeVersion(version)
                 monitor.worked(1)
                 monitor.endTask()
 
         f = self.control
-        dlg = poi.dialogs.progress.ProgressDialog(f)
+        dlg = plugins.poi.poi.dialogs.progress.ProgressDialog(f)
         try:
             dlg.run(NewRecipeRunner(), fork=True)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def createControl(self, composite):
-        self.control = wx.Panel(composite, -1, size=(100, 100))
+        self.control = wx.Panel(composite, -1, size=wx.Size(100, 100))
         fsizer = wx.FlexGridSizer(0, 2, 5, 5)
         fsizer.AddGrowableCol(1)
         self.nameField = wx.TextCtrl(self.control, -1)
@@ -87,7 +89,7 @@ class FirstRecipeWizardPage(poi.wizards.WizardPage):
         fsizer.Add(label, 0, wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.nameField, 1, wx.ALIGN_CENTRE_VERTICAL | wx.GROW)
         label = wx.StaticText(self.control, -1, messages.get('newrecipewizard.comment.label'))
-        self.commentCtrl = wx.TextCtrl(self.control, -1, size=(-1, 200), style=wx.TE_MULTILINE)
+        self.commentCtrl = wx.TextCtrl(self.control, -1, size=wx.Size(-1, 200), style=wx.TE_MULTILINE)
         sizer2 = wx.BoxSizer(wx.VERTICAL)
         sizer2.Add(label, 0, wx.GROW | wx.LEFT | wx.RIGHT, 5)
         sizer2.Add(self.commentCtrl, 0, wx.GROW | wx.ALL, 5)
@@ -120,10 +122,9 @@ class FirstRecipeWizardPage(poi.wizards.WizardPage):
         if m is not None:
             return False
         return True
-        return
 
     def projectExists(self, name):
-        project = resources.getDefault().getWorkspace().getProject(name)
+        project = plugins.resources.resources.getDefault().getWorkspace().getProject(name)
         return project.exists()
 
     def updateValidControls(self, valid):

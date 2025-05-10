@@ -3,18 +3,18 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/executiongridviewcolumn.py
 # Compiled at: 2004-09-15 00:23:52
-import grideditor.executiongridviewer, logging
+import plugins.grideditor.grideditor.executiongridviewer, logging
 logger = logging.getLogger('mfc.execgridview')
 
 def factoryFunc(device, recipe):
     return ExecutionGridColumnContribution(device, recipe)
 
 
-class ExecutionGridColumnContribution(grideditor.executiongridviewer.ExecutionGridColumnContribution):
+class ExecutionGridColumnContribution(plugins.grideditor.grideditor.executiongridviewer.ExecutionGridColumnContribution):
     __module__ = __name__
 
     def __init__(self, device, recipe):
-        grideditor.executiongridviewer.ExecutionGridColumnContribution.__init__(self, device, recipe)
+        plugins.grideditor.grideditor.executiongridviewer.ExecutionGridColumnContribution.__init__(self, device, recipe)
         self.configureDevice()
 
     def configureDevice(self):
@@ -23,19 +23,19 @@ class ExecutionGridColumnContribution(grideditor.executiongridviewer.ExecutionGr
         gcf = 100.0
         try:
             gcf = float(hwhints.getChildNamed('conversion-factor').getValue())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         range = 65500
         try:
             range = float(hwhints.getChildNamed('range').getValue())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         usegcf = True
         try:
             usegcf = uihints.getChildNamed('column-use-gcf').getValue().lower() == 'true'
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.GCF = gcf
@@ -53,4 +53,4 @@ class ExecutionGridColumnContribution(grideditor.executiongridviewer.ExecutionGr
         return entry.getFlow()
 
 
-grideditor.executiongridviewer.addExecutionGridColumnContributionFactory('mfc', factoryFunc)
+plugins.grideditor.grideditor.executiongridviewer.addExecutionGridColumnContributionFactory('mfc', factoryFunc)

@@ -10,14 +10,15 @@ Two values: setpoint and actualflow setpoint.
             Actual Flow Setpoint is the value after the setpoint is multiplied by 
             the GCF
 """
-import wx, mfc.utils, extendededitor.item, grideditor.recipemodel, mfc.messages as messages, ui.widgets.contentassist, logging
+import wx, plugins.mfc.mfc.utils, plugins.extendededitor.extendededitor.item, plugins.grideditor.grideditor.recipemodel
+import plugins.mfc.mfc.messages as messages, plugins.ui.ui.widgets.contentassist, logging
 logger = logging.getLogger('mfc.extendededitor')
 
-class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
+class MFCExtendedEditorItem(plugins.extendededitor.extendededitor.item.ExtendedEditorItem):
     __module__ = __name__
 
     def __init__(self):
-        extendededitor.item.ExtendedEditorItem.__init__(self)
+        plugins.extendededitor.extendededitor.item.ExtendedEditorItem.__init__(self)
         self.device = None
         self.model = None
         self.suppress = False
@@ -56,7 +57,6 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         self.addStateManagedControl(self.actualFlow)
         self.updateDeviceInfo()
         return self.body
-        return
 
     def OnSetFocusText(self, event, ctrl):
         event.Skip()
@@ -69,8 +69,8 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = ctrl.GetValue()
         try:
             val = float(val)
-        except Exception, msg:
-            logger.warn("Unable to conform value '%s' to float. Setting to 0" % val)
+        except Exception as msg:
+            logger.warning("Unable to conform value '%s' to float. Setting to 0" % val)
             val = 0.0
 
         logger.debug('Conformed: %f' % val)
@@ -81,7 +81,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = self.setpoint.GetValue()
         try:
             return float(val)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to convert value '%s' to float. Using 0.0" % val)
             return 0.0
 
@@ -89,7 +89,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = self.actualFlow.GetValue()
         try:
             return float(val)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to convert value '%s' to float. Using 0.0" % val)
             return 0.0
 
@@ -152,14 +152,14 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         hwhints = self.device.getHardwareHints()
         try:
             gcf = float(hwhints.getChildNamed('conversion-factor').getValue())
-        except Exception, msg:
-            logger.warn("Unable to get gas conversion factor for '%s':%s" % (self.device.getLabel(), msg))
+        except Exception as msg:
+            logger.warning("Unable to get gas conversion factor for '%s':%s" % (self.device.getLabel(), msg))
             gcf = 100.0
 
         try:
             units = hwhints.getChildNamed('units').getValue()
-        except Exception, msg:
-            logger.warn("Unable to get gas units '%s':'%s'" % (self.device.getLabel(), msg))
+        except Exception as msg:
+            logger.warning("Unable to get gas units '%s':'%s'" % (self.device.getLabel(), msg))
             units = 'N/A'
 
         self.gcf = gcf
@@ -208,7 +208,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         try:
             value = float(self.setpoint.GetValue())
             entry.setFlow(value)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to parse value for setpoint: '%s'" % msg)
             entry.setFlow(0.0)
 
@@ -220,7 +220,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         pass
 
     def recipeModelChanged(self, event):
-        if event.getEventType() == grideditor.recipemodel.CHANGE_DEVICE:
+        if event.getEventType() == plugins.grideditor.grideditor.recipemodel.CHANGE_DEVICE:
             if event.getDevice() != self.device:
                 return
             self.updateDeviceInfo()
@@ -238,7 +238,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
             self.disable()
 
     def dispose(self):
-        extendededitor.item.ExtendedEditorItem.dispose(self)
+        plugins.extendededitor.extendededitor.item.ExtendedEditorItem.dispose(self)
         if self.model is not None:
             self.model.removeModifyListener(self)
         return

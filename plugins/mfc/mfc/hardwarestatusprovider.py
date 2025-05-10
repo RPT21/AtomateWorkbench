@@ -67,4 +67,4 @@ class HardwareStatusListener(object):
         pass
 
     def hardwareStatusChanged(self, event):
-        print 'Hardware status changed'
+        print('Hardware status changed')

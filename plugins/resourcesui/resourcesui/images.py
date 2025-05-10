@@ -36,15 +36,14 @@ def init(contextBundle):
     for (key, filename) in imagesFilenames.items():
         try:
             imagesTable[key] = wx.Bitmap(os.path.join(contextBundle.dirname, filename))
-        except Exception, msg:
-            logger.warn("Could not load '%s' for '%s': '%s'" % (filename, key, msg))
+        except Exception as msg:
+            logger.warning("Could not load '%s' for '%s': '%s'" % (filename, key, msg))
 
 
 def getImage(key):
-    if imagesTable.has_key(key):
+    if key in imagesTable:
         return imagesTable[key]
     return None
-    return
 
 
 def dispose():

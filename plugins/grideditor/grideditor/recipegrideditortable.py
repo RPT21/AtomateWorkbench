@@ -3,15 +3,16 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/recipegrideditortable.py
 # Compiled at: 2004-10-13 03:17:33
-from wxPython.grid import *
-from wxPython.wx import *
+from wx.grid import *
+from wx import *
 import wx
+import wx.grid as gridlib
 
-class RecipeGridEditorTable(wxPyGridTableBase):
+class RecipeGridEditorTable(gridlib.GridTableBase):
     __module__ = __name__
 
     def __init__(self, mediator):
-        wxPyGridTableBase.__init__(self)
+        gridlib.GridTableBase.__init__(self)
         self.mediator = mediator
 
     def removeAllRows(self):
@@ -19,7 +20,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_ROWS_DELETED, 0, self.mediator.getRowCount())
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_ROWS_DELETED, 0, self.mediator.getRowCount())
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
 
@@ -28,7 +29,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_ROWS_DELETED, pos, numRows)
+        msg = wxGridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_ROWS_DELETED, pos, numRows)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
 
@@ -37,7 +38,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_ROWS_INSERTED, pos, numRows)
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_ROWS_INSERTED, pos, numRows)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -45,7 +46,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
     def showAllColumns(self):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_COLS_INSERTED, 0, self.mediator.getColumnCount())
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_COLS_INSERTED, 0, self.mediator.getColumnCount())
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -55,7 +56,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_COLS_DELETED, 0, self.mediator.getColumnCount())
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_COLS_DELETED, 0, self.mediator.getColumnCount())
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -69,7 +70,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
     def hideColumn(self, index):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_COLS_DELETED, index, 1)
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_COLS_DELETED, index, 1)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -77,7 +78,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
     def showColumn(self, index):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_COLS_INSERTED, index, 1)
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_COLS_INSERTED, index, 1)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -85,7 +86,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
     def updateAll(self):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_REQUEST_VIEW_GET_VALUES)
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_REQUEST_VIEW_GET_VALUES)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -94,7 +95,7 @@ class RecipeGridEditorTable(wxPyGridTableBase):
         grid = self.GetView()
         grid.BeginBatch()
         cols = grid.GetNumberCols()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_REQUEST_VIEW_GET_VALUES, row, 1)
+        msg = gridlib.GridTableMessage(self, gridlib.GRIDTABLE_REQUEST_VIEW_GET_VALUES, row, 1)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
 

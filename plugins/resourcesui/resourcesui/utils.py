@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/utils.py
 # Compiled at: 2004-11-02 23:05:03
-import kernel, logging, ui.context
+import lib.kernel, logging, plugins.ui.ui.context
 logger = logging.getLogger('resources.ui')
 saving = False
 hasrun = False
@@ -15,12 +15,12 @@ def setHasRun(hasit):
 
 def closeRecipe():
     global logger
-    logger.debug("Closing recipe: '%s'" % ui.context.getProperty('recipe'))
-    oldrecipe = ui.context.getProperty('recipe')
+    logger.debug("Closing recipe: '%s'" % plugins.ui.ui.context.getProperty('recipe'))
+    oldrecipe = plugins.ui.ui.context.getProperty('recipe')
     if oldrecipe is not None:
         oldrecipe.dispose()
-    ui.context.setProperty('recipe', None)
-    ui.context.setProperty('can-edit', False)
+    plugins.ui.ui.context.setProperty('recipe', None)
+    plugins.ui.ui.context.setProperty('can-edit', False)
     return
 
 
@@ -41,7 +41,7 @@ def saveCurrentRecipe():
         logger.debug('In the process of saving, canceling this save')
         return
     saving = True
-    recipe = ui.context.getProperty('recipe')
+    recipe = plugins.ui.ui.context.getProperty('recipe')
     if recipe is None:
         saving = False
         return
@@ -59,7 +59,7 @@ def saveCurrentRecipe():
         clearHasRun()
     try:
         writeRecipe(recipe, version)
-    except Exception, msg:
+    except Exception as msg:
         logger.exception(msg)
 
     recipe.setDirty(False)
@@ -69,8 +69,8 @@ def saveCurrentRecipe():
 
 
 def notifyGridEditor():
-    import grideditor
-    recipeModel = grideditor.getDefault().getEditor().getInput()
+    import plugins.grideditor.grideditor
+    recipeModel = plugins.grideditor.grideditor.getDefault().getEditor().getInput()
     recipeModel.touch()
 
 
@@ -79,6 +79,6 @@ def writeRecipe(recipe, version):
         buff = recipe.getRaw()
         version.setBuffer(buff)
         version.writeBuffer()
-    except Exception, msg:
+    except Exception as msg:
         logger.exception(msg)
         raise
