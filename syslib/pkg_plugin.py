@@ -8,7 +8,7 @@ print('package plugin', sys.argv)
 if len(sys.argv) < 3:
     print('No plugin specified')
     sys.exit(13)
-plugin_dir = 'plugins'
+plugin_dir = '../plugins'
 plugin_source = sys.argv[1]
 plugin_name = sys.argv[2]
 includes_ext = []

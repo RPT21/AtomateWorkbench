@@ -1,0 +1,139 @@
+INFO	2025-05-10 14:34:41,429	root	8960-logger.py-22	Default file logger created
+INFO	2025-05-10 14:34:41,430	root	8960-boot.py-204	Starting up
+INFO	2025-05-10 14:35:50,322	root	32240-logger.py-22	Default file logger created
+INFO	2025-05-10 14:35:50,322	root	32240-boot.py-204	Starting up
+INFO	2025-05-10 14:36:17,640	root	32964-logger.py-22	Default file logger created
+INFO	2025-05-10 14:36:17,640	root	32964-boot.py-204	Starting up
+INFO	2025-05-10 14:39:42,999	root	1672-logger.py-22	Default file logger created
+INFO	2025-05-10 14:39:42,999	root	1672-boot.py-204	Starting up
+INFO	2025-05-10 14:40:17,219	root	27232-logger.py-22	Default file logger created
+INFO	2025-05-10 14:40:17,219	root	27232-boot.py-204	Starting up
+INFO	2025-05-10 14:42:11,203	root	19872-logger.py-22	Default file logger created
+INFO	2025-05-10 14:42:11,203	root	19872-boot.py-204	Starting up
+INFO	2025-05-10 14:43:22,447	root	31560-logger.py-22	Default file logger created
+INFO	2025-05-10 14:43:22,447	root	31560-boot.py-204	Starting up
+INFO	2025-05-10 14:44:04,446	root	34104-logger.py-22	Default file logger created
+INFO	2025-05-10 14:44:04,446	root	34104-boot.py-204	Starting up
+INFO	2025-05-10 14:44:24,697	root	34220-logger.py-22	Default file logger created
+INFO	2025-05-10 14:44:24,697	root	34220-boot.py-204	Starting up
+INFO	2025-05-10 14:45:03,513	root	30816-logger.py-22	Default file logger created
+INFO	2025-05-10 14:45:03,513	root	30816-boot.py-204	Starting up
+WARNING	2025-05-10 14:45:03,560	root	30816-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+INFO	2025-05-10 14:45:12,745	root	32656-logger.py-22	Default file logger created
+INFO	2025-05-10 14:45:12,745	root	32656-boot.py-204	Starting up
+WARNING	2025-05-10 14:45:12,796	root	32656-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 14:45:12,796	root	32656-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+INFO	2025-05-10 14:45:38,570	root	29904-logger.py-22	Default file logger created
+INFO	2025-05-10 14:45:38,570	root	29904-boot.py-204	Starting up
+WARNING	2025-05-10 14:45:38,634	root	29904-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 14:45:38,634	root	29904-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+INFO	2025-05-10 14:45:57,609	root	33228-logger.py-22	Default file logger created
+INFO	2025-05-10 14:45:57,609	root	33228-boot.py-204	Starting up
+WARNING	2025-05-10 14:45:57,652	root	33228-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 14:45:57,652	root	33228-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 14:45:57,653	root	33228-boot.py-172	Booting plugin 'poi'
+ERROR	2025-05-10 14:45:57,654	root	33228-boot.py-183	No module named 'poi'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(classNS, globals(), locals(), ['*'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'poi'
+DEBUG	2025-05-10 14:45:57,655	root	33228-boot.py-184	Exiting with 12
+INFO	2025-05-10 14:46:49,472	root	33016-logger.py-22	Default file logger created
+INFO	2025-05-10 14:46:49,472	root	33016-boot.py-204	Starting up
+WARNING	2025-05-10 14:46:49,518	root	33016-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 14:46:49,518	root	33016-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 14:46:49,519	root	33016-boot.py-172	Booting plugin 'poi'
+ERROR	2025-05-10 14:46:49,520	root	33016-boot.py-183	No module named 'poi'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(classNS, globals(), locals(), ['*'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'poi'
+DEBUG	2025-05-10 14:46:49,521	root	33016-boot.py-184	Exiting with 12
+INFO	2025-05-10 14:49:09,239	root	19012-logger.py-22	Default file logger created
+INFO	2025-05-10 14:49:09,239	root	19012-boot.py-204	Starting up
+WARNING	2025-05-10 14:49:09,282	root	19012-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 14:49:09,282	root	19012-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 14:49:09,283	root	19012-boot.py-172	Booting plugin 'poi'
+INFO	2025-05-10 14:50:45,307	root	34376-logger.py-22	Default file logger created
+INFO	2025-05-10 14:50:45,308	root	34376-boot.py-204	Starting up
+WARNING	2025-05-10 14:50:45,389	root	34376-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 14:50:45,393	root	34376-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 14:50:45,395	root	34376-boot.py-172	Booting plugin 'poi'
+ERROR	2025-05-10 14:50:45,398	root	34376-boot.py-183	No module named 'poi'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(classNS, globals(), locals(), ['*'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'poi'
+DEBUG	2025-05-10 14:50:45,399	root	34376-boot.py-184	Exiting with 12
+INFO	2025-05-10 14:55:02,847	root	32556-logger.py-22	Default file logger created
+INFO	2025-05-10 14:55:02,848	root	32556-boot.py-204	Starting up
+WARNING	2025-05-10 14:55:02,919	root	32556-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 14:55:02,924	root	32556-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 14:55:02,931	root	32556-boot.py-172	Booting plugin 'poi'
+INFO	2025-05-10 15:07:40,154	root	35700-logger.py-22	Default file logger created
+INFO	2025-05-10 15:07:40,154	root	35700-boot.py-204	Starting up
+WARNING	2025-05-10 15:07:40,200	root	35700-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 15:07:40,202	root	35700-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 15:07:40,202	root	35700-boot.py-172	Booting plugin 'poi'
+ERROR	2025-05-10 15:07:40,203	root	35700-boot.py-183	No module named 'poi'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(classNS, globals(), locals(), ['*']) # Important els fitxers han d'estar dins un zip
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'poi'
+DEBUG	2025-05-10 15:07:40,204	root	35700-boot.py-184	Exiting with 12
+INFO	2025-05-10 15:10:05,933	root	31592-logger.py-22	Default file logger created
+INFO	2025-05-10 15:10:05,933	root	31592-boot.py-204	Starting up
+WARNING	2025-05-10 15:10:05,980	root	31592-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 15:10:05,981	root	31592-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 15:10:05,981	root	31592-boot.py-172	Booting plugin 'poi'
+ERROR	2025-05-10 15:10:05,982	root	31592-boot.py-183	No module named 'poi'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(classNS, globals(), locals(), ['*']) # Important els fitxers han d'estar dins un zip
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'poi'
+DEBUG	2025-05-10 15:10:05,983	root	31592-boot.py-184	Exiting with 12
+INFO	2025-05-10 15:25:52,504	root	31224-logger.py-22	Default file logger created
+INFO	2025-05-10 15:25:52,504	root	31224-boot.py-204	Starting up
+WARNING	2025-05-10 15:25:52,552	root	31224-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 15:25:52,553	root	31224-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 15:25:52,553	root	31224-boot.py-172	Booting plugin 'poi'
+ERROR	2025-05-10 15:25:52,554	root	31224-boot.py-183	No module named 'poi'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(classNS, globals(), locals(), ['*']) # Important els fitxers han d'estar dins un zip
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'poi'
+DEBUG	2025-05-10 15:25:52,555	root	31224-boot.py-184	Exiting with 12
+INFO	2025-05-10 15:26:50,440	root	33772-logger.py-22	Default file logger created
+INFO	2025-05-10 15:26:50,441	root	33772-boot.py-204	Starting up
+WARNING	2025-05-10 15:26:50,517	root	33772-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+DEBUG	2025-05-10 15:26:50,523	root	33772-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 15:26:50,524	root	33772-boot.py-172	Booting plugin 'poi'
+INFO	2025-05-10 15:28:47,115	root	35104-logger.py-22	Default file logger created
+INFO	2025-05-10 15:28:47,115	root	35104-boot.py-204	Starting up
+WARNING	2025-05-10 15:28:47,161	root	35104-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+WARNING	2025-05-10 15:28:47,161	root	35104-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__pycache__, skipping
+DEBUG	2025-05-10 15:28:47,162	root	35104-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 15:28:47,162	root	35104-boot.py-172	Booting plugin 'poi'
+INFO	2025-05-10 15:30:25,588	root	18256-logger.py-22	Default file logger created
+INFO	2025-05-10 15:30:25,588	root	18256-boot.py-204	Starting up
+WARNING	2025-05-10 15:30:25,631	root	18256-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__init__.py, skipping
+WARNING	2025-05-10 15:30:25,632	root	18256-boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\__pycache__, skipping
+DEBUG	2025-05-10 15:30:25,632	root	18256-boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG	2025-05-10 15:30:25,632	root	18256-boot.py-172	Booting plugin 'poi'
+ERROR	2025-05-10 15:30:25,639	root	18256-boot.py-183	No module named 'kernel'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(f"syslib.plugins.{classNS}.{classNS}", globals(), locals(), ['*']) # Important els fitxers han d'estar dins un zip
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\poi\poi\__init__.py", line 6, in <module>
+    import lib.kernel.plugin, syslib.plugins.poi.poi.images as images
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\syslib\plugins\poi\poi\images.py", line 6, in <module>
+    import kernel.pluginmanager, os, wx, logging
+ModuleNotFoundError: No module named 'kernel'
+DEBUG	2025-05-10 15:30:25,640	root	18256-boot.py-184	Exiting with 12

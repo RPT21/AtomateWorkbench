@@ -7,14 +7,14 @@ _plugins = {}
 
 def getPlugin(name):
     global _plugins
-    if not _plugins.has_key(name):
+    if not name in _plugins:
         return None
     return _plugins[name]
     return
 
 
 def addPlugin(name, plugin):
-    if not _plugins.has_key(name):
+    if not name in _plugins:
         _plugins[name] = plugin
 
 

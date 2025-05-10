@@ -178,7 +178,7 @@ def bootPlugins(bootOrderList, plugins):
         className = classPath[classPath.rfind('.') + 1:]
         classNS = classPath[0:classPath.rfind('.')]
         try:
-            module = __import__(classNS, globals(), locals(), ['*'])
+            module = __import__(f"plugins.{classNS}.{classNS}", globals(), locals(), ['*'])
         except Exception as msg:
             lib.kernel.logger.rootLog.exception(msg)
             lib.kernel.logger.rootLog.debug('Exiting with 12')
