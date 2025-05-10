@@ -66,7 +66,7 @@ class ViewerView(labbooks.RunLogParticipant):
                 self.control.RemoveChild(control)
                 sizer.Remove(control)
                 sizer.Layout()
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
             else:
                 item.dispose()

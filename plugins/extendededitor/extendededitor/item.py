@@ -253,9 +253,9 @@ class ExtendedEditorItem(object):
                 sizer.Fit(self.control)
                 self.control.Refresh()
                 self.container.resizeToFit()
-        except wx.PyDeadObjectError, msg:
+        except wx.PyDeadObjectError as msg:
             logger.exception(msg)
-            logger.warn('Error while internally updating items:%s for %s' % (msg, self))
+            logger.warning('Error while internally updating items:%s for %s' % (msg, self))
 
         return
 

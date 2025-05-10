@@ -3,13 +3,20 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/__init__.py
 # Compiled at: 2004-10-29 21:12:52
-import plugins.ui.ui, lib.kernel.plugin, plugins.core.core.deviceregistry, plugins.panelview.panelview.devicemediator, plugins.executionengine.executionengine
-import plugins.mfc.mfc.device, plugins.mfc.mfc.column, plugins.mfc.mfc.graphitem, plugins.mfc.mfc.extendededitoritem
-import plugins.mfc.mfc.panelviewitem, plugins.mfc.mfc.participant, plugins.extendededitor.extendededitor
+import plugins.ui.ui as ui, lib.kernel.plugin, plugins.core.core.deviceregistry
+import plugins.extendededitor.extendededitor, plugins.panelview.panelview.devicemediator, plugins.executionengine.executionengine
 import plugins.grideditor.grideditor, plugins.grapheditor.grapheditor, plugins.mfc.mfc.images as images
-import plugins.mfc.mfc.messages as messages, plugins.mfc.mfc.validation, plugins.mfc.mfc.hardwarestatusprovider
-import plugins.mfc.mfc.executiongridviewcolumn, plugins.mfc.mfc.execgraphitem
-import plugins.graphview.graphview, plugins.labbooks.labbooks, logging
+import logging
+
+import plugins.panelview.panelview as panelview
+import plugins.core.core as core
+import plugins.grideditor.grideditor as grideditor
+import plugins.grapheditor.grapheditor as grapheditor
+import plugins.extendededitor.extendededitor as extendededitor
+import plugins.labbooks.labbooks as labbooks
+import plugins.graphview.graphview as graphview
+from . import device, panelviewitem, participant, validation, hardwarestatusprovider, images, column, graphitem, extendededitoritem
+
 from  plugins.mfc.mfc.execgraphitem import graphViewFactory
 logger = logging.getLogger('mfc')
 
@@ -21,18 +28,18 @@ class MFCDevicePlugin(lib.kernel.plugin.Plugin):
         plugins.ui.ui.getDefault().setSplashText('Loading Mass Flow Controller plugin ...')
 
     def startup(self, contextBundle):
-        logger.debug("Registering '%s' as device" % plugins.mfc.mfc.device.DEVICE_ID)
+        logger.debug("Registering '%s' as device" % device.DEVICE_ID)
         images.init(contextBundle)
         messages.init(contextBundle)
-        plugins.panelview.panelview.devicemediator.registerItemContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCPanelViewContributionFactory())
-        plugins.core.core.deviceregistry.addDeviceFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCDeviceFactory())
-        plugins.grideditor.grideditor.addColumnContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCColumnContributionFactory())
-        plugins.grapheditor.grapheditor.addGraphContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCGraphEditorContributionFactory())
-        plugins.extendededitor.extendededitor.addContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCExtendedEditorContributionFactory())
+        panelview.devicemediator.registerItemContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCPanelViewContributionFactory())
+        core.deviceregistry.addDeviceFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCDeviceFactory())
+        grideditor.addColumnContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCColumnContributionFactory())
+        grapheditor.addGraphContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCGraphEditorContributionFactory())
+        extendededitor.addContributionFactory(plugins.mfc.mfc.device.DEVICE_ID, MFCExtendedEditorContributionFactory())
 
-    plugins.mfc.mfc.validation.init()
-    plugins.graphview.graphview.getDefault().registerViewFactory(plugins.mfc.mfc.device.DEVICE_ID, graphViewFactory)
-    plugins.labbooks.labbooks.getDefault().registerDeviceParticipant(mfc.participant.MFCRunLogParticipant())
+    validation.init()
+    graphview.getDefault().registerViewFactory(device.DEVICE_ID, graphViewFactory)
+    plugins.labbooks.labbooks.getDefault().registerDeviceParticipant(participant.MFCRunLogParticipant())
 
 
 class MFCPanelViewContributionFactory(object):

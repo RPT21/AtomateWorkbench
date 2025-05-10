@@ -11,6 +11,9 @@ import plugins.grideditor.grideditor.recipegrideditortable, plugins.grideditor.g
 import plugins.grideditor.grideditor.recipemodel, plugins.grideditor.grideditor.selections
 import plugins.grideditor.grideditor.images as images, plugins.grideditor.grideditor.messages as messages
 import plugins.grideditor.grideditor.actions, plugins.grideditor.grideditor.gutter, plugins.resourcesui.resourcesui.utils
+from plugins.grideditor.grideditor.actions import SelectionDispatchAction
+from plugins.grideditor.grideditor.recipemodel import RecipeModelEventListener
+from plugins.poi.poi.views.viewers import SelectionProvider
 DEBUG = False
 logger = logging.getLogger('grideditor')
 
@@ -23,11 +26,11 @@ class ActionGroup(plugins.poi.poi.actions.ActionContributionItem):
         plugins.poi.poi.actions.ActionContributionItem.fillMenu(self, parent)
 
 
-class DeleteSelectedAction(plugins.grideditor.grideditor.actions.SelectionDispatchAction):
+class DeleteSelectedAction(SelectionDispatchAction):
     __module__ = __name__
 
     def __init__(self, editor):
-        plugins.grideditor.grideditor.actions.SelectionDispatchAction.__init__(self, 'Remove Selected Step')
+        SelectionDispatchAction.__init__(self, 'Remove Selected Step')
         self.editor = editor
 
     def runWithSelection(self, selection):
@@ -38,22 +41,22 @@ class DeleteSelectedAction(plugins.grideditor.grideditor.actions.SelectionDispat
         self.editor.removeSteps(stepIndex, len(selection))
 
 
-class InsertStepAfterSelectionAction(plugins.grideditor.grideditor.actions.SelectionDispatchAction):
+class InsertStepAfterSelectionAction(SelectionDispatchAction):
     __module__ = __name__
 
     def __init__(self, editor):
-        plugins.grideditor.grideditor.actions.SelectionDispatchAction.__init__(self, 'Insert After Selection')
+        SelectionDispatchAction.__init__(self, 'Insert After Selection')
         self.editor = editor
 
     def runWithSelection(self, selection):
         print('Insert After Selection', selection, self.editor)
 
 
-class RecipeGridViewer(plugins.grideditor.grideditor.recipemodel.RecipeModelEventListener, poi.views.viewers.SelectionProvider):
+class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
     __module__ = __name__
 
     def __init__(self):
-        poi.views.viewers.SelectionProvider.__init__(self)
+        SelectionProvider.__init__(self)
         self.focus = False
         self.focusing = False
         self.hasFocus = False

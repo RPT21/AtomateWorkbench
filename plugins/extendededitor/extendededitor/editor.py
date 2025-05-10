@@ -166,7 +166,7 @@ class EditorViewer(object):
         self.editorPanels.insert(index, item)
         try:
             self.createItem(item)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Unable to create control for extended editor item '%s':'%s'" % (item, msg))
             return
@@ -186,7 +186,7 @@ class EditorViewer(object):
         self.editorPanels.append(item)
         try:
             self.createItem(item)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Unable to create control for extended editor item '%s':'%s'" % (item, msg))
             return

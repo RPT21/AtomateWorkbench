@@ -110,9 +110,9 @@ class FurnaceZoneTestEditorContribution(core.conditional.ConditionalTestEditorCo
         temperature = control.getControl().GetValue()
         try:
             temperature = int(temperature)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn("Unable to set proper temperature for test '%s'" % msg)
+            logger.warning("Unable to set proper temperature for test '%s'" % msg)
 
         operator = self.getOperators()[operatorIdx]
         test = FurnaceZoneConditionalTest(self.device, operator, temperature)
@@ -137,7 +137,6 @@ class FurnaceZoneConditionalContribution(core.conditional.ConditionalContributio
 
     def createFromNode(self, node):
         return None
-        return
 
     def getTestEditorContributions(self):
         return [FurnaceZoneTestEditorContribution(self.device)]
@@ -155,7 +154,6 @@ def furnaceTempCreator(node, recipe):
     temp = int(node.getAttribute('temperature'))
     test = FurnaceZoneConditionalTest(device, operator, temp)
     return test
-    return
 
 
 core.conditional.addConditionalTestFactory('furnacezone_temperature', furnaceTempCreator)

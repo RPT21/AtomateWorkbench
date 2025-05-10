@@ -28,7 +28,6 @@ def getGlobalActionHandler(sid):
     if globalActionHandlers.has_key(sid):
         return globalActionHandlers[sid]
     return None
-    return
 
 
 AS_PUSH_BUTTON = 1

@@ -10,12 +10,12 @@ def init():
 
 def addDeviceFactory(name, deviceInstance):
     global __devicesTable
-    if not __devicesTable.has_key(name):
+    if not name in __devicesTable:
         __devicesTable[name] = deviceInstance
 
 
 def getDeviceFactory(deviceName):
-    if __devicesTable.has_key(deviceName):
+    if deviceName in __devicesTable:
         return __devicesTable[deviceName]
     return None
 

@@ -3,7 +3,6 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/up150node.py
 # Compiled at: 2004-11-19 02:37:58
-from string import zfill
 import rs485
 
 def hextoint(hexnum):

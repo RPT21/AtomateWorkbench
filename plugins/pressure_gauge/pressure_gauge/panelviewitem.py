@@ -51,7 +51,7 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
     def updateDeviceUI(self):
         try:
             self.deviceLabel.SetLabel(self.device.getLabel())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def getConfiguredHardware(self):
@@ -60,11 +60,10 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
             desc = hardware.hardwaremanager.getHardwareByName(hwid)
             inst = desc.getInstance()
             return inst
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return None
-        return
 
     def dispose(self):
         panelview.devicemediator.DevicePanelViewContribution.dispose(self)
@@ -114,5 +113,5 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
                 pressure2 = 'lo'
             self.gauge1.setValue(pressure1)
             self.gauge2.setValue(pressure2)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)

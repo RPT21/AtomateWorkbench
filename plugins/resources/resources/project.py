@@ -19,7 +19,7 @@ class ProjectDescription(object):
         return self.comment
 
     def create(self, location):
-        cfg = configparser.SafeConfigParser()
+        cfg = configparser.RawConfigParser()
         cfg.add_section('description')
         cfg.set('description', 'comment', self.getComment())
         f = open(self.getMetadataFilename(location), 'w')
@@ -32,7 +32,7 @@ class ProjectDescription(object):
 
     def parse(self, location):
         f = open(self.getMetadataFilename(location), 'r')
-        cfg = configparser.SafeConfigParser()
+        cfg = configparser.RawConfigParser()
         cfg.readfp(f)
         f.close()
         try:

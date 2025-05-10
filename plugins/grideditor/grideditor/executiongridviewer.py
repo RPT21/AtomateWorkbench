@@ -3,8 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/executiongridviewer.py
 # Compiled at: 2004-09-23 02:40:57
-from wxPython.grid import *
-from wxPython.wx import *
+from wx.grid import *
+from wx import *
+import wx.grid as gridlib
 import logging, poi.views.viewers, threading, wx, ui, poi.actions.menumanager, poi.actions, ui.undomanager, grideditor.recipegridviewercontentprovider, grideditor.recipegrideditortable, grideditor.recipemodel, grideditor.selections, grideditor.images as images, grideditor.messages as messages, grideditor.actions, grideditor.gutter, grideditor.tablecolumn, executionengine, executionengine.engine, resourcesui.utils
 DEBUG = False
 logger = logging.getLogger('grideditor')
@@ -24,7 +25,6 @@ def getExecutionGridColumnContributionFactory(strType):
     if not executionGridColumnContributionsFactories.has_key(strType):
         return None
     return executionGridColumnContributionsFactories[strType]
-    return
 
 
 class ExecutionGridViewer(object):
@@ -43,7 +43,7 @@ class ExecutionGridViewer(object):
     def prepareStart(self):
         try:
             grideditor.getDefault().getView().showGridEditorView(False)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def engineEvent(self, event):
@@ -67,14 +67,14 @@ class ExecutionGridViewer(object):
         view.setTitle(messages.get('executionview.title'))
         self.view = view
         panel = wx.Panel(view.getContent(), -1)
-        self.grid = wxGrid(panel, -1)
+        self.grid = gridlib.wxGrid(panel, -1)
         self.mediator = ExecutionGridMediator()
         self.table = ExecutionGridTable(self.mediator)
         self.mediator.setManagedTable(self.table)
         self.grid.SetTable(self.table)
         self.grid.SetScrollRate(10, 10)
         self.grid.SetDefaultRowSize(20, True)
-        self.grid.SetGridLineColour(wxSystemSettings_GetColour(wxSYS_COLOUR_3DDKSHADOW))
+        self.grid.SetGridLineColour(gridlib.wxSystemSettings_GetColour(gridlib.wxSYS_COLOUR_3DDKSHADOW))
         self.grid.EnableDragRowSize(False)
         self.grid.SetColLabelSize(10)
         self.grid.EnableEditing(False)
@@ -183,17 +183,17 @@ class ExecutionGridViewer(object):
             self.grid.SetRowLabelSize(width)
 
 
-class ExecutionGridTable(wxPyGridTableBase):
+class ExecutionGridTable(gridlib.GridTableBase):
     __module__ = __name__
 
     def __init__(self, mediator):
-        wxPyGridTableBase.__init__(self)
+        gridlib.GridTableBase.__init__(self)
         self.mediator = mediator
 
     def InsertCols(self, pos, num):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_COLS_INSERTED, pos, num)
+        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_COLS_INSERTED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -203,7 +203,7 @@ class ExecutionGridTable(wxPyGridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_ROWS_DELETED, pos, num)
+        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_ROWS_DELETED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -213,7 +213,7 @@ class ExecutionGridTable(wxPyGridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_COLS_DELETED, pos, num)
+        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_COLS_DELETED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -221,7 +221,7 @@ class ExecutionGridTable(wxPyGridTableBase):
     def InsertRows(self, pos, num):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, wxGRIDTABLE_NOTIFY_ROWS_INSERTED, pos, num)
+        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_ROWS_INSERTED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -373,11 +373,11 @@ class DurationCellRenderer(StringCellRenderer):
         dc.DrawText(text, rect.x + x, rect.y + y)
 
 
-class CellRendererWrapper(wxPyGridCellRenderer):
+class CellRendererWrapper(gridlib.GridCellRenderer):
     __module__ = __name__
 
     def __init__(self, renderer, column):
-        wxPyGridCellRenderer.__init__(self)
+        gridlib.GridCellRenderer.__init__(self)
         self.renderer = renderer
         self.column = column
         self.currentStep = -1

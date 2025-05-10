@@ -17,7 +17,7 @@ def init(contextBundle):
     if not inited:
         inited = True
         try:
-            config = configparser.SafeConfigParser()
+            config = configparser.RawConfigParser()
             config.read([os.path.join(contextBundle.dirname, MESSAGES_FILENAME)])
         except Exception as msg:
             logger.warning("Unable to load messages from '%s':'%s'" % (contextBundle.dirname, msg))

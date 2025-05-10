@@ -93,7 +93,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         instance = self.getDescription().getInstance()
         try:
             instance.shutdown()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             return False
 
@@ -103,7 +103,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         instance = self.getDescription().getInstance()
         try:
             instance.initialize()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             return False
 
@@ -125,7 +125,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         inst = self.getDescription().getInstance()
         try:
             self.urlText.SetValue(config.get('main', 'url'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.updateStatus()
@@ -172,7 +172,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
                     self.testFailure(result)
                 else:
                     self.testSuccess()
-            except Exception, msg:
+            except Exception as msg:
                 self.showQuickMessage('Failure', str(msg), wx.OK | wx.ICON_ERROR)
 
         return
@@ -254,7 +254,7 @@ class LightWidget(wx.Window):
             return
         self.SetSize(size)
         self.SetSizeHints(size[0], size[1])
-        print 'updating ...'
+        print('updating ...')
         if self.GetParent().GetSizer() is not None:
             self.GetParent().GetSizer().Layout()
         return
@@ -702,7 +702,7 @@ class MonitorWindowItem(object):
         wx.CallAfter(self.internalUpdateFields)
 
     def internalUpdateFields(self):
-        print 'refresh'
+        print('refresh')
         if not self.discovered:
             self.discoverDevices()
         status = self.hardwareInstance.getStatus()
@@ -735,7 +735,7 @@ class MonitorWindowItem(object):
                 self.itemsSizer.Add(ctrl, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
                 self.handlers[did] = handler
 
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.itemsSizer.Fit(self.ctrl)

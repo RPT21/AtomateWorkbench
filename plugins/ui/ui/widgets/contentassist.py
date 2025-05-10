@@ -63,5 +63,5 @@ class ContentAssistant(object):
                 self.control.Show(self.warning)
             if not self.warning:
                 self.control.Hide()
-        except wx.PyDeadObjectError, msg:
-            print 'Dead Object Error:', msg
+        except wx.PyDeadObjectError as msg:
+            print('Dead Object Error:', msg)

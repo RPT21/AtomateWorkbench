@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/__init__.py
 # Compiled at: 2005-06-28 20:47:11
-import wx, os, hw, ui, ui.images as uiimages, kernel.plugin, poi.actions, goosemonitor.actions, poi.actions, poi.views, poi.views.viewers, poi.views.contentprovider, hardware.hardwaremanager, goosemonitor.goosedevicetype, goosemonitor.images as images, goosemonitor.messages as messages, goosemonitor.conditional, core, core.conditional, logging
+import wx, kernel.plugin, poi.actions, goosemonitor.actions, poi.actions, poi.views, poi.views.viewers, poi.views.contentprovider, hardware.hardwaremanager, goosemonitor.images as images, goosemonitor.messages as messages, goosemonitor.conditional, core, core.conditional, logging
+import plugins.goosemonitor.goosemonitor.hw as hw
+import plugins.ui.ui as ui
+import plugins.goosemonitor.goosemonitor.goosedevicetype as goosedevicetype
+
 ERROR_RETRIEVING = -1
 ERROR_PARSING = -2
 ERROR_OK = True
@@ -117,7 +121,7 @@ class GooseMonitorPlugin(kernel.plugin.Plugin):
             for participant in self.participants:
                 try:
                     valid = participant.isValid()
-                except Exception, msg:
+                except Exception as msg:
                     logger.exception(msg)
 
             if valid == self.status:

@@ -30,9 +30,9 @@ class Cache(object):
         self.cache.append((time, value))
 
     def print_time(self):
-        print self.indexer
-        print '---'
-        print self.cache
+        print(self.indexer)
+        print('---')
+        print(self.cache)
 
     def getvalueindex(self, time):
         return self.indexer[int(time)]

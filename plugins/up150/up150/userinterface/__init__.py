@@ -90,7 +90,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
             self.selectUnit(units)
             self.selectRange(str(rangeValue))
             self.selectChannel(str(channelNum + 1))
-        except Exception, msg:
+        except Exception as msg:
             logger.warning("Unable to set data for device entry: '%s'" % msg)
             logger.exception(msg)
 
@@ -263,7 +263,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             pid = inst.getPIDSettings()
             if pid is not None:
                 map((lambda c, s: c.SetValue(str(s))), self.pidControls.values(), pid)
-        except Exception, msg:
+        except Exception as msg:
             self.setDefaultConfig()
 
         self.setHardwareInfo(config)
@@ -271,7 +271,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         if config.has_section('default.device.props'):
             try:
                 self.devicePlotColor.SetValue(parseColor(config.get('default.device.props', 'plot.color')))
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
 
         return
@@ -366,7 +366,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
                 exc = None
                 try:
                     instance.initialize()
-                except Exception, msg:
+                except Exception as msg:
                     logger.exception(msg)
                     done = True
                     exc = core.utils.WrappedException()
@@ -385,7 +385,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         runner = InitializeWithProgressRunner()
         try:
             dlg.run(runner, fork=False)
-        except Exception, invocation:
+        except Exception as invocation:
             logger.exception(invocation)
             poi.dialogs.ExceptionDialog(f, msg.getWrapped()[1], 'Error Initializing Hardware').ShowModal()
 
@@ -424,7 +424,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         runner = ShutdownWithProgressRunner()
         try:
             dlg.run(runner, fork=False)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             poi.dialogs.ExceptionDialog(f, msg.getWrapped(), 'Error Shutting Down Hardware').ShowModal()
 
@@ -440,7 +440,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             if wasOn:
                 errors = self.shutdownHardware()
                 if errors:
-                    print '* ERROR: Cannot shutdown:', errors
+                    print('* ERROR: Cannot shutdown:', errors)
                 if errors:
                     return
             instance.setupDriver(self.getDescription())

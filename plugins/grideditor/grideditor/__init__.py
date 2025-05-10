@@ -11,6 +11,7 @@ import plugins.grideditor.grideditor.messages, plugins.grideditor.grideditor.uti
 import plugins.extendededitor.extendededitor, plugins.panelview.panelview, logging, plugins.resourcesui.resourcesui.actions
 import plugins.resources.resources, plugins.validator.validator, plugins.grideditor.grideditor.utils.validation
 import plugins.grideditor.grideditor.autosaver, threading, plugins.grideditor.grideditor.utils.errorviewer
+import plugins.ui.ui as ui
 CONFIG_FILENAME = '.config'
 PLUGIN_ID = 'grideditor'
 VIEW_ID = 'grideditor'

@@ -58,8 +58,8 @@ class NetworkConfigurationSegment(object):
         try:
             self.hostField.SetValue(data.get('driver', 'host'))
             self.portField.SetValue(data.get('driver', 'port'))
-        except Exception, msg:
-            print '*ERROR: Cannot set proper values for driver segment:', msg
+        except Exception as msg:
+            print('*ERROR: Cannot set proper values for driver segment:', msg)
             self.hostField.SetValue('127.0.0.1')
             self.portField.SetValue('8081')
 
@@ -109,15 +109,14 @@ class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
             self.buff = self.buff[idx + len(self.delimeter):]
             return cmd
         return None
-        return
 
     def setConfiguration(self, configuration):
         mks647bc.drivers.DeviceDriver.setConfiguration(self, configuration)
         try:
             self.port = configuration.get('driver', 'port')
             self.host = configuration.get('driver', 'host')
-        except Exception, msg:
-            print '* ERROR: Cannot configure network device driver:', msg
+        except Exception as msg:
+            print('* ERROR: Cannot configure network device driver:', msg)
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
 
     def debug_shutdown(self):

@@ -5,9 +5,12 @@
 # Compiled at: 2004-12-09 00:49:30
 import core.error, time, string, kernel.plugin, mkspdr2000.mkspdr2000type, mkspdr2000.images as images, mkspdr2000.messages as messages, mkspdr2000.drivers, mkspdr2000.participant, mkspdr2000.drivers.ser, mkspdr2000.drivers.simulation, hardware
 from hardware import ResponseTimeoutException
-import hardware.hardwaremanager, executionengine, logging, threading, ui
+import hardware.hardwaremanager, executionengine, logging, threading
 from hardware.utils.threads import BackgroundProcessThread, PurgeThread
+from . import mkspdr2000type, mkspdr2000node
 import core.deviceregistry, pressure_gauge.hardwarestatusprovider
+import plugins.ui.ui as ui
+import plugins.executionengine.executionengine as executionengine
 logger = logging.getLogger('mkspdr2000')
 
 class MKSPDR2000Plugin(kernel.plugin.Plugin):
@@ -46,7 +49,7 @@ class StatusThread(BackgroundProcessThread):
             if not self.paused:
                 try:
                     self.askHardware()
-                except Exception, msg:
+                except Exception as msg:
                     self.paused = True
                     logger.exception(msg)
 
@@ -101,7 +104,7 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
         self.checkDriver()
         try:
             return self.driver.getID()
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -129,7 +132,7 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
         try:
             pressure = self.driver.getPressure()
             self.statusGetPressure(pressure)
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -141,13 +144,11 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
         if not self.driver.isConfigured():
             return False
         return True
-        return
 
     def getExtraData(self):
         if self.driver is None:
             return ''
         return self.driver.getDescription()
-        return
 
     def setupDriver(self, description):
         self.driver = None
@@ -157,12 +158,12 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
             inst = mkspdr2000.drivers.getDriver(driverType)(self)
             self.setDriver(inst)
             self.driver.setConfiguration(config)
-        except Exception, msg:
+        except Exception as msg:
             self.driver = None
             self.logger.exception(msg)
             self.logger.error("Cannot setup driver : '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
-        except Error, msg:
+        except Error as msg:
             self.driver = None
             self.logger.error("Cannot setup driver : '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
@@ -178,7 +179,7 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
         self.resumeStatusThread()
         try:
             self.driver.initialize()
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
             self.logger.error("Cannot initialize '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error cannot initialize'%s'" % msg))
@@ -193,7 +194,7 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
             return
         try:
             self.driver.shutdown()
-        except Exception, msg:
+        except Exception as msg:
             logger.error("Cannot initialize '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error cannot initialize'%s'" % msg))
             raise Exception(msg)

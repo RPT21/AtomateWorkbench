@@ -85,7 +85,7 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
                 inst.disableChannel(channel)
                 try:
                     inst.getChannelCondition(channel)
-                except Exception, msg:
+                except Exception as msg:
                     pass
                 else:
                     continue

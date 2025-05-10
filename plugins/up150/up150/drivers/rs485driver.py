@@ -4,7 +4,6 @@
 # Embedded file name: ../plugins/up150/src/up150/drivers/rs485driver.py
 # Compiled at: 2004-11-03 22:16:45
 import wx, time, threading, select, up150.drivers, serial, rs485, logging, hardware, hardware.hardwaremanager
-from string import zfill
 import up150.messages as messages
 ERROR_CODE_STRINGS = {'02': {'short': 'Unknown Command', 'long': 'The command transmitted is unknown'}, '03': {'short': 'Register Error', 'long': 'Specified register is unavailable for use'}, '04': {'short': 'Invalid Value', 'long': 'Parameter specified is outside the range'}, '05': {'short': 'Command Count Error', 'long': 'Invalid number of commands were specified'}, '06': {'short': 'Monitoring Error', 'long': 'Monitoring execution without monitor definition was attempted'}, '08': {'short': 'Parameter Error', 'long': 'Illegal parameter has been sent'}, '42': {'short': 'Checksum error', 'long': 'Expected value does not match the checksum'}, '43': {'short': 'Buffer Overflow', 'long': 'Received data is larger than the expected value'}, '44': {'short': 'EOT Timeout', 'long': 'End of data was not received before timeout'}}
 
@@ -77,7 +76,7 @@ class SerialConfigurationSegment(object):
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return self.control
@@ -108,7 +107,7 @@ class SerialConfigurationSegment(object):
         addr = self.addressText.GetValue()
         try:
             self.addressText.SetValue(self.convertAddressValue(addr))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.fireText = True
@@ -151,7 +150,7 @@ class SerialConfigurationSegment(object):
             logger.debug('\tType: %s' % type(address))
             numericaddr = int(address)
             address = '%02d' % numericaddr
-        except Exception, msg:
+        except Exception as msg:
             raise Exception("'%s' is an invalid address. It must be a number." % address)
 
         return address
@@ -166,7 +165,7 @@ class SerialConfigurationSegment(object):
             numericaddr = int(address)
             if numericaddr > 99:
                 raise Exception('Address cannot be greater than 99')
-        except Exception, msg:
+        except Exception as msg:
             raise Exception("'%s' is an invalid address. It must be a number." % address)
 
         logger.debug("Final address set to '%s'" % address)
@@ -184,7 +183,7 @@ class SerialConfigurationSegment(object):
             choice = data.get('driver', 'networkid')
             self.validateHardwareChoice(choice)
             self.hardwareChoice.SetSelection(self.getNetworkChoices().index(choice))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Cannot set proper values for driver segment: '%s'" % msg)
             self.setDefaultData()
@@ -192,7 +191,7 @@ class SerialConfigurationSegment(object):
         self.fireText = True
         try:
             self.lockoutPanel.SetValue(data.get('driver', 'lockout').lower() == 'true')
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.lockoutPanel.SetValue(False)
 
@@ -240,7 +239,6 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         if self.address is None:
             return 'No address'
         return self.address
-        return
 
     def cleanUp(self):
         if self.hwinst.getStatus() != hardware.hardwaremanager.STATUS_STOPPED:
@@ -274,8 +272,8 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             self.networkid = configuration.get('driver', 'networkid')
             self.lockout = configuration.get('driver', 'lockout').lower() == 'true'
             self.configured = True
-        except Exception, msg:
-            print '* ERROR: Cannot configure network device driver:', msg
+        except Exception as msg:
+            print ('* ERROR: Cannot configure network device driver:', msg)
             self.configured = False
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
 
@@ -284,7 +282,6 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         if nw is None:
             raise Exception("No rs485 network configured with name: '%s'" % networkid)
         return nw.getInstance()
-        return
 
     def initialize(self):
         logger.debug('Initializing')
@@ -309,7 +306,7 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             data = self.sendAndWait('\x02%s010INF6\x03\r' % self.address, 5)
             if self.lockout:
                 self.lockPanel()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.network.removeNode(self)
             raise

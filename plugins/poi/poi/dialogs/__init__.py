@@ -56,7 +56,7 @@ class Dialog(object):
 
     def getMemento(self):
         try:
-            config = ConfigParser.SafeConfigParser()
+            config = ConfigParser.RawConfigParser()
             fullpath = self.getMementoPath()
             config.read([fullpath])
         except Exception as msg:
@@ -87,7 +87,7 @@ class Dialog(object):
         pass
 
     def saveLayout(self):
-        config = ConfigParser.SafeConfigParser()
+        config = ConfigParser.RawConfigParser()
         config.add_section('layout')
         self.fillLayoutMemento(config)
         try:

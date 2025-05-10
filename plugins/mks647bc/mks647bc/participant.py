@@ -91,7 +91,7 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
                 try:
                     inst.channelOff(channel)
                     inst.getChannelFlow(channel)
-                except Exception, msg:
+                except Exception as msg:
                     logger.exception(msg)
                 else:
                     continue

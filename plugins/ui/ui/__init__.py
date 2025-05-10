@@ -11,6 +11,11 @@ import plugins.ui.ui.splash as splash
 import plugins.ui.ui.undomanager as undomanager
 import plugins.ui.ui.mainframe as mainframe
 import plugins.poi.poi.actions as actions
+from plugins.ui.ui.actions import ExitAction
+import plugins.poi.poi.actions.statusbarmanager as statusbarmanager
+import plugins.poi.poi.actions.toolbarmanager as toolbarmanager
+import plugins.poi.poi.actions.menumanager as menumanager
+
 import configparser
 
 MB_FILE = 'atm.file'
@@ -111,13 +116,13 @@ class UIPlugin(lib.kernel.plugin.Plugin):
         return proceed
 
     def registerViewProvider(self, viewID, provider):
-        if not self.viewProviders.has_key(viewID):
+        if not viewID in self.viewProviders:
             self.viewProviders[viewID] = provider
 
     def createView(self, sectorID, viewID):
         global VIEW_CHANGE_TYPE_ADDED
         logger.debug('CREATE VIEW: %s %s IN THREAD %s' % (sectorID, viewID, threading.currentThread()))
-        if not self.viewProviders.has_key(viewID):
+        if not viewID in self.viewProviders:
             raise Exception("No view provider registered for '%s'" % viewID)
         self.getMainFrame().createView(sectorID, self.viewProviders[viewID], viewID)
         self.fireViewChange(VIEW_CHANGE_TYPE_ADDED, viewID)
@@ -205,9 +210,9 @@ class UIPlugin(lib.kernel.plugin.Plugin):
         return self.statusBarManager
 
     def createUI(self):
-        self.statusBarManager = actions.statusbarmanager.StatusBarManager('#STATUSBAR')
-        self.toolbarManager = actions.toolbarmanager.ToolBarManager(None, '#TOOLBAR')
-        mm = actions.menumanager.MenuManager(None, '#MENUBAR')
+        self.statusBarManager = statusbarmanager.StatusBarManager('#STATUSBAR')
+        self.toolbarManager = toolbarmanager.ToolBarManager(None, '#TOOLBAR')
+        mm = menumanager.MenuManager(None, '#MENUBAR')
         fileManager = self.createFileMenuManager()
         editManager = self.createEditMenuManager()
         toolsManager = self.createToolsMenuManager()
@@ -262,10 +267,10 @@ class UIPlugin(lib.kernel.plugin.Plugin):
 
     def createFileMenuManager(self):
         global MB_FILE
-        fileManager = actions.menumanager.MenuManager(messages.get('mainmenu.file'), MB_FILE)
+        fileManager = menumanager.MenuManager(messages.get('mainmenu.file'), MB_FILE)
         fileManager.addItem(actions.GroupMarker('file-additions-begin'))
         fileManager.addItem(actions.Separator('file-additions-end'))
-        exitAction = actions.ExitAction()
+        exitAction = ExitAction()
         fileManager.addItem(actions.ActionContributionItem(exitAction))
         return fileManager
 
@@ -313,7 +318,6 @@ class UIPlugin(lib.kernel.plugin.Plugin):
             return None
 
         return config
-        return
 
     def restoreLayout(self):
         memento = None

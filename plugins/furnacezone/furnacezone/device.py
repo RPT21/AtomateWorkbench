@@ -172,37 +172,37 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
         hwhints = data.getHardwareHints()
         try:
             rng = int(hwhints.getChildNamed('range').getValue())
-        except Exception, msg:
-            logger.warn("Unable to get range value: '%s'" % msg)
+        except Exception as msg:
+            logger.warning("Unable to get range value: '%s'" % msg)
             rng = 1000
 
         self.rangeText.SetValue(str(rng))
         try:
             self.devicePlotColor.SetValue(parseColor(uihints.getChildNamed('plot-color').getValue()))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.devicePlotColor.SetValue(wx.RED)
 
         try:
             hwid = hwhints.getChildNamed('id').getValue()
             self.selectHardware(hwid)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn("Cannot set hardware: '%s'" % msg)
+            logger.warning("Cannot set hardware: '%s'" % msg)
 
         try:
             label = uihints.getChildNamed('label').getValue()
             self.labelField.SetValue(label)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn("Cannot set hardware: '%s'" % msg)
+            logger.warning("Cannot set hardware: '%s'" % msg)
 
         purgeActive = False
         purgeSetpoint = '0'
         purgeDuration = 0
         try:
             purgeActive = hwhints.getChildNamed('purge').getAttribute('active').lower() == 'true'
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.purgeCheckbox.SetValue(purgeActive)
@@ -210,9 +210,9 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
             purgeNode = hwhints.getChildNamed('purge')
             purgeSetpoint = purgeNode.getAttribute('setpoint')
             purgeDuration = int(purgeNode.getAttribute('duration'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set purge setpoint')
+            logger.warning('Cannot set purge setpoint')
 
         self.purgeDuration.SetValue(wx.TimeSpan.Seconds(purgeDuration))
         self.purgeSetpointText.SetValue(purgeSetpoint)
@@ -270,8 +270,8 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
             rng = self.rangeText.GetValue()
             try:
                 rng = int(rng)
-            except Exception, msg:
-                logger.warn("Unable to parse integer for range value: '%s'" % msg)
+            except Exception as msg:
+                logger.warning("Unable to parse integer for range value: '%s'" % msg)
                 rng = 1000
 
             hwhints.createChildIfNotExists('range').setValue(str(rng))
@@ -282,7 +282,7 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
             purgeSetpoint = self.purgeSetpointText.GetValue()
             try:
                 purgeSetpoint = str(int(purgeSetpoint))
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
                 purgeSetpoint = '0'
 
@@ -294,14 +294,14 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
             purgeDuration = self.purgeDuration.GetValue(as_wxTimeSpan=True)
             try:
                 purgeDuration = str(purgeDuration.GetSeconds())
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
                 purgeDuration = 0
 
             purgeNode.setAttribute('duration', purgeDuration)
             if self.currentHardwareEditor is not None:
                 self.currentHardwareEditor.getData(hwhints)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Unable to save device data to recipe: '%s'" % msg)
 
@@ -325,17 +325,16 @@ class FurnaceZoneDevice(core.device.Device):
         try:
             hwhints = self.getHardwareHints()
             return hwhints.getChildNamed('id').getValue()
-        except Exception, msg:
+        except Exception as msg:
             pass
 
         return None
-        return
 
     def getPurgeActive(self):
         try:
             hwhints = self.getHardwareHints()
             return hwhints.getChildNamed('purge').getAttribute('active').lower() == 'true'
-        except Exception, msg:
+        except Exception as msg:
             pass
 
         return False
@@ -346,7 +345,7 @@ class FurnaceZoneDevice(core.device.Device):
             hwhints = self.getHardwareHints()
             purgeNode = hwhints.getChildNamed('purge')
             setpoint = int(purgeNode.getAttribute('setpoint'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             return 1
 
@@ -358,17 +357,17 @@ class FurnaceZoneDevice(core.device.Device):
             hwhints = self.getHardwareHints()
             purgeNode = hwhints.getChildNamed('purge')
             length = int(purgeNode.getAttribute('duration'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             return 20
 
         return length
 
     def viewCreated(self, viewID, view):
-        print 'View Created:', viewID, self
+        print('View Created:', viewID, self)
 
     def viewRemoved(self, viewID, view):
-        print 'View Removed:', viewID, self
+        print('View Removed:', viewID, self)
 
     def updateHardwareHints(self):
         pass
@@ -376,7 +375,7 @@ class FurnaceZoneDevice(core.device.Device):
     def getRange(self):
         try:
             return int(self.getHardwareHints().getChildNamed('range').getValue())
-        except Exception, msg:
+        except Exception as msg:
             return 1000
 
     def getDeviceStr(self):
@@ -388,7 +387,7 @@ class FurnaceZoneDevice(core.device.Device):
             hwtype = hardware.hardwaremanager.getHardwareType(hwtype)
             description = hwtype.getDescription()
             return '%s (%s)' % (hardwareName, description)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return '*NOT CONFIGURED*'
@@ -398,7 +397,7 @@ class FurnaceZoneDevice(core.device.Device):
         uihints = self.getUIHints()
         try:
             self.plotcolor = parseColor(uihints.getChildNamed('plot-color').getValue())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.plotcolor = wx.RED
 
@@ -416,7 +415,6 @@ class FurnaceZoneDevice(core.device.Device):
         if fromExisting is not None:
             return fromExisting.clone()
         return furnacezone.stepentry.FurnaceZoneStepEntry()
-        return
 
     def getDeviceEditor(self):
         return FurnaceZoneDeviceEditor()

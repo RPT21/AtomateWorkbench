@@ -128,7 +128,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
             self.selectUnit(getUnitChoices().index(units))
             self.selectRange(getRangeChoices(units).index(int(rangeValue)))
             self.selectChannel(self.getChannelChoices().index(str(channelNum)))
-        except Exception, msg:
+        except Exception as msg:
             logger.warning("Unable to set data for device entry: '%s'" % msg)
             logger.exception(msg)
 
@@ -286,7 +286,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         try:
             self.setDriverConfig(config)
             self.startupInitCheckbox.SetValue(config.get('main', 'startupinit').lower() == 'true')
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.setDefaultConfig()
 
@@ -295,8 +295,8 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         try:
             numChannels = config.get('main', 'channels')
             self.channelsChoice.SetSelection(CHANNEL_CHOICES.index(numChannels))
-        except Exception, msg:
-            print '* WARNING: Exception while setting channel numbers:', msg
+        except Exception as msg:
+            print('* WARNING: Exception while setting channel numbers:', msg)
             self.channelsChoice.SetSelection(0)
 
     def setHardwareInfo(self, config):
@@ -382,7 +382,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
                 monitor.beginTask('Initializing ...', 1)
                 try:
                     instance.initialize()
-                except Exception, msg:
+                except Exception as msg:
                     exc = core.utils.WrappedException()
                     canceller.done = True
 
@@ -400,7 +400,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         runner = InitializeWithProgressRunner()
         try:
             dlg.run(runner, fork=False)
-        except Exception, invocation:
+        except Exception as invocation:
             logger.exception(invocation)
             poi.dialogs.ExceptionDialog(f, invocation[1], 'Error Initializing Hardware').ShowModal()
 
@@ -429,7 +429,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
                 monitor.beginTask('Shutting down', 1)
                 try:
                     instance.shutdown()
-                except Exception, msg:
+                except Exception as msg:
                     logger.exception(msg)
 
                 monitor.worked(1)
@@ -443,7 +443,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         runner = ShutdownWithProgressRunner()
         try:
             dlg.run(runner, fork=False)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             poi.dialogs.ExceptionDialog(f, msg.getWrapped(), 'Error Shutting Down Hardware').ShowModal()
 
@@ -458,7 +458,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             if wasOn:
                 errors = self.shutdownHardware()
                 if errors:
-                    print '* ERROR: Cannot shutdown:', errors
+                    print('* ERROR: Cannot shutdown:', errors)
                 if errors:
                     return
             instance.setupDriver(self.getDescription())

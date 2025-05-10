@@ -47,7 +47,7 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
         logger.debug('Update device ui in thread %s' % threading.currentThread())
         try:
             self.deviceLabel.SetLabel(self.device.getLabel())
-        except Exception, msg:
+        except Exception as msg:
             pass
 
         if self.deviceLabel:
@@ -59,11 +59,10 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
             desc = hardware.hardwaremanager.getHardwareByName(hwid)
             inst = desc.getInstance()
             return inst
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return None
-        return
 
     def dispose(self):
         panelview.devicemediator.DevicePanelViewContribution.dispose(self)
@@ -99,7 +98,7 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
             if setpoint is None:
                 setpoint = ''
             self.temperatureLED.setSetpointValue(str(setpoint))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return

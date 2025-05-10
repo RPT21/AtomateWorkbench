@@ -11,8 +11,8 @@ DRIVERS = {}
 
 def registerDriver(driverID, clazz, configPageClazz, name):
     global DRIVERS
-    if DRIVERS.has_key(driverID):
-        print "* WARNING: Attempt to register driver with same id '%s'" % driverID
+    if driverID in DRIVERS:
+        print("* WARNING: Attempt to register driver with same id '%s'" % driverID)
         return
     DRIVERS[driverID] = {'driver': clazz, 'configpage': configPageClazz, 'name': name}
 
@@ -23,7 +23,6 @@ def getDriverClassByName(driverName):
             return value['driver']
 
     return None
-    return
 
 
 def getDriverTypeByName(driverName):
@@ -32,7 +31,6 @@ def getDriverTypeByName(driverName):
             return key
 
     return None
-    return
 
 
 def getDriverPageByName(driverName):

@@ -14,8 +14,8 @@ logger = logging.getLogger('et2216e')
 def registerDriver(driverID, clazz, configPageClazz, name):
     global DRIVERS
     logger.debug('Registering driver %s/%s/%s' % (clazz, configPageClazz, name))
-    if DRIVERS.has_key(driverID):
-        logger.warn("Attempt to register driver with same id '%s'" % driverID)
+    if driverID in DRIVERS:
+        logger.warning("Attempt to register driver with same id '%s'" % driverID)
         return
     DRIVERS[driverID] = {'driver': clazz, 'configpage': configPageClazz, 'name': name}
 
@@ -26,7 +26,6 @@ def getDriverClassByName(driverName):
             return value['driver']
 
     return None
-    return
 
 
 def getDriverTypeByName(driverName):
@@ -35,7 +34,6 @@ def getDriverTypeByName(driverName):
             return key
 
     return None
-    return
 
 
 def getDriverPageByName(driverName):
@@ -44,7 +42,6 @@ def getDriverPageByName(driverName):
             return getDriverConfigurationPage(key)
 
     return None
-    return
 
 
 def getRegisteredDeviceKeys():
@@ -52,24 +49,21 @@ def getRegisteredDeviceKeys():
 
 
 def getDriverName(driverID):
-    if not DRIVERS.has_key(driverID):
+    if not driverID in DRIVERS:
         return None
     return DRIVERS[driverID]['name']
-    return
 
 
 def getDriver(driverID):
-    if not DRIVERS.has_key(driverID):
+    if not driverID in DRIVERS:
         return None
     return DRIVERS[driverID]['driver']
-    return
 
 
 def getDriverConfigurationPage(driverID):
-    if not DRIVERS.has_key(driverID):
+    if not driverID in DRIVERS:
         return None
     return DRIVERS[driverID]['configpage']()
-    return
 
 
 class DeviceDriver(object):

@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/pressure_gauge/src/pressure_gauge/__init__.py
 # Compiled at: 2004-12-07 10:29:40
-import ui, kernel.plugin, core.deviceregistry, panelview, executionengine, pressure_gauge.device, pressure_gauge.panelviewitem, pressure_gauge.participant, extendededitor, grideditor, grapheditor, pressure_gauge.images as images, pressure_gauge.messages as messages, pressure_gauge.hardwarestatusprovider, pressure_gauge.execgraphitem, graphview, labbooks, logging
+import lib.kernel.plugin, core.deviceregistry, panelview, executionengine, pressure_gauge.device, pressure_gauge.panelviewitem, pressure_gauge.participant, extendededitor, grideditor, grapheditor, pressure_gauge.images as images, pressure_gauge.messages as messages, pressure_gauge.hardwarestatusprovider, pressure_gauge.execgraphitem, graphview, logging
+import plugins.labbooks.labbooks as labbooks
+import lib.kernel as kernel
+import plugins.ui.ui as ui
+
 logger = logging.getLogger('pressure_gauge')
 
 class PressureGaugeDevicePlugin(kernel.plugin.Plugin):

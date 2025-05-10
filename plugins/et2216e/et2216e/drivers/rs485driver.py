@@ -4,8 +4,7 @@
 # Embedded file name: ../plugins/et2216e/src/et2216e/drivers/rs485driver.py
 # Compiled at: 2005-01-24 14:58:20
 import wx, time, et2216e.drivers, rs485, logging, hardware, hardware.hardwaremanager
-from string import zfill
-import et2216e.messages as messages, modbus
+import et2216e.messages as messages, plugins.et2216e.et2216e.drivers.modbus
 
 def hextoint(hexnum):
     return eval('0x' + hexnum)
@@ -82,7 +81,7 @@ class SerialConfigurationSegment(object):
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return self.control
@@ -113,7 +112,7 @@ class SerialConfigurationSegment(object):
         addr = self.addressText.GetValue()
         try:
             self.addressText.SetValue(self.convertAddressValue(addr))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.fireText = True
@@ -156,7 +155,7 @@ class SerialConfigurationSegment(object):
             logger.debug('\tType: %s' % type(address))
             numericaddr = int(address)
             address = '%02d' % numericaddr
-        except Exception, msg:
+        except Exception as msg:
             raise Exception("'%s' is an invalid address. It must be a number." % address)
 
         return address
@@ -171,7 +170,7 @@ class SerialConfigurationSegment(object):
             numericaddr = int(address)
             if numericaddr > 99:
                 raise Exception('Address cannot be greater than 99')
-        except Exception, msg:
+        except Exception as msg:
             raise Exception("'%s' is an invalid address. It must be a number." % address)
 
         logger.debug("Final address set to '%s'" % address)
@@ -189,7 +188,7 @@ class SerialConfigurationSegment(object):
             choice = data.get('driver', 'networkid')
             self.validateHardwareChoice(choice)
             self.hardwareChoice.SetSelection(self.getNetworkChoices().index(choice))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Cannot set proper values for driver segment: '%s'" % msg)
             self.setDefaultData()
@@ -197,7 +196,7 @@ class SerialConfigurationSegment(object):
         self.fireText = True
         try:
             self.lockoutPanel.SetValue(data.get('driver', 'lockout').lower() == 'true')
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.lockoutPanel.SetValue(False)
 
@@ -271,7 +270,7 @@ class RS485Driver(et2216e.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             self.networkid = configuration.get('driver', 'networkid')
             self.lockout = configuration.get('driver', 'lockout').lower() == 'true'
             self.configured = True
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.configured = False
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
@@ -281,7 +280,6 @@ class RS485Driver(et2216e.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         if nw is None:
             raise Exception("No rs485 network configured with name: '%s'" % networkid)
         return nw.getInstance()
-        return
 
     def write(self, msg):
         self.network.sendNoWait(self, msg)
@@ -316,7 +314,7 @@ class RS485Driver(et2216e.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             self.setManual(False)
             if self.lockout:
                 self.lockPanel()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.network.removeNode(self)
             raise

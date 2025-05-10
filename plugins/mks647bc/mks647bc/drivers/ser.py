@@ -28,7 +28,7 @@ class PortEnumerator(threading.Thread):
                 ser.open()
                 CHOICES_PORTS.append(i)
                 ser.close()
-            except Exception, msg:
+            except Exception as msg:
                 continue
 
 
@@ -96,7 +96,7 @@ class SerialConfigurationSegment(object):
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return self.control
@@ -125,9 +125,9 @@ class SerialConfigurationSegment(object):
             self.parityChoice.SetSelection(CHOICES_PARITY.index(data.get('driver', 'parity')))
             self.stopbitsChoice.SetSelection(CHOICES_STOPBITS.index(int(data.get('driver', 'stopbits'))))
             self.lockoutPanel.SetValue(data.get('driver', 'panellockout').lower() == 'true')
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set proper values for driver segment: %s' % msg)
+            logger.warning('Cannot set proper values for driver segment: %s' % msg)
             self.setDefaultData()
 
     def setDefaultData(self):
@@ -199,7 +199,7 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             self.parity = SERIAL_PARITY[configuration.get('driver', 'parity')]
             self.stopbits = int(configuration.get('driver', 'stopbits'))
             self.lockoutPanel = configuration.get('driver', 'panellockout').lower() == 'true'
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error('Cannot configure network device driver: %s' % msg)
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
@@ -220,7 +220,7 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             if self.lockoutPanel:
                 logger.debug('Locking panel')
                 self.lockPanel()
-        except Exception, msg:
+        except Exception as msg:
             try:
                 self.port.close()
             except:
@@ -334,8 +334,8 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
         try:
             if self.lockoutPanel:
                 self.unlockPanel()
-        except Exception, msg:
-            print '* ERROR: Cannot unlock panel', msg
+        except Exception as msg:
+            print('* ERROR: Cannot unlock panel', msg)
 
         self.port.close()
         self.status = mks647bc.drivers.STATUS_UNINITIALIZED
@@ -357,7 +357,7 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             while self.port.inWaiting() > 0:
                 self.port.read(self.port.inWaiting())
 
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def sendAndWait(self, command, timeout=1000):

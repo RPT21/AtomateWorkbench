@@ -102,16 +102,16 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
         try:
             hwid = hwhints.getChildNamed('id').getValue()
             self.selectHardware(hwid)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set hardware: %s' % msg)
+            logger.warning('Cannot set hardware: %s' % msg)
 
         try:
             label = uihints.getChildNamed('label').getValue()
             self.labelField.SetValue(label)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set hardware: %s' % msg)
+            logger.warning('Cannot set hardware: %s' % msg)
 
         self.update()
         if self.currentHardwareEditor is not None:
@@ -126,7 +126,7 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
         try:
             idx = self.getHardwareChoicesName().index(hwid)
             self.hardwareChoice.SetSelection(idx)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         description = hardware.hardwaremanager.getHardwareByName(hwid)
@@ -162,7 +162,7 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
             uihints.createChildIfNotExists('label').setValue(label)
             if self.currentHardwareEditor is not None:
                 self.currentHardwareEditor.getData(hwhints)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Unable to save device data to recipe: '%s'" % msg)
 
@@ -185,8 +185,8 @@ class PressureGaugeDevice(core.device.Device):
             hwtype = hardware.hardwaremanager.getHardwareType(hwtype)
             description = hwtype.getDescription()
             return '%s (%s)' % (hardwareName, description)
-        except Exception, msg:
-            print '* WARNING:', msg
+        except Exception as msg:
+            print('* WARNING:', msg)
 
         return '*NOT CONFIGURED*'
 

@@ -5,9 +5,12 @@
 # Compiled at: 2004-11-19 01:56:28
 import os, shutil, core.error, time, string, kernel.plugin, up150.up150type, up150.images as images, up150.messages as messages, up150.drivers, up150.participant, up150.drivers.rs485driver, up150.drivers.simulation, hardware
 from hardware import ResponseTimeoutException
-import hardware.hardwaremanager, executionengine, logging, threading, ui
+import hardware.hardwaremanager, executionengine, logging, threading
+import plugins.ui.ui as ui
 from hardware.utils.threads import BackgroundProcessThread, PurgeThread
 import core.deviceregistry, furnacezone.hw
+import plugins.executionengine.executionengine as executionengine
+from . import up150node, up150type
 logger = logging.getLogger('up150')
 instance = None
 
@@ -54,7 +57,7 @@ class StatusThread(BackgroundProcessThread):
             if not self.paused:
                 try:
                     self.askHardware()
-                except Exception, msg:
+                except Exception as msg:
                     self.paused = True
                     logger.exception(msg)
 
@@ -93,7 +96,7 @@ class UP150PurgeThread(PurgeThread):
         try:
             logger.debug('Setting purge setpoint %d for %d seconds' % (self.setpoint, self.duration))
             self.hwinst.setSetpoint(self.setpoint)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.debug('Unable to start purging: %s' % msg)
             self.stop()
@@ -108,7 +111,7 @@ class UP150PurgeThread(PurgeThread):
             self.setpoint = 0
             self.duration = 0
             self.done = True
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def tick(self):
@@ -118,7 +121,7 @@ class UP150PurgeThread(PurgeThread):
         if delta > self.duration:
             try:
                 self.hwinst.setSetpoint(0)
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
             else:
                 self.purgestop()
@@ -158,7 +161,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
             conf = self.getDescription().getConfiguration()
             if conf.has_section('default.device.props'):
                 uihints.createChildIfNotExists('plot-color').setValue(conf.get('default.device.props', 'plot.color'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return [
@@ -168,7 +171,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
         return tuple(map(int, val.split(',')))
 
     def formatPIDSettings(self, pid):
-        return string.join(map(str, pid), ',')
+        return ','.join(map(str, pid))
 
     def getPIDSettings(self):
         desc = self.getDescription()
@@ -177,11 +180,10 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
         conf = self.getDescription().getConfiguration()
         try:
             return map(int, conf.get('main', 'pid').split(','))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return None
-        return
 
     def setPIDSettings(self, pid):
         if self.getDescription() is None:
@@ -192,7 +194,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
             val = self.formatPIDSettings(pid)
         try:
             conf.set('main', 'pid', val)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             raise
 
@@ -214,7 +216,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
         self.checkDriver()
         try:
             return self.driver.getID()
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -242,7 +244,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
         try:
             self.driver.setSetpoint(setpoint)
             self.setpoint = setpoint
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -254,7 +256,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
         try:
             temperature = self.driver.getTemperature(timeout)
             self.statusGetTemperature(temperature)
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -282,12 +284,12 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
             inst = up150.drivers.getDriver(driverType)(self)
             self.setDriver(inst)
             self.driver.setConfiguration(config)
-        except Exception, msg:
+        except Exception as msg:
             self.driver = None
             self.logger.exception(msg)
             self.logger.error("Cannot setup driver : '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
-        except Error, msg:
+        except Error as msg:
             self.driver = None
             self.logger.error("Cannot setup driver : '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
@@ -303,7 +305,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
         self.resumeStatusThread()
         try:
             self.driver.initialize()
-        except Exception, msg:
+        except Exception as msg:
             import traceback
             traceback.print_exc()
             self.logger.exception(msg)
@@ -320,7 +322,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
             return
         try:
             self.driver.shutdown()
-        except Exception, msg:
+        except Exception as msg:
             logger.error("Cannot initialize '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error cannot initialize'%s'" % msg))
             raise Exception(msg)
@@ -341,7 +343,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
     def finishedPurge(self):
         try:
             self.driver.deactivate()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.status = hardware.hardwaremanager.STATUS_RUNNING

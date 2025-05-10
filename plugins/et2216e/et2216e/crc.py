@@ -33,33 +33,33 @@ def format(self, deviceaddr, function, address, value):
 
 if __name__ == '__main__':
     import struct
-    print 'Computing the value of the proper filling'
+    print('Computing the value of the proper filling')
     msg = struct.pack('BBBBBBBB', 2, 3, 0, 1, 0, 2, 149, 248)
     (crc, result) = crc16(msg)
-    print 'YES?', crc
-    print 'Testing CRC16 should output hex values 0x41,0x12 for input 0x02,0x07'
+    print('YES?', crc)
+    print('Testing CRC16 should output hex values 0x41,0x12 for input 0x02,0x07')
     msg = struct.pack('bb', 2, 7)
     (crc, result) = crc16(msg)
-    print 'raw:', crc, result
+    print('raw:', crc, result)
     for x in result:
-        print '%x' % x
+        print('%x' % x)
 
     if result[0] != 65:
-        print 'Invalid'
+        print('Invalid')
     if result[1] != 18:
-        print 'Invalid'
-    print 'Second test'
+        print('Invalid')
+    print('Second test')
     msg = struct.pack('bbbbbb', 2, 3, 0, 1, 0, 2)
-    print 'Should output 0x95, 0xF8'
+    print('Should output 0x95, 0xF8')
     (crc, result) = crc16(msg)
     for x in result:
-        print '%x' % x
+        print ('%x' % x)
 
     if result[0] != 149:
-        print 'Invalid'
+        print ('Invalid')
     if result[1] != 248:
-        print 'Invalid'
-    print 'Checking crc values'
+        print ('Invalid')
+    print('Checking crc values')
     msg = struct.pack('bbbb', 2, 7, 65, 18)
     (crc, result) = crc16(msg)
-    print 'Result?', crc
+    print('Result?', crc)

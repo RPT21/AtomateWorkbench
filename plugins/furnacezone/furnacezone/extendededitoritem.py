@@ -85,8 +85,8 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = ctrl.GetValue()
         try:
             val = int(val)
-        except Exception, msg:
-            logger.warn("Unable to conform value '%s' to int. Setting to 0" % val)
+        except Exception as msg:
+            logger.warning("Unable to conform value '%s' to int. Setting to 0" % val)
             val = 0
 
         logger.debug('Conformed: %d' % val)
@@ -97,7 +97,7 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = self.setpoint.GetValue()
         try:
             return int(val)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to convert value '%s' to int. Using 0" % val)
             return 0
 
@@ -141,7 +141,7 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
             self.linearRampCheckbox.SetValue(True)
             self.rampOriginSetpoint.Enable(True)
             self.rampOriginTemp.Enable(True)
-            print entry.isRampFromSetpoint(), entry.isRampFromLast()
+            print(entry.isRampFromSetpoint(), entry.isRampFromLast())
             self.rampOriginSetpoint.SetValue(entry.isRampFromSetpoint())
             self.rampOriginTemp.SetValue(entry.isRampFromLast())
         else:
@@ -161,7 +161,7 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         try:
             value = int(self.setpoint.GetValue())
             entry.setSetpoint(value)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to parse value for setpoint: '%s'" % msg)
             entry.setSetpoint(0)
 

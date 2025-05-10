@@ -19,8 +19,8 @@ class RefreshThread(threading.Thread):
         while not self.done:
             try:
                 self.callee.refreshData()
-            except Exception, msg:
-                print 'EXCEPTION: ', msg
+            except Exception as msg:
+                print('EXCEPTION: ', msg)
 
             time.sleep(self.refreshInterval)
 
@@ -74,7 +74,7 @@ class GooseMonitorHardware(hardware.hardwaremanager.Hardware):
             self.opener = urllib.FancyURLopener({})
         try:
             source = self.opener.open(url).read()
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
             self.fireGooseUpdate(goosemonitor.ERROR_RETRIEVING, str(msg))
             return goosemonitor.ERROR_RETRIEVING
@@ -116,14 +116,13 @@ class GooseMonitorHardware(hardware.hardwaremanager.Hardware):
                     newFields[key] = {'value': value, 'name': niceName, 'min': min, 'max': max}
                     self.fields = copy.copy(newFields)
 
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
             self.fireGooseUpdate(goosemonitor.ERROR_PARSING, str(msg))
             return goosemonitor.ERROR_PARSING
 
         self.fireGooseUpdate(goosemonitor.ERROR_OK)
         return goosemonitor.ERROR_OK
-        return
 
     def refreshData(self):
         if not self.configured:
@@ -138,7 +137,7 @@ class GooseMonitorHardware(hardware.hardwaremanager.Hardware):
             self.logger.debug("Goose Monitor URL is: '" + self.url + "'")
             if not self.url == '':
                 self.configured = True
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
 
         if self.configured:
@@ -151,7 +150,7 @@ class GooseMonitorHardware(hardware.hardwaremanager.Hardware):
         self.refreshThread.start()
 
     def shutdown(self):
-        print 'goosemonitor shutdown'
+        print('goosemonitor shutdown')
         if self.refreshThread is not None:
             if self.refreshThread.isAlive():
                 self.refreshThread.done = True
@@ -160,8 +159,8 @@ class GooseMonitorHardware(hardware.hardwaremanager.Hardware):
         return
 
     def setupDriver(self, description):
-        print 'goosemonitor setup driver'
+        print('goosemonitor setup driver')
 
     def dispose(self):
         hardware.hardwaremanager.Hardware.dispose(self)
-        print 'goosemonitor dispose'
+        print('goosemonitor dispose')

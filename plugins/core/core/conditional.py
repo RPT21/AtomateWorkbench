@@ -11,28 +11,26 @@ actionContributions = {}
 def addConditionalTestFactory(contribType, func):
     """Register a class of conditional contribution"""
     global conditionalContributions
-    if not conditionalContributions.has_key(contribType):
+    if not contribType in conditionalContributions:
         conditionalContributions[contribType] = func
 
 
 def getConditionalTestFactoryFor(contribType):
-    if conditionalContributions.has_key(contribType):
+    if contribType in conditionalContributions:
         return conditionalContributions[contribType]
     return None
-    return
 
 
 def addConditionalActionFactory(typestr, func):
     global actionContributions
-    if not actionContributions.has_key(typestr):
+    if not typestr in actionContributions:
         actionContributions[typestr] = func
 
 
 def getConditionalActionFactoryFor(typestr):
-    if actionContributions.has_key(typestr):
+    if not typestr in actionContributions:
         return actionContributions[typestr]
     return None
-    return
 
 
 def parseFromNode(node, recipe):
@@ -62,7 +60,6 @@ def parseFromNode(node, recipe):
         conditionalTests.appendAction(action)
 
     return conditionalTests
-    return
 
 
 class ConditionalContribution(object):

@@ -4,21 +4,21 @@
 # Embedded file name: ../plugins/grapheditor/src/grapheditor/__init__.py
 # Compiled at: 2004-08-09 11:44:20
 import ui, poi.views, kernel.plugin, kernel.pluginmanager as PluginManager, grapheditor.images as images, grapheditor.messages as messages, logging, grapheditor.editor
+import plugins.ui.ui as ui
 VIEW_ID = 'graph.editor'
 logger = logging.getLogger('grapheditor')
 contributionFactories = {}
 
 def addGraphContributionFactory(deviceType, factory):
     global contributionFactories
-    if not contributionFactories.has_key(deviceType):
+    if not deviceType in contributionFactories:
         contributionFactories[deviceType] = factory
 
 
 def getGraphContributionFactory(deviceType):
-    if not contributionFactories.has_key(deviceType):
+    if not deviceType in contributionFactories:
         return None
     return contributionFactories[deviceType]
-    return
 
 
 class GraphEditorPlugin(kernel.plugin.Plugin):

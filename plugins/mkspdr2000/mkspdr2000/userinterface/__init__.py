@@ -25,7 +25,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
         global logger
         try:
             pass
-        except Exception, msg:
+        except Exception as msg:
             logger.warning("Unable to set data for device entry: '%s'" % msg)
             logger.exception(msg)
 
@@ -165,7 +165,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         try:
             self.setDriverConfig(config)
             self.startupInitCheckbox.SetValue(config.get('main', 'startupinit').lower() == 'true')
-        except Exception, msg:
+        except Exception as msg:
             self.setDefaultConfig()
 
         self.setHardwareInfo(config)
@@ -253,7 +253,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
                 exc = None
                 try:
                     instance.initialize()
-                except Exception, msg:
+                except Exception as msg:
                     logger.exception(msg)
                     done = True
                     exc = core.utils.WrappedException()
@@ -272,7 +272,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         runner = InitializeWithProgressRunner()
         try:
             dlg.run(runner, fork=False)
-        except Exception, invocation:
+        except Exception as invocation:
             logger.exception(invocation)
             (e, v, t) = invocation.getWrapped()
             poi.dialogs.ExceptionDialog(f, v, 'Error Initializing Hardware').ShowModal()
@@ -312,7 +312,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         runner = ShutdownWithProgressRunner()
         try:
             dlg.run(runner, fork=False)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             poi.dialogs.ExceptionDialog(f, msg.getWrapped(), 'Error Shutting Down Hardware').ShowModal()
 
@@ -328,7 +328,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             if wasOn:
                 errors = self.shutdownHardware()
                 if errors:
-                    print '* ERROR: Cannot shutdown:', errors
+                    print('* ERROR: Cannot shutdown:', errors)
                 if errors:
                     return
             instance.setupDriver(self.getDescription())

@@ -3,21 +3,21 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/__init__.py
 # Compiled at: 2004-10-08 00:47:07
-import ui, poi.views, kernel.plugin, kernel.pluginmanager as PluginManager, logging, extendededitor.editor, extendededitor.images as images, extendededitor.messages as messages
+import poi.views, kernel.plugin, kernel.pluginmanager as PluginManager, logging, extendededitor.editor, extendededitor.images as images, extendededitor.messages as messages
+import plugins.ui.ui as ui
 VIEW_ID = 'extendededitor.editor'
 logger = logging.getLogger('extendededitor')
 contributionFactories = {}
 
 def addContributionFactory(deviceType, factory):
-    if not contributionFactories.has_key(deviceType):
+    if not deviceType in contributionFactories:
         contributionFactories[deviceType] = factory
 
 
 def getContributionFactory(deviceType):
-    if contributionFactories.has_key(deviceType):
+    if deviceType in contributionFactories:
         return contributionFactories[deviceType]
     return None
-    return
 
 
 class ExtendedEditorPlugin(kernel.plugin.Plugin):

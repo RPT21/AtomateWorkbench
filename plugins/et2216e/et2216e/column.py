@@ -3,8 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/up150/src/up150/column.py
 # Compiled at: 2004-08-12 02:18:21
-from wxPython.grid import *
-from wxPython.wx import *
+from wx.grid import *
+from wx import *
 import wx, up150.images as images, grideditor.tablecolumn, grideditor.utils.numericcelleditor, grideditor.utils
 
 class UP150Column(grideditor.tablecolumn.ColumnContribution):

@@ -3,39 +3,42 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/utils/validation.py
 # Compiled at: 2004-11-12 19:14:23
-import logging, copy, validator, validator.participant, hardware.hardwaremanager
+import logging, copy, hardware.hardwaremanager
+from plugins.validator.validator.participant import ValidationParticipant, ValidationError
+import plugins.validator.validator.participant as participant
+import plugins.validator.validator as validator
 logger = logging.getLogger('grideditor.validation')
 KEY_DURATION = 'duration'
 KEY_LOOPING = 'looping'
 KEY_DEVICE_CONFIGURATION = 'device-configuration'
 
-class InvalidDurationError(validator.participant.ValidationError):
+class InvalidDurationError(ValidationError):
     __module__ = __name__
 
     def __init__(self, step, description):
-        validator.participant.ValidationError.__init__(self, [
-         validator.participant.KEY_STEP, KEY_DURATION], 'Invalid Duration: %s' % description, step, None)
-        self.setSeverity(validator.participant.SEVERITY_ERROR)
+        ValidationError.__init__(self, [
+         participant.KEY_STEP, KEY_DURATION], 'Invalid Duration: %s' % description, step, None)
+        self.setSeverity(participant.SEVERITY_ERROR)
         return
 
 
-class InvalidLoopingError(validator.participant.ValidationError):
+class InvalidLoopingError(participant.ValidationError):
     __module__ = __name__
 
     def __init__(self, step, description):
-        validator.participant.ValidationError.__init__(self, [
-         validator.participant.KEY_STEP, KEY_LOOPING], 'Invalid looping parameter: %s' % description, step, None)
-        self.setSeverity(validator.participant.SEVERITY_ERROR)
+        participant.ValidationError.__init__(self, [
+         participant.KEY_STEP, KEY_LOOPING], 'Invalid looping parameter: %s' % description, step, None)
+        self.setSeverity(participant.SEVERITY_ERROR)
         return
 
 
-class DeviceNotConfiguredError(validator.participant.ValidationError):
+class DeviceNotConfiguredError(participant.ValidationError):
     __module__ = __name__
 
     def __init__(self, device, description):
-        validator.participant.ValidationError.__init__(self, [
-         validator.participant.KEY_CONFIGURATION, KEY_DEVICE_CONFIGURATION], "Device not configured for device '%s' (%s): %s" % (device.getLabel(), device.getType(), description), None, device)
-        self.setSeverity(validator.participant.SEVERITY_ERROR)
+        participant.ValidationError.__init__(self, [
+         participant.KEY_CONFIGURATION, KEY_DEVICE_CONFIGURATION], "Device not configured for device '%s' (%s): %s" % (device.getLabel(), device.getType(), description), None, device)
+        self.setSeverity(participant.SEVERITY_ERROR)
         return
 
 
@@ -105,7 +108,7 @@ def validateDevices(owner, recipe):
         hwhints = device.getHardwareHints()
         try:
             id = hwhints.getChildNamed('id').getValue()
-        except Exception, msg:
+        except Exception as msg:
             owner.addError(DeviceNotConfiguredError(device, 'No hardware configured'))
             valid = False
             continue
@@ -124,16 +127,16 @@ def validateDevices(owner, recipe):
     return
 
 
-class CompositeValidationParticipant(validator.participant.ValidationParticipant):
+class CompositeValidationParticipant(ValidationParticipant):
     __module__ = __name__
 
     def __init__(self):
-        validator.participant.ValidationParticipant.__init__(self)
+        ValidationParticipant.__init__(self)
         self.validators = [validateDuration, validateEnclosingLoops, validateGeneral, validateDevices]
 
     def validate(self, recipe):
         """Return True if valid, false otherwise."""
-        validator.participant.ValidationParticipant.validate(self, recipe)
+        ValidationParticipant.validate(self, recipe)
         valid = True
         for func in self.validators:
             if not func(self, recipe):

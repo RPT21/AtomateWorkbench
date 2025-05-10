@@ -3,8 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/ui/src/ui/actions/__init__.py
 # Compiled at: 2004-10-08 00:40:06
-import plugins.ui.ui, plugins.poi.poi.actions, plugins.ui.ui.messages as messages
-import plugins.ui.ui.images as images, plugins.ui.ui.dialog.preferences, plugins.ui.ui.splash, wx
+import plugins.ui.ui.messages as messages, wx
+import plugins.poi.poi as poi
 
 class ExitAction(poi.actions.Action):
     __module__ = __name__

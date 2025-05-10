@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/pressure_gauge/src/pressure_gauge/messages.py
 # Compiled at: 2004-08-09 11:44:20
-import ConfigParser, kernel.pluginmanager, os, logging
+import configparser, lib.kernel.pluginmanager, os, logging
 MESSAGES_FILENAME = 'messages.prop'
 inited = False
 config = None
@@ -17,14 +17,14 @@ def init(contextBundle):
     if not inited:
         inited = True
         try:
-            config = ConfigParser.SafeConfigParser()
+            config = configparser.RawConfigParser()
             config.read([os.path.join(contextBundle.dirname, MESSAGES_FILENAME)])
-        except Exception, msg:
-            logger.warn("Unable to load messages from '%s':'%s'" % (contextBundle.dirname, msg))
+        except Exception as msg:
+            logger.warning("Unable to load messages from '%s':'%s'" % (contextBundle.dirname, msg))
 
 
 def get(key):
     try:
         return config.get('messages', key)
-    except Exception, msg:
+    except Exception as msg:
         return '%%%s%%' % key

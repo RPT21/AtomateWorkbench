@@ -4,6 +4,7 @@
 # Embedded file name: ../plugins/schematicspanel/src/schematicspanel/__init__.py
 # Compiled at: 2004-08-10 09:09:48
 import ui, poi.views, kernel.plugin, kernel.pluginmanager as PluginManager, logging, schematicspanel.images as images, schematicspanel.messages as messages, schematicspanel.editor
+import plugins.ui.ui as ui
 VIEW_ID = 'schematicspanel.editor'
 logger = logging.getLogger('schematicspanel')
 

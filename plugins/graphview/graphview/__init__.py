@@ -7,6 +7,7 @@ import plugins.ui.ui, plugins.poi.poi.views, wx, lib.kernel.plugin, lib.kernel.p
 import plugins.graphview.graphview.images as images, plugins.graphview.graphview.messages as messages
 import plugins.executionengine.executionengine, plugins.executionengine.executionengine.engine
 import plugins.graphview.graphview.view, threading, plugins.labbooks.labbooks
+import plugins.ui.ui as ui
 VIEW_ID = 'graphview.view'
 logger = logging.getLogger('graphview')
 instance = None

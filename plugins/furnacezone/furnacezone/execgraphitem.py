@@ -201,11 +201,11 @@ class GraphItem(wx.Panel):
         self.recreateGraphBuffer()
 
 
-class GraphView(graphview.PanelView):
+class GraphView(plugins.graphview.graphview.PanelView):
     __module__ = __name__
 
     def __init__(self, owner, panel):
-        graphview.PanelView.__init__(self, owner, panel)
+        plugins.graphview.graphview.PanelView.__init__(self, owner, panel)
         self.createUI(owner, panel)
         self.devicePanels = {}
         self.engine = None

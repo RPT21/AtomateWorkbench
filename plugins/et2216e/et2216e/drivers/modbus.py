@@ -237,21 +237,21 @@ if __name__ == '__main__':
     import serial
     DEBUG = True
     port = serial.Serial(0)
-    print 'Opening port 1'
+    print('Opening port 1')
     channel = ModbusRTUChannel()
     channel.configure(port, 1)
-    print 'Reading software version: %0.4x' % channel.readWords(107, 1)
+    print('Reading software version: %0.4x' % channel.readWords(107, 1))
     time.sleep(2)
     port.flush()
     port.write('\n\r*IDN?\n\r')
-    print 'waiting ...'
+    print('waiting ...')
     time.sleep(2)
-    print 'what is what', port.inWaiting()
+    print('what is what', port.inWaiting())
     if port.inWaiting() > 0:
-        print ':', port.read(port.inWaiting())
+        print(':', port.read(port.inWaiting()))
     port.write('')
     time.sleep(0.1)
-    print 'waiting?', port.inWaiting()
+    print('waiting?', port.inWaiting())
     if port.inWaiting() > 0:
-        print '>', port.read(port.inWaiting())
+        print('>', port.read(port.inWaiting()))
     port.close()

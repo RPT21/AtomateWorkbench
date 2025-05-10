@@ -126,7 +126,7 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
             if self.lockoutPanel:
                 logger.debug('Locking panel')
                 self.lockPanel()
-        except Exception, msg:
+        except Exception as msg:
             raise Exception(msg)
 
     def checkInterrupt(self):
@@ -221,8 +221,8 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         try:
             if self.lockoutPanel:
                 self.unlockPanel()
-        except Exception, msg:
-            print '* ERROR: Cannot unlock panel', msg
+        except Exception as msg:
+            print ('* ERROR: Cannot unlock panel', msg)
 
         self.status = mks647bc.drivers.STATUS_UNINITIALIZED
 

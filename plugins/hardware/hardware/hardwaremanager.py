@@ -60,7 +60,7 @@ class Hardware(object):
         pass
 
     def readDefaultDeviceProperties(self):
-        props = configparser.SafeConfigParser()
+        props = configparser.RawConfigParser()
         try:
             p = os.path.join(os.path.dirname(self.description.getConfigurationPath()), self.description.getName() + '.default.props')
         except Exception as msg:
@@ -220,7 +220,7 @@ def getHardwareType(typeStr):
 
 
 def loadHardware(fullpath):
-    config = configparser.SafeConfigParser()
+    config = configparser.RawConfigParser()
     config.read([fullpath])
     hardwareTypeStr = config.get('main', 'hardwareType')
     hardwareDescription = HardwareDescription(config, fullpath)
@@ -317,7 +317,7 @@ def getFilenameFromName(name):
 def create(name, hardwareType):
     global HARDWARE_CONFIG_FILE_SUFFIX
     path = getHardwareConfigPath()
-    config = configparser.SafeConfigParser()
+    config = configparser.RawConfigParser()
     config.add_section('main')
     config.set('main', 'name', name)
     config.set('main', 'hardwareType', hardwareType.getType())

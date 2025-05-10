@@ -90,7 +90,7 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
         self.autoSaveInterval.SetValue(prefs.get('editor', 'autosaveinterval'))
         try:
             self.gridCellColor.SetValue(self.parseColorStr(prefs.get('editor', 'colors.highlight')))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.suppress = False
@@ -99,10 +99,10 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
 
     def parseColorStr(self, colstr):
         try:
-            return apply(wx.Color, map((lambda s: int(s)), colstr.split(',')))
-        except Exception, msg:
+            return apply(wx.Colour, map((lambda s: int(s)), colstr.split(',')))
+        except Exception as msg:
             logger.exception(msg)
-            return wx.Color(0, 0, 100)
+            return wx.Colour(0, 0, 100)
 
     def colorToStr(self, color):
         return '%s,%s,%s' % (color.Red(), color.Green(), color.Blue())
@@ -116,14 +116,14 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
         try:
             autosaveinterval = self.values['autosaveinterval']
             prefs.set('editor', 'autosaveinterval', autosaveinterval)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Unable to set preferences: '%s'" % msg)
 
         try:
             gridcellcolor = self.values['colors.highlight']
             prefs.set('editor', 'colors.highlight', gridcellcolor)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def getTitle(self):

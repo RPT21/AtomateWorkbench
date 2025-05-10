@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/autosaver.py
 # Compiled at: 2004-08-26 20:56:44
-import core.utils, grideditor, grideditor.utils, logging, ui.context, threading, time
+import core.utils, grideditor.utils, logging, ui.context, threading, time
+import plugins.grideditor.grideditor as grideditor
+import plugins.grideditor.grideditor.constants as constants
 logger = logging.getLogger('grideditor.autosaver')
 
 class AutoSaver(object):
@@ -77,7 +79,7 @@ class AutoSaver(object):
         store = self.getPreferencesStore()
         try:
             prefs = store.getPreferences()
-            self.interval = int(prefs.get('editor', grideditor.constants.TAG_AUTOSAVEINTERVAL))
+            self.interval = int(prefs.get('editor', constants.TAG_AUTOSAVEINTERVAL))
             self.startIfNecessary()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)

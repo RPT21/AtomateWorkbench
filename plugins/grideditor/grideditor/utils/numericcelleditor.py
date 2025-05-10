@@ -51,8 +51,8 @@ class NumericCellEditor(grideditor.tablecolumn.TextCellEditor):
     def convertValue(self, value):
         try:
             return self.as_type(value)
-        except Exception, msg:
-            logger.warn("Unable to convert value '%s':%s" % (value, msg))
+        except Exception as msg:
+            logger.warning("Unable to convert value '%s':%s" % (value, msg))
             return self.as_type(0)
 
     def getValue(self):

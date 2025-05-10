@@ -26,7 +26,6 @@ class PressureGaugeRunLogParticipant(labbooks.RunLogParticipant):
             return None
         else:
             return headers
-        return
 
     def writeToRunLog(self, envelope, runlog):
         responses = envelope.getResponseByType('pressure_gauge')
@@ -35,5 +34,5 @@ class PressureGaugeRunLogParticipant(labbooks.RunLogParticipant):
                 pressure = response.getPressure()
                 runlog.appendBuffer('\t%s\t%s' % tuple(pressure))
 
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)

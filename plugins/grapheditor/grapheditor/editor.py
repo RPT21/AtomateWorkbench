@@ -464,7 +464,7 @@ class EditorViewer(object):
             image.SetOptionInt(wx.IMAGE_OPTION_CUR_HOTSPOT_X, image.GetWidth() / 2)
             image.SetOptionInt(wx.IMAGE_OPTION_CUR_HOTSPOT_Y, image.GetHeight() / 2)
             self.cursorResizeWE = wx.CursorFromImage(image)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.cursorResizeWE = wx.StockCursor(wx.CURSOR_SIZEWE)
 
@@ -585,7 +585,7 @@ class EditorViewer(object):
             if True:
                 self.update(dc, (self.pixelToMillis(left), self.pixelToMillis(right)))
             if False:
-                print 'UPDATE:', left, right
+                print('UPDATE:', left, right)
                 dc.SetPen(wx.Pen(wx.GREEN))
                 dc.DrawRectangle((left + lt - self.scrolledX, y), (
                  right - left - self.scrolledX, self.getHeight()))
@@ -868,14 +868,14 @@ class TimelineHeader(object):
         numtop = self.calcCenter(self.cachedTextHeight, height)
         visibleEvents = self.calcVisibleEvents(interval)
         if False:
-            print 'drawing:', interval[0], interval[1], self.currentIntervalUnit
+            print('drawing:', interval[0], interval[1], self.currentIntervalUnit)
             for i in range(interval[0], interval[1], self.currentIntervalUnit):
                 if i < interval[0]:
                     continue
                 if i > interval[1]:
                     break
                 x = self.owner.millisToPixels(i) - self.owner.scrolledX
-                print '\twhat what>', x
+                print('\twhat what>', x)
                 dc.DrawLine(x, top, x, top + numberbarheight)
                 text = self.getTextForValue(i)
                 strw = dc.GetTextExtent(text)[0]

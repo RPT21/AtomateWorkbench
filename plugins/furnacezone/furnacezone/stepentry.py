@@ -21,9 +21,9 @@ def parseFromNode(node):
         if tagsTosetpointModes[stmstr] == SETPOINT_LINEAR_RAMP:
             frm = tagsToRampTypes[setpointNode.getAttribute('from')]
             stepentry.rampStart = frm
-    except Exception, msg:
+    except Exception as msg:
         logger.exception(msg)
-        logger.warn('Unable to parse setpoint mode')
+        logger.warning('Unable to parse setpoint mode')
 
     stepentry.setSetpoint(setpointval)
     return stepentry
@@ -103,9 +103,9 @@ class FurnaceZoneStepEntry(core.stepentry.StepEntry):
             setpointNode.setAttribute('mode', setpointModeToTags[self.getSetpointMode()])
             if self.getSetpointMode() == SETPOINT_LINEAR_RAMP:
                 setpointNode.setAttribute('from', rampTypesToTags[self.rampStart])
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Unable to convert recipe to node.  Using default values')
+            logger.warning('Unable to convert recipe to node.  Using default values')
             setpointNode.setAttribute('mode', setpointModeToTag[SETPOINT_SINGLE])
 
     def clone(self):

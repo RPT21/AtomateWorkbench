@@ -179,18 +179,18 @@ class TestRowItem(object):
         del self.leftOperands[0:]
         self.leftOperandDropDown.Clear()
         for contributions in self.owner.getConditionalContributions():
-            print 'slow ride:', contributions
+            print('slow ride:', contributions)
             if len(contributions) == 0:
                 continue
             for testContribution in contributions:
-                print 'Going to call test Contribution:', testContribution
+                print('Going to call test Contribution:', testContribution)
                 for contribution in testContribution.getTestEditorContributions():
                     self.leftOperands.append(contribution)
                     name = contribution.getLeftOperandString()
                     self.leftOperandDropDown.Append(name)
 
     def createControl(self, parent):
-        self.control = wx.Panel(parent, -1, size=(-1, 10), style=wx.TAB_TRAVERSAL)
+        self.control = wx.Panel(parent, -1, size=wx.Size(-1, 10), style=wx.TAB_TRAVERSAL)
         self.control.SetBackgroundColour(wx.WHITE)
         self.leftOperandDropDown = wx.Choice(self.control, -1)
         self.operatorDropDown = wx.Choice(self.control, -1)
@@ -353,7 +353,7 @@ class TestEditor(object):
             self.conditionalContributions.append(device.getConditionalContributions())
 
     def getConditionalContributions(self):
-        print ' i got asked:', self.conditionalContributions
+        print(' i got asked:', self.conditionalContributions)
         return self.conditionalContributions
 
     def setRecipe(self, recipe):

@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/help/src/help/__init__.py
 # Compiled at: 2004-11-23 07:30:57
-import wx, os, wx.html, ui, kernel.plugin, poi.actions, help.actions, help.frame, help.images as images, help.messages as messages, logging, ConfigParser
+import wx, os, wx.html, ui, kernel.plugin, poi.actions, help.actions, help.frame, help.images as images, help.messages as messages, logging, configparser
+import plugins.ui.ui as ui
 instance = None
 logger = logging.getLogger('help')
 
@@ -51,10 +52,10 @@ class HelpPlugin(kernel.plugin.Plugin):
 
     def loadPredefinedBooks(self):
         try:
-            config = ConfigParser.SafeConfigParser()
+            config = configparser.RawConfigParser()
             fname = os.path.join(self.contextBundle.dirname, 'default.books')
             config.readfp(open(fname), fname)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             return
 
@@ -81,7 +82,7 @@ class HelpPlugin(kernel.plugin.Plugin):
             try:
                 logger.debug("Adding cached book '%s' to help controller" % book)
                 self.controller.addBook(book)
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
 
     def xcreateController(self):

@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/help/src/help/frame.py
 # Compiled at: 2004-11-23 08:00:49
-import wx, wx.html, ConfigParser, time, logging
+import wx, wx.html, configparser, time, logging
 logger = logging.getLogger('help.controller')
 
 class BookControl(wx.TreeCtrl):
@@ -90,12 +90,12 @@ class HelpFrame(wx.Frame):
             screenw = wx.SystemSettings_GetMetric(wx.SYS_SCREEN_X)
             w = screenw - screenw / 3
             h = wx.SystemSettings_GetMetric(wx.SYS_SCREEN_Y) - 100
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
-        self.SetSize((w, h))
+        self.SetSize(wx.Size(w, h))
         self.split.SplitVertically(self.tree, self.content, w / 3)
-        self.SetPosition((0, 0))
+        self.SetPosition(wx.Point(0, 0))
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.show()
         self.books = {}
@@ -177,7 +177,7 @@ class Book(object):
         props = self.fh.OpenFile('file:%s#zip:book.props' % bookpath)
         if props is None:
             raise Exception('Not a properly formatted help file: %s' % bookpath)
-        cp = ConfigParser.ConfigParser()
+        cp = configparser.ConfigParser()
 
         class Wrap(object):
             __module__ = __name__
@@ -220,8 +220,8 @@ class Book(object):
                         section['id'] = props.get(seclabel, 'id')
                     sections.append(section)
 
-            except Exception, msg:
-                print 'msg:', msg
+            except Exception as msg:
+                print('msg:', msg)
 
         items = props.items('ids')
         for (key, val) in items:

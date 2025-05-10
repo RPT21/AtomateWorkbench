@@ -33,7 +33,7 @@ class PortEnumerator(threading.Thread):
                 ser.open()
                 CHOICES_PORTS.append(i)
                 ser.close()
-            except Exception, msg:
+            except Exception as msg:
                 continue
 
 
@@ -107,7 +107,7 @@ class SerialConfigurationSegment(object):
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return self.control
@@ -137,9 +137,9 @@ class SerialConfigurationSegment(object):
             self.stopbitsChoice.SetSelection(CHOICES_STOPBITS.index(int(data.get('driver', 'stopbits'))))
             self.lockoutPanel.SetValue(data.get('driver', 'panellockout').lower() == 'true')
             self.wordSizeChoice.SetSelection(CHOICES_BITS.index(int(data.get('driver', 'wordsize'))))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set proper values for driver segment: %s' % msg)
+            logger.warning('Cannot set proper values for driver segment: %s' % msg)
             self.setDefaultData()
 
     def setDefaultData(self):
@@ -207,7 +207,7 @@ class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
             self.stopbits = int(configuration.get('driver', 'stopbits'))
             self.lockoutPanel = configuration.get('driver', 'panellockout').lower() == 'true'
             self.wordsize = int(configuration.get('driver', 'wordsize'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error('Cannot configure network device driver: %s' % msg)
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
@@ -221,7 +221,7 @@ class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
             self.checkInterrupt()
             self.softwareVersion = self.getID()
             logger.debug('Software version %s' % self.softwareVersion)
-        except Exception, msg:
+        except Exception as msg:
             try:
                 self.port.close()
             except:
@@ -267,7 +267,6 @@ class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
             self.buff = self.buff[idx + len(self.delimeter):]
             return cmd
         return None
-        return
 
     def sendCommand(self, command):
         self.port.write(command)

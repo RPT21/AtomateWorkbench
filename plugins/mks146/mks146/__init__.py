@@ -3,10 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks146/src/mks146/__init__.py
 # Compiled at: 2004-11-19 22:12:40
-import os, shutil, core.error, core.deviceregistry, ConfigParser, logging, kernel.plugin, kernel.pluginmanager as PluginManager, hardware.hardwaremanager
+import os, shutil, core.error, core.deviceregistry, configparser, logging, kernel.plugin, kernel.pluginmanager as PluginManager, hardware.hardwaremanager
 from hardware import ResponseTimeoutException
-import mks146.mks146type, mks146.drivers, mks146.drivers.ser, mks146.participant, mfc.hardwarestatusprovider, poi.actions, ui, threading, executionengine
+import mks146.mks146type, mks146.drivers, mks146.drivers.ser, mks146.participant, mfc.hardwarestatusprovider, poi.actions, threading
+import plugins.ui.ui as ui
+from . import mks146type, mks647bctype
 from hardware.utils.threads import BackgroundProcessThread, PurgeThread
+import plugins.executionengine.executionengine as executionengine
 instance = None
 logger = logging.getLogger('mks146')
 
@@ -48,7 +51,7 @@ class MKS146Plugin(kernel.plugin.Plugin):
                     initialize = False
                     try:
                         initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'
-                    except Exception, msg:
+                    except Exception as msg:
                         pass
 
                     if initialize:
@@ -78,7 +81,7 @@ class StateCaller(threading.Thread):
             for i in range(len(self.channels)):
                 try:
                     self.channels[i] = self.hwinst.getChannelFlow(i)
-                except Exception, msg:
+                except Exception as msg:
                     self.isDone = True
                     return
 
@@ -100,7 +103,7 @@ class StatusThread(BackgroundProcessThread):
             if not self.paused:
                 try:
                     self.askHardware()
-                except Exception, msg:
+                except Exception as msg:
                     logger.exception(msg)
 
             self.lock.release()
@@ -117,7 +120,7 @@ class StatusThread(BackgroundProcessThread):
         for i in range(numc):
             try:
                 self.channels[i] = inst.getChannelCondition(i + 1)
-            except Exception, msg:
+            except Exception as msg:
                 self.paused = True
                 logger.exception(msg)
 
@@ -143,7 +146,7 @@ class MKSPurgeThread(PurgeThread):
                 logger.debug('Setting %d %f %s' % (channel, setpoint, str(length)))
                 self.hwinst.setChannelSetpoint(channel, setpoint)
 
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.debug('Unable to start purging: %s' % msg)
             self.stop()
@@ -156,7 +159,7 @@ class MKSPurgeThread(PurgeThread):
             for (channel, ignored, ignored2) in self.setpoints:
                 try:
                     self.hwinst.disableChannel(channel)
-                except Exception, msg:
+                except Exception as msg:
                     logger.exception(msg)
 
                 time.sleep(0.2)
@@ -164,7 +167,7 @@ class MKSPurgeThread(PurgeThread):
             self.completed = []
             self.setpoints = []
             self.done = True
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def tick(self):
@@ -173,7 +176,7 @@ class MKSPurgeThread(PurgeThread):
         for (channel, sepoint, length) in self.setpoints:
             try:
                 self.hwinst.getChannelCondition(channel)
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
                 self.purgestop()
 
@@ -278,7 +281,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
         try:
             self.driver.setSetpoint(channelNum, flow)
             self.setpoints[channelNum - 1] = flow
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
             raise
 
@@ -299,12 +302,12 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
         hardware.hardwaremanager.Hardware.dispose(self)
         try:
             self.purgeWorker.stop()
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
 
         try:
             self.statusThread.stop()
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
 
     def resumeStatusThread(self):
@@ -322,7 +325,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
         self.checkDriver()
         try:
             return self.driver.getID()
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -333,7 +336,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
             resp = self.driver.getChannelCondition(channel)
             self.statusGetFlow(channel, resp[1])
             return resp
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -344,7 +347,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
             flow = self.driver.getFlow(channelNum)
             self.statusGetFlow(channelNum, flow)
             return flow
-        except ResponseTimeoutException, msg:
+        except ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -367,7 +370,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
             inst = mks146.drivers.getDriver(driverType)()
             self.setDriver(inst)
             self.driver.setConfiguration(config)
-        except Exception, msg:
+        except Exception as msg:
             self.driver = None
             self.logger.exception(msg)
             self.logger.error("Cannot initialize driver: '%s'" % msg)
@@ -375,7 +378,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
 
         try:
             self.channelNum = int(config.get('main', 'channels'))
-        except Exception, msg:
+        except Exception as msg:
             self.channelNum = 4
 
         return
@@ -391,7 +394,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
             self.logger.debug('Resuming status thread')
             self.resumeStatusThread()
             self.logger.debug('Done')
-        except Exception, msg:
+        except Exception as msg:
             self.logger.exception(msg)
             self.logger.error("Cannot initialize: '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "* ERROR: Cannot initialize: '%s'" % msg))
@@ -408,7 +411,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
             return
         try:
             self.driver.shutdown()
-        except Exception, msg:
+        except Exception as msg:
             self.logger.error("Unable to shutdown '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "* ERROR: Cannot shutdown: '%s'" % msg))
             raise Exception(msg)

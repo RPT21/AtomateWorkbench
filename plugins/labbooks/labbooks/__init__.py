@@ -3,10 +3,17 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/labbooks/src/labbooks/__init__.py
 # Compiled at: 2004-12-17 20:49:55
-import ui, copy, ui.context, poi.views, os, executionengine, resources.workspace, kernel.plugin, kernel.pluginmanager as PluginManager, labbooks.caching, logging, time
+import copy, os, logging, time
+import lib.kernel as kernel
+import plugins.ui.ui as ui
+import plugins.executionengine.executionengine as executionengine
+import plugins.resources.resources as resources
+from . import caching
 logger = logging.getLogger('labbooks')
+global instance
 
 def getDefault():
+    global instance
     return instance
 
 
@@ -43,7 +50,7 @@ class LabBooksPlugin(kernel.plugin.Plugin):
 
     def createCache(self, prefix, f):
         logger.debug('Cache created: %s' % prefix)
-        return labbooks.caching.CacheFile(prefix, f)
+        return caching.CacheFile(prefix, f)
 
     def createRunLog(self):
         """Creates a run log file and the cache"""
@@ -74,7 +81,7 @@ class LabBooksPlugin(kernel.plugin.Plugin):
         for participant in ps:
             try:
                 participant.handleEngineEvent(event, self.runlog)
-            except Exception, msg:
+            except Exception as msg:
                 logger.exception(msg)
 
         if eventType == executionengine.engine.TYPE_DEVICE_RESPONSE:
