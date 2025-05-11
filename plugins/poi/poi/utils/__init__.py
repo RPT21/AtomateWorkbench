@@ -25,20 +25,17 @@ class ImageButton(wx.BitmapButton):
         x = bitmap.GetWidth() + 2
         dc.SetFont(self.GetFont())
         mid = (h - dc.GetTextExtent(label)[1]) / 2
-        dc.DrawText(label, x, mid)
+        dc.DrawText(label, int(x), int(mid))
         return bmp
 
     def __calcDimensions(self, bitmap, label):
-        (w, h) = (
-         0, 0)
+        (w, h) = (0, 0)
         if bitmap is not None:
-            (w, h) = (
-             bitmap.GetWidth(), bitmap.GetHeight())
+            (w, h) = (bitmap.GetWidth(), bitmap.GetHeight())
         (tw, th, des, lead) = self.GetParent().GetFullTextExtent(label)
         textheight = th + des
         if h < textheight:
             h = textheight
         w += tw + 2
-        return (
-         w, h)
-        return
+        return (w, h)
+

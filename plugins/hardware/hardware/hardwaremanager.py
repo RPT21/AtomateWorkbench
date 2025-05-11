@@ -71,7 +71,7 @@ class Hardware(object):
             self.createDefaultDeviceProperties(p)
         if not os.path.exists(p):
             return
-        props.readfp(open(p, 'r'), p)
+        props.read_file(open(p, 'r'), p)
         return props
 
     def createDefaultDeviceProperties(self, path):

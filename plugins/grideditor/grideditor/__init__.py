@@ -10,8 +10,9 @@ import plugins.grideditor.grideditor.recipegridviewer, plugins.grideditor.grided
 import plugins.grideditor.grideditor.messages, plugins.grideditor.grideditor.utils, plugins.grapheditor.grapheditor
 import plugins.extendededitor.extendededitor, plugins.panelview.panelview, logging, plugins.resourcesui.resourcesui.actions
 import plugins.resources.resources, plugins.validator.validator, plugins.grideditor.grideditor.utils.validation
-import plugins.grideditor.grideditor.autosaver, threading, plugins.grideditor.grideditor.utils.errorviewer
-import plugins.ui.ui as ui
+import plugins.grideditor.grideditor.autosaver as autosaver, threading, plugins.grideditor.grideditor.utils.errorviewer
+import plugins.ui.ui as ui, plugins.grideditor.grideditor.actions, plugins.resources.resources.version, plugins.grideditor.grideditor.recipemodel
+from plugins.resourcesui.resourcesui.actions import openRecipeVersion
 CONFIG_FILENAME = '.config'
 PLUGIN_ID = 'grideditor'
 VIEW_ID = 'grideditor'
@@ -274,7 +275,7 @@ class GridEditorPlugin(lib.kernel.plugin.Plugin):
         configpath = self.getLocalConfigurationFilename()
         try:
             f = open(configpath, 'r')
-            self.config.readfp(f)
+            self.config.read_file(f)
             f.close()
         except Exception as msg:
             logger.warning("Unable to open configuration: '%s'" % configpath)
@@ -298,7 +299,7 @@ class GridEditorPlugin(lib.kernel.plugin.Plugin):
         project.load()
         version = workspace.getRecipeVersion(project, plugins.resources.resources.version.getVersionWithNumber(versionNumber))
         version.load()
-        plugins.resourcesui.resourcesui.actions.openRecipeVersion(version)
+        openRecipeVersion(version)
         return
 
     def xclosing(self):

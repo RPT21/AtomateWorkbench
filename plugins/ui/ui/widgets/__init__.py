@@ -25,7 +25,7 @@ class GradientLabel(wx.Window):
 
     def cacheSize(self):
         self.size = self.GetTextExtent('H')
-        self.SetSize((-1, self.size[1] + 4))
+        self.SetSize(wx.Size(-1, self.size[1] + 4))
 
     def setColor(self, color):
         self.color = color

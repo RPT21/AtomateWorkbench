@@ -10,6 +10,7 @@ import plugins.validator.validator as validator
 import plugins.grideditor.grideditor as grideditor
 import plugins.grideditor.grideditor.images as images
 import plugins.grideditor.grideditor.messages as messages
+import plugins.poi.poi.actions
 
 
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
@@ -66,7 +67,7 @@ class ErrorViewer(object):
 
     def createControl(self, parent=None):
         parent = ui.getDefault().getMainFrame().getControl()
-        self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title'), size=wx.Size(300, 300), pos=(100, 100))
+        self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title')[0], size=wx.Size(300, 300), pos=wx.Point(100, 100))
         self.list = self.createList()
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.list, 1, wx.GROW | wx.ALL, 0)
@@ -76,8 +77,8 @@ class ErrorViewer(object):
 
     def createList(self):
         lst = AutoSizingListCtrl(self.control, -1, style=wx.LC_REPORT)
-        lst.InsertColumn(0, messages.get('dialog.errorviewer.column.step'))
-        lst.InsertColumn(1, messages.get('dialog.errorviewer.column.description'), wx.LIST_AUTOSIZE)
+        lst.InsertColumn(0, messages.get('dialog.errorviewer.column.step')[0])
+        lst.InsertColumn(1, messages.get('dialog.errorviewer.column.description')[0], wx.LIST_AUTOSIZE)
         lst.SetColumnWidth(0, 80)
         lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemActivated, lst)
         return lst

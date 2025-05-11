@@ -288,7 +288,7 @@ class MainFrame(object):
                 window.SetDefaultSize((height, currsize[1]))
             self.updateSashPositions()
 
-        wx.adv.EVT_SASH_DRAGGED_RANGE(self.sectorsView, 1000, 1003, draggedSash)
+        self.sectorsView.Bind(wx.adv.EVT_SASH_DRAGGED_RANGE, draggedSash, id=1000, id2=1003)
 
         def relayout(event):
             self.updateSashPositions()

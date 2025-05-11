@@ -14,6 +14,7 @@ There are two ways to call it:
 """
 import gc, sys, wx, traceback, threading, plugins.poi.poi.dialogs, plugins.poi.poi.operation, time, logging
 from plugins.poi.poi.dialogs import Dialog
+import plugins.poi.poi as poi
 logger = logging.getLogger('progress')
 EVT_TASK_END_ID = wx.NewId()
 EVT_TASK_START_ID = wx.NewId()
@@ -133,7 +134,7 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
         sizer.Add(self.cancelButton, 0, wx.ALIGN_RIGHT | wx.ALL | 5)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
-        self.control.SetSize((300, 300))
+        self.control.SetSize(wx.Size(300, 300))
         self.control.CentreOnScreen()
         self.control.PushEventHandler(self)
         self.Bind(wx.EVT_ACTIVATE, self.OnActivate, self.control)
@@ -244,8 +245,8 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
         def doit():
             runner = Runner()
             runner.start()
-            while runner.isAlive():
-                if wx.Thread_IsMain():
+            while runner.is_alive():
+                if wx.IsMainThread(self):
                     wx.Yield()
                 time.sleep(0.01)
 

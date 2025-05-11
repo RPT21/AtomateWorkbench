@@ -6,13 +6,15 @@
 import re, wx, sys, os, plugins.ui.ui, threading, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
 import plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.hardware.hardware.hardwaremanager, plugins.resources.resources
 import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.utils, logging
+import plugins.poi as poi
+from plugins.poi.poi.wizards import Wizard, WizardPage
 logger = logging.getLogger('resourcesui.newrecipewizard')
 
-class NewRecipeWizard(plugins.poi.poi.wizards.Wizard):
+class NewRecipeWizard(Wizard):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.wizards.Wizard.__init__(self)
+        Wizard.__init__(self)
 
     def addPages(self):
         firstPage = FirstRecipeWizardPage()
@@ -20,7 +22,7 @@ class NewRecipeWizard(plugins.poi.poi.wizards.Wizard):
         self.setStartingPage(firstPage)
 
     def createControl(self, parent):
-        poi.wizards.Wizard.createControl(self, parent)
+        Wizard.createControl(self, parent)
         self.control.SetSize((600, 600))
         self.control.CentreOnScreen()
 
@@ -28,11 +30,11 @@ class NewRecipeWizard(plugins.poi.poi.wizards.Wizard):
         pass
 
 
-class FirstRecipeWizardPage(plugins.poi.poi.wizards.WizardPage):
+class FirstRecipeWizardPage(WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.wizards.WizardPage.__init__(self, 'first', 'New Recipe')
+        WizardPage.__init__(self, 'first', 'New Recipe')
         self.setMessage('General Recipe Information')
         self.setDescription('Enter a name for the recipe')
 

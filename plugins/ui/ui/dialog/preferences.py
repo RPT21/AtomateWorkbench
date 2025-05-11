@@ -3,8 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/ui/src/ui/dialog/preferences.py
 # Compiled at: 2004-12-07 10:45:16
-import wx, os, sys, string, configparser, logging, lib.kernel, plugins.poi.poi.dialogs as poi_dialogs, plugins.poi.poi.views
+import wx, logging, plugins.poi.poi.dialogs as poi_dialogs
 import plugins.ui.ui.messages as messages, plugins.ui.ui.images as images, plugins.ui.ui.preferences as ui_preferences
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
 DIALOG_PREFS_FILE = 'prefsdialog.prefs'
 logger = logging.getLogger('ui.preferences')
 
@@ -110,7 +112,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
         self.errorBanner.SetSizer(bs)
         self.errorBanner.SetAutoLayout(True)
         self.errorBanner.Hide()
-        banner.SetSize((-1, images.getImage(images.PREFERENCES_BANNER).GetHeight()))
+        banner.SetSize(wx.Size(-1, images.getImage(images.PREFERENCES_BANNER).GetHeight()))
         self.stage = wx.Panel(body, -1)
         self.stage.SetSizer(wx.BoxSizer(wx.VERTICAL))
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -124,9 +126,9 @@ class PreferencesDialog(poi_dialogs.Dialog):
         size = self.banner.GetSize()
         gradeheight = images.getImage(images.PREFERENCES_BANNER).GetHeight()
         if self.errorBanner.IsShown():
-            self.errorBanner.SetSize((size[0], gradeheight))
+            self.errorBanner.SetSize(wx.Size(size[0], gradeheight))
         else:
-            self.messageBanner.SetSize((size[0], gradeheight))
+            self.messageBanner.SetSize(wx.Size(size[0], gradeheight))
 
     def removeCurrentPage(self):
         if self.currentPage is None:
@@ -209,7 +211,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
 
     def createDefaultLayout(self):
         scrsize = (
-         wx.SystemSettings_GetMetric(wx.SYS_SCREEN_X), wx.SystemSettings_GetMetric(wx.SYS_SCREEN_Y))
+         wx.SystemSettings.GetMetric(wx.SYS_SCREEN_X), wx.SystemSettings.GetMetric(wx.SYS_SCREEN_Y))
         preferred = (800, 600)
         rw = max(scrsize, preferred)
         if rw == preferred:

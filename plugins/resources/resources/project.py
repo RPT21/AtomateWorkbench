@@ -33,7 +33,7 @@ class ProjectDescription(object):
     def parse(self, location):
         f = open(self.getMetadataFilename(location), 'r')
         cfg = configparser.RawConfigParser()
-        cfg.readfp(f)
+        cfg.read_file(f)
         f.close()
         try:
             self.comment = cfg.get('description', 'comment')

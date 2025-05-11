@@ -191,7 +191,7 @@ class Book(object):
                     x = x.replace('\x08', '')
                 return x
 
-        cp.readfp(Wrap(props.GetStream()), bookpath)
+        cp.read_file(Wrap(props.GetStream()), bookpath)
         self.title = cp.get('book', 'title')
         self.id = cp.get('book', 'bookid')
         self.indexid = cp.get('book', 'id')

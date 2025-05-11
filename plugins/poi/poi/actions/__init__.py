@@ -75,7 +75,6 @@ class Action(object):
             return (
              text, None, None)
         return (tokens[0], tokens[1], self.parseAcceleratorSequence(tokens[1]))
-        return
 
     def parseAcceleratorSequence(self, accelStr):
         global STR2KEYCODE
@@ -323,7 +322,7 @@ class ActionContributionItem(ContributionItem):
             image = self.action.getDisabledImage()
         if image is not None:
             self.widget.SetBitmap(image)
-        parent.AppendItem(self.widget)
+        parent.Append(self.widget)
         parent.Enable(self.widget.GetId(), self.action.isEnabled())
         if parent.shell not in poi.actions.acceleratortable.frames:
             poi.actions.acceleratortable.AcceleratorTable(parent.shell)

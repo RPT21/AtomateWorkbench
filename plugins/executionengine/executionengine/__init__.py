@@ -5,10 +5,11 @@
 # Compiled at: 2004-12-13 23:17:23
 import plugins.ui.ui, wx, logging, copy, plugins.core.core.preferencesstore, plugins.ui.ui.context, plugins.ui.ui.preferences, lib.kernel.plugin
 import plugins.executionengine.executionengine.messages as messages, plugins.executionengine.executionengine.actions
-import plugins.executionengine.executionengine.engine, plugins.executionengine.executionengine.perspective, plugins.executionengine.executionengine.preferences
+import plugins.executionengine.executionengine.engine, plugins.executionengine.executionengine.perspective as perspective, plugins.executionengine.executionengine.preferences
 import plugins.executionengine.executionengine.userinterface.eventviewer, plugins.poi.poi.actions.menumanager, plugins.executionengine.executionengine.images as images
 import plugins.executionengine.executionengine.userinterface.purgemanagerviewer
 import plugins.executionengine.executionengine.userinterface.engineiniterrordialog, plugins.validator.validator
+from . import purgemanager
 logger = logging.getLogger('executionengine')
 instance = None
 DEFAULT_RESOLUTION = 0.2
@@ -48,7 +49,6 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
         if self.engine is None:
             return False
         return self.engine.isRunning()
-        return
 
     def addEngineInitListener(self, listener):
         if not listener in self.engineInitListeners:
@@ -167,7 +167,7 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
         plugins.ui.ui.getDefault().getMenuManager().update()
         plugins.ui.ui.getDefault().getToolBarManager().update(True)
         plugins.executionengine.executionengine.userinterface.purgemanagerviewer.init()
-        self.perspective = plugins.executionengine.executionengine.perspective.Perspective(ui.getDefault().getMainFrame().getStage())
+        self.perspective = perspective.Perspective(plugins.ui.ui.getDefault().getMainFrame().getStage())
         plugins.ui.ui.getDefault().getMainFrame().addPerspective('run', self.perspective)
 
     def addEnablementStateParticipant(self, participant):

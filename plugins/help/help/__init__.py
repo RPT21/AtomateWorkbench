@@ -3,8 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/help/src/help/__init__.py
 # Compiled at: 2004-11-23 07:30:57
-import wx, os, wx.html, ui, kernel.plugin, poi.actions, help.actions, help.frame, help.images as images, help.messages as messages, logging, configparser
+import wx, os, wx.html, lib.kernel.plugin, logging, configparser
+import plugins.poi.poi as poi, plugins.poi.poi.actions, plugins.help.help.messages as messages
+import plugins.help.help.actions, plugins.help.help.images as images
+from . import actions, frame
+
 import plugins.ui.ui as ui
+
 instance = None
 logger = logging.getLogger('help')
 
@@ -13,12 +18,12 @@ def getDefault():
     return instance
 
 
-class HelpPlugin(kernel.plugin.Plugin):
+class HelpPlugin(lib.kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
         global instance
-        kernel.plugin.Plugin.__init__(self)
+        lib.kernel.plugin.Plugin.__init__(self)
         self.controller = None
         self.provider = None
         self.books = []
@@ -43,18 +48,18 @@ class HelpPlugin(kernel.plugin.Plugin):
     def handlePartInit(self, part):
         ui.getDefault().removeInitListener(self)
         helpManager = ui.getDefault().getMenuManager().findByPath('atm.help')
-        helpManager.appendToGroup('help-additions-begin', poi.actions.ActionContributionItem(help.actions.HelpContentsAction(self)))
+        helpManager.appendToGroup('help-additions-begin', poi.actions.ActionContributionItem(actions.HelpContentsAction(self)))
         helpManager.update()
-        wx.FileSystem_AddHandler(wx.ZipFSHandler())
+        wx.FileSystem.AddHandler(wx.ZipFSHandler())
         provider = wx.SimpleHelpProvider()
-        wx.HelpProvider_Set(provider)
+        wx.HelpProvider.Set(provider)
         self.loadPredefinedBooks()
 
     def loadPredefinedBooks(self):
         try:
             config = configparser.RawConfigParser()
             fname = os.path.join(self.contextBundle.dirname, 'default.books')
-            config.readfp(open(fname), fname)
+            config.read_file(open(fname), fname)
         except Exception as msg:
             logger.exception(msg)
             return
@@ -90,11 +95,11 @@ class HelpPlugin(kernel.plugin.Plugin):
         self.addBooks()
 
     def createController(self):
-        self.controller = help.frame.HelpFrame()
+        self.controller = frame.HelpFrame()
         self.addBooks()
 
     def ShowHelp(self):
-        focusedWindow = wx.Window_FindFocus()
+        focusedWindow = wx.Window.FindFocus()
         logger.debug("Looking for context help for window '%s'" % str(focusedWindow))
         mainFrame = ui.getDefault().getMainFrame().getControl()
         helpText = ''

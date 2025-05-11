@@ -4,9 +4,11 @@
 # Embedded file name: ../plugins/hardware/src/hardware/__init__.py
 # Compiled at: 2005-06-10 18:51:18
 import traceback, lib.kernel.plugin, plugins.hardware.hardware.actions as hardware_actions
-import plugins.poi.poi.actions as poi_actions, wx, plugins.hardware.hardware.hardwaremanager as hardwaremanager, plugins.ui.ui as ui
+import wx, plugins.hardware.hardware.hardwaremanager as hardwaremanager, plugins.ui.ui as ui
 import threading, time, plugins.poi.poi.operation as operation
 import logging, plugins.hardware.hardware.images as images
+import plugins.poi.poi as poi
+import plugins.poi.poi.actions
 logger = logging.getLogger('hardware')
 PLUGIN_ID = 'hardware'
 EVT_START_EXITING_ID = wx.NewId()
@@ -103,17 +105,18 @@ class HardwarePlugin(lib.kernel.plugin.Plugin):
             return
         ui.getDefault().removeInitListener(self)
         toolsManager = ui.getDefault().getMenuManager().findByPath('atm.tools')
-        toolsManager.appendToGroup('tools-additions-begin', poi_actions.ActionContributionItem(hardware_actions.OpenHardwareManagerAction()))
+        toolsManager.appendToGroup('tools-additions-begin', poi.actions.ActionContributionItem(hardware_actions.OpenHardwareManagerAction()))
         self.createHardwareInstances()
         hardwares = self.getHardwareToInitialize()
         frame = ui.getDefault().getMainFrame().getControl()
-        accel = plugins.poi.poi.actions.acceleratortable.frames[frame]
+        accel = poi.actions.acceleratortable.frames[frame]
         accel.addEntry((wx.ACCEL_CTRL | wx.ACCEL_ALT, ord('h'), ID_SHOW_HARDWAREEDITOR))
 
         def doOpen(event):
             hardware_actions.openHardwareEditor()
 
-        wx.EVT_MENU(frame, ID_SHOW_HARDWAREEDITOR, doOpen)
+        frame.Bind(wx.EVT_MENU, doOpen, id=ID_SHOW_HARDWAREEDITOR)
+
         if len(hardwares) > 0:
             self.cancelableInitializeHardware(hardwares)
 

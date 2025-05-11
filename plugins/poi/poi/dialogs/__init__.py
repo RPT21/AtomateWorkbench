@@ -3,8 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/poi/src/poi/dialogs/__init__.py
 # Compiled at: 2005-06-10 18:51:25
-import plugins.core.core.utils, lib.kernel, wx, os, sys, configparser, plugins.poi.poi.views
-import threading, plugins.poi.poi.utils.staticwraptext, plugins.poi.poi.images as images
+import lib.kernel, wx, os, configparser, plugins.poi.poi.views
+import plugins.poi.poi.utils.staticwraptext, plugins.poi.poi.images as images
+import plugins.poi.poi as poi
+import plugins.core.core as core
+
 DIALOG_PREFS_DIR = 'dialogs'
 
 class Dialog(object):
@@ -47,7 +50,7 @@ class Dialog(object):
 
     def getMementoPath(self):
         global DIALOG_PREFS_DIR
-        wp = kernel.getMetadataDir()
+        wp = lib.kernel.getMetadataDir()
         path = os.path.join(wp, DIALOG_PREFS_DIR)
         if not os.path.exists(path):
             os.makedirs(path)
@@ -56,7 +59,7 @@ class Dialog(object):
 
     def getMemento(self):
         try:
-            config = ConfigParser.RawConfigParser()
+            config = configparser.RawConfigParser()
             fullpath = self.getMementoPath()
             config.read([fullpath])
         except Exception as msg:
@@ -87,7 +90,7 @@ class Dialog(object):
         pass
 
     def saveLayout(self):
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         config.add_section('layout')
         self.fillLayoutMemento(config)
         try:
@@ -137,7 +140,7 @@ class ProgressDialog(Dialog):
         self.panel.SetSizer(sizer)
         self.panel.SetAutoLayout(True)
         sizer.Fit(self.panel)
-        self.control.SetSize((400, -1))
+        self.control.SetSize(wx.Size(400, -1))
         Dialog.createControl(self, parent)
 
     def setTotalWork(self, totalWork):
@@ -201,7 +204,6 @@ class MessageHeaderDialog(Dialog):
 
     def getBody(self):
         return None
-        return
 
     def createControl(self, parent):
         self.control = wx.Dialog(parent, -1, self.title, style=self.getStyle())
@@ -365,7 +367,7 @@ class ExceptionDialog(wx.Dialog):
             hsizer.Add(vsizer, 1, wx.GROW | wx.ALL)
             sizer.Add(hsizer, 1, wx.GROW | wx.ALL, 5)
         else:
-            sizer.Add(errorLable, 0, wx.GROW | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
+            sizer.Add(errorLabel, 0, wx.GROW | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
             sizer.Add(vp, 1, wx.GROW | wx.LEFT, 10)
         sizer.Add(self.okButton, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
         self.SetSizer(sizer)
@@ -373,7 +375,7 @@ class ExceptionDialog(wx.Dialog):
         minWidth = 300
         sizer.Fit(self)
         if self.GetSize()[0] < minWidth:
-            self.SetSize((minWidth, self.GetSize()[1]))
+            self.SetSize(wx.Size(minWidth, self.GetSize()[1]))
         self.CentreOnScreen()
         self.okButton.Bind(wx.EVT_BUTTON, self.OnOK)
         return
@@ -392,7 +394,7 @@ class MessageDialog(wx.Dialog):
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.createMessageIcon(sizer, style, message)
         self.createButtons(sizer, style)
-        self.SetSize((400, 150))
+        self.SetSize(wx.Size(400, 150))
         self.CentreOnScreen()
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
@@ -445,4 +447,3 @@ class MessageDialog(wx.Dialog):
             return None
         icon = wx.StaticBitmap(self, -1, bmp)
         return icon
-        return

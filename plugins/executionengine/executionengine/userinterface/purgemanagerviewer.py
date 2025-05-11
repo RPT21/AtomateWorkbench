@@ -5,6 +5,9 @@
 # Compiled at: 2004-12-08 05:15:20
 import wx, plugins.ui.ui, plugins.executionengine.executionengine.purgemanager
 import plugins.poi.poi.actions, wx.lib.mixins.listctrl as listmix, wx.lib.buttons as buttons
+import plugins.executionengine.executionengine as executionengine
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
 
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
     __module__ = __name__
@@ -63,7 +66,7 @@ class PurgeManagerViewer(object):
 
     def createControl(self, parent=None):
         parent = ui.getDefault().getMainFrame().getControl()
-        self.control = wx.Frame(parent, -1, 'Purge Manager', size=wx.Size(300, 300), pos=(100, 100))
+        self.control = wx.Frame(parent, -1, 'Purge Manager', size=wx.Size(300, 300), pos=wx.Point(100, 100))
         self.list = self.createList()
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.list, 1, wx.GROW | wx.ALL, 0)

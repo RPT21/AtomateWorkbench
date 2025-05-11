@@ -3,10 +3,17 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/__init__.py
 # Compiled at: 2005-06-28 20:47:11
-import wx, kernel.plugin, poi.actions, goosemonitor.actions, poi.actions, poi.views, poi.views.viewers, poi.views.contentprovider, hardware.hardwaremanager, goosemonitor.images as images, goosemonitor.messages as messages, goosemonitor.conditional, core, core.conditional, logging
+import wx, lib.kernel.plugin, logging
+import plugins.goosemonitor.goosemonitor.conditional as conditional
+import plugins.goosemonitor.goosemonitor.images as images
 import plugins.goosemonitor.goosemonitor.hw as hw
+import plugins.goosemonitor.goosemonitor.messages as messages
+import plugins.hardware.hardware as hardware
+import plugins.core.core as core
 import plugins.ui.ui as ui
-import plugins.goosemonitor.goosemonitor.goosedevicetype as goosedevicetype
+import plugins.poi.poi as poi
+import plugins.poi.poi.actions
+from . import goosedevicetype, userinterface
 
 ERROR_RETRIEVING = -1
 ERROR_PARSING = -2
@@ -15,21 +22,21 @@ instance = None
 logger = logging.getLogger('goosemonitor')
 
 def getDefault():
-    global instance
     return instance
 
 
-class GooseMonitorPlugin(kernel.plugin.Plugin):
+class GooseMonitorPlugin(lib.kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
         global instance
-        kernel.plugin.Plugin.__init__(self)
+        lib.kernel.plugin.Plugin.__init__(self)
         self.controller = None
         self.provider = None
         self.books = []
         self.status = True
         self.monitorItems = {}
+        self.participants = []
         ui.getDefault().setSplashText('Loading Goose Monitor plugin ...')
         instance = self
         self.ready = False
@@ -55,11 +62,11 @@ class GooseMonitorPlugin(kernel.plugin.Plugin):
         core.removeConditionalContribution(hardware)
 
     def hardwareAdded(self, hardware):
-        if not hardware.getHardwareType() == goosemonitor.goosedevicetype.GOOSE_TYPE:
+        if not hardware.getHardwareType() == goosedevicetype.GOOSE_TYPE:
             return
         if hardware in self.monitorItems:
             return
-        item = goosemonitor.userinterface.MonitorWindowItem(hardware.getInstance())
+        item = userinterface.MonitorWindowItem(hardware.getInstance())
         self.monitorWindow.addItem(item)
         self.monitorItems[hardware] = item
         core.addConditionalContribution([conditional.GooseMonitorConditionalContribution(hardware)])
@@ -68,7 +75,7 @@ class GooseMonitorPlugin(kernel.plugin.Plugin):
         self.defineAllGeese()
 
     def defineAllGeese(self):
-        types = hardware.hardwaremanager.getHardwareByType(goosemonitor.goosedevicetype.GOOSE_TYPE)
+        types = hardware.hardwaremanager.getHardwareByType(goosedevicetype.GOOSE_TYPE)
         logger.debug('Define all geese: ' + str(types))
         for hw in types:
             if hw in self.monitorItems:
@@ -90,7 +97,6 @@ class GooseMonitorPlugin(kernel.plugin.Plugin):
         self.monitorWindow.Destroy()
         self.monitorWindow = None
         return True
-        return
 
     def toggleMonitorWindow(self):
         if self.monitorWindow is None:
@@ -303,4 +309,4 @@ class ShowGooseMonitorStatusAction(poi.actions.Action):
         self.setImage(images.getImage(images.SHOW_VIEW_ICON))
 
     def run(self):
-        goosemonitor.getDefault().toggleMonitorWindow()
+        getDefault().toggleMonitorWindow()

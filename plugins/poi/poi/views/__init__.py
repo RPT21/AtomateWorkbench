@@ -7,16 +7,16 @@ import wx
 
 def getHeaderColor():
     if '__WXGTK__' in wx.PlatformInfo:
-        return wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
+        return wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
     else:
-        return wx.SystemSettings_GetColour(wx.SYS_COLOUR_ACTIVECAPTION)
+        return wx.SystemSettings.GetColour(wx.SYS_COLOUR_ACTIVECAPTION)
 
 
 def getHeaderTextColor():
     if '__WXGTK__' in wx.PlatformInfo:
-        return wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
+        return wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
     else:
-        return wx.SystemSettings_GetColour(wx.SYS_COLOUR_CAPTIONTEXT)
+        return wx.SystemSettings.GetColour(wx.SYS_COLOUR_CAPTIONTEXT)
 
 
 class OneChildWindow(wx.Window):

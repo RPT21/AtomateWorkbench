@@ -3,8 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/panelview/src/panelview/__init__.py
 # Compiled at: 2004-11-04 19:42:53
-import plugins.ui.ui, plugins.poi.poi.views, lib.kernel.plugin, lib.kernel.pluginmanager as PluginManager, plugins.panelview.panelview.view
-import logging, plugins.ui.ui.context, plugins.panelview.panelview.images as images, plugins.panelview.panelview.messages as messages
+import plugins.ui.ui as ui, plugins.poi.poi.views, lib.kernel.plugin, plugins.panelview.panelview.view
+import logging, plugins.ui.ui.context, plugins.panelview.panelview.images as images
+import plugins.panelview.panelview.messages as messages, plugins.executionengine.executionengine
 VIEW_ID = 'panelview.view'
 logger = logging.getLogger('panelview')
 instance = None
@@ -42,8 +43,8 @@ class PanelViewPlugin(lib.kernel.plugin.Plugin):
 
     def handlePartInit(self, part):
         global VIEW_ID
-        plugins.ui.ui.getDefault().removeInitListener(self)
-        plugins.ui.ui.getDefault().registerViewProvider(VIEW_ID, self)
+        ui.getDefault().removeInitListener(self)
+        ui.getDefault().registerViewProvider(VIEW_ID, self)
 
     def createView(self, viewID, parent):
         view = PanelView()

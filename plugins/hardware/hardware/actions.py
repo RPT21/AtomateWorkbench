@@ -3,10 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/hardware/src/hardware/actions.py
 # Compiled at: 2005-06-10 18:51:17
-import plugins.ui.ui as ui, plugins.poi.poi.actions as actions, plugins.hardware.hardware.userinterface as userinterface
+import plugins.ui.ui as ui, plugins.poi.poi.actions as actions
+from plugins.hardware.hardware.userinterface.configurator import HardwareConfigurator
 
 def openHardwareEditor():
-    configurator = userinterface.configurator.HardwareConfigurator()
+    configurator = HardwareConfigurator()
     configurator.createControl(ui.getDefault().getMainFrame().getControl())
     configurator.showModal()
     configurator.dispose()

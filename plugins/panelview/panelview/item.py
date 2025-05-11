@@ -41,7 +41,6 @@ def str2time(val):
     if type(val) == str:
         return '00:00:00'
     return wx.TimeSpan.Seconds(val).Format()
-    return
 
 
 if False:

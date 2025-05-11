@@ -3,10 +3,17 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/executionengine/src/executionengine/perspective.py
 # Compiled at: 2004-12-14 22:00:17
-import math, time, wx, threading, logging, plugins.executionengine.executionengine.messages as messages, plugins.executionengine.executionengine.images as images
+import math, time, wx, threading, logging, plugins.executionengine.executionengine.messages as messages
+import plugins.executionengine.executionengine.images as images
 import plugins.executionengine.executionengine, plugins.ui.ui, plugins.ui.ui.context, plugins.poi.poi.utils
-import plugins.poi.poi.utils.scrolledpanel, plugins.poi.poi.utils.listctrl, plugins.panelview.panelview
+import plugins.poi.poi.utils.scrolledpanel, plugins.poi.poi.utils.listctrl
 import plugins.executionengine.executionengine.engine as engine_lib
+import wx.adv
+import plugins.executionengine.executionengine as executionengine
+import plugins.poi.poi.utils
+import plugins.poi.poi as poi
+import plugins.ui.ui as ui
+import plugins.panelview.panelview as panelview
 
 class Perspective(wx.Window):
     __module__ = __name__
@@ -40,12 +47,12 @@ class Perspective(wx.Window):
 
     def createSectors(self):
         self.sectors = {}
-        self.layout = wx.LayoutAlgorithm()
-        self.top = self.createSector((wx.LAYOUT_TOP, wx.LAYOUT_HORIZONTAL, 30, wx.SASH_BOTTOM, 150))
+        self.layout = wx.adv.LayoutAlgorithm()
+        self.top = self.createSector((wx.adv.LAYOUT_TOP, wx.adv.LAYOUT_HORIZONTAL, 30, wx.adv.SASH_BOTTOM, 150))
         self.detailedView = DetailedExecutionView(self.top, self)
-        self.left = self.createSector((wx.LAYOUT_LEFT, wx.LAYOUT_VERTICAL, 30, wx.SASH_RIGHT, 100))
+        self.left = self.createSector((wx.adv.LAYOUT_LEFT, wx.adv.LAYOUT_VERTICAL, 30, wx.adv.SASH_RIGHT, 100))
         self.graphView = GraphView(self.left, self)
-        self.main = self.createSector((wx.LAYOUT_RIGHT, wx.LAYOUT_VERTICAL, 30, None, 100))
+        self.main = self.createSector((wx.adv.LAYOUT_RIGHT, wx.adv.LAYOUT_VERTICAL, 30, None, 100))
         self.ledView = LEDView(self.main, self)
         self.updateSashPositions()
         return
@@ -60,15 +67,15 @@ class Perspective(wx.Window):
         self.layout.LayoutWindow(self)
 
     def createSector(self, values):
-        sector = wx.SashLayoutWindow(self, -1, style=wx.CLIP_CHILDREN | wx.SW_3D)
+        sector = wx.adv.SashLayoutWindow(self, -1, style=wx.CLIP_CHILDREN | wx.adv.SW_3D)
         sector.SetAlignment(values[0])
-        sector.SetDefaultSize((300, values[4]))
+        sector.SetDefaultSize(wx.Size(300, values[4]))
         sector.SetOrientation(values[1])
         sector.SetMinimumSizeY(values[2])
         sector.SetMinimumSizeX(values[2])
         if values[3]:
             sector.SetSashVisible(values[3], True)
-        sector.Bind(wx.EVT_SASH_DRAGGED, self.OnSashDragged)
+        sector.Bind(wx.adv.EVT_SASH_DRAGGED, self.OnSashDragged)
         return sector
 
     def OnSashDragged(self, event):
@@ -198,7 +205,7 @@ class LEDView(wx.Panel):
                 self.model = None
                 self.panelview.getViewer().inputChanged(old, self.model)
             else:
-                import grideditor
+                import plugins.grideditor.grideditor as grideditor
                 self.model = grideditor.getDefault().getEditor().getInput()
                 self.prepareInput()
                 self.panelview.getViewer().inputChanged(old, self.model)
@@ -208,7 +215,7 @@ class LEDView(wx.Panel):
         pass
 
     def refresh(self):
-        wx.CallAfter(self.__refresh)
+        wx.CallAfter(self.Refresh)
 
 
 class HistoryList(plugins.poi.poi.utils.listctrl.ListCtrl):
@@ -252,7 +259,7 @@ class TimerThread(threading.Thread):
 
     def __init__(self, func):
         threading.Thread.__init__(self)
-        self.setDaemon(True)
+        self.daemon = True
         self.paused = True
         self.done = False
         self.func = func
@@ -434,7 +441,7 @@ class DetailedExecutionView(plugins.poi.poi.utils.scrolledpanel.ScrolledPanel):
 
     def createControls(self):
         self.numsPanel = wx.Panel(self, -1)
-        sizer = wx.FlexGridSizer(6, 2)
+        sizer = wx.FlexGridSizer(6, 2, gap=wx.Size(0,0))
         sizer.AddGrowableCol(1)
         self.labelStatus = BoldLabel(self.numsPanel, -1, messages.get('perspective.label.status'))
         self.labelStepNumber = BoldLabel(self.numsPanel, -1, messages.get('perspective.label.stepnumber'))
