@@ -34173,3 +34173,363 @@ DEBUG/hardware/__init__.py-167	Finalizing
 DEBUG/progress/progress.py-194	closing dialog 213/212/<_MainThread(MainThread, started 23372)>
 DEBUG/progress/progress.py-155	activate
 DEBUG/progress/progress.py-196	Past End Modal
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-195	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-29	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-24	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-79	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-38	UP150 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'update'
+DEBUG/hardware/__init__.py-125	Initializing startup hardware
+ERROR/ui/__init__.py-149	Handle part init exception: 'C++ assertion "CheckSizerFlags(!((flags) & (wxALIGN_RIGHT)))" failed at ..\..\src\common\sizer.cpp(2282) in wxBoxSizer::DoInsert(): wxALIGN_RIGHT will be ignored in this sizer: only vertical alignment flags can be used in horizontal sizers
+
+DO NOT PANIC !!
+
+If you're an end user running a program not developed by you, please ignore this message, it is harmless, and please try reporting the problem to the program developers.
+
+You may also set WXSUPPRESS_SIZER_FLAGS_CHECK environment variable to suppress all such checks when running this program.
+
+If you're the developer, simply remove this flag from your code to avoid getting this message. You can also call wxSizerFlags::DisableConsistencyChecks() to globally disable all such checks, but this is strongly not recommended.'
+ERROR/ui/__init__.py-150	C++ assertion "CheckSizerFlags(!((flags) & (wxALIGN_RIGHT)))" failed at ..\..\src\common\sizer.cpp(2282) in wxBoxSizer::DoInsert(): wxALIGN_RIGHT will be ignored in this sizer: only vertical alignment flags can be used in horizontal sizers
+
+DO NOT PANIC !!
+
+If you're an end user running a program not developed by you, please ignore this message, it is harmless, and please try reporting the problem to the program developers.
+
+You may also set WXSUPPRESS_SIZER_FLAGS_CHECK environment variable to suppress all such checks when running this program.
+
+If you're the developer, simply remove this flag from your code to avoid getting this message. You can also call wxSizerFlags::DisableConsistencyChecks() to globally disable all such checks, but this is strongly not recommended.
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\__init__.py", line 170, in handlePartInit
+    self.perspective = perspective.Perspective(plugins.ui.ui.getDefault().getMainFrame().getStage())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 25, in __init__
+    self.createSectors()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 52, in createSectors
+    self.detailedView = DetailedExecutionView(self.top, self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 304, in __init__
+    self.createControls()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 481, in createControls
+    mainsizer.Add(self.closeButton, 0, wx.ALIGN_TOP | wx.ALIGN_RIGHT | wx.ALL, 5)
+wx._core.wxAssertionError: C++ assertion "CheckSizerFlags(!((flags) & (wxALIGN_RIGHT)))" failed at ..\..\src\common\sizer.cpp(2282) in wxBoxSizer::DoInsert(): wxALIGN_RIGHT will be ignored in this sizer: only vertical alignment flags can be used in horizontal sizers
+
+DO NOT PANIC !!
+
+If you're an end user running a program not developed by you, please ignore this message, it is harmless, and please try reporting the problem to the program developers.
+
+You may also set WXSUPPRESS_SIZER_FLAGS_CHECK environment variable to suppress all such checks when running this program.
+
+If you're the developer, simply remove this flag from your code to avoid getting this message. You can also call wxSizerFlags::DisableConsistencyChecks() to globally disable all such checks, but this is strongly not recommended.
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/help/__init__.py-71	Loading default book 'books/getting_started.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/usersguide.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/recipes.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/devices.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/mfc.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/furnacezone.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/addingusers.zip'
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+WARNING/grideditor/__init__.py-281	Unable to open configuration: 'C:\Users\marre\.atomate\.config'
+ERROR/grideditor/__init__.py-291	No section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\__init__.py", line 287, in restorePreviousRecipe
+    projectName = self.config.get('main', 'projectname')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 759, in get
+    d = self._unify_values(section, vars)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 1130, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'main'
+DEBUG/grideditor/__init__.py-292	No previous recipe specified
+ERROR/ui/__init__.py-149	Handle part init exception: 'No perspective named run'
+ERROR/ui/__init__.py-150	No perspective named run
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\graphview\graphview\__init__.py", line 132, in handlePartInit
+    persp = plugins.ui.ui.getDefault().getMainFrame().getPerspective('run')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\mainframe.py", line 108, in getPerspective
+    raise Exception('No perspective named %s' % id)
+Exception: No perspective named run
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/help/__init__.py-103	Looking for context help for window '<plugins.poi.poi.views.OneChildWindow object at 0x00000242381D4B00>'
+DEBUG/help/__init__.py-111	Will attempt to find help text: ''
+ERROR/help.controller/frame.py-94	module 'wx' has no attribute 'SystemSettings_GetMetric'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\help\help\frame.py", line 90, in __init__
+    screenw = wx.SystemSettings_GetMetric(wx.SYS_SCREEN_X)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'wx' has no attribute 'SystemSettings_GetMetric'
+DEBUG/help/__init__.py-103	Looking for context help for window '<plugins.poi.poi.views.OneChildWindow object at 0x00000242381D4B00>'
+DEBUG/help/__init__.py-111	Will attempt to find help text: ''
+ERROR/help.controller/frame.py-94	module 'wx' has no attribute 'SystemSettings_GetMetric'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\help\help\frame.py", line 90, in __init__
+    screenw = wx.SystemSettings_GetMetric(wx.SYS_SCREEN_X)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'wx' has no attribute 'SystemSettings_GetMetric'
+DEBUG/help/__init__.py-103	Looking for context help for window '<plugins.poi.poi.views.OneChildWindow object at 0x00000242381D4B00>'
+DEBUG/help/__init__.py-111	Will attempt to find help text: ''
+ERROR/help.controller/frame.py-94	module 'wx' has no attribute 'SystemSettings_GetMetric'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\help\help\frame.py", line 90, in __init__
+    screenw = wx.SystemSettings_GetMetric(wx.SYS_SCREEN_X)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'wx' has no attribute 'SystemSettings_GetMetric'
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-195	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-29	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-24	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-79	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-38	UP150 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'update'
+DEBUG/hardware/__init__.py-125	Initializing startup hardware
+ERROR/ui/__init__.py-149	Handle part init exception: 'C++ assertion "CheckSizerFlags(!((flags) & (wxALIGN_RIGHT)))" failed at ..\..\src\common\sizer.cpp(2282) in wxBoxSizer::DoInsert(): wxALIGN_RIGHT will be ignored in this sizer: only vertical alignment flags can be used in horizontal sizers
+
+DO NOT PANIC !!
+
+If you're an end user running a program not developed by you, please ignore this message, it is harmless, and please try reporting the problem to the program developers.
+
+You may also set WXSUPPRESS_SIZER_FLAGS_CHECK environment variable to suppress all such checks when running this program.
+
+If you're the developer, simply remove this flag from your code to avoid getting this message. You can also call wxSizerFlags::DisableConsistencyChecks() to globally disable all such checks, but this is strongly not recommended.'
+ERROR/ui/__init__.py-150	C++ assertion "CheckSizerFlags(!((flags) & (wxALIGN_RIGHT)))" failed at ..\..\src\common\sizer.cpp(2282) in wxBoxSizer::DoInsert(): wxALIGN_RIGHT will be ignored in this sizer: only vertical alignment flags can be used in horizontal sizers
+
+DO NOT PANIC !!
+
+If you're an end user running a program not developed by you, please ignore this message, it is harmless, and please try reporting the problem to the program developers.
+
+You may also set WXSUPPRESS_SIZER_FLAGS_CHECK environment variable to suppress all such checks when running this program.
+
+If you're the developer, simply remove this flag from your code to avoid getting this message. You can also call wxSizerFlags::DisableConsistencyChecks() to globally disable all such checks, but this is strongly not recommended.
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\__init__.py", line 170, in handlePartInit
+    self.perspective = perspective.Perspective(plugins.ui.ui.getDefault().getMainFrame().getStage())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 25, in __init__
+    self.createSectors()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 52, in createSectors
+    self.detailedView = DetailedExecutionView(self.top, self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 304, in __init__
+    self.createControls()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\perspective.py", line 481, in createControls
+    mainsizer.Add(self.closeButton, 0, wx.ALIGN_TOP | wx.ALIGN_RIGHT | wx.ALL, 5)
+wx._core.wxAssertionError: C++ assertion "CheckSizerFlags(!((flags) & (wxALIGN_RIGHT)))" failed at ..\..\src\common\sizer.cpp(2282) in wxBoxSizer::DoInsert(): wxALIGN_RIGHT will be ignored in this sizer: only vertical alignment flags can be used in horizontal sizers
+
+DO NOT PANIC !!
+
+If you're an end user running a program not developed by you, please ignore this message, it is harmless, and please try reporting the problem to the program developers.
+
+You may also set WXSUPPRESS_SIZER_FLAGS_CHECK environment variable to suppress all such checks when running this program.
+
+If you're the developer, simply remove this flag from your code to avoid getting this message. You can also call wxSizerFlags::DisableConsistencyChecks() to globally disable all such checks, but this is strongly not recommended.
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/help/__init__.py-71	Loading default book 'books/getting_started.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/usersguide.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/recipes.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/devices.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/mfc.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/furnacezone.zip'
+DEBUG/help/__init__.py-71	Loading default book 'books/addingusers.zip'
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+WARNING/grideditor/__init__.py-281	Unable to open configuration: 'C:\Users\marre\.atomate\.config'
+ERROR/grideditor/__init__.py-291	No section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\__init__.py", line 287, in restorePreviousRecipe
+    projectName = self.config.get('main', 'projectname')
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 759, in get
+    d = self._unify_values(section, vars)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 1130, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'main'
+DEBUG/grideditor/__init__.py-292	No previous recipe specified
+ERROR/ui/__init__.py-149	Handle part init exception: 'No perspective named run'
+ERROR/ui/__init__.py-150	No perspective named run
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\graphview\graphview\__init__.py", line 132, in handlePartInit
+    persp = plugins.ui.ui.getDefault().getMainFrame().getPerspective('run')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\mainframe.py", line 108, in getPerspective
+    raise Exception('No perspective named %s' % id)
+Exception: No perspective named run
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/ui/__init__.py-34	Dumping threads
+DEBUG/ui/__init__.py-35	----------------------------
+DEBUG/ui/__init__.py-36	TOTAL THREADS: 1
+DEBUG/ui/__init__.py-38		THREAD: <_MainThread(MainThread, started 31184)> - MainThread
+DEBUG/progress/progress.py-87	Creating progress dialog 213/214/<plugins.poi.poi.dialogs.progress.ProgressDialog object at 0x000002EBD8CC88C0>
+DEBUG/progress/progress.py-269	Did not fork.  Executing in thread '<_MainThread(MainThread, started 31184)>'
+DEBUG/progress/progress.py-155	activate
+DEBUG/progress/progress.py-237	Running runnable
+DEBUG/hardware/__init__.py-153	Starting ...
+DEBUG/hardware/__init__.py-165	Calling hardware manager shutdown
+DEBUG/hardware/__init__.py-167	Finalizing
+DEBUG/progress/progress.py-194	closing dialog 214/213/<_MainThread(MainThread, started 31184)>
+DEBUG/progress/progress.py-155	activate
+DEBUG/progress/progress.py-196	Past End Modal
