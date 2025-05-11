@@ -37,7 +37,7 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         self.rampOriginTemp.Disable()
         sizer.Add(self.linearRampCheckbox, 0, wx.GROW | wx.TOP | wx.BOTTOM, 5)
         sizer.Add(self.rampOriginSetpoint, 0, wx.GROW | wx.LEFT, 15)
-        empty = wx.Window(self.body, -1, size=(1, 1))
+        empty = wx.Window(self.body, -1, size=wx.Size(1, 1))
         empty.SetBackgroundColour(self.body.GetBackgroundColour())
         sizer.Add(empty, 0, wx.GROW | wx.TOP, 5)
         sizer.Add(self.rampOriginTemp, 0, wx.GROW | wx.LEFT, 15)

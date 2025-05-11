@@ -17,7 +17,7 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
         return
 
     def createControl(self, parent, horizontal=False):
-        self.control = wx.Panel(parent, -1, size=(-1, 80))
+        self.control = wx.Panel(parent, -1, size=wx.Size(-1, 80))
         font = self.control.GetFont()
         self.deviceLabel = ui.widgets.GradientLabel(self.control, wx.RED)
         width = -1

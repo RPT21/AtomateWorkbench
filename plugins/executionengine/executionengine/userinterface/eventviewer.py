@@ -22,7 +22,7 @@ class EventViewerWindow(object):
         return
 
     def createControl(self, parent):
-        self.control = wx.Frame(parent, -1, 'Execution Event Viewer', size=(300, 400), style=wx.DEFAULT_FRAME_STYLE | wx.WANTS_CHARS)
+        self.control = wx.Frame(parent, -1, 'Execution Event Viewer', size=wx.Size(300, 400), style=wx.DEFAULT_FRAME_STYLE | wx.WANTS_CHARS)
         color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
         self.control.SetBackgroundColour(color)
         self.list = self.createList()

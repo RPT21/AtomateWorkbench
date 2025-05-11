@@ -15,7 +15,7 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
         return
 
     def createControl(self, parent, horizontal=False):
-        self.control = wx.Panel(parent, -1, size=(100, 100))
+        self.control = wx.Panel(parent, -1, size=wx.Size(100, 100))
         self.deviceLabel = wx.StaticText(self.control, -1, '[no label]')
         font = self.control.GetFont()
         font.SetWeight(wx.BOLD)
@@ -27,8 +27,8 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
         fsizer.AddGrowableCol(0)
         fsizer.AddGrowableCol(1)
         fsizer.AddGrowableRow(1)
-        fsizer.Add(wx.StaticText(self.control, -1, 'Gauge 1', size=(50, -1)), 0, wx.GROW | wx.ALL)
-        fsizer.Add(wx.StaticText(self.control, -1, 'Gauge 2', size=(50, -1)), 0, wx.GROW | wx.ALL)
+        fsizer.Add(wx.StaticText(self.control, -1, 'Gauge 1', size=wx.Size(50, -1)), 0, wx.GROW | wx.ALL)
+        fsizer.Add(wx.StaticText(self.control, -1, 'Gauge 2', size=wx.Size(50, -1)), 0, wx.GROW | wx.ALL)
         self.gauge1 = poi.utils.LEDdisplay.LEDDisplay(self.control, -1)
         self.gauge2 = poi.utils.LEDdisplay.LEDDisplay(self.control, -1)
         fsizer.Add(self.gauge1, 1, wx.GROW | wx.ALL)

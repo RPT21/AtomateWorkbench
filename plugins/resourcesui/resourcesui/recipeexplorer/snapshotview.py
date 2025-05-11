@@ -60,7 +60,7 @@ class ProjectInfoPane(wx.Panel):
     __module__ = __name__
 
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, size=(1, 1))
+        wx.Panel.__init__(self, parent, size=wx.Size(1, 1))
         self.createUI()
 
     def setProjectInfo(self, project):

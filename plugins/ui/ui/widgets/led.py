@@ -38,7 +38,7 @@ class LEDSetpointDisplay(wx.Panel):
     def createUI(self):
         self.valueCtrl = poi.utils.LEDdisplay.LEDDisplay(self, -1)
         if self.showSetpoint:
-            self.setpointCtrl = poi.utils.LEDdisplay.LEDDisplay(self, -1, size=(100, 25))
+            self.setpointCtrl = poi.utils.LEDdisplay.LEDDisplay(self, -1, size=wx.Size(100, 25))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(self.valueCtrl, 1, wx.GROW | wx.RIGHT | wx.ALIGN_RIGHT, 5)
         if self.showSetpoint:

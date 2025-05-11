@@ -53,7 +53,7 @@ class UP150DeviceEditor(core.device.DeviceEditor):
         self.control.Bind(wx.EVT_CHOICE, self.OnHardwareChoice, self.hardwareChoice)
         ssizer.Add(fsizer, 0, wx.GROW | wx.TOP, 10)
         ssizer.Add(wx.StaticLine(self.control, -1), 0, wx.GROW | wx.ALL, 5)
-        self.hardwarePanel = wx.Panel(self.control, -1, size=(300, 300))
+        self.hardwarePanel = wx.Panel(self.control, -1, size=wx.Size(300, 300))
         self.hardwarePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
         ssizer.Add(self.hardwarePanel, 1, wx.GROW | wx.ALL, 5)
         return ssizer

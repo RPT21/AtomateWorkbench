@@ -217,7 +217,7 @@ if __name__ == '__main__':
         __module__ = __name__
 
         def OnInit(self):
-            f = wx.Frame(None, -1, 'Docking Window Test', size=(300, 300), pos=(100, 100))
+            f = wx.Frame(None, -1, 'Docking Window Test', size=wx.Size(300, 300), pos=wx.Point(100, 100))
             root = RootWindow(f)
             self.viewOne = View(root)
             self.labelOne = wx.StaticText(self.viewOne, -1, 'One')

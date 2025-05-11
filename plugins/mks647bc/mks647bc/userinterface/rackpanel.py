@@ -18,7 +18,7 @@ class MKS647RackPanel(object):
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.channelNums = []
         for i in range(4):
-            led = wx.gizmos.LEDNumberCtrl(self.control, -1, size=(200, 40))
+            led = wx.gizmos.LEDNumberCtrl(self.control, -1, size=wx.Size(200, 40))
             led.SetDrawFaded(True)
             led.SetAlignment(wx.gizmos.LED_ALIGN_RIGHT)
             led.SetValue('12345')

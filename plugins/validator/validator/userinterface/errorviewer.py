@@ -52,7 +52,7 @@ class ErrorViewer(object):
 
     def createControl(self, parent=None):
         parent = ui.getDefault().getMainFrame().getControl()
-        self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title'), size=(300, 300), pos=(100, 100))
+        self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title'), size=wx.Size(300, 300), pos=wx.Point(100, 100))
         self.list = self.createList()
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.list, 1, wx.GROW | wx.ALL, 0)

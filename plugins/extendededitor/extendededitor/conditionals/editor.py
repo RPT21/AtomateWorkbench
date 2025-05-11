@@ -170,7 +170,7 @@ class ConditionalEditor(object):
         self.testsList.DeleteAllItems()
 
     def createTestsList(self, parent):
-        lst = poi.utils.listctrl.ListCtrl(parent, -1, style=wx.LC_REPORT | wx.SUNKEN_BORDER, size=(100, 100))
+        lst = poi.utils.listctrl.ListCtrl(parent, -1, style=wx.LC_REPORT | wx.SUNKEN_BORDER, size=wx.Size(100, 100))
         lst.InsertColumn(0, 'Test Name', width=200)
         return lst
 

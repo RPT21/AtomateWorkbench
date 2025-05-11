@@ -38,9 +38,9 @@ class ActionRowItem(object):
         return ctrl
 
     def createControl(self, parent):
-        self.control = wx.Panel(parent, -1, size=(-1, 10), style=wx.TAB_TRAVERSAL)
+        self.control = wx.Panel(parent, -1, size=wx.Size(-1, 10), style=wx.TAB_TRAVERSAL)
         self.control.SetBackgroundColour(wx.WHITE)
-        self.actionControlPanel = wx.Panel(self.control, -1, size=(-1, 20))
+        self.actionControlPanel = wx.Panel(self.control, -1, size=wx.Size(-1, 20))
         self.actionControlPanel.SetBackgroundColour(self.control.GetBackgroundColour())
         self.actionControl = self.createActionControl(self.actionControlPanel)
         sizer = wx.BoxSizer(wx.HORIZONTAL)

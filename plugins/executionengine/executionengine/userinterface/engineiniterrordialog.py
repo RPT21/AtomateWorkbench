@@ -19,7 +19,7 @@ class EngineInitErrorDialog(wx.Dialog):
     def __init__(self, errors):
         parent = ui.getDefault().getMainFrame().getControl()
         style = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER
-        wx.Dialog.__init__(self, parent, -1, size=(350, 450), style=style)
+        wx.Dialog.__init__(self, parent, -1, size=wx.Size(350, 450), style=style)
         self.SetTitle(messages.get('engine.init.error.title'))
         self.list = AutoSizingListCtrl(self, -1, style=wx.LC_REPORT | wx.LC_NO_HEADER)
         self.list.InsertColumn(0, 'Error')

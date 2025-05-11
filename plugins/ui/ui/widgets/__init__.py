@@ -9,7 +9,7 @@ class GradientLabel(wx.Window):
     __module__ = __name__
 
     def __init__(self, parent, color):
-        wx.Window.__init__(self, parent, -1, size=(-1, 10))
+        wx.Window.__init__(self, parent, -1, size=wx.Size(-1, 10))
         self.label = ''
         self.cachedBackground = None
         self.color = color

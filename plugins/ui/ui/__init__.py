@@ -10,7 +10,7 @@ import plugins.ui.ui.preferences as preferences
 import plugins.ui.ui.splash as splash
 import plugins.ui.ui.undomanager as undomanager
 import plugins.ui.ui.mainframe as mainframe
-import plugins.poi.poi.actions as actions
+import plugins.poi.poi as poi
 from plugins.ui.ui.actions import ExitAction
 import plugins.poi.poi.actions.statusbarmanager as statusbarmanager
 import plugins.poi.poi.actions.toolbarmanager as toolbarmanager
@@ -220,16 +220,16 @@ class UIPlugin(lib.kernel.plugin.Plugin):
         helpManager = self.createHelpMenuManager()
         mm.addItem(fileManager)
         mm.addItem(editManager)
-        mm.addItem(actions.GroupMarker('mb-additions-begin'))
-        mm.addItem(actions.GroupMarker('mb-additions-end'))
+        mm.addItem(poi.actions.GroupMarker('mb-additions-begin'))
+        mm.addItem(poi.actions.GroupMarker('mb-additions-end'))
         mm.addItem(toolsManager)
         mm.addItem(viewManager)
         mm.addItem(helpManager)
         tbm = self.toolbarManager
-        tbm.addItem(actions.Separator('edit-actions-begin'))
-        tbm.addItem(actions.Separator('edit-actions-end'))
-        tbm.addItem(actions.Separator('tb-additions-begin'))
-        tbm.addItem(actions.Separator('tb-additions-end'))
+        tbm.addItem(poi.actions.Separator('edit-actions-begin'))
+        tbm.addItem(poi.actions.Separator('edit-actions-end'))
+        tbm.addItem(poi.actions.Separator('tb-additions-begin'))
+        tbm.addItem(poi.actions.Separator('tb-additions-end'))
         self.menuManager = mm
         self.mainFrame = mainframe.MainFrame()
         self.registerFrameEvents()
@@ -268,41 +268,41 @@ class UIPlugin(lib.kernel.plugin.Plugin):
     def createFileMenuManager(self):
         global MB_FILE
         fileManager = menumanager.MenuManager(messages.get('mainmenu.file'), MB_FILE)
-        fileManager.addItem(actions.GroupMarker('file-additions-begin'))
-        fileManager.addItem(actions.Separator('file-additions-end'))
+        fileManager.addItem(poi.actions.GroupMarker('file-additions-begin'))
+        fileManager.addItem(poi.actions.Separator('file-additions-end'))
         exitAction = ExitAction()
-        fileManager.addItem(actions.ActionContributionItem(exitAction))
+        fileManager.addItem(poi.actions.ActionContributionItem(exitAction))
         return fileManager
 
     def createEditMenuManager(self):
-        mng = actions.menumanager.MenuManager(messages.get('mainmenu.edit'), 'atm.edit')
-        mng.addItem(actions.ActionContributionItem(undomanager.UNDO_ACTION))
-        mng.addItem(actions.ActionContributionItem(undomanager.REDO_ACTION))
-        mng.addItem(actions.Separator())
-        mng.addItem(actions.GlobalActionContributionItem('global.edit.cut', messages.get('editmenu.cut'), enabledImage=images.getImage(images.ENABLED_EDIT_CUT), disabledImage=images.getImage(images.DISABLED_EDIT_CUT)))
-        mng.addItem(actions.GlobalActionContributionItem('global.edit.copy', messages.get('editmenu.copy'), enabledImage=images.getImage(images.ENABLED_EDIT_COPY), disabledImage=images.getImage(images.DISABLED_EDIT_COPY)))
-        mng.addItem(actions.GlobalActionContributionItem('global.edit.paste', messages.get('editmenu.paste'), enabledImage=images.getImage(images.ENABLED_EDIT_PASTE), disabledImage=images.getImage(images.DISABLED_EDIT_PASTE)))
-        mng.addItem(actions.GroupMarker('edit-additions-begin'))
-        mng.addItem(actions.GroupMarker('edit-additions-end'))
+        mng = poi.actions.menumanager.MenuManager(messages.get('mainmenu.edit'), 'atm.edit')
+        mng.addItem(poi.actions.ActionContributionItem(undomanager.UNDO_ACTION))
+        mng.addItem(poi.actions.ActionContributionItem(undomanager.REDO_ACTION))
+        mng.addItem(poi.actions.Separator())
+        mng.addItem(poi.actions.GlobalActionContributionItem('global.edit.cut', messages.get('editmenu.cut'), enabledImage=images.getImage(images.ENABLED_EDIT_CUT), disabledImage=images.getImage(images.DISABLED_EDIT_CUT)))
+        mng.addItem(poi.actions.GlobalActionContributionItem('global.edit.copy', messages.get('editmenu.copy'), enabledImage=images.getImage(images.ENABLED_EDIT_COPY), disabledImage=images.getImage(images.DISABLED_EDIT_COPY)))
+        mng.addItem(poi.actions.GlobalActionContributionItem('global.edit.paste', messages.get('editmenu.paste'), enabledImage=images.getImage(images.ENABLED_EDIT_PASTE), disabledImage=images.getImage(images.DISABLED_EDIT_PASTE)))
+        mng.addItem(poi.actions.GroupMarker('edit-additions-begin'))
+        mng.addItem(poi.actions.GroupMarker('edit-additions-end'))
         return mng
 
     def createViewMenuManager(self):
-        mng = actions.menumanager.MenuManager(messages.get('mainmenu.views'), 'atm.views')
-        mng.addItem(actions.GroupMarker('views-additions-end'))
+        mng = poi.actions.menumanager.MenuManager(messages.get('mainmenu.views'), 'atm.views')
+        mng.addItem(poi.actions.GroupMarker('views-additions-end'))
         return mng
 
     def createToolsMenuManager(self):
-        mng = actions.menumanager.MenuManager(messages.get('mainmenu.tools'), 'atm.tools')
-        mng.addItem(actions.ActionContributionItem(actions.PreferencesAction()))
-        mng.addItem(actions.Separator('tools-additions-begin'))
-        mng.addItem(actions.GroupMarker('tools-additions-end'))
+        mng = poi.actions.menumanager.MenuManager(messages.get('mainmenu.tools'), 'atm.tools')
+        mng.addItem(poi.actions.ActionContributionItem(actions.PreferencesAction()))
+        mng.addItem(poi.actions.Separator('tools-additions-begin'))
+        mng.addItem(poi.actions.GroupMarker('tools-additions-end'))
         return mng
 
     def createHelpMenuManager(self):
-        mng = actions.menumanager.MenuManager(messages.get('mainmenu.help'), 'atm.help')
-        mng.addItem(actions.ActionContributionItem(actions.AboutAction()))
-        mng.addItem(actions.GroupMarker('help-additions-begin'))
-        mng.addItem(actions.GroupMarker('help-additions-end'))
+        mng = poi.actions.menumanager.MenuManager(messages.get('mainmenu.help'), 'atm.help')
+        mng.addItem(poi.actions.ActionContributionItem(actions.AboutAction()))
+        mng.addItem(poi.actions.GroupMarker('help-additions-begin'))
+        mng.addItem(poi.actions.GroupMarker('help-additions-end'))
         return mng
 
     def getMemento(self):

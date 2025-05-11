@@ -27175,3 +27175,416 @@ DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.S
 DEBUG/up150/__init__.py-38	UP150 Plugin startup sequence
 DEBUG/goosemonitor/__init__.py-72	Define all geese: []
 DEBUG/root/boot.py-172	Booting plugin 'update'
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-195	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-29	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-24	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-38	UP150 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'update'
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-195	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-29	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-24	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-38	UP150 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'update'
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-195	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-29	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-24	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-38	UP150 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'update'
+WARNING/mainframe/mainframe.py-343	Unable to recreate from memento, defaulting: 'No section: 'mainframe.layout''
+DEBUG/hardware/__init__.py-122	Initializing startup hardware
+ERROR/ui/__init__.py-149	Handle part init exception: 'name 'plugins' is not defined'
+ERROR/ui/__init__.py-150	name 'plugins' is not defined
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 110, in handlePartInit
+    accel = plugins.poi.poi.actions.acceleratortable.frames[frame]
+            ^^^^^^^
+NameError: name 'plugins' is not defined
+ERROR/ui/__init__.py-149	Handle part init exception: 'name 'ui' is not defined'
+ERROR/ui/__init__.py-150	name 'ui' is not defined
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\__init__.py", line 169, in handlePartInit
+    plugins.executionengine.executionengine.userinterface.purgemanagerviewer.init()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\userinterface\purgemanagerviewer.py", line 158, in init
+    dbg.create()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\userinterface\purgemanagerviewer.py", line 133, in create
+    self.createActions()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\userinterface\purgemanagerviewer.py", line 146, in createActions
+    mng = ui.getDefault().getMenuManager().findByPath('atm.views')
+          ^^
+NameError: name 'ui' is not defined
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/ui/__init__.py-149	Handle part init exception: 'module 'wx' has no attribute 'FileSystem_AddHandler''
+ERROR/ui/__init__.py-150	module 'wx' has no attribute 'FileSystem_AddHandler'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\help\help\__init__.py", line 48, in handlePartInit
+    wx.FileSystem_AddHandler(wx.ZipFSHandler())
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'wx' has no attribute 'FileSystem_AddHandler'
+ERROR/ui/__init__.py-149	Handle part init exception: ''NoneType' object has no attribute 'addValidationListener''
+ERROR/ui/__init__.py-150	'NoneType' object has no attribute 'addValidationListener'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\__init__.py", line 256, in handlePartInit
+    plugins.grideditor.grideditor.utils.errorviewer.init()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\utils\errorviewer.py", line 183, in init
+    dbg = ValidationListener()
+          ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\utils\errorviewer.py", line 139, in __init__
+    validator.getDefault().addValidationListener(self)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'addValidationListener'
+ERROR/ui/__init__.py-149	Handle part init exception: 'No perspective named run'
+ERROR/ui/__init__.py-150	No perspective named run
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\graphview\graphview\__init__.py", line 132, in handlePartInit
+    persp = plugins.ui.ui.getDefault().getMainFrame().getPerspective('run')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\mainframe.py", line 108, in getPerspective
+    raise Exception('No perspective named %s' % id)
+Exception: No perspective named run
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-195	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-29	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-24	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-38	UP150 Plugin startup sequence
+DEBUG/goosemonitor/__init__.py-72	Define all geese: []
+DEBUG/root/boot.py-172	Booting plugin 'update'
+WARNING/mainframe/mainframe.py-343	Unable to recreate from memento, defaulting: 'No section: 'mainframe.layout''
+DEBUG/hardware/__init__.py-122	Initializing startup hardware
+ERROR/ui/__init__.py-149	Handle part init exception: 'name 'plugins' is not defined'
+ERROR/ui/__init__.py-150	name 'plugins' is not defined
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 110, in handlePartInit
+    accel = plugins.poi.poi.actions.acceleratortable.frames[frame]
+            ^^^^^^^
+NameError: name 'plugins' is not defined
+ERROR/ui/__init__.py-149	Handle part init exception: 'name 'ui' is not defined'
+ERROR/ui/__init__.py-150	name 'ui' is not defined
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\__init__.py", line 169, in handlePartInit
+    plugins.executionengine.executionengine.userinterface.purgemanagerviewer.init()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\userinterface\purgemanagerviewer.py", line 158, in init
+    dbg.create()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\userinterface\purgemanagerviewer.py", line 133, in create
+    self.createActions()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\executionengine\executionengine\userinterface\purgemanagerviewer.py", line 146, in createActions
+    mng = ui.getDefault().getMenuManager().findByPath('atm.views')
+          ^^
+NameError: name 'ui' is not defined
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/ui/__init__.py-149	Handle part init exception: 'module 'wx' has no attribute 'FileSystem_AddHandler''
+ERROR/ui/__init__.py-150	module 'wx' has no attribute 'FileSystem_AddHandler'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\help\help\__init__.py", line 48, in handlePartInit
+    wx.FileSystem_AddHandler(wx.ZipFSHandler())
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'wx' has no attribute 'FileSystem_AddHandler'
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/ui/__init__.py-149	Handle part init exception: 'Frame(): arguments did not match any overloaded call:
+  overload 1: too many arguments
+  overload 2: argument 3 has unexpected type 'list''
+ERROR/ui/__init__.py-150	Frame(): arguments did not match any overloaded call:
+  overload 1: too many arguments
+  overload 2: argument 3 has unexpected type 'list'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\__init__.py", line 256, in handlePartInit
+    plugins.grideditor.grideditor.utils.errorviewer.init()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\utils\errorviewer.py", line 191, in init
+    dbg.create()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\utils\errorviewer.py", line 171, in create
+    self.view = ErrorViewer()
+                ^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\utils\errorviewer.py", line 29, in __init__
+    self.createControl()
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\utils\errorviewer.py", line 69, in createControl
+    self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title'), size=(300, 300), pos=(100, 100))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Frame(): arguments did not match any overloaded call:
+  overload 1: too many arguments
+  overload 2: argument 3 has unexpected type 'list'
+ERROR/ui/__init__.py-149	Handle part init exception: 'No perspective named run'
+ERROR/ui/__init__.py-150	No perspective named run
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\__init__.py", line 147, in firePartInit
+    listener.handlePartInit(self)
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\graphview\graphview\__init__.py", line 132, in handlePartInit
+    persp = plugins.ui.ui.getDefault().getMainFrame().getPerspective('run')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\ui\ui\mainframe.py", line 108, in getPerspective
+    raise Exception('No perspective named %s' % id)
+Exception: No perspective named run
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/ui/__init__.py-34	Dumping threads
+DEBUG/ui/__init__.py-35	----------------------------
+DEBUG/ui/__init__.py-36	TOTAL THREADS: 1
+DEBUG/ui/__init__.py-38		THREAD: <_MainThread(MainThread, started 21740)> - MainThread

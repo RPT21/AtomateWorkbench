@@ -177,7 +177,7 @@ class MonitorWindow(wx.Frame):
 
     def __init__(self):
         global MONITOR_BACKGROUND_COLOR
-        wx.Frame.__init__(self, None, -1, 'Goose Monitor', size=(400, 400), style=wx.DEFAULT_FRAME_STYLE)
+        wx.Frame.__init__(self, None, -1, 'Goose Monitor', size=wx.Size(400, 400), style=wx.DEFAULT_FRAME_STYLE)
         self.gm = getDefault()
         self.hasFocus = False
         self.Bind(wx.EVT_CLOSE, self.OnClose)

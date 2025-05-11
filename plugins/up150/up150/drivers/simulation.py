@@ -70,7 +70,7 @@ class SimulationDeviceDriver(up150.drivers.DeviceDriver):
         self.createDialog()
 
     def createDialog(self):
-        self.dlg = wx.Dialog(None, -1, 'UP150 Simulation Driver %s' % self.hwinst.getDescription().getName(), size=(400, 200))
+        self.dlg = wx.Dialog(None, -1, 'UP150 Simulation Driver %s' % self.hwinst.getDescription().getName(), size=wx.Size(400, 200))
         tempSlider = wx.Slider(self.dlg, -1, 0, 0, 1000)
         tempSlider.Bind(wx.EVT_SCROLL, self.OnSlide)
         self.tempCtrl = tempSlider

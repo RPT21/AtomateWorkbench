@@ -114,8 +114,8 @@ class Wizard(plugins.poi.poi.dialogs.MessageHeaderDialog):
         event.Skip()
 
     def createContent(self, composite):
-        panel = wx.Panel(composite, -1, size=(1, 1), style=wx.CLIP_CHILDREN)
-        self.content = wx.Panel(panel, -1, size=(1, 1), style=wx.CLIP_CHILDREN | wx.TAB_TRAVERSAL)
+        panel = wx.Panel(composite, -1, size=wx.Size(1, 1), style=wx.CLIP_CHILDREN)
+        self.content = wx.Panel(panel, -1, size=wx.Size(1, 1), style=wx.CLIP_CHILDREN | wx.TAB_TRAVERSAL)
         self.contentSizer = wx.BoxSizer(wx.VERTICAL)
         self.content.SetSizer(self.contentSizer)
         buttons = self.createButtons(panel)

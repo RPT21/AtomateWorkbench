@@ -82,7 +82,7 @@ class UserInterface(object):
 
     def internalCreateControl(self):
         mainframe = ui.getDefault().getMainFrame().getControl()
-        self.window = wx.MiniFrame(ui.getDefault().getMainFrame().getControl(), -1, 'MKS647 Emulation', size=(300, 300), pos=(0, 0))
+        self.window = wx.MiniFrame(ui.getDefault().getMainFrame().getControl(), -1, 'MKS647 Emulation', size=wx.Size(300, 300), pos=wx.Point(0, 0))
         self.createInterface()
         self.window.Show()
 

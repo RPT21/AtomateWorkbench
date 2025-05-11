@@ -49,7 +49,7 @@ class SerialConfigurationSegment(object):
             self.lockoutPanel = wx.CheckBox(self.control, -1, messages.get('dialog.rs485driver.lockout.label'))
             sizer.Add(hardwareLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
             sizer.Add(self.hardwareChoice, 1, wx.ALIGN_CENTRE_VERTICAL)
-            sizer.Add(wx.Panel(self.control, -1, style=0, size=(1, 1)), 0)
+            sizer.Add(wx.Panel(self.control, -1, style=0, size=wx.Size(1, 1)), 0)
             sizer.Add(addressLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
             sizer.Add(self.addressText, 1, wx.ALIGN_CENTRE_VERTICAL)
 

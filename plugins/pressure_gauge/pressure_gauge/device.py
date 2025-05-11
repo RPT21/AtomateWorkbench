@@ -45,7 +45,7 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
         return choices
 
     def createHardwareBox(self):
-        sbox = wx.StaticBox(self.control, -1, messages.get('device.config.hardwarebox.label'), size=(-1, 200))
+        sbox = wx.StaticBox(self.control, -1, messages.get('device.config.hardwarebox.label'), size=wx.Size(-1, 200))
         ssizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
         fsizer = wx.FlexGridSizer(0, 2, 5, 5)
         fsizer.AddGrowableCol(1)

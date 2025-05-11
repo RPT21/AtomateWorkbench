@@ -66,7 +66,7 @@ class RoundedGradedHeader(object):
         self.update()
 
     def createControl(self, parent):
-        self.control = wx.Panel(parent, -1, size=(-1, 20))
+        self.control = wx.Panel(parent, -1, size=wx.Size(-1, 20))
         self.createCachedGradient()
         self.internalUpdate()
         self.control.Bind(wx.EVT_PAINT, self.OnPaint)

@@ -218,7 +218,7 @@ class MessageHeaderDialog(Dialog):
         Dialog.createControl(self, parent)
 
     def createHeader(self):
-        p = wx.Panel(self.control, -1, size=(300, 56))
+        p = wx.Panel(self.control, -1, size=wx.Size(300, 56))
         color = wx.WHITE
         p.SetBackgroundColour(color)
         self.descriptionLabel = wx.StaticText(p, -1, '')
@@ -343,7 +343,7 @@ class ExceptionDialog(wx.Dialog):
         font = errorLabel.GetFont()
         font.SetWeight(wx.BOLD)
         errorLabel.SetFont(font)
-        vp = wx.Panel(self, -1, size=(200, -1))
+        vp = wx.Panel(self, -1, size=wx.Size(200, -1))
         self.valueLabel = poi.utils.staticwraptext.StaticWrapText(vp, -1, '')
         s = wx.BoxSizer(wx.HORIZONTAL)
         s.Add(self.valueLabel, 1, wx.GROW | wx.ALL, 0)

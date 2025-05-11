@@ -123,7 +123,7 @@ if __name__ == '__main__':
         __module__ = __name__
 
         def OnInit(self):
-            f = wx.Frame(None, -1, 'Test LED', size=(400, 400))
+            f = wx.Frame(None, -1, 'Test LED', size=wx.Size(400, 400))
             led = LEDDisplay(f, -1)
             led.setValue('00e0')
             f.Show()

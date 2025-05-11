@@ -63,7 +63,7 @@ class ConditionalListItem(object):
         self.populateList()
 
     def createList(self):
-        lst = wx.ListCtrl(self.control, -1, size=(-1, 100), style=wx.LC_REPORT | wx.LC_NO_HEADER | wx.SUNKEN_BORDER)
+        lst = wx.ListCtrl(self.control, -1, size=wx.Size(-1, 100), style=wx.LC_REPORT | wx.LC_NO_HEADER | wx.SUNKEN_BORDER)
         lst.InsertColumn(0, 'Name')
         return lst
 

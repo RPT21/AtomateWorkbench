@@ -81,7 +81,7 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         self.createDialog()
 
     def createDialog(self):
-        self.dlg = wx.Dialog(None, -1, 'MKS647 Simulation Dialog', size=(400, 400), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        self.dlg = wx.Dialog(None, -1, 'MKS647 Simulation Dialog', size=wx.Size(400, 400), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         sizer = wx.BoxSizer(wx.VERTICAL)
         for i in range(8):
             box = wx.StaticBox(self.dlg, -1, 'Channel %d' % (i + 1))

@@ -59,7 +59,7 @@ class MainEditorItem(extendededitor.item.ExtendedEditorItem):
         fsizer = wx.FlexGridSizer(0, 2, 3, 3)
         fsizer.AddGrowableCol(1)
         self.repeatCheck = wx.CheckBox(self.body, -1, messages.get('exted.repeats.label'))
-        p = wx.Panel(self.body, -1, size=(2, 2))
+        p = wx.Panel(self.body, -1, size=wx.Size(2, 2))
         p.SetBackgroundColour(self.body.GetBackgroundColour())
         fsizer.Add(p, 0, wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.repeatCheck, 0, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)

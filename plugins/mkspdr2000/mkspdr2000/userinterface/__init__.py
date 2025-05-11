@@ -74,7 +74,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         sizer.AddGrowableCol(1)
         sizer.Add(driverLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         sizer.Add(self.driverCombo, 1, wx.ALIGN_CENTRE_VERTICAL)
-        self.driverConfigPanel = wx.Panel(panel, -1, size=(300, 150))
+        self.driverConfigPanel = wx.Panel(panel, -1, size=wx.Size(300, 150))
         boxSizer.Add(sizer, 0, wx.GROW | wx.ALL, 5)
         boxSizer.Add(wx.StaticLine(panel, -1), 0, wx.GROW | wx.ALL, 5)
         boxSizer.Add(self.driverConfigPanel, 1, wx.GROW | wx.ALL, 5)

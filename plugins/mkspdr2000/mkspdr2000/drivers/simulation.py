@@ -75,7 +75,7 @@ class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
         return True
 
     def createDialog(self):
-        self.dlg = wx.Dialog(None, -1, 'MKS PDR 2000 Simulation Panel', size=(400, 400), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        self.dlg = wx.Dialog(None, -1, 'MKS PDR 2000 Simulation Panel', size=wx.Size(400, 400), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         mainsizer = wx.BoxSizer(wx.HORIZONTAL)
         vsizer = wx.BoxSizer(wx.VERTICAL)
         self.gaugeCtrl1 = wx.Slider(self.dlg, -1, 0, 0, 100, style=wx.SL_VERTICAL)

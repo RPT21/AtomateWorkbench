@@ -3,7 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/utils/errorviewer.py
 # Compiled at: 2004-12-08 05:16:11
-import wx, ui, poi, poi.actions, validator, grideditor.messages as messages, wx.lib.mixins.listctrl as listmix, wx.lib.buttons as buttons, grideditor, grideditor.images as images
+import wx, wx.lib.mixins.listctrl as listmix
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+import plugins.validator.validator as validator
+import plugins.grideditor.grideditor as grideditor
+import plugins.grideditor.grideditor.images as images
+import plugins.grideditor.grideditor.messages as messages
+
 
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
     __module__ = __name__
@@ -59,7 +66,7 @@ class ErrorViewer(object):
 
     def createControl(self, parent=None):
         parent = ui.getDefault().getMainFrame().getControl()
-        self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title'), size=(300, 300), pos=(100, 100))
+        self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title'), size=wx.Size(300, 300), pos=(100, 100))
         self.list = self.createList()
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.list, 1, wx.GROW | wx.ALL, 0)

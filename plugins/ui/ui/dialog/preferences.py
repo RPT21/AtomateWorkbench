@@ -60,7 +60,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
         self.endModal(wx.ID_CANCEL)
 
     def createTree(self):
-        treectrl = wx.TreeCtrl(self.control, -1, size=(200, -1), style=wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_SINGLE | wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.SUNKEN_BORDER)
+        treectrl = wx.TreeCtrl(self.control, -1, size=wx.Size(200, -1), style=wx.TR_FULL_ROW_HIGHLIGHT | wx.TR_SINGLE | wx.TR_HIDE_ROOT | wx.TR_NO_LINES | wx.SUNKEN_BORDER)
         self.root = treectrl.AddRoot('#ROOT')
         self.control.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnTreeSelChanged, treectrl)
         self.control.Bind(wx.EVT_TREE_SEL_CHANGING, self.OnTreeSelChanging, treectrl)

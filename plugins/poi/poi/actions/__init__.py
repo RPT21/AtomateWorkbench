@@ -4,10 +4,13 @@
 # Embedded file name: ../plugins/poi/src/poi/actions/__init__.py
 # Compiled at: 2005-06-10 18:51:25
 import wx, plugins.poi.poi.actions.acceleratortable, plugins.poi.poi.images as images
+import plugins.poi.poi as poi
 statusBarFrames = {}
 from wx import Menu, MenuItem, MenuBar, NewId, EvtHandler, ToolBar, NullBitmap, EVT_MENU, ITEM_NORMAL, ITEM_CHECK, ITEM_RADIO, EVT_TOOL
 str2flags = {'alt': (wx.ACCEL_ALT), 'shift': (wx.ACCEL_SHIFT), 'ctrl': (wx.ACCEL_CTRL)}
-STR2KEYCODE = {'DELETE': (wx.WXK_DELETE), 'F1': (wx.WXK_F1), 'F2': (wx.WXK_F2), 'F3': (wx.WXK_F3), 'F4': (wx.WXK_F4), 'F5': (wx.WXK_F5), 'F6': (wx.WXK_F6), 'F7': (wx.WXK_F7), 'F8': (wx.WXK_F8), 'F9': (wx.WXK_F9), 'F10': (wx.WXK_F10), 'F11': (wx.WXK_F11), 'F12': (wx.WXK_F12)}
+STR2KEYCODE = {'DELETE': (wx.WXK_DELETE), 'F1': (wx.WXK_F1), 'F2': (wx.WXK_F2), 'F3': (wx.WXK_F3), 'F4': (wx.WXK_F4),
+               'F5': (wx.WXK_F5), 'F6': (wx.WXK_F6), 'F7': (wx.WXK_F7), 'F8': (wx.WXK_F8), 'F9': (wx.WXK_F9),
+               'F10': (wx.WXK_F10), 'F11': (wx.WXK_F11), 'F12': (wx.WXK_F12)}
 globalActionHandlers = {}
 
 def setGlobalActionHandler(sid, action):

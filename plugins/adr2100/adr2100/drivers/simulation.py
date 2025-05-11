@@ -81,7 +81,7 @@ class SimulationDeviceDriver(adr2100.drivers.DeviceDriver):
         pass
 
     def createDialog(self):
-        self.dlg = wx.Dialog(None, -1, 'ADR 2100 Simulation Panel', size=(400, 400), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
+        self.dlg = wx.Dialog(None, -1, 'ADR 2100 Simulation Panel', size=wx.Size(400, 400), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         mainsizer = wx.BoxSizer(wx.VERTICAL)
         sb = wx.StaticBox(self.dlg, -1, 'Digital Ports')
         sbsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)

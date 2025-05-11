@@ -153,7 +153,7 @@ class Gutter(object):
         self.handleScrolled(event)
 
     def createControl(self, parent):
-        self.control = wx.Window(parent, -1, size=(_DEFAULT_WIDTH, -1), style=0)
+        self.control = wx.Window(parent, -1, size=wx.Size(_DEFAULT_WIDTH, -1), style=0)
         (ppx, ppy) = self.grid.GetScrollPixelsPerUnit()
         (x, y) = self.grid.GetVirtualSize()
         self.old = (x, y)

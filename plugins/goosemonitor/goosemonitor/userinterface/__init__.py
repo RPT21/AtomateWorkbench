@@ -192,7 +192,7 @@ class LightWidget(wx.Window):
     __module__ = __name__
 
     def __init__(self, parent, onImage=None, offImage=None):
-        wx.Window.__init__(self, parent, -1, size=(100, 50), style=wx.CLIP_CHILDREN)
+        wx.Window.__init__(self, parent, -1, size=wx.Size(100, 50), style=wx.CLIP_CHILDREN)
         self.SetBackgroundColour(parent.GetBackgroundColour())
         self.buffer = None
         self.currentValue = 0
@@ -323,7 +323,7 @@ class TemperatureWidget(wx.Window):
     __module__ = __name__
 
     def __init__(self, parent, valueColor=MONITOR_TEMP_FILL_COLOR):
-        wx.Window.__init__(self, parent, -1, size=(30, 100))
+        wx.Window.__init__(self, parent, -1, size=wx.Size(30, 100))
         self.SetBackgroundColour(parent.GetBackgroundColour())
         self.buffer = None
         self.currentValue = 0

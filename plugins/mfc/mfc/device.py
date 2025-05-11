@@ -48,7 +48,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         return choices
 
     def createHardwareBox(self):
-        sbox = wx.StaticBox(self.control, -1, messages.get('device.config.hardwarebox.label'), size=(-1, 200))
+        sbox = wx.StaticBox(self.control, -1, messages.get('device.config.hardwarebox.label'), size=wx.Size(-1, 200))
         ssizer = wx.StaticBoxSizer(sbox, wx.VERTICAL)
         fsizer = wx.FlexGridSizer(0, 2, 5, 5)
         fsizer.AddGrowableCol(1)
@@ -138,7 +138,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         hsizer.Add(self.columnSetpointRadio, 0, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
         hsizer.Add(self.columnActualFlowRadio, 0, wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(hsizer, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)
-        self.plotColor = colourselect.ColourSelect(self.control, -1, size=(60, 20))
+        self.plotColor = colourselect.ColourSelect(self.control, -1, size=wx.Size(60, 20))
         fsizer.Add(wx.StaticText(self.control, -1, 'Plot Color:'), 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.plotColor, 0, wx.ALIGN_CENTRE_VERTICAL)
         ssizer.Add(fsizer, 0, wx.GROW | wx.TOP, 10)
