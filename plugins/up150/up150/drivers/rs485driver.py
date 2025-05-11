@@ -273,7 +273,7 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             self.lockout = configuration.get('driver', 'lockout').lower() == 'true'
             self.configured = True
         except Exception as msg:
-            print ('* ERROR: Cannot configure network device driver:', msg)
+            print(('* ERROR: Cannot configure network device driver:', msg))
             self.configured = False
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
 

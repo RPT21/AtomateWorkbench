@@ -23,7 +23,7 @@ def getUnitChoices():
 
 def getRangeIndex(unitKey, rangeValue):
     global RANGES
-    for (key, value) in RANGES[unitKey].items():
+    for (key, value) in list(RANGES[unitKey].items()):
         if value == rangeValue:
             return key
 
@@ -31,7 +31,7 @@ def getRangeIndex(unitKey, rangeValue):
 
 
 def getRangeChoices(unitKey):
-    values = RANGES[unitKey].values()
+    values = list(RANGES[unitKey].values())
     values.sort()
     return values
 
@@ -51,7 +51,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
 
         lst = [
          'None']
-        lst.extend(map((lambda i: str(i + 1)), range(self.instance.getChannelCount())))
+        lst.extend(list(map((lambda i: str(i + 1)), list(range(self.instance.getChannelCount())))))
         return lst
 
     def createControl(self, parent):
@@ -296,7 +296,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             numChannels = config.get('main', 'channels')
             self.channelsChoice.SetSelection(CHANNEL_CHOICES.index(numChannels))
         except Exception as msg:
-            print('* WARNING: Exception while setting channel numbers:', msg)
+            print(('* WARNING: Exception while setting channel numbers:', msg))
             self.channelsChoice.SetSelection(0)
 
     def setHardwareInfo(self, config):
@@ -458,7 +458,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             if wasOn:
                 errors = self.shutdownHardware()
                 if errors:
-                    print('* ERROR: Cannot shutdown:', errors)
+                    print(('* ERROR: Cannot shutdown:', errors))
                 if errors:
                     return
             instance.setupDriver(self.getDescription())

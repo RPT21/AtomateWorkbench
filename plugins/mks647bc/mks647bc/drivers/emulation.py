@@ -226,7 +226,7 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         if self.status == mks647bc.drivers.STATUS_INITIALIZED:
             logger.debug('Driver already initialized')
             return
-        self.channelValues = map((lambda x: 0), range(int(self.configuration.get('main', 'channels'))))
+        self.channelValues = list(map((lambda x: 0), list(range(int(self.configuration.get('main', 'channels'))))))
         if self.checkInterrupt():
             logger.debug('Interrupted')
             return

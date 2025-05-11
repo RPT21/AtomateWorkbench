@@ -63,7 +63,7 @@ class PurgetSetpointCtrl(wx.TextCtrl):
         value = self.GetValue()
         try:
             value = float(value)
-        except Exception, msg:
+        except Exception as msg:
             value = 0.0
 
         return value

@@ -181,7 +181,7 @@ class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
             logger.error("Cannot open recipe: '%s'" % msg)
 
     def handleProjectDoubleClick(self, selection):
-        print('double click', selection)
+        print(('double click', selection))
 
     def handleProjectSelectionChanged(self, selection):
         if len(selection) == 0:
@@ -243,7 +243,7 @@ class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
     def fillLayoutMemento(self, memento):
         size = self.control.GetSize()
         memento.set('layout', 'size', '%s,%s' % (size[0], size[1]))
-        for (key, view) in self.sectors.items():
+        for (key, view) in list(self.sectors.items()):
             if key is 'versions':
                 continue
             width = view.GetSize()[0]
@@ -254,8 +254,8 @@ class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
         self.control.CentreOnScreen()
 
     def restoreLayoutFromMemento(self, memento):
-        size = map(int, tuple(memento.get('layout', 'size').split(',')))
-        for (key, view) in self.sectors.items():
+        size = list(map(int, tuple(memento.get('layout', 'size').split(','))))
+        for (key, view) in list(self.sectors.items()):
             if not isinstance(view, wx.SashLayoutWindow):
                 continue
             width = int(memento.get('layout', '.'.join(['sector', key])))

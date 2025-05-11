@@ -311,6 +311,6 @@ class RecipeOptionsDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
         self.control.CentreOnScreen()
 
     def restoreLayoutFromMemento(self, memento):
-        size = map(int, tuple(memento.get('layout', 'size').split(',')))
+        size = list(map(int, tuple(memento.get('layout', 'size').split(','))))
         self.control.SetSize(size)
         self.control.CentreOnScreen()

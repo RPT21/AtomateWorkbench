@@ -65,10 +65,10 @@ class DeviceRepliesEnvelope(object):
         self.replies[device] = reply
 
     def getReplies(self):
-        return self.replies.values()
+        return list(self.replies.values())
 
     def getReply(self, device):
-        if not self.replies.has_key(device):
+        if device not in self.replies:
             raise LookupError("No reply for device '%s' in envelope" % device)
         return self.replies[device]
 
@@ -77,7 +77,7 @@ class DeviceRepliesEnvelope(object):
         def typefilter(reply):
             return reply.getDevice().getType() == type
 
-        return filter(typefilter, self.getReplies())
+        return list(filter(typefilter, self.getReplies()))
 
     def dispose(self):
         self.replies.clear()
@@ -195,7 +195,7 @@ class Engine(threading.Thread):
         event = EngineEvent(self, etype)
         event.setData(data)
         listeners = copy.copy(self.engineListeners)
-        map((lambda listener: listener.engineEvent(event)), listeners)
+        list(map((lambda listener: listener.engineEvent(event)), listeners))
 
     def addEngineListener(self, listener):
         if not listener in self.engineListeners:
@@ -280,7 +280,7 @@ class Engine(threading.Thread):
                         self.submitHardwareRequests()
                     except Exception as msg:
                         logger.exception(msg)
-                        print("* ERROR: Could not submit request for hardware status at step '%s':'%s'" % (self.currentStep, msg))
+                        print(("* ERROR: Could not submit request for hardware status at step '%s':'%s'" % (self.currentStep, msg)))
                         self.lock.release()
                         self.internalErrorAbort('Error while submitting hardware requests %s' % msg)
                         return
@@ -395,13 +395,13 @@ class Engine(threading.Thread):
         return
 
     def printDebug(self):
-        print('RECIPE TIMING[ Step Time:', self.getStepTime(), '/Recipe Time:', self.getRecipeTime(), '/Total Time:', self.getTotalTime())
+        print(('RECIPE TIMING[ Step Time:', self.getStepTime(), '/Recipe Time:', self.getRecipeTime(), '/Total Time:', self.getTotalTime()))
 
     def gatherDeviceReplies(self):
         logger.debug('Gathering device replies')
         then = time.time()
         envelope = DeviceRepliesEnvelope(self.currentStepIndex, self.currentLoops, self.getRecipeTime(), self.getStepTime(), self.getTotalTime())
-        for participant in self.recipeParticipants.values():
+        for participant in list(self.recipeParticipants.values()):
             then_dev = time.time()
             responses = participant.getDeviceResponse(self.getRecipeTime(), self.getStepTime(), self.getTotalTime(), self.currentStep)
             for response in responses:
@@ -487,7 +487,7 @@ class Engine(threading.Thread):
 
     def setStepGoals(self):
         self.fireEngineEvent(TYPE_SETTING_STEP_GOALS, self.getCurrentStep())
-        for participant in self.recipeParticipants.values():
+        for participant in list(self.recipeParticipants.values()):
             participant.setStepGoal(self.getRecipeTime(), self.getStepTime(), self.getTotalTime, self.getCurrentStep())
 
     def isInLoopingInterval(self):
@@ -543,7 +543,7 @@ class Engine(threading.Thread):
             logger.debug('does repeat, but is it the same? %d - %d' % (loopStepIndex, self.currentStepIndex))
         if self.currentStep.doesRepeat() and loopStepIndex != self.currentStepIndex:
             self.pushStep(self.currentStep, self.currentStepIndex)
-        for participant in self.recipeParticipants.values():
+        for participant in list(self.recipeParticipants.values()):
             participant.prepareStep(self.getRecipeTime(), self.getStepTime(), self.getTotalTime(), self.currentStep)
 
         return True
@@ -654,7 +654,7 @@ class Engine(threading.Thread):
         self.fireEngineEvent(TYPE_HARDWARE_INIT_END)
 
     def getRecipeParticipant(self, hwinst):
-        if not self.recipeParticipants.has_key(hwinst):
+        if hwinst not in self.recipeParticipants:
             return None
         return self.recipeParticipants[hwinst]
         return
@@ -674,7 +674,7 @@ class Engine(threading.Thread):
         if participant is None:
             participant = self.createRecipeParticipant(hwinst, recipe)
         if participant is None:
-            logger.warn("No participant exists for '%s'" % str(device))
+            logger.warning("No participant exists for '%s'" % str(device))
             return
         participant.addDevice(device)
         return
@@ -690,7 +690,7 @@ class Engine(threading.Thread):
 
     def internalStop(self):
         logger.debug('internalstop: acquire')
-        map((lambda participant: participant.interrupt()), self.recipeParticipants.values())
+        list(map((lambda participant: participant.interrupt()), list(self.recipeParticipants.values())))
         self.lock.acquire()
         logger.debug('internalstop: got it')
         self.interrupted = True
@@ -698,7 +698,7 @@ class Engine(threading.Thread):
         logger.debug('internalstop: released')
 
     def notifyParticipanEnd(self):
-        for participant in self.recipeParticipants.values():
+        for participant in list(self.recipeParticipants.values()):
             participant.handleRecipeEnd(self.getRecipeTime(), self.getStepTime(), self.getTotalTime(), self.recipe)
 
     def internalCleanup(self):

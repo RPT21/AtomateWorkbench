@@ -12,7 +12,7 @@ CHOICES_PARITY = ['none', 'odd', 'even']
 CHOICES_PARITY_TEXT = ['None', 'Odd', 'Even']
 CHOICES_BITS = [7, 8]
 CHOICES_STOPBITS = [1, 2]
-CHOICES_PORTS = map((lambda p: p), range(9))
+CHOICES_PORTS = list(map((lambda p: p), list(range(9))))
 ERROR_CODE_STRINGS = {111: {'short': 'Unrecognized command', 'long': 'The command transmitted is not recognized'}, 112: {'short': 'Syntax Error', 'long': 'The command sent is inproperly fomatted'}, 122: {'short': 'Invalid Data Field', 'long': 'The command parameter does not have a decimal form, or invalid characters were found within the parameter'}}
 SERIAL_PARITY = {'none': (serial.PARITY_NONE), 'even': (serial.PARITY_EVEN), 'odd': (serial.PARITY_ODD)}
 
@@ -28,7 +28,7 @@ class PortEnumerator(threading.Thread):
                 ser.open()
                 CHOICES_PORTS.append(i)
                 ser.close()
-            except Exception, msg:
+            except Exception as msg:
                 continue
 
 
@@ -65,7 +65,7 @@ class SerialConfigurationSegment(object):
                 return num + 1
 
             portLabel = wx.StaticText(self.control, -1, 'Port:')
-            self.portChoice = wx.ComboBox(self.control, -1, choices=map(add, CHOICES_PORTS), style=wx.CB_READONLY)
+            self.portChoice = wx.ComboBox(self.control, -1, choices=list(map(add, CHOICES_PORTS)), style=wx.CB_READONLY)
             baudLabel = wx.StaticText(self.control, -1, 'Baud Rate:')
             self.baudChoice = wx.ComboBox(self.control, -1, choices=CHOICES_BAUDRATE, style=wx.CB_READONLY)
             parityLabel = wx.StaticText(self.control, -1, 'Parity:')
@@ -102,7 +102,7 @@ class SerialConfigurationSegment(object):
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return self.control
@@ -132,9 +132,9 @@ class SerialConfigurationSegment(object):
             self.stopbitsChoice.SetSelection(CHOICES_STOPBITS.index(int(data.get('driver', 'stopbits'))))
             self.lockoutPanel.SetValue(data.get('driver', 'panellockout').lower() == 'true')
             self.wordSizeChoice.SetSelection(CHOICES_BITS.index(int(data.get('driver', 'wordsize'))))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
-            logger.warn('Cannot set proper values for driver segment: %s' % msg)
+            logger.warning('Cannot set proper values for driver segment: %s' % msg)
             self.setDefaultData()
 
     def setDefaultData(self):
@@ -176,7 +176,7 @@ class SerialDeviceDriver(adr2100.drivers.DeviceDriver):
         self.parity = None
         self.stopbits = None
         self.lockoutPanel = False
-        self.range = map((lambda s: 1), range(4))
+        self.range = list(map((lambda s: 1), list(range(4))))
         self.bits = 1
         self.wordsize = 7
         self.buff = ''
@@ -210,7 +210,7 @@ class SerialDeviceDriver(adr2100.drivers.DeviceDriver):
             self.stopbits = int(configuration.get('driver', 'stopbits'))
             self.lockoutPanel = configuration.get('driver', 'panellockout').lower() == 'true'
             self.wordsize = int(configuration.get('driver', 'wordsize'))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error('Cannot configure network device driver: %s' % msg)
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
@@ -227,7 +227,7 @@ class SerialDeviceDriver(adr2100.drivers.DeviceDriver):
             if self.lockoutPanel:
                 logger.debug('Locking panel')
                 self.lockPanel()
-        except Exception, msg:
+        except Exception as msg:
             try:
                 self.port.close()
             except:
@@ -332,7 +332,7 @@ class SerialDeviceDriver(adr2100.drivers.DeviceDriver):
         try:
             if self.lockoutPanel:
                 self.unlockPanel()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error('* ERROR: Cannot unlock panel')
 
@@ -356,7 +356,7 @@ class SerialDeviceDriver(adr2100.drivers.DeviceDriver):
             while self.port.inWaiting() > 0:
                 self.port.read(self.port.inWaiting())
 
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def sendAndWait(self, command, timeout=0):

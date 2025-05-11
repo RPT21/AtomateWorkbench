@@ -141,7 +141,7 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
             self.linearRampCheckbox.SetValue(True)
             self.rampOriginSetpoint.Enable(True)
             self.rampOriginTemp.Enable(True)
-            print(entry.isRampFromSetpoint(), entry.isRampFromLast())
+            print((entry.isRampFromSetpoint(), entry.isRampFromLast()))
             self.rampOriginSetpoint.SetValue(entry.isRampFromSetpoint())
             self.rampOriginTemp.SetValue(entry.isRampFromLast())
         else:

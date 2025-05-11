@@ -58,8 +58,8 @@ class NetworkConfigurationSegment(object):
         try:
             self.hostField.SetValue(data.get('driver', 'host'))
             self.portField.SetValue(data.get('driver', 'port'))
-        except Exception, msg:
-            print '*ERROR: Cannot set proper values for driver segment:', msg
+        except Exception as msg:
+            print('*ERROR: Cannot set proper values for driver segment:', msg)
             self.hostField.SetValue('127.0.0.1')
             self.portField.SetValue('8081')
 
@@ -116,8 +116,8 @@ class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
         try:
             self.port = configuration.get('driver', 'port')
             self.host = configuration.get('driver', 'host')
-        except Exception, msg:
-            print '* ERROR: Cannot configure network device driver:', msg
+        except Exception as msg:
+            print('* ERROR: Cannot configure network device driver:', msg)
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
 
     def debug_shutdown(self):
@@ -144,25 +144,25 @@ class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
         self.ir = False
         while True:
             self.cv.wait(0.5)
-            print 'Waiting'
+            print('Waiting')
             if self.ir:
-                print 'INTERRUPTTO:'
+                print('INTERRUPTTO:')
                 self.ir = False
                 self.cv.release()
                 raise Exception('Interrupted ... :)')
             now = time.time()
             if now - then > timeout:
-                print 'TIMEOUT!!!'
+                print('TIMEOUT!!!')
                 self.ir = False
                 self.cv.release()
                 raise Exception('Timeout while waiting for connection')
 
     def real_initialize(self):
-        print 'real init'
+        print('real init')
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, int(self.port)))
         self.status = mks647bc.drivers.STATUS_INITIALIZED
-        print 'Done'
+        print('Done')
 
     def real_shutdown(self):
         if not self.status == mks647bc.drivers.STATUS_INITIALIZED:
@@ -185,7 +185,7 @@ class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
             self.cv.wait(0.1)
 
         self.cv.release()
-        print 'FLUSHED ALL!'
+        print('FLUSHED ALL!')
 
     def hasWaiting(self):
         (r, w, e) = select.select([self.socket], [], [], 0.2)

@@ -18,7 +18,7 @@ CHOICES_PARITY = ['none', 'odd', 'even']
 CHOICES_PARITY_TEXT = ['None', 'Odd', 'Even']
 CHOICES_BITS = [7, 8]
 CHOICES_STOPBITS = [1, 2]
-CHOICES_PORTS = map((lambda p: p), range(9))
+CHOICES_PORTS = list(map((lambda p: p), list(range(9))))
 SERIAL_PARITY = {'none': (serial.PARITY_NONE), 'even': (serial.PARITY_EVEN), 'odd': (serial.PARITY_ODD)}
 
 class PortEnumerator(threading.Thread):
@@ -70,7 +70,7 @@ class SerialConfigurationSegment(object):
                 return num + 1
 
             portLabel = wx.StaticText(self.control, -1, 'Port:')
-            self.portChoice = wx.ComboBox(self.control, -1, choices=map(add, CHOICES_PORTS), style=wx.CB_READONLY)
+            self.portChoice = wx.ComboBox(self.control, -1, choices=list(map(add, CHOICES_PORTS)), style=wx.CB_READONLY)
             baudLabel = wx.StaticText(self.control, -1, 'Baud Rate:')
             self.baudChoice = wx.ComboBox(self.control, -1, choices=CHOICES_BAUDRATE, style=wx.CB_READONLY)
             parityLabel = wx.StaticText(self.control, -1, 'Parity:')

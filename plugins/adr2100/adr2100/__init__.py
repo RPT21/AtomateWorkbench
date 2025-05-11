@@ -109,15 +109,15 @@ class InitializeScriptThread(threading.Thread):
         try:
             f = open(os.path.join(dirname, DEFAULT_SCRIPT_FILENAME), 'rt')
             lines = f.readlines()
-            lines = map((lambda moo: moo.strip()), lines)
+            lines = list(map((lambda moo: moo.strip()), lines))
             f.close()
             for line in lines:
                 (tt, sg) = line.split(':')
                 tt = float(tt)
-                segs = map((lambda moo: moo.strip()), sg.split(','))
+                segs = list(map((lambda moo: moo.strip()), sg.split(',')))
                 entry = []
                 for seg in segs:
-                    ports = map((lambda moo: int(moo)), seg.split(' '))
+                    ports = list(map((lambda moo: int(moo)), seg.split(' ')))
                     entry.append(ports)
 
                 script.append([tt, entry])

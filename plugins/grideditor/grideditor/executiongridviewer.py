@@ -17,12 +17,12 @@ def addExecutionGridColumnContributionFactory(strType, factory):
 
 
 def removeExecutionGridColumnContributionFactory(strType, factory):
-    if executionGridColumnContributionsFactories.has_key(strType):
+    if strType in executionGridColumnContributionsFactories:
         del executionGridColumnContributionsFactories[strType]
 
 
 def getExecutionGridColumnContributionFactory(strType):
-    if not executionGridColumnContributionsFactories.has_key(strType):
+    if strType not in executionGridColumnContributionsFactories:
         return None
     return executionGridColumnContributionsFactories[strType]
 
@@ -418,7 +418,7 @@ class ExecutionGridMediator(object):
     def createColumns(self):
         recipe = ui.context.getProperty('recipe')
         if recipe is None:
-            logger.warn('Attempt to create columns but no recipe is available')
+            logger.warning('Attempt to create columns but no recipe is available')
             return
         self.columns.append(DurationColumn(recipe))
         for device in recipe.getDevices():
@@ -468,7 +468,7 @@ class ExecutionGridMediator(object):
         if len(self.columns) == 0:
             return None
         column = self.columns[col]
-        if not self.colattrs.has_key(column):
+        if column not in self.colattrs:
             attr = wxGridCellAttr()
             self.colattrs[column] = attr
             attr.SetRenderer(column.getCellRendererWrapper())

@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/hw.py
 # Compiled at: 2005-06-21 21:49:37
-import threading, goosemonitor, goosemonitor.userinterface, logging, hardware.hardwaremanager, urllib, time, copy, xml.dom.minidom
+import threading, goosemonitor, goosemonitor.userinterface, logging, hardware.hardwaremanager, urllib.request, urllib.parse, urllib.error, time, copy, xml.dom.minidom
 
 class RefreshThread(threading.Thread):
     __module__ = __name__
@@ -20,7 +20,7 @@ class RefreshThread(threading.Thread):
             try:
                 self.callee.refreshData()
             except Exception as msg:
-                print('EXCEPTION: ', msg)
+                print(('EXCEPTION: ', msg))
 
             time.sleep(self.refreshInterval)
 
@@ -71,7 +71,7 @@ class GooseMonitorHardware(hardware.hardwaremanager.Hardware):
 
     def getAndParseData(self, url):
         if self.opener is None:
-            self.opener = urllib.FancyURLopener({})
+            self.opener = urllib.request.FancyURLopener({})
         try:
             source = self.opener.open(url).read()
         except Exception as msg:

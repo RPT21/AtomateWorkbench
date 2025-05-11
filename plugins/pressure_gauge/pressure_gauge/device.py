@@ -8,7 +8,7 @@ logger = logging.getLogger('pressure_gauge.userinterface')
 DEVICE_ID = 'pressure_gauge'
 
 def parseColor(colorStr):
-    return apply(wx.Color, map(int, colorStr.split(',')))
+    return wx.Color(*list(map(int, colorStr.split(','))))
 
 
 class PressureGaugeDeviceEditor(core.device.DeviceEditor):
@@ -120,7 +120,7 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
 
     def getHardwareChoicesName(self):
         choices = self.getHardwareChoices()
-        return map((lambda p: p.getName()), choices)
+        return list(map((lambda p: p.getName()), choices))
 
     def selectHardware(self, hwid):
         try:
@@ -186,7 +186,7 @@ class PressureGaugeDevice(core.device.Device):
             description = hwtype.getDescription()
             return '%s (%s)' % (hardwareName, description)
         except Exception as msg:
-            print('* WARNING:', msg)
+            print(('* WARNING:', msg))
 
         return '*NOT CONFIGURED*'
 

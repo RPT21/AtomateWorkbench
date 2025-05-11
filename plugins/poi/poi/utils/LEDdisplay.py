@@ -56,7 +56,7 @@ class LEDDisplay(wx.Window):
     def drawDisplay(self, dc):
         offset = wx.Point(0.0, 0.0)
         for character in self.getCharacters():
-            for (displaySegment, points) in self.LEDSegments.items():
+            for (displaySegment, points) in list(self.LEDSegments.items()):
                 if displaySegment & character:
                     dc.SetPen(self.LEDPen)
                 else:
@@ -70,7 +70,7 @@ class LEDDisplay(wx.Window):
         for letter in self.value:
             if letter.isalpha():
                 letter = letter.upper()
-            if not CHARACTERS.has_key(letter):
+            if letter not in CHARACTERS:
                 continue
             if letter == '.':
                 characterList[-1] = characterList[-1] | CHARACTERS[letter]

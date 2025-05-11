@@ -4,6 +4,7 @@
 # Embedded file name: ../plugins/core/src/core/conditional.py
 # Compiled at: 2004-09-22 20:51:00
 import logging
+from functools import reduce
 logger = logging.getLogger('core.conditionals')
 conditionalContributions = {}
 actionContributions = {}

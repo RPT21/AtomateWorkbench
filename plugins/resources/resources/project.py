@@ -38,7 +38,7 @@ class ProjectDescription(object):
         try:
             self.comment = cfg.get('description', 'comment')
         except Exception as msg:
-            print('* WARNING:', Exception, msg)
+            print(('* WARNING:', Exception, msg))
             self.comment = ''
 
 

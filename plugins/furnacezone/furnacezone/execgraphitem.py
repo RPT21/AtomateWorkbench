@@ -219,20 +219,20 @@ class GraphView(plugins.graphview.graphview.PanelView):
 
     def dispose(self):
         graphview.PanelView.dispose(self)
-        for (device, panel) in self.devicePanels.items():
+        for (device, panel) in list(self.devicePanels.items()):
             self.removeDevice(device, False)
 
         self.panel.removeGraphPanel(self.p)
         executionengine.getDefault().removeEngineInitListener(self)
 
     def saveSnapshot(self, runlog):
-        for (device, panel) in self.devicePanels.items():
+        for (device, panel) in list(self.devicePanels.items()):
             img = panel.saveSnapshot(400, 400)
             name = os.path.join(runlog.getLocation(), '%s_%s.jpg' % (runlog.getName(), panel.device.getID()))
             img.SaveFile(name, wx.BITMAP_TYPE_JPEG)
 
     def clearItems(self):
-        map((lambda s: s.clear()), self.devicePanels.values())
+        list(map((lambda s: s.clear()), list(self.devicePanels.values())))
 
     def engineEvent(self, event):
         eventType = event.getType()
@@ -248,7 +248,7 @@ class GraphView(plugins.graphview.graphview.PanelView):
             self.setStepGoals(event.getData())
 
     def setStepGoals(self, step):
-        for (device, panel) in self.devicePanels.items():
+        for (device, panel) in list(self.devicePanels.items()):
             devIdx = self.engine.recipe.getDeviceIndex(device)
             devEntry = step.getEntry(devIdx)
             panel.setSetpoint(devEntry)
@@ -277,7 +277,7 @@ class GraphView(plugins.graphview.graphview.PanelView):
         self.p.RemoveChild(p)
         p.Destroy()
         del self.devicePanels[device]
-        if len(self.devicePanels.values()) == 0:
+        if len(list(self.devicePanels.values())) == 0:
             graphview.getDefault().destroyDeviceGroup('furnacezone')
             executionengine.getDefault().perspective.graphView.refresh()
             return

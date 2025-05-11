@@ -63,7 +63,7 @@ class ValidatorPlugin(lib.kernel.plugin.Plugin):
         wx.CallAfter(self.internalFireValidationEvent, valid, errors)
 
     def internalFireValidationEvent(self, valid, errors):
-        map((lambda listener: listener.validationEvent(valid, errors)), self.validationListeners)
+        list(map((lambda listener: listener.validationEvent(valid, errors)), self.validationListeners))
 
     def startup(self, contextBundle):
         messages.init(contextBundle)

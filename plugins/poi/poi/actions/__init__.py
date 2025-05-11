@@ -16,7 +16,7 @@ def setGlobalActionHandler(sid, action):
 
 
 def removeGlobalActionHandler(sid):
-    if globalActionHandlers.has_key(sid):
+    if sid in globalActionHandlers:
         del globalActionHandlers[sid]
 
 
@@ -25,7 +25,7 @@ def clearGlobalActionHandlers():
 
 
 def getGlobalActionHandler(sid):
-    if globalActionHandlers.has_key(sid):
+    if sid in globalActionHandlers:
         return globalActionHandlers[sid]
     return None
 
@@ -89,15 +89,15 @@ class Action(object):
 
         for flagStr in flagStrs:
             flagStr = flagStr.lower()
-            if not flagStr in str2flags.keys():
-                logger.warn("unknown flag string for accelerator '%s'" % flagStr)
+            if not flagStr in list(str2flags.keys()):
+                logger.warning("unknown flag string for accelerator '%s'" % flagStr)
                 continue
             flags |= str2flags[flagStr]
 
         if len(flagStrs) == 0:
             flags = wx.ACCEL_NORMAL
         keyStr = tokens[len(tokens) - 1].upper()
-        if keyStr in STR2KEYCODE.keys():
+        if keyStr in list(STR2KEYCODE.keys()):
             keyCode = STR2KEYCODE[keyStr]
         else:
             keyCode = ord(keyStr[0])
@@ -243,7 +243,7 @@ class ContributionManager(object):
         founditem = self.find(sid)
         idx = len(self.items)
         if founditem is None:
-            print("* ERROR: No such item '%s' found.  Append to end(%s)" % item)
+            print(("* ERROR: No such item '%s' found.  Append to end(%s)" % item))
         else:
             idx = self.items.index(founditem) + 1
         self.items.insert(idx, item)
@@ -290,7 +290,7 @@ class ActionContributionItem(ContributionItem):
             self.widget = toolbar.AddLabelTool(NewId(), label, image, shortHelp=toolTipText, longHelp=extendedText)
             toolbar.EnableTool(self.widget.GetId(), self.action.isEnabled())
         except Exception as msg:
-            print("* ERROR: Unable to create tool for toolbar('%s'):'%s'" % (self.action, msg))
+            print(("* ERROR: Unable to create tool for toolbar('%s'):'%s'" % (self.action, msg)))
             return
 
         class SelectionEvtHandler(EvtHandler):
@@ -322,7 +322,7 @@ class ActionContributionItem(ContributionItem):
             self.widget.SetBitmap(image)
         parent.AppendItem(self.widget)
         parent.Enable(self.widget.GetId(), self.action.isEnabled())
-        if not poi.actions.acceleratortable.frames.has_key(parent.shell):
+        if parent.shell not in poi.actions.acceleratortable.frames:
             poi.actions.acceleratortable.AcceleratorTable(parent.shell)
         seq = self.action.getAcceleratorSequence()
         if seq is not None:
@@ -348,7 +348,7 @@ class ActionContributionItem(ContributionItem):
         event.Skip()
         if self.action is None:
             return
-        if not statusBarFrames.has_key(self.shell):
+        if self.shell not in statusBarFrames:
             return
         statusbarmanager = statusBarFrames[self.shell]
         statusbarmanager.setText(self.action.getDescription())

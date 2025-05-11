@@ -26,7 +26,7 @@ def getUnitChoices():
 
 def getRangeChoices(unitKey):
     global RANGES
-    values = RANGES[unitKey].values()
+    values = list(RANGES[unitKey].values())
     values.sort()
     return values
 
@@ -47,7 +47,7 @@ class DeviceHardwareEditor(plugins.hardware.hardware.userinterface.DeviceHardwar
         def modapp(i):
             return str(i + 1)
 
-        self.channelChoice = wx.Choice(self.control, -1, choices=map(modapp, range(self.instance.getChannelCount())))
+        self.channelChoice = wx.Choice(self.control, -1, choices=list(map(modapp, list(range(self.instance.getChannelCount())))))
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.channelChoice, 0, wx.ALIGN_CENTRE_VERTICAL)
         label = wx.StaticText(self.control, -1, 'Units:')
@@ -198,7 +198,7 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
     def OnStop(self, event):
         errors = self.shutdownHardware()
         if errors:
-            print('Error shutting down', errors)
+            print(('Error shutting down', errors))
 
     def OnRestart(self, event):
         self.shutdownHardware()
@@ -375,7 +375,7 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
             if wasOn:
                 errors = self.shutdownHardware()
                 if errors:
-                    print('* ERROR: Cannot shutdown:', errors)
+                    print(('* ERROR: Cannot shutdown:', errors))
                 if errors:
                     return
             instance.setupDriver(self.getDescription())

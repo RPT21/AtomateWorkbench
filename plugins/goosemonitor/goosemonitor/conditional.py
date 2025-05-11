@@ -32,7 +32,7 @@ class GooseMonitorConditionalTest(core.conditional.ConditionalTest):
     __module__ = __name__
 
     def __init__(self, fieldKey, device, parentID, operator, value):
-        print('creating test for device:', device, fieldKey)
+        print(('creating test for device:', device, fieldKey))
         self.device = device
         self.fieldKey = fieldKey
         self.operator = operator
@@ -45,7 +45,7 @@ class GooseMonitorConditionalTest(core.conditional.ConditionalTest):
 
     def convertToNode(self, node):
         core.conditional.ConditionalTest.convertToNode(self, node)
-        print('gwan convert', self.parentID, self.fieldKey, self.getOperator(), str(self.getValue()))
+        print(('gwan convert', self.parentID, self.fieldKey, self.getOperator(), str(self.getValue())))
         node.setAttribute('id', self.parentID)
         node.setAttribute('field', self.fieldKey)
         node.setAttribute('operator', self.getOperator())
@@ -62,7 +62,7 @@ class RangeConditionalTest(GooseMonitorConditionalTest):
         return self.operator
 
     def evaluate(self, replyEnvelope):
-        print('Told to evaluate!', replyEnvelope)
+        print(('Told to evaluate!', replyEnvelope))
         return False
 
     def __repr__(self):
@@ -103,7 +103,7 @@ class GooseMonitorTestEditorContribution(core.conditional.ConditionalTestEditorC
 
     def handles(self, test):
         print('GooseMonitorTestEditorContribution.handles')
-        print('\t', self.parentID, test.parentID, self.fieldKey, test.fieldKey, type(test))
+        print(('\t', self.parentID, test.parentID, self.fieldKey, test.fieldKey, type(test)))
         return isinstance(test, GooseMonitorConditionalTest) and self.parentID == test.parentID and self.fieldKey == test.fieldKey
 
     def getLeftOperandString(self):
@@ -126,12 +126,12 @@ class GooseMonitorTestEditorContribution(core.conditional.ConditionalTestEditorC
             logger.exception(msg)
 
         operator = self.getOperators()[operatorIdx]
-        print('**** creating the shits of the shots, betcho', operator, type(operator))
+        print(('**** creating the shits of the shots, betcho', operator, type(operator)))
         test = RangeConditionalTest(self.fieldKey, self.device, self.parentID, operator, value)
         return test
 
     def setRightOperandValue(self, control):
-        print('setRightOperandValue', control, self.test)
+        print(('setRightOperandValue', control, self.test))
         control.getControl().SetValue(str(self.test.getValue()))
 
     def getOperatorIndex(self):
@@ -170,8 +170,8 @@ class WeatherDuckHandler(DeviceHandler):
     def createEditorContributions(self, parentID):
         fields = self.deviceData['fields']
         contribs = []
-        print('asked to create contribs weather duck', fields)
-        for field in fields.keys():
+        print(('asked to create contribs weather duck', fields))
+        for field in list(fields.keys()):
             field = str(field)
             if field == 'TempC':
                 contribs.append(GooseMonitorTestEditorContribution(parentID, field, fields[field]))
@@ -196,26 +196,26 @@ class GooseMonitorConditionalContribution(core.conditional.ConditionalContributi
 
     def getTestEditorContributions(self):
         global HANDLERS
-        print('asked to create editor contrib with device:', self.device)
+        print(('asked to create editor contrib with device:', self.device))
         contribs = []
         devices = self.device.getInstance().getDevices()
-        keys = devices.keys()
+        keys = list(devices.keys())
         try:
             for did in keys:
-                print('Looking for device id:', did)
+                print(('Looking for device id:', did))
                 device = devices[did]
-                print('I got a device', device)
+                print(('I got a device', device))
                 if not device['type'] in HANDLERS:
-                    print("I couldnt' find a type for '%s'" % device['type'])
+                    print(("I couldnt' find a type for '%s'" % device['type']))
                     continue
                 handler = HANDLERS[device['type']](device)
-                print(' I just created a handler:', handler)
+                print((' I just created a handler:', handler))
                 contribs.extend(handler.createEditorContributions(did))
 
         except Exception as msg:
             logger.exception(msg)
 
-        print(' I got a bunch of contributions:', contribs)
+        print((' I got a bunch of contributions:', contribs))
         return contribs
 
 
@@ -231,7 +231,7 @@ def monitorCondCreator(node, recipe):
     if not field in TEST_MAKERS:
         return None
     test = TEST_MAKERS[field](field, {}, devID, operator, value)
-    print('created test: ', test)
+    print(('created test: ', test))
     return test
     return
 

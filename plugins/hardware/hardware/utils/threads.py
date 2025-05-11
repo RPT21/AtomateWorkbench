@@ -118,10 +118,10 @@ class PurgeThread(BackgroundProcessThread):
             self.listeners.remove(listener)
 
     def firePurgeEnd(self):
-        map((lambda listener: listener.purgeEnd(self)), self.listeners)
+        list(map((lambda listener: listener.purgeEnd(self)), self.listeners))
 
     def firePurgeStart(self):
-        map((lambda listener: listener.purgeStart(self)), self.listeners)
+        list(map((lambda listener: listener.purgeStart(self)), self.listeners))
 
     def firePurgePause(self):
-        map((lambda listener: listener.purgePause(self)), self.listeners)
+        list(map((lambda listener: listener.purgePause(self)), self.listeners))

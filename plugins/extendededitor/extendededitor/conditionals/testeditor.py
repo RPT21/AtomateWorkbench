@@ -169,7 +169,7 @@ class TestRowItem(object):
             self.rightOperatorPanel.RemoveChild(child)
             child.Destroy()
 
-        map(killit, self.rightOperatorPanel.GetChildren())
+        list(map(killit, self.rightOperatorPanel.GetChildren()))
         if self.currentCtrl is not None:
             self.currentCtrl.dispose()
         self.currentCtrl = None
@@ -179,11 +179,11 @@ class TestRowItem(object):
         del self.leftOperands[0:]
         self.leftOperandDropDown.Clear()
         for contributions in self.owner.getConditionalContributions():
-            print('slow ride:', contributions)
+            print(('slow ride:', contributions))
             if len(contributions) == 0:
                 continue
             for testContribution in contributions:
-                print('Going to call test Contribution:', testContribution)
+                print(('Going to call test Contribution:', testContribution))
                 for contribution in testContribution.getTestEditorContributions():
                     self.leftOperands.append(contribution)
                     name = contribution.getLeftOperandString()
@@ -353,7 +353,7 @@ class TestEditor(object):
             self.conditionalContributions.append(device.getConditionalContributions())
 
     def getConditionalContributions(self):
-        print(' i got asked:', self.conditionalContributions)
+        print((' i got asked:', self.conditionalContributions))
         return self.conditionalContributions
 
     def setRecipe(self, recipe):
@@ -474,7 +474,7 @@ class TestEditor(object):
             sizer.Remove(child)
             self.actionGrid.RemoveChild(child)
 
-        map(killit, self.actionsGrid.GetChildren())
+        list(map(killit, self.actionsGrid.GetChildren()))
         for actionRow in self.actionRows:
             actionRow.dispose()
 

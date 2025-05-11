@@ -476,7 +476,7 @@ class BundkDebugOpenRecipe(plugins.poi.poi.actions.Action):
                 try:
                     recipe = plugins.core.core.recipe.loadFromFile(path)
                 except Exception as msg:
-                    print('* ERROR: Unable to parse recipe:', msg)
+                    print(('* ERROR: Unable to parse recipe:', msg))
                     return
                 else:
                     plugins.ui.ui.context.setProperty('recipe', recipe)

@@ -43,21 +43,21 @@ def addPurgeWorker(worker):
 
 
 def fireWorkerAdded(worker):
-    map((lambda listener: listener.workerAdded(worker)), listeners)
+    list(map((lambda listener: listener.workerAdded(worker)), listeners))
 
 
 def removePurgeWorker(worker):
     logger.debug('Remove Purge Worker: %s' % worker)
     if worker in purgeWorkers:
         purgeWorkers.remove(worker)
-        if purgeProxies.has_key(worker):
+        if worker in purgeProxies:
             worker.removePurgeListener(purgeProxies[worker])
             fireWorkerRemoved(worker)
             del purgeProxies[worker]
 
 
 def fireWorkerRemoved(worker):
-    map((lambda p: p.workerRemoved(worker)), listeners)
+    list(map((lambda p: p.workerRemoved(worker)), listeners))
 
 
 def getPurgeWorkers():
@@ -91,7 +91,7 @@ def purgeEnd(worker):
 
 
 def fireWorkerPurgeEnd(worker):
-    map((lambda p: p.purgeEnd(worker)), listeners)
+    list(map((lambda p: p.purgeEnd(worker)), listeners))
 
 
 def purgeStart(worker):
@@ -100,7 +100,7 @@ def purgeStart(worker):
 
 
 def fireWorkerPurgeStart(worker):
-    map((lambda p: p.purgeStart(worker)), listeners)
+    list(map((lambda p: p.purgeStart(worker)), listeners))
 
 
 def purgePause(worker):
@@ -109,4 +109,4 @@ def purgePause(worker):
 
 
 def fireWorkerPurgePause(worker):
-    map((lambda p: p.purgePause(worker)), listeners)
+    list(map((lambda p: p.purgePause(worker)), listeners))

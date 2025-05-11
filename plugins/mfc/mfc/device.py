@@ -11,7 +11,7 @@ logger = logging.getLogger('mfc.userinterface')
 DEVICE_ID = 'mfc'
 
 def parseColor(colorStr):
-    return apply(wx.Colour, map(int, colorStr.split(',')))
+    return wx.Colour(*list(map(int, colorStr.split(','))))
 
 
 class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
@@ -232,7 +232,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
 
     def getHardwareChoicesName(self):
         choices = self.getHardwareChoices()
-        return map((lambda p: p.getName()), choices)
+        return list(map((lambda p: p.getName()), choices))
 
     def selectHardware(self, hwid):
         try:
@@ -391,12 +391,12 @@ class MFCDevice(plugins.core.core.device.Device):
             description = hwtype.getDescription()
             return '%s (%s) - Channel %s' % (hardwareName, description, str(hardwareChannel))
         except Exception as msg:
-            print('* WARNING:', msg)
+            print(('* WARNING:', msg))
 
         return '*NOT CONFIGURED*'
 
     def parseColor(self, val):
-        return apply(wx.Colour, map(int, val.split(',')))
+        return wx.Colour(*list(map(int, val.split(','))))
 
     def getPlotColor(self):
         """

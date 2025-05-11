@@ -12,13 +12,13 @@ DRIVERS = {}
 def registerDriver(driverID, clazz, configPageClazz, name):
     global DRIVERS
     if driverID in DRIVERS:
-        print ("* WARNING: Attempt to register driver with same id '%s'" % driverID)
+        print(("* WARNING: Attempt to register driver with same id '%s'" % driverID))
         return
     DRIVERS[driverID] = {'driver': clazz, 'configpage': configPageClazz, 'name': name}
 
 
 def getDriverClassByName(driverName):
-    for (key, value) in DRIVERS.items():
+    for (key, value) in list(DRIVERS.items()):
         if value['name'] == driverName:
             return value['driver']
 
@@ -26,7 +26,7 @@ def getDriverClassByName(driverName):
 
 
 def getDriverTypeByName(driverName):
-    for (key, value) in DRIVERS.items():
+    for (key, value) in list(DRIVERS.items()):
         if value['name'] == driverName:
             return key
 
@@ -34,7 +34,7 @@ def getDriverTypeByName(driverName):
 
 
 def getDriverPageByName(driverName):
-    for (key, value) in DRIVERS.items():
+    for (key, value) in list(DRIVERS.items()):
         if value['name'] == driverName:
             return getDriverConfigurationPage(key)
 
@@ -42,25 +42,25 @@ def getDriverPageByName(driverName):
 
 
 def getRegisteredDeviceKeys():
-    return DRIVERS.keys()
+    return list(DRIVERS.keys())
 
 
 def getDriverName(driverID):
-    if not DRIVERS.has_key(driverID):
+    if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['name']
     return
 
 
 def getDriver(driverID):
-    if not DRIVERS.has_key(driverID):
+    if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['driver']
     return
 
 
 def getDriverConfigurationPage(driverID):
-    if not DRIVERS.has_key(driverID):
+    if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['configpage']()
     return

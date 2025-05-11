@@ -36,8 +36,8 @@ class CacheFile(object):
         return f
 
     def getSecondOffset(self, second):
-        offset = long(int(second)) * self.structSize
-        fs = long(os.stat(self.cache.name)[stat.ST_SIZE])
+        offset = int(int(second)) * self.structSize
+        fs = int(os.stat(self.cache.name)[stat.ST_SIZE])
         if offset >= fs:
             return None
         self.cache.seek(offset)
@@ -52,7 +52,7 @@ class CacheFile(object):
         if self.lastSecond == intsec:
             return
         self.lastSecond = intsec
-        packed = struct.pack('L', long(offset))
+        packed = struct.pack('L', int(offset))
         self.cache.write(packed)
 
     def close(self):

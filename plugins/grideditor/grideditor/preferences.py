@@ -99,7 +99,7 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
 
     def parseColorStr(self, colstr):
         try:
-            return apply(wx.Colour, map((lambda s: int(s)), colstr.split(',')))
+            return wx.Colour(*list(map((lambda s: int(s)), colstr.split(','))))
         except Exception as msg:
             logger.exception(msg)
             return wx.Colour(0, 0, 100)

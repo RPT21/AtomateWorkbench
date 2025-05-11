@@ -60,7 +60,7 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
 
     def fireEngineInit(self, engine):
         plugins.validator.validator.getDefault().pause()
-        map((lambda listener: listener.engineInit(engine)), self.engineInitListeners)
+        list(map((lambda listener: listener.engineInit(engine)), self.engineInitListeners))
 
     def getEngine(self):
         return self.engine
@@ -89,7 +89,7 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
         self.participantFactories[deviceID] = factory
 
     def getRecipeParticipantFactory(self, deviceID):
-        if not self.participantFactories.has_key(deviceID):
+        if deviceID not in self.participantFactories:
             return None
         return self.participantFactories[deviceID]
 

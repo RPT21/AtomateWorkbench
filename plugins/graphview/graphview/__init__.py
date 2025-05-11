@@ -58,7 +58,7 @@ class GraphViewPlugin(lib.kernel.plugin.Plugin):
             self.prepareGroupDevice(device)
 
     def disposeGroups(self):
-        for types in self.groups.keys():
+        for types in list(self.groups.keys()):
             self.groups[types].dispose()
             del self.groups[types]
 

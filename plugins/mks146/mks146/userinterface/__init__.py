@@ -34,7 +34,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
 
         lst = [
          'None']
-        lst.extend(map((lambda i: str(i + 1)), range(4)))
+        lst.extend(list(map((lambda i: str(i + 1)), list(range(4)))))
         return lst
 
     def createControl(self, parent):
@@ -53,7 +53,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
         fsizer.Add(self.channelChoice, 0, wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.channelErrorMsg, 0, wx.ALIGN_CENTRE_VERTICAL | wx.LEFT, 5)
         label = wx.StaticText(self.control, -1, 'Range:')
-        self.rangeChoice = wx.ComboBox(self.control, -1, style=wx.CB_READONLY, choices=map(str, getRangeChoices()))
+        self.rangeChoice = wx.ComboBox(self.control, -1, style=wx.CB_READONLY, choices=list(map(str, getRangeChoices())))
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.rangeChoice, 0, wx.ALIGN_CENTRE_VERTICAL)
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -267,7 +267,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             numChannels = config.get('main', 'channels')
             self.channelsChoice.SetSelection(CHANNEL_CHOICES.index(numChannels))
         except Exception as msg:
-            print('* WARNING: Exception while setting channel numbers:', msg)
+            print(('* WARNING: Exception while setting channel numbers:', msg))
             self.channelsChoice.SetSelection(0)
 
     def setHardwareInfo(self, config):

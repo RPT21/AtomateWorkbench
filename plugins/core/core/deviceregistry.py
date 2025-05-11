@@ -21,14 +21,14 @@ def getDeviceFactory(deviceName):
 
 
 def getDeviceFactories():
-    return __devicesTable.values()
+    return list(__devicesTable.values())
 
 
 def getDeviceNames():
-    return __devicesTable.keys()
+    return list(__devicesTable.keys())
 
 
 def print_debug():
-    print('** Device Registry: ', len(__devicesTable))
-    for device in __devicesTable.values():
-        print('\tDevice: ', device.getType(), '-', device)
+    print(('** Device Registry: ', len(__devicesTable)))
+    for device in list(__devicesTable.values()):
+        print(('\tDevice: ', device.getType(), '-', device))

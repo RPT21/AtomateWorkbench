@@ -32,7 +32,7 @@ class ExecutionParticipant(object):
         self.prepareDevice(device)
 
     def getLabel(self):
-        return map((lambda dev: dev.getLabel()), self.devices)
+        return list(map((lambda dev: dev.getLabel()), self.devices))
 
     def prepareDevice(self, device):
         pass

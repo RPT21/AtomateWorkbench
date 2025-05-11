@@ -246,10 +246,10 @@ class TableViewer(StructuredViewer):
                 newItem.SetData(i)
                 self.id2objects[i] = elem
                 if image is not None:
-                    if not self.imageList.has_key(image):
+                    if image not in self.imageList:
                         if image.GetWidth() == 16 and image.GetHeight() == 16:
                             self.imageList[image] = self.control.GetImageList(wx.IMAGE_LIST_SMALL).Add(image)
-                    if self.imageList.has_key(image):
+                    if image in self.imageList:
                         newItem.SetImage(self.imageList[image])
                 newItem.SetText(text)
                 newItem.SetId(i)

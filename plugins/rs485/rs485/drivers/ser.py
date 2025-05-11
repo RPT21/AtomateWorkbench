@@ -12,7 +12,7 @@ CHOICES_PARITY = ['none', 'odd', 'even']
 CHOICES_PARITY_TEXT = ['None', 'Odd', 'Even']
 CHOICES_BITS = [7, 8]
 CHOICES_STOPBITS = [1, 2]
-CHOICES_PORTS = range(9)
+CHOICES_PORTS = list(range(9))
 SERIAL_PARITY = {'none': (serial.PARITY_NONE), 'even': (serial.PARITY_EVEN), 'odd': (serial.PARITY_ODD)}
 
 class SerialConfigurationSegment(object):
@@ -43,7 +43,7 @@ class SerialConfigurationSegment(object):
                 return num + 1
 
             portLabel = wx.StaticText(self.control, -1, 'Port:')
-            self.portChoice = wx.ComboBox(self.control, -1, choices=map(add, CHOICES_PORTS), style=wx.CB_READONLY)
+            self.portChoice = wx.ComboBox(self.control, -1, choices=list(map(add, CHOICES_PORTS)), style=wx.CB_READONLY)
             baudLabel = wx.StaticText(self.control, -1, 'Baud Rate:')
             self.baudChoice = wx.ComboBox(self.control, -1, choices=CHOICES_BAUDRATE, style=wx.CB_READONLY)
             parityLabel = wx.StaticText(self.control, -1, 'Parity:')
@@ -73,7 +73,7 @@ class SerialConfigurationSegment(object):
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)
         except Exception as msg:
-            print('**** ', Exception, msg)
+            print(('**** ', Exception, msg))
 
         return self.control
 
@@ -101,7 +101,7 @@ class SerialConfigurationSegment(object):
             self.parityChoice.SetSelection(CHOICES_PARITY.index(data.get('driver', 'parity')))
             self.stopbitsChoice.SetSelection(CHOICES_STOPBITS.index(int(data.get('driver', 'stopbits'))))
         except Exception as msg:
-            print ('*ERROR: Cannot set proper values for driver segment:', msg)
+            print(('*ERROR: Cannot set proper values for driver segment:', msg))
             self.setDefaultData()
 
     def setDefaultData(self):
@@ -176,16 +176,16 @@ class SerialNetworkDriver(DeviceDriver):
             self.parity = SERIAL_PARITY[configuration.get('driver', 'parity')]
             self.stopbits = int(configuration.get('driver', 'stopbits'))
         except Exception as msg:
-            print ('* ERROR: Cannot configure network device driver:', msg)
+            print(('* ERROR: Cannot configure network device driver:', msg))
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
 
     def initialize(self):
         try:
             print('Initializing with:')
-            print('\tPort Num:', self.portnum)
-            print('\tBaud Rate:', self.baudrate)
-            print('\tParity:', self.parity)
-            print('\tStop Bits:', self.stopbits)
+            print(('\tPort Num:', self.portnum))
+            print(('\tBaud Rate:', self.baudrate))
+            print(('\tParity:', self.parity))
+            print(('\tStop Bits:', self.stopbits))
             self.port = serial.Serial(port=self.portnum, baudrate=self.baudrate, parity=self.parity, stopbits=self.stopbits)
             self.port.open()
             self.status = rs485.drivers.STATUS_INITIALIZED

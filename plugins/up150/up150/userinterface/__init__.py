@@ -11,7 +11,7 @@ def color2str(color):
 
 
 def parseColor(colorStr):
-    return apply(wx.Color, map(int, colorStr.split(',')))
+    return wx.Color(*list(map(int, colorStr.split(','))))
 
 
 class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
@@ -30,7 +30,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
         def modapp(i):
             return str(i + 1)
 
-        self.channelChoice = wx.ComboBox(self.control, -1, choices=map(modapp, range(self.instance.getChannelCount())), style=wx.CB_READONL)
+        self.channelChoice = wx.ComboBox(self.control, -1, choices=list(map(modapp, list(range(self.instance.getChannelCount())))), style=wx.CB_READONL)
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.channelChoice, 0, wx.ALIGN_CENTRE_VERTICAL)
         label = wx.StaticText(self.control, -1, 'Units:')
@@ -166,7 +166,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         h2sizer.Add(self.pidControls['d'], 1, wx.ALIGN_CENTRE_VERTICAL)
         self.startupInitCheckbox = wx.CheckBox(panel, -1, 'Initialize hardware on Startup')
         panel.Bind(wx.EVT_CHECKBOX, self.markDirty, self.startupInitCheckbox)
-        map((lambda c: panel.Bind(wx.EVT_TEXT, self.markDirty, c)), self.pidControls.values())
+        list(map((lambda c: panel.Bind(wx.EVT_TEXT, self.markDirty, c)), list(self.pidControls.values())))
         boxSizer.Add(h2sizer, 0, wx.GROW | wx.ALL, 5)
         boxSizer.Add(self.startupInitCheckbox, 0, wx.GROW | wx.ALL, 5)
         sb = wx.StaticBox(panel, -1, ' Default Recipe Device Options ')
@@ -262,7 +262,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             self.startupInitCheckbox.SetValue(config.get('main', 'startupinit').lower() == 'true')
             pid = inst.getPIDSettings()
             if pid is not None:
-                map((lambda c, s: c.SetValue(str(s))), self.pidControls.values(), pid)
+                list(map((lambda c, s: c.SetValue(str(s))), list(self.pidControls.values()), pid))
         except Exception as msg:
             self.setDefaultConfig()
 
@@ -325,8 +325,8 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         else:
             its = 'false'
         config.set('main', 'startupinit', its)
-        (p, i, d) = map((lambda s: s.strip()), map((lambda c: c.GetValue()), self.pidControls.values()))
-        if not 0 in map((lambda i: len(i)), (p, i, d)):
+        (p, i, d) = list(map((lambda s: s.strip()), list(map((lambda c: c.GetValue()), list(self.pidControls.values())))))
+        if not 0 in list(map((lambda i: len(i)), (p, i, d))):
             inst.setPIDSettings((p, i, d))
         else:
             inst.setPIDSettings(None)
@@ -440,7 +440,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             if wasOn:
                 errors = self.shutdownHardware()
                 if errors:
-                    print('* ERROR: Cannot shutdown:', errors)
+                    print(('* ERROR: Cannot shutdown:', errors))
                 if errors:
                     return
             instance.setupDriver(self.getDescription())

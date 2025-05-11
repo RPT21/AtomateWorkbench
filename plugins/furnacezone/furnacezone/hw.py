@@ -39,7 +39,7 @@ class HardwareStatusProvider(object):
 
     def fireHardwareStatusProviderEvent(self, event):
         logger.debug('will fire for listeners %s' % self.statusListeners)
-        map((lambda p: p.hardwareStatusChanged(event)), self.statusListeners)
+        list(map((lambda p: p.hardwareStatusChanged(event)), self.statusListeners))
 
     def removeHardwareStatusProviderListener(self, listener):
         if listener in self.statusListeners:

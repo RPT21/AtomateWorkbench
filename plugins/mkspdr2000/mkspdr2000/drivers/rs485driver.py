@@ -77,7 +77,7 @@ class SerialConfigurationSegment(object):
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         return self.control
@@ -108,7 +108,7 @@ class SerialConfigurationSegment(object):
         addr = self.addressText.GetValue()
         try:
             self.addressText.SetValue(self.convertAddressValue(addr))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.fireText = True
@@ -151,7 +151,7 @@ class SerialConfigurationSegment(object):
             logger.debug('\tType: %s' % type(address))
             numericaddr = int(address)
             address = '%02d' % numericaddr
-        except Exception, msg:
+        except Exception as msg:
             raise Exception("'%s' is an invalid address. It must be a number." % address)
 
         return address
@@ -166,7 +166,7 @@ class SerialConfigurationSegment(object):
             numericaddr = int(address)
             if numericaddr > 99:
                 raise Exception('Address cannot be greater than 99')
-        except Exception, msg:
+        except Exception as msg:
             raise Exception("'%s' is an invalid address. It must be a number." % address)
 
         logger.debug("Final address set to '%s'" % address)
@@ -184,7 +184,7 @@ class SerialConfigurationSegment(object):
             choice = data.get('driver', 'networkid')
             self.validateHardwareChoice(choice)
             self.hardwareChoice.SetSelection(self.getNetworkChoices().index(choice))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             logger.error("Cannot set proper values for driver segment: '%s'" % msg)
             self.setDefaultData()
@@ -192,7 +192,7 @@ class SerialConfigurationSegment(object):
         self.fireText = True
         try:
             self.lockoutPanel.SetValue(data.get('driver', 'lockout').lower() == 'true')
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.lockoutPanel.SetValue(False)
 
@@ -274,8 +274,8 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             self.networkid = configuration.get('driver', 'networkid')
             self.lockout = configuration.get('driver', 'lockout').lower() == 'true'
             self.configured = True
-        except Exception, msg:
-            print '* ERROR: Cannot configure network device driver:', msg
+        except Exception as msg:
+            print('* ERROR: Cannot configure network device driver:', msg)
             self.configured = False
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
 
@@ -309,7 +309,7 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             data = self.sendAndWait('\x02%s010INF6\x03\r' % self.address, 5)
             if self.lockout:
                 self.lockPanel()
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
             self.network.removeNode(self)
             raise

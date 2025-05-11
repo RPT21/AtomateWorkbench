@@ -33,7 +33,7 @@ def init(contextBundle):
     if inited:
         return
     inited = True
-    for (key, filename) in imagesFilenames.items():
+    for (key, filename) in list(imagesFilenames.items()):
         try:
             imagesTable[key] = wx.Bitmap(os.path.join(contextBundle.dirname, filename))
         except Exception as msg:

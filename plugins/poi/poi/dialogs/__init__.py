@@ -60,7 +60,7 @@ class Dialog(object):
             fullpath = self.getMementoPath()
             config.read([fullpath])
         except Exception as msg:
-            print("* ERROR: Cannot create dialog preferences file '%s':" % self.getMementoID(), msg)
+            print(("* ERROR: Cannot create dialog preferences file '%s':" % self.getMementoID(), msg))
             return None
 
         return config
@@ -71,7 +71,7 @@ class Dialog(object):
             memento = self.getMemento()
             self.restoreLayoutFromMemento(memento)
         except Exception as msg:
-            print('Error loading memento:', msg)
+            print(('Error loading memento:', msg))
             self.createDefaultLayout()
 
         return
@@ -96,7 +96,7 @@ class Dialog(object):
             config.write(f)
             f.close()
         except Exception as msg:
-            print("* ERROR: Could not save dialog preferences '%s':" % self.getMementoID(), msg)
+            print(("* ERROR: Could not save dialog preferences '%s':" % self.getMementoID(), msg))
 
     def dispose(self):
         self.control.Destroy()

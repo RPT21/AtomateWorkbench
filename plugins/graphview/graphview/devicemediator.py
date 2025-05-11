@@ -29,7 +29,7 @@ proxy = EventProxy()
 
 def registerItemContributionFactory(deviceType, factory):
     global itemFactories
-    if not itemFactories.has_key(deviceType):
+    if deviceType not in itemFactories:
         itemFactories[deviceType] = factory
 
 
@@ -63,7 +63,7 @@ def addContribution(factory, device):
 
 
 def deviceRemoved(device):
-    if not devices.has_key(device):
+    if device not in devices:
         return
     item = devices[device]
     del devices[device]
@@ -71,7 +71,7 @@ def deviceRemoved(device):
 
 
 def getContributionFactory(typestr):
-    if not itemFactories.has_key(typestr):
+    if typestr not in itemFactories:
         return None
     return itemFactories[typestr]
     return

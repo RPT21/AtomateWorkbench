@@ -10,14 +10,14 @@ def color2str(color):
 
 
 def parseColor(colorStr):
-    return apply(wx.Color, map(int, colorStr.split(',')))
+    return wx.Color(*list(map(int, colorStr.split(','))))
 
 
 logger = logging.getLogger('furnacezone.userinterface')
 DEVICE_ID = 'furnacezone'
 
 def parseColor(colorStr):
-    return apply(wx.Color, map(int, colorStr.split(',')))
+    return wx.Color(*list(map(int, colorStr.split(','))))
 
 
 class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
@@ -115,7 +115,7 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
     def getHardwareChoicesNames(self):
         lst = [
          'None']
-        lst.extend(map((lambda c: c.getName()), self.getHardwareChoices()))
+        lst.extend(list(map((lambda c: c.getName()), self.getHardwareChoices())))
         return lst
 
     def OnRangeText(self, event):
@@ -364,10 +364,10 @@ class FurnaceZoneDevice(core.device.Device):
         return length
 
     def viewCreated(self, viewID, view):
-        print('View Created:', viewID, self)
+        print(('View Created:', viewID, self))
 
     def viewRemoved(self, viewID, view):
-        print('View Removed:', viewID, self)
+        print(('View Removed:', viewID, self))
 
     def updateHardwareHints(self):
         pass

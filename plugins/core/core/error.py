@@ -4,6 +4,7 @@
 # Embedded file name: ../plugins/core/src/core/error.py
 # Compiled at: 2004-09-24 01:07:52
 import sys, string, traceback
+from functools import reduce
 LEVEL_ERROR = 1
 LEVEL_WARNING = 2
 

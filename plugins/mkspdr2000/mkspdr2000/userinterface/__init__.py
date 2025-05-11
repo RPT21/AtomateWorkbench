@@ -328,7 +328,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             if wasOn:
                 errors = self.shutdownHardware()
                 if errors:
-                    print('* ERROR: Cannot shutdown:', errors)
+                    print(('* ERROR: Cannot shutdown:', errors))
                 if errors:
                     return
             instance.setupDriver(self.getDescription())

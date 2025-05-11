@@ -20,7 +20,7 @@ def removeConditionalContribution(device):
         if contrib.device is device:
             break
 
-    print('remove contrib:', ctr)
+    print(('remove contrib:', ctr))
     if ctr is not None:
         _cond_contrib.remove(ctr)
     return

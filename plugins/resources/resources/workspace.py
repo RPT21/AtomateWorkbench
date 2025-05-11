@@ -53,7 +53,7 @@ def fireWorkspaceChangeEvent(event):
     global suppress
     if suppress:
         return
-    map((lambda listener: listener.workspaceChanged(event)), workspaceChangeListeners)
+    list(map((lambda listener: listener.workspaceChanged(event)), workspaceChangeListeners))
 
 
 def suppressWorkspaceChangeEvents(doit):

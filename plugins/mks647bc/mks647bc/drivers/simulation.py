@@ -222,7 +222,7 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
             if self.lockoutPanel:
                 self.unlockPanel()
         except Exception as msg:
-            print ('* ERROR: Cannot unlock panel', msg)
+            print(('* ERROR: Cannot unlock panel', msg))
 
         self.status = mks647bc.drivers.STATUS_UNINITIALIZED
 

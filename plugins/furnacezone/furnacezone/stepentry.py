@@ -36,13 +36,13 @@ ramptags = (
  (
   RAMP_FROM_LAST, 'temperature'), (RAMP_FROM_SETPOINT, 'setpoint'))
 setpointModeToTags = {}
-map((lambda x: setpointModeToTags.__setitem__(x[0], x[1])), spmtags)
+list(map((lambda x: setpointModeToTags.__setitem__(x[0], x[1])), spmtags))
 tagsTosetpointModes = {}
-map((lambda x: tagsTosetpointModes.__setitem__(x[1], x[0])), spmtags)
+list(map((lambda x: tagsTosetpointModes.__setitem__(x[1], x[0])), spmtags))
 rampTypesToTags = {}
-map((lambda x: rampTypesToTags.__setitem__(x[0], x[1])), ramptags)
+list(map((lambda x: rampTypesToTags.__setitem__(x[0], x[1])), ramptags))
 tagsToRampTypes = {}
-map((lambda x: tagsToRampTypes.__setitem__(x[1], x[0])), ramptags)
+list(map((lambda x: tagsToRampTypes.__setitem__(x[1], x[0])), ramptags))
 
 class FurnaceZoneStepEntry(core.stepentry.StepEntry):
     __module__ = __name__

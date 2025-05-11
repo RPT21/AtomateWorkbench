@@ -97,9 +97,9 @@ class ModbusRTUChannel(object):
 
     def writeWords(self, wordAddress, values):
         msg = struct.pack('>HHb', wordAddress, len(values), 2 * len(values))
-        woot = ['>%dH' % len(map((lambda x: int(x)), values))]
+        woot = ['>%dH' % len(list(map((lambda x: int(x)), values)))]
         woot.extend(values)
-        msg += apply(struct.pack, woot)
+        msg += struct.pack(*woot)
         result = self.sendMessage(16, msg)
         self.checkError(result)
         (addr, numwritten) = struct.unpack('>HH', result)
@@ -165,7 +165,7 @@ class ModbusRTUChannel(object):
         result = self.sendMessage(1, msg)
         numbytes = ord(result[0])
         bytes = result[1:]
-        lst = map((lambda x: 0), range(numBits))
+        lst = list(map((lambda x: 0), list(range(numBits))))
         for i in range(numbytes):
             byte = ord(bytes[i])
             for j in range(8):
@@ -240,18 +240,18 @@ if __name__ == '__main__':
     print('Opening port 1')
     channel = ModbusRTUChannel()
     channel.configure(port, 1)
-    print('Reading software version: %0.4x' % channel.readWords(107, 1))
+    print(('Reading software version: %0.4x' % channel.readWords(107, 1)))
     time.sleep(2)
     port.flush()
     port.write('\n\r*IDN?\n\r')
     print('waiting ...')
     time.sleep(2)
-    print('what is what', port.inWaiting())
+    print(('what is what', port.inWaiting()))
     if port.inWaiting() > 0:
-        print(':', port.read(port.inWaiting()))
+        print((':', port.read(port.inWaiting())))
     port.write('')
     time.sleep(0.1)
-    print('waiting?', port.inWaiting())
+    print(('waiting?', port.inWaiting()))
     if port.inWaiting() > 0:
-        print('>', port.read(port.inWaiting()))
+        print(('>', port.read(port.inWaiting())))
     port.close()

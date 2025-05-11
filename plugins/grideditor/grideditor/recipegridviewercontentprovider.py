@@ -87,7 +87,7 @@ class RecipeGridViewerContentProvider(RecipeModelEventListener):
             return
         if columnIndex not in self.visibleColumns:
             i = 0
-            for visIndex in self.visibleColumns.keys():
+            for visIndex in list(self.visibleColumns.keys()):
                 if visIndex > columnIndex:
                     break
                 i += 1
@@ -209,7 +209,7 @@ class RecipeGridViewerContentProvider(RecipeModelEventListener):
             visible = columnhints.getAttribute('visible') == 'true'
             width = int(columnhints.getAttribute('width'))
         except Exception as msg:
-            print('* WARNING: Missing column node in uihints for', device)
+            print(('* WARNING: Missing column node in uihints for', device))
             order = 0
             visible = True
             width = 100

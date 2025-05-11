@@ -24,13 +24,13 @@ class Mediator(object):
         return
 
     def unloadEditors(self):
-        for (device, item) in self.devices.items():
+        for (device, item) in list(self.devices.items()):
             self.editor.removeEditorItem(item)
 
         self.devices = {}
 
     def deviceRemoved(self, device):
-        if not self.devices.has_key(device):
+        if device not in self.devices:
             return
         item = self.devices[device]
         self.editor.removeEditorItem(item)

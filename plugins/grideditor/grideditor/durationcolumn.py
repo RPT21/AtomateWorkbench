@@ -172,7 +172,7 @@ class DurationColumn(TableColumn):
     def setValueAt(self, stepIndex, value):
         if isinstance(value, wx.TimeSpan):
             self.recipeModel.getStepAt(stepIndex).setDuration(value.GetSeconds())
-        if isinstance(value, long):
+        if isinstance(value, int):
             self.recipeModel.getStepAt(stepIndex).setDuration(value)
 
     def dispose(self):

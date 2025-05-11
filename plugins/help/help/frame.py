@@ -123,12 +123,12 @@ class HelpFrame(wx.Frame):
         sid = None
         if isinstance(data, Book):
             sid = data.indexid
-        elif not data.has_key('id'):
+        elif 'id' not in data:
             logger.debug('No id specified for book %s' % book.getTitle())
             return
         sid = data['id']
         items = book.getItems()
-        if not items.has_key(sid):
+        if sid not in items:
             logger.debug('No id %s in book %s' % (sid, book.getTitle()))
             return
         self.showHelpIDWithBook(book.getId(), sid)
@@ -142,12 +142,12 @@ class HelpFrame(wx.Frame):
 
     def showHelpIDWithBook(self, bookname, sid):
         logger.debug('Going to show book name %s - %s' % (bookname, sid))
-        if not self.books.has_key(bookname):
+        if bookname not in self.books:
             bookname = 'help'
         book = self.books[bookname]
         logger.debug('Showing book: %s' % book.path)
         filepath = ''
-        if book.getItems().has_key(sid):
+        if sid in book.getItems():
             filepath = book.getItems()[sid]
         fp = 'file:%s#zip:%s' % (book.path, filepath)
         self.content.LoadPage(fp)
@@ -221,7 +221,7 @@ class Book(object):
                     sections.append(section)
 
             except Exception as msg:
-                print('msg:', msg)
+                print(('msg:', msg))
 
         items = props.items('ids')
         for (key, val) in items:

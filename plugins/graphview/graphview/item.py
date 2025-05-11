@@ -27,7 +27,7 @@ class PanelViewItem(object):
     def dispose(self):
         try:
             self.control.Destroy()
-        except Exception, msg:
+        except Exception as msg:
             pass
 
 
@@ -106,7 +106,7 @@ class ExecutionStatusPanelItem(PanelViewItem):
             self.stepTimeText.SetLabel(str(stepTime))
             self.recipeTimeText.SetLabel(str(recipeTime))
             self.totalTimeText.SetLabel(str(totalTime))
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
     def createControl(self, parent):

@@ -130,7 +130,7 @@ class HardwarePlugin(lib.kernel.plugin.Plugin):
                 initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'
             except Exception as msg:
                 logger.exception(msg)
-                logger.warn('No startupinit tag in description')
+                logger.warning('No startupinit tag in description')
 
             hardwaremanager.fireHardwareManagerUpdated()
             if not initialize:

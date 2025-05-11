@@ -28,7 +28,7 @@ class UP150GraphItem(grapheditor.contributor.GraphContributor):
             self.updateDeviceInfo()
 
     def updateDeviceInfo(self):
-        print 'ME?'
+        print('ME?')
         self.setTitle(self.device.getLabel())
         self.refresh(True)
 

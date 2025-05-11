@@ -36,13 +36,13 @@ if __name__ == '__main__':
     print('Computing the value of the proper filling')
     msg = struct.pack('BBBBBBBB', 2, 3, 0, 1, 0, 2, 149, 248)
     (crc, result) = crc16(msg)
-    print('YES?', crc)
+    print(('YES?', crc))
     print('Testing CRC16 should output hex values 0x41,0x12 for input 0x02,0x07')
     msg = struct.pack('bb', 2, 7)
     (crc, result) = crc16(msg)
-    print('raw:', crc, result)
+    print(('raw:', crc, result))
     for x in result:
-        print('%x' % x)
+        print(('%x' % x))
 
     if result[0] != 65:
         print('Invalid')
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     print('Should output 0x95, 0xF8')
     (crc, result) = crc16(msg)
     for x in result:
-        print ('%x' % x)
+        print(('%x' % x))
 
     if result[0] != 149:
         print ('Invalid')
@@ -62,4 +62,4 @@ if __name__ == '__main__':
     print('Checking crc values')
     msg = struct.pack('bbbb', 2, 7, 65, 18)
     (crc, result) = crc16(msg)
-    print('Result?', crc)
+    print(('Result?', crc))

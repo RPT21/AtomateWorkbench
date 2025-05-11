@@ -14,7 +14,7 @@ class WrappedException(Exception):
         Exception.__init__(self, 'Wrapped Exception')
         self.exception = sys.exc_info()[0]
         self.value = sys.exc_info()[1]
-        self.stack = apply(traceback.format_exception, sys.exc_info())
+        self.stack = traceback.format_exception(*sys.exc_info())
 
     def getException(self):
         return self.exception

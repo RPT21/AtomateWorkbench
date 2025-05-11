@@ -193,7 +193,7 @@ class ExtendedEditorItem(object):
         enabled = self.isEnabled()
         for control in self.enablementStateManagedControls:
             wasEnabled = control.IsEnabled()
-            if not self.enablementState.has_key(control):
+            if control not in self.enablementState:
                 self.enablementState[control] = wasEnabled
             if enabled:
                 control.Enable(self.enablementState[control])

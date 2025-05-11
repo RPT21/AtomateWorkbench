@@ -93,6 +93,6 @@ class UP150DeviceNode(rs485.RS485SerialNetworkNode):
         self.runStatus = rs485.STATUS_NODE_RUNNING
 
     def deactivate(self):
-        print 'deactivate'
+        print('deactivate')
         self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0121 01 0000\x03\r', self.delimiters))
         self.runStatus = rs485.STATUS_NODE_IDLE

@@ -12,7 +12,7 @@ CHOICES_PARITY = ['none', 'odd', 'even']
 CHOICES_PARITY_TEXT = ['None', 'Odd', 'Even']
 CHOICES_BITS = [7, 8]
 CHOICES_STOPBITS = [1, 2]
-CHOICES_PORTS = map((lambda p: p), range(9))
+CHOICES_PORTS = list(map((lambda p: p), list(range(9))))
 ERROR_CODE_STRINGS = {0: {'short': 'Channel Error', 'long': 'An invalid channel number was specified or the channel is missing'}, 1: {'short': 'Unknown Command', 'long': 'The command transmitted is unknown'}, 2: {'short': 'Syntax Error', 'long': 'Only one character was sent instead of the expected 2 bytes'}, 3: {'short': 'Invalid Expression', 'long': 'The command parameter does not have a decimal form, or invalid characters were found within the parameter'}, 4: {'short': 'Invalid Value', 'long': 'Parameter specified is outside the range'}, 5: {'short': 'Autozero Error', 'long': 'The gas must be switched off before attempting to zero the channel'}}
 SERIAL_PARITY = {'none': (serial.PARITY_NONE), 'even': (serial.PARITY_EVEN), 'odd': (serial.PARITY_ODD)}
 
@@ -64,7 +64,7 @@ class SerialConfigurationSegment(object):
                 return num + 1
 
             portLabel = wx.StaticText(self.control, -1, 'Port:')
-            self.portChoice = wx.ComboBox(self.control, -1, choices=map(add, CHOICES_PORTS), style=wx.CB_READONLY)
+            self.portChoice = wx.ComboBox(self.control, -1, choices=list(map(add, CHOICES_PORTS)), style=wx.CB_READONLY)
             baudLabel = wx.StaticText(self.control, -1, 'Baud Rate:')
             self.baudChoice = wx.ComboBox(self.control, -1, choices=CHOICES_BAUDRATE, style=wx.CB_READONLY)
             parityLabel = wx.StaticText(self.control, -1, 'Parity:')
@@ -171,7 +171,7 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
         self.delimeter = '\r\n'
         self.timeout = DEFAULT_TIMEOUT
         self.channelRanges = {}
-        self.channelSwitch = map((lambda x: False), range(9))
+        self.channelSwitch = list(map((lambda x: False), list(range(9))))
         return
 
     def clearBuffer(self):
@@ -335,7 +335,7 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             if self.lockoutPanel:
                 self.unlockPanel()
         except Exception as msg:
-            print('* ERROR: Cannot unlock panel', msg)
+            print(('* ERROR: Cannot unlock panel', msg))
 
         self.port.close()
         self.status = mks647bc.drivers.STATUS_UNINITIALIZED

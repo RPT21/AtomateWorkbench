@@ -20,7 +20,7 @@ class Wizard(plugins.poi.poi.dialogs.MessageHeaderDialog):
 
     def createBody(self, parent):
         self.addPages()
-        if len(self.pages.items()) > 0:
+        if len(list(self.pages.items())) > 0:
             self.showPage(self.startingPage)
 
     def setStartingPage(self, page):
@@ -56,7 +56,7 @@ class Wizard(plugins.poi.poi.dialogs.MessageHeaderDialog):
         page.setWizard(self)
 
     def getPage(self, pageName):
-        if not self.pages.has_key(pageName):
+        if pageName not in self.pages:
             return None
         return self.pages[pageName]
         return
@@ -131,7 +131,7 @@ class Wizard(plugins.poi.poi.dialogs.MessageHeaderDialog):
         composite.SetSizer(sizer)
         composite.SetAutoLayout(True)
         self.addPages()
-        if len(self.pages.items()) > 0:
+        if len(list(self.pages.items())) > 0:
             self.showPage(self.startingPage)
         return panel
 

@@ -26,12 +26,12 @@ class AcceleratorTable(object):
     def removeEntry(self, entry):
         keycomp = (
          entry[0], entry[1])
-        if self.entries.has_key(keycomp):
+        if keycomp in self.entries:
             del self.entries[keycomp]
 
     def updateShell(self):
         entries = []
-        for (key, val) in self.entries.items():
+        for (key, val) in list(self.entries.items()):
             entries.append((key[0], key[1], val))
 
         self.shell.SetAcceleratorTable(wx.AcceleratorTable(entries))

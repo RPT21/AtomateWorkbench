@@ -116,7 +116,7 @@ class StatusThread(BackgroundProcessThread):
             return
         numc = inst.getChannelCount()
         if numc != len(self.channels):
-            self.channels = map((lambda x: 0), range(numc))
+            self.channels = list(map((lambda x: 0), list(range(numc))))
         for i in range(numc):
             try:
                 self.channels[i] = inst.getChannelCondition(i + 1)
@@ -200,7 +200,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
         self.logger = logging.getLogger('MKS146Hardware')
         hardware.hardwaremanager.Hardware.__init__(self)
         self.channelNum = 4
-        self.setpoints = map((lambda x: None), range(self.channelNum))
+        self.setpoints = list(map((lambda x: None), list(range(self.channelNum))))
         self.statusThread = StatusThread(self)
         self.statusThread.start()
 

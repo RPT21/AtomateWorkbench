@@ -16,17 +16,17 @@ class LEDSetpointDisplay(wx.Panel):
         spfgcolor = (255, 255, 255)
         myargs = [
          'bgcolor', 'fgcolor']
-        if kwargs.has_key('bgcolor'):
+        if 'bgcolor' in kwargs:
             bgcolor = kwargs['bgcolor']
             del kwargs['bgcolor']
-        if kwargs.has_key('fgcolor'):
+        if 'fgcolor' in kwargs:
             fgcolor = kwargs['fgcolor']
             del kwargs['fgcolor']
-        if kwargs.has_key('spfgcolor'):
+        if 'spfgcolor' in kwargs:
             spfgcolor = kwargs['spfgcolor']
             del kwargs['spfgcolor']
         self.showSetpoint = False
-        if kwargs.has_key('showSetpoint'):
+        if 'showSetpoint' in kwargs:
             self.showSetpoint = kwargs['showSetpoint']
             del kwargs['showSetpoint']
         wx.Panel.__init__(self, *args, **kwargs)
@@ -53,10 +53,10 @@ class LEDSetpointDisplay(wx.Panel):
 
     def setBackgroundColor(self, color):
         self.bgcolor = color
-        self.SetBackgroundColour(apply(wx.Color, self.bgcolor))
-        apply(self.valueCtrl.setBackgroundColor, color)
+        self.SetBackgroundColour(wx.Color(*self.bgcolor))
+        self.valueCtrl.setBackgroundColor(*color)
         if self.showSetpoint:
-            apply(self.setpointCtrl.setBackgroundColor, color)
+            self.setpointCtrl.setBackgroundColor(*color)
             if color[0] < 50 and color[1] < 50 and color[2] < 50:
                 self.setpointLabel.SetForegroundColour(wx.WHITE)
             else:
@@ -67,12 +67,12 @@ class LEDSetpointDisplay(wx.Panel):
         if not self.showSetpoint:
             return
         self.spfgcolor = color
-        apply(self.setpointCtrl.setLEDColor, color)
+        self.setpointCtrl.setLEDColor(*color)
         self.__internalUpdate()
 
     def setForegroundColor(self, color):
         self.fgcolor = color
-        apply(self.valueCtrl.setLEDColor, color)
+        self.valueCtrl.setLEDColor(*color)
         self.__internalUpdate()
 
     def setSetpointValue(self, value):

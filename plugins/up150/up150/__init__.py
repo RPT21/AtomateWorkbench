@@ -179,7 +179,7 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
             return None
         conf = self.getDescription().getConfiguration()
         try:
-            return map(int, conf.get('main', 'pid').split(','))
+            return list(map(int, conf.get('main', 'pid').split(',')))
         except Exception as msg:
             logger.exception(msg)
 

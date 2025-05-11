@@ -80,7 +80,7 @@ class UIPlugin(lib.kernel.plugin.Plugin):
             self.viewListeners.remove(listener)
 
     def fireViewChange(self, changeType, viewID):
-        map((lambda p: p.viewChanged(changeType, viewID)), self.viewListeners)
+        list(map((lambda p: p.viewChanged(changeType, viewID)), self.viewListeners))
 
     def addCloseVetoListener(self, listener):
         if not listener in self.closeVetoListeners:

@@ -74,7 +74,7 @@ class StateCaller(threading.Thread):
 
     def run(self):
         while not self.isDone:
-            for address in self.hardwareNodes.keys():
+            for address in list(self.hardwareNodes.keys()):
                 try:
                     self.nodeData[address] = self.hwinst.getData(address)
                 except Exception as msg:
@@ -185,7 +185,7 @@ class RS485SerialNetwork(plugins.hardware.hardware.hardwaremanager.Hardware):
 
     def removeNode(self, node):
         address = node.getAddress()
-        if not address in self.nodes.keys():
+        if not address in list(self.nodes.keys()):
             return
         del self.nodes[address]
 
@@ -194,7 +194,7 @@ class RS485SerialNetwork(plugins.hardware.hardware.hardwaremanager.Hardware):
         addition of an address node to the RS-485 network
         """
         address = node.getAddress()
-        if not self.nodes.keys().count(address) == 0:
+        if not list(self.nodes.keys()).count(address) == 0:
             raise Exception('address in use')
         self.nodes[address] = node
         return
@@ -218,7 +218,7 @@ class RS485SerialNetwork(plugins.hardware.hardware.hardwaremanager.Hardware):
                 self.stcaller.done()
                 del self.stcaller
                 self.stcaller = None
-            for node in self.nodes.values():
+            for node in list(self.nodes.values()):
                 node.cleanUp()
                 node.removeFromNetwork(self)
 
@@ -226,7 +226,7 @@ class RS485SerialNetwork(plugins.hardware.hardware.hardwaremanager.Hardware):
             self.nodes = {}
             self.driver.shutdown()
         except Exception as msg:
-            print('* ERROR: Unable to shutdown', msg)
+            print(('* ERROR: Unable to shutdown', msg))
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "* ERROR: Cannot shutdown: '%s'" % msg))
             raise Exception(msg)
 

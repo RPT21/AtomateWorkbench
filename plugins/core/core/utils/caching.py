@@ -25,14 +25,14 @@ class Cache(object):
         inttime = int(time)
         if len(self.indexer) <= inttime:
             diff = inttime - len(self.indexer)
-            self.indexer.extend(map((lambda x: 0), range(diff + 1)))
+            self.indexer.extend(list(map((lambda x: 0), list(range(diff + 1)))))
             self.indexer[inttime] = len(self.cache)
         self.cache.append((time, value))
 
     def print_time(self):
-        print(self.indexer)
+        print((self.indexer))
         print('---')
-        print(self.cache)
+        print((self.cache))
 
     def getvalueindex(self, time):
         return self.indexer[int(time)]
@@ -41,4 +41,4 @@ class Cache(object):
         return self.cache[index]
 
     def getTypeFormatChar(self, typedef):
-        return {(type(int)): 'I', (type(long)): 'L', (type(float)): 'f'}[typedef]
+        return {(type(int)): 'I', (type(int)): 'L', (type(float)): 'f'}[typedef]

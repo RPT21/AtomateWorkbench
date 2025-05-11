@@ -21,8 +21,8 @@ def addViews(newview):
 def removeView(view):
     global devices
     views.remove(view)
-    for (key, value) in devices.items():
-        if value.has_key(view):
+    for (key, value) in list(devices.items()):
+        if view in value:
             del value[view]
 
 
@@ -83,7 +83,7 @@ def deviceRemoved(device):
     global view
     if not device in devices:
         return
-    for (view, item) in devices[device].items():
+    for (view, item) in list(devices[device].items()):
         wx.CallAfter(view.removeItem, item)
 
     del devices[device]

@@ -69,8 +69,8 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = ctrl.GetValue()
         try:
             val = float(val)
-        except Exception, msg:
-            logger.warn("Unable to conform value '%s' to float. Setting to 0" % val)
+        except Exception as msg:
+            logger.warning("Unable to conform value '%s' to float. Setting to 0" % val)
             val = 0.0
 
         logger.debug('Conformed: %f' % val)
@@ -81,7 +81,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = self.setpoint.GetValue()
         try:
             return float(val)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to convert value '%s' to float. Using 0.0" % val)
             return 0.0
 
@@ -89,7 +89,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         val = self.actualFlow.GetValue()
         try:
             return float(val)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to convert value '%s' to float. Using 0.0" % val)
             return 0.0
 
@@ -152,14 +152,14 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         hwhints = self.device.getHardwareHints()
         try:
             gcf = float(hwhints.getChildNamed('conversion-factor').getValue())
-        except Exception, msg:
-            logger.warn("Unable to get gas conversion factor for '%s':%s" % (self.device.getLabel(), msg))
+        except Exception as msg:
+            logger.warning("Unable to get gas conversion factor for '%s':%s" % (self.device.getLabel(), msg))
             gcf = 100.0
 
         try:
             units = hwhints.getChildNamed('units').getValue()
-        except Exception, msg:
-            logger.warn("Unable to get gas units '%s':'%s'" % (self.device.getLabel(), msg))
+        except Exception as msg:
+            logger.warning("Unable to get gas units '%s':'%s'" % (self.device.getLabel(), msg))
             units = 'N/A'
 
         self.gcf = gcf
@@ -208,7 +208,7 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         try:
             value = float(self.setpoint.GetValue())
             entry.setFlow(value)
-        except Exception, msg:
+        except Exception as msg:
             logger.debug("Unable to parse value for setpoint: '%s'" % msg)
             entry.setFlow(0.0)
 

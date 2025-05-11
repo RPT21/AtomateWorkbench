@@ -68,8 +68,8 @@ def printStack():
     if not DEBUG:
         return
     print('---[UNDOSTACK]---')
-    print('Contains:%d actions' % len(undostack))
-    print('Pointer at:%d' % pointer)
+    print(('Contains:%d actions' % len(undostack)))
+    print(('Pointer at:%d' % pointer))
     buff = ''
     spc = ''
     idx = 0
@@ -89,7 +89,7 @@ def printStack():
         sel = ''
         if idx == pointer:
             sel = '***'
-        print('\t', sel, action)
+        print(('\t', sel, action))
         idx += 1
 
     print('---[ENDUNDOSTACK]---')

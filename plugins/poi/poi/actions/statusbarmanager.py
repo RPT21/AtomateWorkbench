@@ -16,7 +16,7 @@ class StatusBarManager(poi.actions.ContributionManager, poi.actions.Contribution
 
     def createControl(self, parent):
         mb = wx.StatusBar(parent, -1)
-        if not parent in poi.actions.statusBarFrames.keys():
+        if not parent in list(poi.actions.statusBarFrames.keys()):
             poi.actions.statusBarFrames[parent] = self
         if isinstance(parent, wx.Frame):
             parent.SetStatusBar(mb)

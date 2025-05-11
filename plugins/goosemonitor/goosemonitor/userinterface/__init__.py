@@ -558,7 +558,7 @@ class WeatherDuckHandler(DeviceHandler):
         self.items = {}
 
     def update(self, deviceData, error, status):
-        for key in deviceData['fields'].keys():
+        for key in list(deviceData['fields'].keys()):
             field = deviceData['fields'][key]
             if not key in self.items:
                 continue
@@ -580,7 +580,7 @@ class WeatherDuckHandler(DeviceHandler):
         self.ctrl.SetBackgroundColour(parent.GetBackgroundColour())
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
         fields = self.deviceData['fields']
-        for field in fields.keys():
+        for field in list(fields.keys()):
             field = str(field)
             if field == 'TempC':
                 item = TemperatureWidget(self.ctrl, MONITOR_TEMP_FILL_COLOR)
@@ -708,7 +708,7 @@ class MonitorWindowItem(object):
         status = self.hardwareInstance.getStatus()
         self.setStatusIndicator(self.lastError)
         devices = self.hardwareInstance.getDevices()
-        keys = devices.keys()
+        keys = list(devices.keys())
         for did in keys:
             device = devices[did]
             if not did in self.handlers:
@@ -722,7 +722,7 @@ class MonitorWindowItem(object):
         if len(devices) == 0:
             return
         deviceHandlers = {'WeatherDuck': WeatherDuckHandler, 'AirFlowSensor': AirFlowSensorHandler, 'TempSensor': TempSensorHandler}
-        keys = devices.keys()
+        keys = list(devices.keys())
         try:
             for did in keys:
                 device = devices[did]

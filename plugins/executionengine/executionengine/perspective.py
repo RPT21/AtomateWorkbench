@@ -337,7 +337,7 @@ class DetailedExecutionView(plugins.poi.poi.utils.scrolledpanel.ScrolledPanel):
 
     def getStatusText(self, eventType):
         global TYPE2STATUS
-        if not TYPE2STATUS.has_key(eventType):
+        if eventType not in TYPE2STATUS:
             return 'Running'
         return TYPE2STATUS[eventType]
 

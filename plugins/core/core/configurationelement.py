@@ -19,7 +19,7 @@ def loadFile(filename):
         element.loadFile(filename)
         return element
     except Exception as msg:
-        print('Error loading element:', Exception, msg)
+        print(('Error loading element:', Exception, msg))
 
     return None
 
@@ -32,7 +32,7 @@ def loadFromString(buffer):
         element.loadFromString(buffer)
         return element
     except Exception as msg:
-        print('Error loading element:', Exception, msg)
+        print(('Error loading element:', Exception, msg))
 
     return None
 
@@ -79,7 +79,7 @@ class ConfigurationElement(object):
         self.children = []
         if node.nodeType == node.ELEMENT_NODE:
             self.name = node.tagName
-            for key in node.attributes.keys():
+            for key in list(node.attributes.keys()):
                 self.attributes[key] = node.attributes[key].value
 
             for kid in node.childNodes:
@@ -93,7 +93,7 @@ class ConfigurationElement(object):
     def _toxml(self, document, parent):
         node = document.createElement(self.getName())
         parent.appendChild(node)
-        for (key, value) in self.attributes.items():
+        for (key, value) in list(self.attributes.items()):
             node.setAttribute(key, value)
 
         if self.value is not None:
@@ -127,7 +127,7 @@ class ConfigurationElement(object):
         return self.attributes[name]
 
     def getAttributeNames(self):
-        return self.attributes.keys()
+        return list(self.attributes.keys())
 
     def getChildren(self, name=None):
         if name is not None:
@@ -203,5 +203,5 @@ if __name__ == '__main__':
     e = d.createChild('pop')
     e.setValue('Comidita Cho')
     xml = config.toxml()
-    print(xml.toxml())
+    print((xml.toxml()))
     print('don')

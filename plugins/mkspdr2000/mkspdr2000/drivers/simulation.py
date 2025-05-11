@@ -182,7 +182,7 @@ class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
 
     def readDigitalPorts(self, port):
         port = port.upper()
-        return map((lambda x: x.GetValue()), self.digitalPorts[port])
+        return list(map((lambda x: x.GetValue()), self.digitalPorts[port]))
 
     def shutdown(self):
         if not self.status == mkspdr2000.drivers.STATUS_INITIALIZED:

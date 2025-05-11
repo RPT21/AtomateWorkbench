@@ -230,7 +230,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
 
     def restoreLayoutFromMemento(self, memento):
         try:
-            size = map(int, tuple(memento.get('layout', 'size').split(',')))
+            size = list(map(int, tuple(memento.get('layout', 'size').split(','))))
         except Exception as msg:
             size = (
              600, 600)
@@ -286,7 +286,7 @@ class PreferencesPage(object):
             try:
                 self.setData(store.getDefaultPreferences())
             except Exception as msg:
-                print('*ERROR:', Exception, msg)
+                print(('*ERROR:', Exception, msg))
 
     def setData(self, data):
         pass

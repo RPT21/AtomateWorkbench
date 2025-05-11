@@ -102,7 +102,7 @@ class Hardware(object):
             self.hardwareEventListeners.remove(listener)
 
     def fireHardwareEvent(self, event):
-        map((lambda listener: listener.hardwareEvent(event)), self.hardwareEventListeners)
+        list(map((lambda listener: listener.hardwareEvent(event)), self.hardwareEventListeners))
 
     def addHardwareStatusListener(self, listener):
         if not listener in self.hardwareStatusListeners:
@@ -113,7 +113,7 @@ class Hardware(object):
             self.hardwareStatusListeners.remove(listener)
 
     def fireHardwareStatusChanged(self):
-        map((lambda p: p.hardwareStatusChanged(self)), self.hardwareStatusListeners)
+        list(map((lambda p: p.hardwareStatusChanged(self)), self.hardwareStatusListeners))
 
     def setDescription(self, description):
         self.description = description
@@ -190,7 +190,7 @@ def removeHardwareManagerListener(listener):
 
 
 def fireHardwareManagerUpdated():
-    map((lambda p: p.hardwareManagerUpdated()), hardwareManagerListeners)
+    list(map((lambda p: p.hardwareManagerUpdated()), hardwareManagerListeners))
 
 
 def hardwareEvent(event):
@@ -338,9 +338,9 @@ def create(name, hardwareType):
 
 def fireHardwareAdded(hardware):
     myListeners = copy.copy(hardwareManagerListeners)
-    print('oh thos elisteners: ', myListeners)
+    print(('oh thos elisteners: ', myListeners))
     for listener in myListeners:
-        print('listener', listener, hasattr(listener, 'hardwareAdded'))
+        print(('listener', listener, hasattr(listener, 'hardwareAdded')))
         if not hasattr(listener, 'hardwareAdded'):
             continue
         listener.hardwareAdded(hardware)
@@ -350,7 +350,7 @@ def fireHardwareAdded(hardware):
 
 def fireHardwareRemoved(hardware):
     myListeners = copy.copy(hardwareManagerListeners)
-    print('telling all listeners hardware removed', myListeners)
+    print(('telling all listeners hardware removed', myListeners))
     for listener in myListeners:
         if not hasattr(listener, 'hardwareRemoved'):
             continue

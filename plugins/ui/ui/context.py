@@ -70,11 +70,11 @@ def hasProperty(key):
 
 
 def getProperties():
-    return properties.items()
+    return list(properties.items())
 
 
 def dumpProperties():
-    for (key, value) in properties.items():
+    for (key, value) in list(properties.items()):
         logger.debug('%s\t=>%s' % (key, value))
 
 
@@ -106,10 +106,10 @@ def fireContextChanged(key, oldValue, newValue):
         def p(t):
             print(t)
 
-        map(p, contextChangeListeners)
+        list(map(p, contextChangeListeners))
         logger.debug('*** END ***')
 
     def firer(listener):
         listener.contextChanged(event)
 
-    map(firer, contextChangeListeners)
+    list(map(firer, contextChangeListeners))

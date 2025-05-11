@@ -49,7 +49,7 @@ class InsertStepAfterSelectionAction(SelectionDispatchAction):
         self.editor = editor
 
     def runWithSelection(self, selection):
-        print('Insert After Selection', selection, self.editor)
+        print(('Insert After Selection', selection, self.editor))
 
 
 class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
@@ -81,7 +81,7 @@ class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
             self.inputChangedListeners.remove(listener)
 
     def fireInputChanged(self, oldInput, newInput):
-        map((lambda p: p.inputChanged(oldInput, newInput)), self.inputChangedListeners)
+        list(map((lambda p: p.inputChanged(oldInput, newInput)), self.inputChangedListeners))
 
     def recipeModelAboutToChange(self, event):
         pass
@@ -250,10 +250,10 @@ class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
     def OnGridCellChange(self, event):
         event.Skip()
         if False:
-            print('Grid Cell Change:', event.GetCol())
+            print(('Grid Cell Change:', event.GetCol()))
             row = event.GetRow()
             column = self.contentprovider.getRealIndexOfCol(event.GetCol())
-            print('\tfor', col)
+            print(('\tfor', col))
 
     def OnShowColumnContextMenu(self, event):
         logger.debug("Show Column Context Menu: '%s'" % event.GetCol())

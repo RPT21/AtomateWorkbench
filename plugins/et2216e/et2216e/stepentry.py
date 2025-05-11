@@ -7,7 +7,7 @@ import core.stepentry
 
 def parseFromNode(node):
     stepentry = UP150StepEntry()
-    temperature = long(node.getChildNamed('temperature').getValue())
+    temperature = int(node.getChildNamed('temperature').getValue())
     stepentry.setTemperature(temperature)
     return stepentry
 

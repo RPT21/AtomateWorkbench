@@ -23,19 +23,19 @@ class ExecutionGridColumnContribution(grideditor.executiongridviewer.ExecutionGr
         gcf = 100.0
         try:
             gcf = float(hwhints.getChildNamed('conversion-factor').getValue())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         range = 65500
         try:
             range = float(hwhints.getChildNamed('range').getValue())
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         usegcf = True
         try:
             usegcf = uihints.getChildNamed('column-use-gcf').getValue().lower() == 'true'
-        except Exception, msg:
+        except Exception as msg:
             logger.exception(msg)
 
         self.GCF = gcf

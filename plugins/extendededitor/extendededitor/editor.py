@@ -103,7 +103,7 @@ class EditorViewer(object):
 
         i = 0
         while root != self.control and root != None:
-            if root in itemctrllist.keys():
+            if root in list(itemctrllist.keys()):
                 return itemctrllist[root]
             root = root.GetParent()
 

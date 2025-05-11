@@ -1,0 +1,6 @@
+[editor]
+tab-acquires-previous = true
+autosaveinterval = 1
+colors.invalidcell = 1,1,0
+colors.highlight = 133,133,218
+

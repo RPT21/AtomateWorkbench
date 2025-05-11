@@ -75,7 +75,7 @@ class ViewerView(labbooks.RunLogParticipant):
 
     def removeAllItems(self):
         items = copy.copy(self.panelitems)
-        map((lambda p: self.removeItem(p, refresh=False)), self.panelitems)
+        list(map((lambda p: self.removeItem(p, refresh=False)), self.panelitems))
         wx.CallAfter(self.updateMe)
 
     def dispose(self):

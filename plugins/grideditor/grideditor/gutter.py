@@ -257,10 +257,10 @@ class Gutter(object):
         hh = self.getHeaderHeight()
         self.ypos = 0 - pos * ppy
         self.control.ScrollWindow(0, self.ypos)
-        map((lambda column: column.SetPosition((column.GetPosition()[0], self.ypos))), self.columns)
+        list(map((lambda column: column.SetPosition((column.GetPosition()[0], self.ypos))), self.columns))
 
     def dispose(self):
-        map((lambda column: column.dispose()), self.columns)
+        list(map((lambda column: column.dispose()), self.columns))
 
 
 class ErrorColumn(GutterColumn):
@@ -319,7 +319,7 @@ class ErrorColumn(GutterColumn):
                 continue
             step = error.getStep()
             index = self.gutter.getStepIndex(step)
-            if not self.cachedErrorIndices.has_key(index):
+            if index not in self.cachedErrorIndices:
                 self.cachedErrorIndices[index] = []
             self.cachedErrorIndices[index].append(error)
             self.setErrorIcon(error, index)

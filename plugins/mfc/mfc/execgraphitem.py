@@ -205,7 +205,7 @@ class GraphView(plugins.graphview.graphview.PanelView, plugins.poi.poi.utils.buf
 
     def dispose(self):
         plugins.graphview.graphview.PanelView.dispose(self)
-        for (device, panel) in self.devicePanels.items():
+        for (device, panel) in list(self.devicePanels.items()):
             self.removeDevice(device, False)
 
         plugins.executionengine.executionengine.getDefault().removeEngineInitListener(self)
@@ -232,12 +232,12 @@ class GraphView(plugins.graphview.graphview.PanelView, plugins.poi.poi.utils.buf
         dc.Clear()
         self.drawBorder(dc)
         self.drawRange(dc)
-        map((lambda panel: panel.drawPoints(dc)), self.devicePanels.values())
+        list(map((lambda panel: panel.drawPoints(dc)), list(self.devicePanels.values())))
 
     def drawLatestPoints(self):
         dc = wx.MemoryDC()
         dc.SelectObject(self.graphBuffer)
-        map((lambda panel: panel.drawLatestPoint(dc)), self.devicePanels.values())
+        list(map((lambda panel: panel.drawLatestPoint(dc)), list(self.devicePanels.values())))
 
     def createUnitFont(self):
         self.unitFont = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL)
@@ -247,7 +247,7 @@ class GraphView(plugins.graphview.graphview.PanelView, plugins.poi.poi.utils.buf
         (self.width, self.height) = self.GetSize()
         self.calcTimePerPixel()
         self.createGraphBuffer()
-        map((lambda panel: panel.resize()), self.devicePanels.values())
+        list(map((lambda panel: panel.resize()), list(self.devicePanels.values())))
         self.drawPoints()
 
     def calcMaxRange(self):
@@ -327,7 +327,7 @@ class GraphView(plugins.graphview.graphview.PanelView, plugins.poi.poi.utils.buf
         self.clearItems()
 
     def clearItems(self):
-        for item in self.devicePanels.values():
+        for item in list(self.devicePanels.values()):
             try:
                 item.clear()
             except Exception as msg:
@@ -368,7 +368,7 @@ class GraphView(plugins.graphview.graphview.PanelView, plugins.poi.poi.utils.buf
         self.calcMaxRange()
         p = self.devicePanels[device]
         del self.devicePanels[device]
-        if len(self.devicePanels.values()) == 0:
+        if len(list(self.devicePanels.values())) == 0:
             plugins.graphview.graphview.getDefault().destroyDeviceGroup('mfc')
             plugins.executionengine.executionengine.getDefault().perspective.graphView.removeGraphPanel(self)
             plugins.executionengine.executionengine.getDefault().perspective.graphView.refresh()

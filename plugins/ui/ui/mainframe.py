@@ -191,7 +191,7 @@ class MainFrame(object):
     def onFocusChild(self, ctrl):
         root = ctrl
         viewctrls = {}
-        for view in self.sectors2Views.values():
+        for view in list(self.sectors2Views.values()):
             viewctrls[view.getControl()] = view
 
         focusedview = None
@@ -203,7 +203,7 @@ class MainFrame(object):
 
         if focusedview is None:
             return
-        for view in self.sectors2Views.values():
+        for view in list(self.sectors2Views.values()):
             if not hasattr(view, 'setFocus'):
                 continue
             view.setFocus(view == focusedview)
@@ -328,7 +328,7 @@ class MainFrame(object):
             maximized = memento.get('mainframe.layout', 'maximized')
             if maximized.lower() == 'true':
                 self.control.Maximize(True)
-            for (sectorName, window) in self.sectors.items():
+            for (sectorName, window) in list(self.sectors.items()):
                 strsize = memento.get('mainframe.layout', '.'.join(['sector', sectorName]))
                 size = list(map(int, strsize.split(',')))
                 if size[0] < 20:
@@ -359,7 +359,7 @@ class MainFrame(object):
         size = self.control.GetSize()
         pos = self.control.GetPosition()
         memento.set('mainframe.layout', 'dimension', '%i,%i,%i,%i' % (pos[0], pos[1], size[0], size[1]))
-        for (sectorName, window) in self.sectors.items():
+        for (sectorName, window) in list(self.sectors.items()):
             size = window.getControl().GetSize()
             memento.set('mainframe.layout', '.'.join(['sector', sectorName]), '%s,%s' % tuple(map(str, size)))
 

@@ -30,7 +30,7 @@ class ToolBarManager(poi.actions.ContributionManager, poi.actions.ContributionIt
         frames = poi.actions.statusBarFrames
         if isinstance(self.widget.shell, wx.Frame):
             return
-        if not frames.has_key(self.widget.shell):
+        if self.widget.shell not in frames:
             return
         sbm = frames[self.widget.shell]
         realitem = None
@@ -90,4 +90,4 @@ class ToolBarManager(poi.actions.ContributionManager, poi.actions.ContributionIt
             try:
                 self.widget.Realize()
             except Exception as msg:
-                print("* ERROR: Unable to realize toolbar:'%s'" % msg)
+                print(("* ERROR: Unable to realize toolbar:'%s'" % msg))

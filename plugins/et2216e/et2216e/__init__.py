@@ -154,7 +154,7 @@ class et2216eHardware(plugins.hardware.hardware.hardwaremanager.Hardware, plugin
             return None
         conf = self.getDescription().getConfiguration()
         try:
-            return map(int, conf.get('main', 'pid').split(','))
+            return list(map(int, conf.get('main', 'pid').split(',')))
         except Exception as msg:
             logger.exception(msg)
 

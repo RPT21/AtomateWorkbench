@@ -66,9 +66,9 @@ class UserInterface(object):
         self.window.Bind(wx.EVT_CLOSE, self.OnClose)
 
     def OnClose(self, event):
-        print 'close called'
+        print('close called')
         if not self.shuttingdown:
-            print '\thiding'
+            print('\thiding')
             self.window.Hide()
             event.Veto()
         else:
@@ -172,19 +172,19 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
     def checkRespond(self):
         if self.respond:
             return
-        print self, 'checkRespond - acquire'
+        print(self, 'checkRespond - acquire')
         self.cv.acquire()
-        print self, 'checkRespond - wait'
+        print(self, 'checkRespond - wait')
         self.cv.wait()
         if self.ir:
-            print self, 'checkrespond - notify'
+            print(self, 'checkrespond - notify')
             self.cv.notify()
             self.ir = False
             self.respond = True
-            print self, 'checkrespond release'
+            print(self, 'checkrespond release')
             self.cv.release()
             raise Exception('Interrupted')
-        print self, 'checkrespond - release'
+        print(self, 'checkrespond - release')
         self.cv.release()
 
     def getFlow(self, channelNum):
@@ -197,7 +197,7 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
 
     def checkInterrupt(self):
         if self.ir:
-            print self, 'checkInterrupt - Acquire'
+            print(self, 'checkInterrupt - Acquire')
             self.cv.acquire()
             self.ir = False
             self.cv.notify()
@@ -229,13 +229,13 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
 
     def initialize(self):
         logger.debug('Initialize')
-        print 'is window disposed?', self.wnd.isDisposed()
+        print('is window disposed?', self.wnd.isDisposed())
         if not self.wnd.isDisposed():
             self.wnd.restore()
         if self.status == mks647bc.drivers.STATUS_INITIALIZED:
             logger.debug('Driver already initialized')
             return
-        self.channelValues = map((lambda x: 0), range(int(self.configuration.get('main', 'channels'))))
+        self.channelValues = list(map((lambda x: 0), list(range(int(self.configuration.get('main', 'channels'))))))
         if self.checkInterrupt():
             logger.debug('Interrupted')
             return

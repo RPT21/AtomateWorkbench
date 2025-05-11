@@ -202,7 +202,7 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
 
     def dispose(self):
         graphview.PanelView.dispose(self)
-        for (device, panel) in self.devicePanels.items():
+        for (device, panel) in list(self.devicePanels.items()):
             self.removeDevice(device, False)
 
         executionengine.getDefault().removeEngineInitListener(self)
@@ -229,12 +229,12 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
         dc.Clear()
         self.drawBorder(dc)
         self.drawRange(dc)
-        map((lambda panel: panel.drawPoints(dc)), self.devicePanels.values())
+        list(map((lambda panel: panel.drawPoints(dc)), list(self.devicePanels.values())))
 
     def drawLatestPoints(self):
         dc = wx.MemoryDC()
         dc.SelectObject(self.graphBuffer)
-        map((lambda panel: panel.drawLatestPoint(dc)), self.devicePanels.values())
+        list(map((lambda panel: panel.drawLatestPoint(dc)), list(self.devicePanels.values())))
 
     def createUnitFont(self):
         self.unitFont = wx.Font(8, wx.MODERN, wx.NORMAL, wx.NORMAL)
@@ -244,7 +244,7 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
         (self.width, self.height) = self.GetSize()
         self.calcTimePerPixel()
         self.createGraphBuffer()
-        map((lambda panel: panel.resize()), self.devicePanels.values())
+        list(map((lambda panel: panel.resize()), list(self.devicePanels.values())))
         self.drawPoints()
 
     def calcMaxRange(self):
@@ -324,7 +324,7 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
         self.clearItems()
 
     def clearItems(self):
-        map((lambda s: s.clear()), self.devicePanels.values())
+        list(map((lambda s: s.clear()), list(self.devicePanels.values())))
         self.drawPoints()
         wx.CallAfter(self.Refresh)
 

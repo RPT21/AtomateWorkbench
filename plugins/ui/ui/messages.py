@@ -18,7 +18,7 @@ def init(contextBundle):
             config = configparser.RawConfigParser()
             config.read([os.path.join(contextBundle.dirname, MESSAGES_FILENAME)])
         except Exception as msg:
-            print("Unable to load messages from '%s' - '%s'", contextBundle.dirname, msg)
+            print(("Unable to load messages from '%s' - '%s'", contextBundle.dirname, msg))
             print('\tUsing default messages')
 
 

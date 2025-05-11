@@ -88,16 +88,16 @@ class UP150DeviceEditor(core.device.DeviceEditor):
         try:
             hwid = hwhints.getChildNamed('id').getValue()
             self.selectHardware(hwid)
-        except Exception, msg:
+        except Exception as msg:
             traceback.print_exc()
-            print '* WARNING: Cannot set hardware:', msg
+            print('* WARNING: Cannot set hardware:', msg)
 
         try:
             label = uihints.getChildNamed('label').getValue()
             self.labelField.SetValue(label)
-        except Exception, msg:
+        except Exception as msg:
             traceback.print_exc()
-            print '* WARNING: Cannot set hardware:', msg
+            print('* WARNING: Cannot set hardware:', msg)
 
         if self.currentHardwareEditor is not None:
             self.currentHardwareEditor.setData(None, hwhints)
@@ -118,7 +118,7 @@ class UP150DeviceEditor(core.device.DeviceEditor):
             child.Destroy()
 
     def setHardwareEditor(self, editor):
-        print 'set hardare editor', editor
+        print('set hardare editor', editor)
         self.removeHardwareEditor()
         editor.setInstance(self.description.getInstance())
         editor.createControl(self.hardwarePanel)
@@ -137,8 +137,8 @@ class UP150DeviceEditor(core.device.DeviceEditor):
             uihints.createChildIfNotExists('label').setValue(label)
             if self.currentHardwareEditor is not None:
                 self.currentHardwareEditor.getData(hwhints)
-        except Exception, msg:
-            print '* ERROR:', msg
+        except Exception as msg:
+            print('* ERROR:', msg)
 
         return
 
@@ -159,8 +159,8 @@ class UP150Device(core.device.Device):
             hwtype = hardware.hardwaremanager.getHardwareType(hwtype)
             description = hwtype.getDescription()
             return '%s (%s) - address %s' % (hardwareName, description, hardwareAddress)
-        except Exception, msg:
-            print '* WARNING:', msg
+        except Exception as msg:
+            print('* WARNING:', msg)
 
         return '*NOT CONFIGURED*'
 

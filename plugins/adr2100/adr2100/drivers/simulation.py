@@ -152,7 +152,7 @@ class SimulationDeviceDriver(adr2100.drivers.DeviceDriver):
 
     def readDigitalPorts(self, port):
         port = port.upper()
-        return map((lambda x: x.GetValue()), self.digitalPorts[port])
+        return list(map((lambda x: x.GetValue()), self.digitalPorts[port]))
 
     def readAnalogPort(self, port):
         val = self.analogPorts[int(port)].GetValue()

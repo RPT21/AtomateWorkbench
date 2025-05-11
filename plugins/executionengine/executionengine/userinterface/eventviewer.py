@@ -45,7 +45,7 @@ class EventViewerWindow(object):
             self.hide()
 
     def getEventString(self, key):
-        if not key in executionengine.engine.TYPE2TEXT.keys():
+        if not key in list(executionengine.engine.TYPE2TEXT.keys()):
             return "unknown: '%s'" % key
         return executionengine.engine.TYPE2TEXT[key]
 

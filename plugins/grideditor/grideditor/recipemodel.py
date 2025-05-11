@@ -177,7 +177,7 @@ class RecipeModel(object):
                 print(listener)
 
             logger.debug('*** END PREMODIFY LISTENERS ***')
-        map((lambda p: p.recipeModelAboutToChange(event)), self.preModifyListeners)
+        list(map((lambda p: p.recipeModelAboutToChange(event)), self.preModifyListeners))
 
     def fireRecipeModelChanged(self, event):
         """All handlers should catch their exceptions and not prevent this loop from continuing"""
@@ -287,7 +287,7 @@ class RecipeModel(object):
         self.fireRecipeModelAboutToChange(event)
         self.recipe.setDirty()
         self.recipe.removeDevice(device)
-        map((lambda step: step.removeEntry(index)), self.recipe.getSteps())
+        list(map((lambda step: step.removeEntry(index)), self.recipe.getSteps()))
         self.fireRecipeModelChanged(event)
 
     def dispose(self):
