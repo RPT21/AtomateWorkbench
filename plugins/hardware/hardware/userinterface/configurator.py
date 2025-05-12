@@ -197,8 +197,7 @@ class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
         hbsizer = wx.BoxSizer(wx.HORIZONTAL)
         hbsizer.Add(self.newButton, 0, wx.RIGHT, 5)
         hbsizer.Add(self.deleteButton, 0)
-        # sizer.Add(hbsizer, 0, wx.EXPAND | wx.ALIGN_CENTRE_HORIZONTAL | wx.ALL, 0) - Dona error...
-        sizer.Add(hbsizer, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 0)  # El reformulem aqui
+        sizer.Add(hbsizer, 0, wx.EXPAND | wx.ALL, 0)
         left.SetSizer(sizer)
         left.SetAutoLayout(True)
         sizer = wx.BoxSizer(wx.HORIZONTAL)

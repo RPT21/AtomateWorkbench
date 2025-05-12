@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/__init__.py
 # Compiled at: 2004-12-09 00:49:28
-import os, string, py_compile, plugins.core.core as core
+import os, py_compile, plugins.core.core as core
 import lib.kernel.pluginmanager as PluginManager
 import logging, lib.kernel.plugin
 from plugins.hardware.hardware import ResponseTimeoutException
@@ -103,7 +103,7 @@ class InitializeScriptThread(threading.Thread):
         self.setDaemon(True)
 
     def readScript(self):
-        dirname = adr2100.getDefault().getContextBundle().dirname
+        dirname = getDefault().getContextBundle().dirname
         DEFAULT_SCRIPT_FILENAME = 'startupscript.txt'
         script = []
         try:

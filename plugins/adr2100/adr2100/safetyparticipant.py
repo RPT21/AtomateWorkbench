@@ -28,7 +28,6 @@ class ADR2100InterlockParticipant(safetyinterlock.InterlockParticipant):
         if self.hardware.getDescription() is None:
             return 'Unconfigured ADR 2100'
         return '%s - ADR 2100 IO Board' % self.hardware.getDescription().getName()
-        return
 
     def engineInit(self, engine):
         self.engine = engine

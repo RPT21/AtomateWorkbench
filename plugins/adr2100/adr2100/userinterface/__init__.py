@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/userinterface/__init__.py
 # Compiled at: 2004-12-09 00:49:29
-import os, traceback, wx, string, logging, plugins.core.core.utils, plugins.poi.poi.views, plugins.poi.poi.dialogs
+import os, wx, logging, plugins.core.core.utils, plugins.poi.poi.views, plugins.poi.poi.dialogs
 import plugins.hardware.hardware.userinterface.configurator, plugins.hardware.hardware.hardwaremanager, plugins.adr2100.adr2100.drivers
 import threading, plugins.ui.ui, plugins.poi.poi.operation, time
 import plugins.poi.poi.dialogs.progress, plugins.ui.ui.images as uiimages
@@ -52,7 +52,7 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
         checkBox = wx.StaticBox(panel, -1, ' Safety Check Settings ')
         boxSizer = wx.StaticBoxSizer(checkBox, wx.VERTICAL)
         h2sizer = wx.BoxSizer(wx.HORIZONTAL)
-        h2sizer.Add(wx.StaticText(panel, -1, 'Check Interval:'), 0, wx.ALL | wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL, 2)
+        h2sizer.Add(wx.StaticText(panel, -1, 'Check Interval:'), 0, wx.ALL | wx.ALIGN_CENTRE_VERTICAL, 2)
         self.checkInterval = wx.TextCtrl(panel, -1)
         h2sizer.Add(self.checkInterval, 0, wx.ALL | wx.ALIGN_CENTRE_VERTICAL, 2)
         h2sizer.Add(wx.StaticText(panel, -1, ' seconds'), 0, wx.ALIGN_LEFT | wx.ALIGN_CENTRE_VERTICAL | wx.ALL, 2)

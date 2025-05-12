@@ -3,9 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/rs485/src/rs485/__init__.py
 # Compiled at: 2005-03-09 18:51:42
-import logging, lib.kernel.plugin, lib.kernel.pluginmanager as PluginManager, plugins.hardware.hardware.hardwaremanager
+import logging, lib.kernel.plugin, plugins.hardware.hardware.hardwaremanager
 import plugins.rs485.rs485.rs485type, plugins.rs485.rs485.drivers, plugins.rs485.rs485.drivers.ser
 import plugins.poi.poi.actions, plugins.ui.ui, threading, plugins.executionengine.executionengine
+import plugins.rs485.rs485.rs485type, plugins.hardware.hardware as hardware, plugins.rs485.rs485 as rs485
 instance = None
 logger = logging.getLogger('rs485')
 
@@ -277,9 +278,6 @@ class RS485SerialNetworkNode:
     def resetTime(self):
         """reset junk here"""
         pass
-
-    def clearBuffer(self):
-        self.buffer = ''
 
     def getBuffer(self):
         return self.buffer

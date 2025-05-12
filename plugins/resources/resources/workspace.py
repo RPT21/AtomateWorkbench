@@ -3,11 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resources/src/resources/workspace.py
 # Compiled at: 2004-12-17 20:47:12
-import os, sys, shutil, lib.kernel, traceback, logging
+import os, sys, shutil, lib.kernel, logging
 import plugins.resources.resources.project as project_lib
 import plugins.resources.resources.version as version_lib
 import plugins.resources.resources.utils as utils_lib
 import plugins.resources.resources.runlog as runlog_lib
+from plugins.resources.resources.__init__ import * # getDefault prové de __init__
 logger = logging.getLogger('resources')
 WORKSPACE_DIRNAME = 'workspace'
 suppress = False

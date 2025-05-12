@@ -125,7 +125,7 @@ class Wizard(MessageHeaderDialog):
         panel.SetSizer(sizer)
         panel.SetAutoLayout(True)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 0)
+        sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 0) # El problema està aquí, afegeix self.content en aquest sizer
         sizer.Fit(composite)
         composite.SetSizer(sizer)
         composite.SetAutoLayout(True)
@@ -202,7 +202,6 @@ class WizardPage(object):
 
     def canFlipToNextPage(self):
         return self.isFinished() and self.getNextPage() is not None
-        return
 
     def getImage(self):
         return self.titleImage

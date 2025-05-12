@@ -5,7 +5,7 @@
 # Compiled at: 2004-11-23 21:59:58
 import wx, plugins.ui.ui, logging, plugins.core.core.utils, plugins.poi.poi.views, plugins.poi.poi.dialogs, plugins.hardware.hardware.userinterface.configurator
 import plugins.hardware.hardware.hardwaremanager, plugins.rs485.rs485.drivers, plugins.rs485.rs485.userinterface.initdialog
-import threading, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
 SCCM = 'sccm'
 SLM = 'slm'
 SCMM = 'scmm'
@@ -239,7 +239,6 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
             size = self.driverConfigPanel.GetSize()
             sizer.SetItemMinSize(page.getControl(), size)
         return page
-        return
 
     def getDriverOptions(self):
         keys = rs485.drivers.getRegisteredDeviceKeys()
@@ -360,7 +359,7 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
         runner = ShutdownWithProgressRunner()
         try:
             dlg.run(runner, fork=False)
-        except Exceptiona as msg:
+        except Exception as msg:
             logger.exception(msg)
             poi.dialogs.ExceptionDialog(f, msg.getWrapped(), 'Error Shutting Down Hardware').ShowModal()
 

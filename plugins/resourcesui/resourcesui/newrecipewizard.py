@@ -6,7 +6,7 @@
 import re, wx, sys, os, plugins.ui.ui, threading, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
 import plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.hardware.hardware.hardwaremanager, plugins.resources.resources
 import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.utils, logging
-import plugins.poi as poi
+import plugins.poi.poi.__init__
 from plugins.poi.poi.wizards import Wizard, WizardPage
 logger = logging.getLogger('resourcesui.newrecipewizard')
 
