@@ -209,12 +209,12 @@ class MessageHeaderDialog(Dialog):
     def createControl(self, parent):
         self.control = wx.Dialog(parent, -1, self.title, style=self.getStyle())  # Crec que el problema és que intentem afegir el mateix objecte, que esta al parent, al fill.
         self.control.Bind(wx.EVT_CLOSE, self.OnClose)
-        self.header = self.createHeader()  # Al trucar aquesta funció, es crea el header i s'afegeix automaticament a self.control
-        self.content = self.createContent(self.control) # Al trucar aquesta funció, es crea el content i s'afegeix automaticament a self.control
+        self.header = self.createHeader()  # Es crea el header i s'afegeix automàticament a self.control
+        self.content = self._createContent_(self.control) # Es crea el content i s'afegeix automàticament a self.control, alerta, truca a Wizards (canviem per _createContent_)
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.header, 0, wx.EXPAND)
-        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND) # Aqui s'afegeix a self.control el static line i despres s'afegeix al sizer
-        sizer.Add(self.content, 1, wx.EXPAND)  # El problema es que self.content ja s'utilitza en parent ?
+        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND) # Per saber a quin sizer esta, utilitzem self.content.GetContainingSizer()
+        sizer.Add(self.content, 1, wx.EXPAND)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         self.createBody(self.content)
@@ -252,7 +252,7 @@ class MessageHeaderDialog(Dialog):
         bsizer.Fit(p)
         return p
 
-    def createContent(self, parent):
+    def _createContent_(self, parent):
         b = poi.views.OneChildWindow(parent, -1)
         return b
 

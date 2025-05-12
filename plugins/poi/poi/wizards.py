@@ -4,9 +4,9 @@
 # Embedded file name: ../plugins/poi/src/poi/wizards.py
 # Compiled at: 2005-06-10 18:51:26
 import wx
-import plugins.poi.poi.dialogs
+from plugins.poi.poi.dialogs import MessageHeaderDialog
 
-class Wizard(plugins.poi.poi.dialogs.MessageHeaderDialog):
+class Wizard(MessageHeaderDialog):
     __module__ = __name__
 
     def __init__(self):
@@ -15,7 +15,7 @@ class Wizard(plugins.poi.poi.dialogs.MessageHeaderDialog):
         self.content = None
         self.startingPage = None
         self.currentPage = None
-        plugins.poi.poi.dialogs.MessageHeaderDialog.__init__(self)
+        MessageHeaderDialog.__init__(self)
         return
 
     def createBody(self, parent):
@@ -59,7 +59,6 @@ class Wizard(plugins.poi.poi.dialogs.MessageHeaderDialog):
         if pageName not in self.pages:
             return None
         return self.pages[pageName]
-        return
 
     def setFinish(self, canFinish):
         self.buttons['finish'].Enable(canFinish)
