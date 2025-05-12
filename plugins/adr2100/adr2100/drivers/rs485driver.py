@@ -65,7 +65,7 @@ class SerialConfigurationSegment(object):
             self.control.Bind(wx.EVT_TEXT, self.OnAddressText, self.addressText)
             self.control.Bind(wx.EVT_KILL_FOCUS, self.OnAddressFocusText, self.addressText)
             mainsizer = wx.BoxSizer(wx.VERTICAL)
-            mainsizer.Add(sizer, 0, wx.GROW | wx.ALL, 10)
+            mainsizer.Add(sizer, 0, wx.EXPAND | wx.ALL, 10)
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)

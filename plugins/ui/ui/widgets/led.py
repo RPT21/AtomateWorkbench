@@ -40,14 +40,14 @@ class LEDSetpointDisplay(wx.Panel):
         if self.showSetpoint:
             self.setpointCtrl = poi.utils.LEDdisplay.LEDDisplay(self, -1, size=wx.Size(100, 25))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self.valueCtrl, 1, wx.GROW | wx.RIGHT | wx.ALIGN_RIGHT, 5)
+        sizer.Add(self.valueCtrl, 1, wx.EXPAND | wx.RIGHT | wx.ALIGN_RIGHT, 5)
         if self.showSetpoint:
-            sizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.GROW | wx.LEFT | wx.RIGHT, 1)
+            sizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 1)
             hsizer = wx.BoxSizer(wx.VERTICAL)
             self.setpointLabel = wx.StaticText(self, -1, 'Setpoint')
-            hsizer.Add(self.setpointLabel, 0, wx.GROW | wx.BOTTOM | wx.TOP, 2)
+            hsizer.Add(self.setpointLabel, 0, wx.EXPAND | wx.BOTTOM | wx.TOP, 2)
             hsizer.Add(self.setpointCtrl, 0, wx.ALL, 0)
-            sizer.Add(hsizer, 0, wx.ALL | wx.GROW, 0)
+            sizer.Add(hsizer, 0, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
 

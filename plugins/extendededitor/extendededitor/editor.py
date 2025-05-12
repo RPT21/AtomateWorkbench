@@ -171,7 +171,7 @@ class EditorViewer(object):
             logger.error("Unable to create control for extended editor item '%s':'%s'" % (item, msg))
             return
 
-        self.sizer.Insert(index, item.getControl(), 0, wx.GROW | wx.ALL, 5)
+        self.sizer.Insert(index, item.getControl(), 0, wx.EXPAND | wx.ALL, 5)
         self.update()
 
     def createItem(self, item):
@@ -191,7 +191,7 @@ class EditorViewer(object):
             logger.error("Unable to create control for extended editor item '%s':'%s'" % (item, msg))
             return
 
-        self.sizer.Add(item.getControl(), 0, wx.GROW | wx.ALL, 5)
+        self.sizer.Add(item.getControl(), 0, wx.EXPAND | wx.ALL, 5)
         self.update()
 
     def resizeToFit(self):

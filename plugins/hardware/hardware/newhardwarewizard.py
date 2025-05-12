@@ -91,8 +91,8 @@ class HardwareTypeSelectionPage(plugins.poi.poi.wizards.WizardPage):
         label = wx.StaticText(nameGroup, -1, 'Name:')
         self.nameField = wx.TextCtrl(nameGroup, -1, '')
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(label, 0, wx.GROW | wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
-        sizer.Add(self.nameField, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL, 0)
+        sizer.Add(label, 0, wx.EXPAND | wx.RIGHT, 5)
+        sizer.Add(self.nameField, 1, wx.EXPAND, 0)
         nameGroup.SetSizer(sizer)
         nameGroup.SetAutoLayout(True)
         self.nameField.Enable(False)
@@ -105,9 +105,9 @@ class HardwareTypeSelectionPage(plugins.poi.poi.wizards.WizardPage):
         self.viewer.setLabelProvider(LabelProvider())
         self.viewer.setInput(plugins.hardware.hardware.hardwaremanager)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(nameGroup, 0, wx.GROW | wx.ALL, 5)
-        sizer.Add(listcontrol, 1, wx.GROW | wx.ALL, 5)
-        sizer.Add(self.infopane, 1, wx.GROW | wx.ALL, 5)
+        sizer.Add(nameGroup, 0, wx.EXPAND | wx.ALL, 5)
+        sizer.Add(listcontrol, 1, wx.EXPAND | wx.ALL, 5)
+        sizer.Add(self.infopane, 1, wx.EXPAND | wx.ALL, 5)
         self.control.SetSizer(sizer)
 
         class HardwareListEventHandler(object):

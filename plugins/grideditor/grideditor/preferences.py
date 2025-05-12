@@ -36,7 +36,7 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
         fsizer.Add(self.gridCellColor, 0, wx.ALIGN_CENTRE_VERTICAL)
         defaultsButton = wx.Button(self.control, -1, messages.get(grideditor.constants.MESSAGE_RESTORE_DEFAULTS_LABEL))
         mainsizer = wx.BoxSizer(wx.VERTICAL)
-        mainsizer.Add(fsizer, 0, wx.GROW)
+        mainsizer.Add(fsizer, 0, wx.EXPAND)
         mainsizer.Add(defaultsButton, 0, wx.ALIGN_RIGHT | wx.TOP, 10)
         self.control.SetSizer(mainsizer)
         self.control.SetAutoLayout(True)

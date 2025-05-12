@@ -115,7 +115,7 @@ class VersionInfoPane(wx.Panel):
         fsizer.Add(MainLabel(self, 'Date:'), 0, wx.ALIGN_CENTRE_VERTICAL | wx.ADJUST_MINSIZE)
         fsizer.Add(self.dateLabel, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ADJUST_MINSIZE)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(fsizer, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+        sizer.Add(fsizer, 0, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
         self.sizer = sizer
@@ -148,7 +148,7 @@ class RunlogInfoPane(wx.Panel):
             for thumbnail in thumbnails:
                 bmp = ResizableBitmap(self, thumbnail)
                 self.bmps.append(bmp)
-                self.sizer.Add(bmp, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE, 3)
+                self.sizer.Add(bmp, 0, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE, 3)
 
         self.sizer.Layout()
         self.Refresh()
@@ -162,7 +162,7 @@ class RunlogInfoPane(wx.Panel):
         fsizer.Add(self.dateLabel, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ADJUST_MINSIZE)
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.sizer = sizer
-        sizer.Add(fsizer, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+        sizer.Add(fsizer, 0, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
         sizer.Add(MainLabel(self, 'Snapshots'), 0, wx.ALIGN_CENTRE | wx.ADJUST_MINSIZE)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
@@ -242,37 +242,37 @@ class SnapshotView(plugins.poi.poi.views.StackedView):
         p = ProjectInfoPane(self.p1)
         self.projectPanel = p
         bs = wx.StaticBoxSizer(box, wx.VERTICAL)
-        bs.Add(p, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+        bs.Add(p, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
         ps = wx.BoxSizer(wx.VERTICAL)
-        ps.Add(bs, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE, 5)
+        ps.Add(bs, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE, 5)
         self.p1.SetSizer(ps)
         self.p1.SetAutoLayout(True)
-        sizer.Add(self.p1, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+        sizer.Add(self.p1, 0, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
         self.p2 = wx.Panel(self.viewer, size=wx.Size(1, 1))
         box = wx.StaticBox(self.p2, -1, ' Version ')
         p = VersionInfoPane(self.p2)
         self.versionPanel = p
         bs = wx.StaticBoxSizer(box, wx.VERTICAL)
         self.bs = bs
-        bs.Add(p, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+        bs.Add(p, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
         ps = wx.BoxSizer(wx.VERTICAL)
-        ps.Add(bs, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE, 5)
+        ps.Add(bs, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE, 5)
         self.p2.SetSizer(ps)
         self.p2.SetAutoLayout(True)
-        sizer.Add(self.p2, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+        sizer.Add(self.p2, 0, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
         self.p3 = wx.Panel(self.viewer, size=wx.Size(1, 1))
         box = wx.StaticBox(self.p3, -1, ' Runlog ')
         p = RunlogInfoPane(self.p3)
         self.runlogPanel = p
         bs = wx.StaticBoxSizer(box, wx.VERTICAL)
         self.bs = bs
-        bs.Add(p, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+        bs.Add(p, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
         ps = wx.BoxSizer(wx.VERTICAL)
-        ps.Add(bs, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE, 5)
+        ps.Add(bs, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE, 5)
         self.p3.SetSizer(ps)
         self.p3.SetAutoLayout(True)
-        sizer.Add(self.p3, 0, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
-        self.mainsizer.Add(sizer, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE, 5)
+        sizer.Add(self.p3, 0, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
+        self.mainsizer.Add(sizer, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE, 5)
         self.viewer.SetSizer(self.mainsizer)
         self.viewer.SetAutoLayout(True)
         self.mainsizer.Layout()
@@ -281,7 +281,7 @@ class SnapshotView(plugins.poi.poi.views.StackedView):
     def OnButton(self, event):
         if self.prick:
             p = wx.Panel(self.p2, -1, size=wx.Size(20, 400))
-            self.bs.Add(p, 1, wx.GROW | wx.ALL | wx.ADJUST_MINSIZE)
+            self.bs.Add(p, 1, wx.EXPAND | wx.ALL | wx.ADJUST_MINSIZE)
             self.stick = p
         else:
             parent = self.stick.GetParent()

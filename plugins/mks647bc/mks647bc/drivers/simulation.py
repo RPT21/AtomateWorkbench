@@ -96,11 +96,11 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
             sbsizer.Add(ctrls['slider'], 1, wx.ALIGN_CENTRE_VERTICAL)
             sbsizer.Add(ctrls['setpoint'], 0, wx.ALIGN_CENTRE_VERTICAL | wx.LEFT, 5)
             self.channels.append(ctrls)
-            sizer.Add(sbsizer, 0, wx.GROW | wx.ALL, 5)
+            sizer.Add(sbsizer, 0, wx.EXPAND | wx.ALL, 5)
 
         self.dlg.SetSizer(sizer)
         s = sizer.CalcMin()
-        self.dlg.SetSize((400, s[1]))
+        self.dlg.SetSize(wx.Size(400, s[1]))
         self.dlg.SetAutoLayout(True)
         return
 
@@ -108,7 +108,6 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         self.dlg.Destroy()
         self.dlg = None
         return True
-        return
 
     def toggleDialog(self):
         self.dlg.Show(not self.dlg.IsShown())

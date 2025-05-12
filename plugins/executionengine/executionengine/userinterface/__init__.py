@@ -82,7 +82,7 @@ class RecipeInitializationDialog(plugins.poi.poi.dialogs.Dialog):
         self.okButton = wx.Button(self.control, -1, 'OK')
         self.okButton.Hide()
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.currentTaskLabel, 0, wx.GROW | wx.ALL, 5)
+        sizer.Add(self.currentTaskLabel, 0, wx.EXPAND | wx.ALL, 5)
         sizer.Add(self.cancelButton, 0, wx.ALIGN_CENTRE_HORIZONTAL)
         sizer.Add(self.okButton, 0, wx.ALIGN_CENTRE_HORIZONTAL)
         self.control.SetSizer(sizer)

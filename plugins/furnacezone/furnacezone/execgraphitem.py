@@ -48,9 +48,9 @@ class GraphItem(wx.Panel):
         self.label = wx.StaticText(self, -1, device.getLabel())
         self.label.SetBackgroundColour(wx.LIGHT_GREY)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.label, 0, wx.GROW | wx.LEFT | wx.TOP, 5)
-        sizer.Add(wx.StaticLine(self, -1), 0, wx.GROW, wx.ALL, 0)
-        sizer.Add(self.canvas, 1, wx.GROW | wx.ALL, 0)
+        sizer.Add(self.label, 0, wx.EXPAND | wx.LEFT | wx.TOP, 5)
+        sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND, wx.ALL, 0)
+        sizer.Add(self.canvas, 1, wx.EXPAND | wx.ALL, 0)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
 
@@ -265,7 +265,7 @@ class GraphView(plugins.graphview.graphview.PanelView):
         graphview.PanelView.addDevice(self, device)
         p = GraphItem(self.p, self, device)
         self.devicePanels[device] = p
-        self.sizer.Add(p, 1, wx.GROW | wx.ALL, 1)
+        self.sizer.Add(p, 1, wx.EXPAND | wx.ALL, 1)
         self.p.GetSizer().SetItemMinSize(p, p.GetBestSize())
         self.p.GetContainingSizer().SetItemMinSize(p, p.GetSize())
         self.panel.refresh()

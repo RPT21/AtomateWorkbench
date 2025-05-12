@@ -23,7 +23,7 @@ class MKS647RackPanel(object):
             led.SetAlignment(wx.gizmos.LED_ALIGN_RIGHT)
             led.SetValue('12345')
             self.channelNums.append(led)
-            sizer.Add(led, 0, wx.GROW | wx.ALL, 5)
+            sizer.Add(led, 0, wx.EXPAND | wx.ALL, 5)
 
         sizer.Fit(control)
         self.control.SetSizer(sizer)

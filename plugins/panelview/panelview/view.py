@@ -58,7 +58,7 @@ class ViewerView(object):
             item.createControl(self.control, self.horizontal)
             control = item.getControl()
             logger.debug('control size: %s' % control.GetSize())
-            sizer.Add(control, 0, wx.GROW | wx.RIGHT, 3)
+            sizer.Add(control, 0, wx.EXPAND | wx.RIGHT, 3)
             if refresh:
                 wx.CallAfter(self.updateMe)
 

@@ -25,8 +25,8 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
         uibox = self.createUIBox()
         hwbox = self.createHardwareBox()
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(uibox, 0, wx.GROW | wx.ALL, 5)
-        sizer.Add(hwbox, 0, wx.GROW | wx.ALL, 5)
+        sizer.Add(uibox, 0, wx.EXPAND | wx.ALL, 5)
+        sizer.Add(hwbox, 0, wx.EXPAND | wx.ALL, 5)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         self.control.SetupScrolling()
@@ -59,12 +59,12 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
         fsizer.Add(self.hardwareChoice, 1, wx.ALIGN_CENTRE_VERTICAL)
         self.control.Bind(wx.EVT_COMBOBOX, self.OnHardwareChoice, self.hardwareChoice)
-        ssizer.Add(fsizer, 0, wx.GROW | wx.TOP, 10)
-        ssizer.Add(wx.StaticLine(self.control, -1), 0, wx.GROW | wx.ALL, 5)
+        ssizer.Add(fsizer, 0, wx.EXPAND | wx.TOP, 10)
+        ssizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND | wx.ALL, 5)
         self.hardwarePanel = wx.Panel(self.control, -1)
         self.hardwarePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
         self.hardwarePanel.SetAutoLayout(True)
-        ssizer.Add(self.hardwarePanel, 1, wx.GROW | wx.ALL, 5)
+        ssizer.Add(self.hardwarePanel, 1, wx.EXPAND | wx.ALL, 5)
         return ssizer
 
     def OnHardwareChoice(self, event):
@@ -90,8 +90,8 @@ class PressureGaugeDeviceEditor(core.device.DeviceEditor):
         label = wx.StaticText(self.control, -1, 'Label:')
         self.labelField = wx.TextCtrl(self.control, -1, '')
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-        fsizer.Add(self.labelField, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)
-        ssizer.Add(fsizer, 0, wx.GROW | wx.TOP, 10)
+        fsizer.Add(self.labelField, 1, wx.EXPAND | wx.ALIGN_CENTRE_VERTICAL)
+        ssizer.Add(fsizer, 0, wx.EXPAND | wx.TOP, 10)
         return ssizer
 
     def setData(self, data):

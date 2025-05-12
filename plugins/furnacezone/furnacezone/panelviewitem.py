@@ -26,9 +26,9 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
             width = 200
         self.temperatureLED = ui.widgets.led.LEDSetpointDisplay(self.control, bgcolor=(0, 0, 0), fgcolor=(255, 0, 0), spfgcolor=(0, 255, 0), size=(width, -1), showSetpoint=not horizontal)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.GROW)
-        sizer.Add(self.deviceLabel, 0, wx.GROW | wx.ALL, 0)
-        sizer.Add(self.temperatureLED, 1, wx.GROW | wx.ALL, 0)
+        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND)
+        sizer.Add(self.deviceLabel, 0, wx.EXPAND | wx.ALL, 0)
+        sizer.Add(self.temperatureLED, 1, wx.EXPAND | wx.ALL, 0)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         self.updateDeviceUI()

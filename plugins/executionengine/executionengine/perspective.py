@@ -161,7 +161,7 @@ class GraphView(plugins.poi.poi.utils.scrolledpanel.ScrolledPanel):
         self.Layout()
 
     def addGraphPanel(self, panel):
-        self.sizer.Add(panel, 0, wx.GROW | wx.ALL, 5)
+        self.sizer.Add(panel, 0, wx.EXPAND | wx.ALL, 5)
         self.refresh()
 
     def removeGraphPanel(self, panel):
@@ -180,7 +180,7 @@ class LEDView(wx.Panel):
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.panelview = panelview.PanelView()
         self.panelview.createControl(self, False)
-        sizer.Add(self.panelview.getControl(), 1, wx.GROW | wx.ALL, 2)
+        sizer.Add(self.panelview.getControl(), 1, wx.EXPAND | wx.ALL, 2)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
         self.hookToRecipe()
@@ -297,7 +297,7 @@ class DetailedExecutionView(plugins.poi.poi.utils.scrolledpanel.ScrolledPanel):
         self.executedConditionals = []
         self.SetBackgroundColour(wx.WHITE)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self, 1, wx.GROW)
+        sizer.Add(self, 1, wx.EXPAND)
         parent.SetSizer(sizer)
         parent.SetAutoLayout(True)
         self.perspective = perspective
@@ -430,10 +430,10 @@ class DetailedExecutionView(plugins.poi.poi.utils.scrolledpanel.ScrolledPanel):
         panel = wx.Panel(self)
         panel.SetBackgroundColour(wx.WHITE)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(wx.StaticText(panel, -1, messages.get('perspective.run.label.history')), 0, wx.GROW | wx.TOP | wx.BOTTOM, 5)
-        sizer.Add(wx.StaticLine(panel, -1), 0, wx.GROW)
+        sizer.Add(wx.StaticText(panel, -1, messages.get('perspective.run.label.history')), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
+        sizer.Add(wx.StaticLine(panel, -1), 0, wx.EXPAND)
         lst = HistoryList(panel)
-        sizer.Add(lst, 1, wx.GROW | wx.ALL)
+        sizer.Add(lst, 1, wx.EXPAND | wx.ALL)
         panel.SetSizer(sizer)
         panel.SetAutoLayout(True)
         self.historyList = lst
@@ -474,10 +474,10 @@ class DetailedExecutionView(plugins.poi.poi.utils.scrolledpanel.ScrolledPanel):
         self.closeButton = poi.utils.ImageButton(self, -1, images.getImage(images.RUN_ENABLED), messages.get('perspective.label.close'))
         self.Bind(wx.EVT_BUTTON, self.OnCloseButton, self.closeButton)
         self.closeButton.Enable(False)
-        mainsizer.Add(self.numsPanel, 0, wx.GROW | wx.ALL, 5)
-        mainsizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.GROW)
-        mainsizer.Add(historyPanel, 1, wx.GROW | wx.LEFT | wx.RIGHT, 0)
-        mainsizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.GROW)
+        mainsizer.Add(self.numsPanel, 0, wx.EXPAND | wx.ALL, 5)
+        mainsizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.EXPAND)
+        mainsizer.Add(historyPanel, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 0)
+        mainsizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.EXPAND)
         mainsizer.Add(self.closeButton, 0, wx.ALIGN_TOP | wx.ALIGN_RIGHT | wx.ALL, 5)
         self.SetSizer(mainsizer)
         self.SetAutoLayout(True)

@@ -81,7 +81,7 @@ class HelpFrame(wx.Frame):
         self.split = wx.SplitterWindow(self, -1, style=wx.SP_3DSASH)
         self.tree = BookControl(self.split, self)
         self.content = ContentControl(self.split, self)
-        sizer.Add(self.split, 1, wx.GROW | wx.ALL, 5)
+        sizer.Add(self.split, 1, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
         (w, h) = (

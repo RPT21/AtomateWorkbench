@@ -70,7 +70,7 @@ class ErrorViewer(object):
         self.control = wx.Frame(parent, -1, messages.get('dialog.errorviewer.title')[0], size=wx.Size(300, 300), pos=wx.Point(100, 100))
         self.list = self.createList()
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.list, 1, wx.GROW | wx.ALL, 0)
+        sizer.Add(self.list, 1, wx.EXPAND | wx.ALL, 0)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         self.control.Bind(wx.EVT_CLOSE, self.OnClose)

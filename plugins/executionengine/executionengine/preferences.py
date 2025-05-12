@@ -20,7 +20,7 @@ class PreferencesPage(plugins.ui.ui.dialog.preferences.PreferencesPage):
         sizer = wx.FlexGridSizer(0, 3, 5, 5)
         sizer.AddGrowableCol(1)
         sizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-        sizer.Add(self.dataResolution, 1, wx.ALIGN_LEFT | wx.ALIGN_CENTRE_VERTICAL | wx.GROW)
+        sizer.Add(self.dataResolution, 1, wx.ALIGN_LEFT | wx.ALIGN_CENTRE_VERTICAL | wx.EXPAND)
         sizer.Add(wx.StaticText(self.control, -1, messages.get('preferences.data.resolution.units')), 0, wx.ALIGN_LEFT | wx.ALIGN_CENTRE_VERTICAL)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)

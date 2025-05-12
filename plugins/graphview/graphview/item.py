@@ -142,7 +142,7 @@ class ExecutionStatusPanelItem(PanelViewItem):
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.totalTimeText, 1, wx.ALIGN_CENTRE_VERTICAL)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(fsizer, 1, wx.GROW | wx.BOTTOM, 5)
+        sizer.Add(fsizer, 1, wx.EXPAND | wx.BOTTOM, 5)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         sizer.Fit(self.control)

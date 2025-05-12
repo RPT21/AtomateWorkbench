@@ -201,7 +201,7 @@ class MonitorWindow(wx.Frame):
         scrolledWindow.SetSizer(inners)
         scrolledWindow.Fit()
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(scrolledWindow, 1, wx.GROW | wx.ALL, 0)
+        sizer.Add(scrolledWindow, 1, wx.EXPAND | wx.ALL, 0)
         self.SetAutoLayout(True)
         self.SetSizer(sizer)
         scrolledWindow.SetScrollbars(20, 20, 10, 10)
@@ -225,7 +225,7 @@ class MonitorWindow(wx.Frame):
             return
         self.items.append(item)
         ctrl = item.createControl(self.scrolledWindow, self)
-        self.scrolledInnerSizer.Add(ctrl, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+        self.scrolledInnerSizer.Add(ctrl, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
         self.scrolledInnerSizer.Fit(self.scrolledWindow)
         self.GetSizer().Layout()
         self.updateScrollies()

@@ -19,8 +19,8 @@ class UP150DeviceEditor(core.device.DeviceEditor):
         uibox = self.createUIBox()
         hwbox = self.createHardwareBox()
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.AddSizer(uibox, 0, wx.GROW | wx.ALL, 5)
-        sizer.AddSizer(hwbox, 0, wx.GROW | wx.ALL, 5)
+        sizer.AddSizer(uibox, 0, wx.EXPAND | wx.ALL, 5)
+        sizer.AddSizer(hwbox, 0, wx.EXPAND | wx.ALL, 5)
         self.control.SetSizer(sizer)
         return self.control
 
@@ -51,11 +51,11 @@ class UP150DeviceEditor(core.device.DeviceEditor):
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
         fsizer.Add(self.hardwareChoice, 1, wx.ALIGN_CENTRE_VERTICAL)
         self.control.Bind(wx.EVT_CHOICE, self.OnHardwareChoice, self.hardwareChoice)
-        ssizer.Add(fsizer, 0, wx.GROW | wx.TOP, 10)
-        ssizer.Add(wx.StaticLine(self.control, -1), 0, wx.GROW | wx.ALL, 5)
+        ssizer.Add(fsizer, 0, wx.EXPAND | wx.TOP, 10)
+        ssizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND | wx.ALL, 5)
         self.hardwarePanel = wx.Panel(self.control, -1, size=wx.Size(300, 300))
         self.hardwarePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-        ssizer.Add(self.hardwarePanel, 1, wx.GROW | wx.ALL, 5)
+        ssizer.Add(self.hardwarePanel, 1, wx.EXPAND | wx.ALL, 5)
         return ssizer
 
     def OnHardwareChoice(self, event):
@@ -78,8 +78,8 @@ class UP150DeviceEditor(core.device.DeviceEditor):
         label = wx.StaticText(self.control, -1, 'Label:')
         self.labelField = wx.TextCtrl(self.control, -1, '')
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-        fsizer.Add(self.labelField, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)
-        ssizer.Add(fsizer, 1, wx.GROW | wx.TOP, 10)
+        fsizer.Add(self.labelField, 1, wx.ALIGN_CENTRE_VERTICAL)
+        ssizer.Add(fsizer, 1, wx.EXPAND | wx.TOP, 10)
         return ssizer
 
     def setData(self, data):
@@ -123,7 +123,7 @@ class UP150DeviceEditor(core.device.DeviceEditor):
         editor.setInstance(self.description.getInstance())
         editor.createControl(self.hardwarePanel)
         sizer = self.hardwarePanel.GetSizer()
-        sizer.Add(editor.getControl(), 1, wx.GROW | wx.ALL, 0)
+        sizer.Add(editor.getControl(), 1, wx.EXPAND | wx.ALL, 0)
         sizer.Layout()
         self.currentHardwareEditor = editor
 

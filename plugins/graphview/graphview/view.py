@@ -46,7 +46,7 @@ class ViewerView(labbooks.RunLogParticipant):
             item.createControl(self.control)
             control = item.getControl()
             logger.debug('control size: %s' % control.GetSize())
-            sizer.Add(control, 0, wx.GROW)
+            sizer.Add(control, 0, wx.EXPAND)
             sizer.RecalcSizes()
             sizer.Layout()
             if refresh:

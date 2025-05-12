@@ -30,11 +30,11 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         sizer = wx.FlexGridSizer(0, 2, 5, 5)
         sizer.AddGrowableCol(1)
         sizer.Add(nameLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-        sizer.Add(nameField, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)
+        sizer.Add(nameField, 1, wx.EXPAND)
         sizer.Add(statusLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-        sizer.Add(self.statusLabel, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)
-        boxSizer.Add(sizer, 1, wx.GROW | wx.ALL, 5)
-        mainsizer.Add(boxSizer, 0, wx.GROW | wx.ALL, 5)
+        sizer.Add(self.statusLabel, 1, wx.EXPAND)
+        boxSizer.Add(sizer, 1, wx.EXPAND | wx.ALL, 5)
+        mainsizer.Add(boxSizer, 0, wx.EXPAND | wx.ALL, 5)
         urlLabel = wx.StaticText(panel, -1, 'Data URL:')
         self.urlText = wx.TextCtrl(panel, -1)
         panel.Bind(wx.EVT_TEXT, self.OnContentChanged, self.urlText)
@@ -45,10 +45,10 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         sizer = wx.FlexGridSizer(0, 3, 5, 5)
         sizer.AddGrowableCol(1)
         sizer.Add(urlLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-        sizer.Add(self.urlText, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)
+        sizer.Add(self.urlText, 1, wx.EXPAND)
         sizer.Add(testButton, 0, wx.ALIGN_LEFT | wx.ALIGN_CENTRE_VERTICAL)
-        boxSizer.Add(sizer, 1, wx.GROW | wx.ALL, 5)
-        mainsizer.Add(boxSizer, 0, wx.GROW | wx.ALL, 5)
+        boxSizer.Add(sizer, 1, wx.EXPAND | wx.ALL, 5)
+        mainsizer.Add(boxSizer, 0, wx.EXPAND | wx.ALL, 5)
         self.startButton = wx.Button(panel, -1, 'Start')
         panel.Bind(wx.EVT_BUTTON, self.OnStart, self.startButton)
         self.stopButton = wx.Button(panel, -1, 'Stop')
@@ -59,7 +59,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         sizer.Add(self.startButton, 0, wx.RIGHT, 5)
         sizer.Add(self.stopButton, 0, wx.RIGHT, 5)
         sizer.Add(self.restartButton, 0, wx.RIGHT, 5)
-        mainsizer.Add(sizer, 0, wx.GROW | wx.ALL, 5)
+        mainsizer.Add(sizer, 0, wx.EXPAND | wx.ALL, 5)
         panel.SetSizer(mainsizer)
         panel.SetAutoLayout(True)
         panel.SetupScrolling()
@@ -585,14 +585,14 @@ class WeatherDuckHandler(DeviceHandler):
             if field == 'TempC':
                 item = TemperatureWidget(self.ctrl, MONITOR_TEMP_FILL_COLOR)
                 self.items[field] = item
-                self.sizer.Add(item, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+                self.sizer.Add(item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
             elif field in ('IO1', 'IO2', 'IO3'):
                 if not hasattr(self, 'ioSizer'):
                     self.ioSizer = wx.BoxSizer(wx.VERTICAL)
-                    self.sizer.Add(self.ioSizer, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+                    self.sizer.Add(self.ioSizer, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
                 item = LightWidget(self.ctrl)
                 self.items[field] = item
-                self.ioSizer.Add(item, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+                self.ioSizer.Add(item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
 
         self.ctrl.SetSizer(self.sizer)
         self.ctrl.SetAutoLayout(1)
@@ -631,7 +631,7 @@ class AirFlowSensorHandler(DeviceHandler):
             return None
         item = TemperatureWidget(self.ctrl, wx.Color(115, 155, 240))
         self.item = item
-        self.sizer.Add(item, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+        self.sizer.Add(item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
         self.ctrl.SetSizer(self.sizer)
         self.ctrl.SetAutoLayout(1)
         self.sizer.Fit(self.ctrl)
@@ -669,7 +669,7 @@ class TempSensorHandler(DeviceHandler):
             return None
         item = TemperatureWidget(self.ctrl)
         self.item = item
-        self.sizer.Add(item, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+        self.sizer.Add(item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
         self.ctrl.SetSizer(self.sizer)
         self.ctrl.SetAutoLayout(1)
         self.sizer.Fit(self.ctrl)
@@ -732,7 +732,7 @@ class MonitorWindowItem(object):
                 ctrl = handler.createControl(self.ctrl)
                 if ctrl is None:
                     continue
-                self.itemsSizer.Add(ctrl, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+                self.itemsSizer.Add(ctrl, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
                 self.handlers[did] = handler
 
         except Exception as msg:
@@ -755,9 +755,9 @@ class MonitorWindowItem(object):
         self.tempItem = TemperatureWidget(self.ctrl)
         self.IO1Item = TemperatureWidget(self.ctrl)
         self.IO2Item = TemperatureWidget(self.ctrl)
-        self.itemsSizer.Add(self.tempItem, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
-        self.itemsSizer.Add(self.IO1Item, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
-        self.itemsSizer.Add(self.IO2Item, 0, wx.GROW | wx.ALL | wx.FIXED_MINSIZE, 5)
+        self.itemsSizer.Add(self.tempItem, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
+        self.itemsSizer.Add(self.IO1Item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
+        self.itemsSizer.Add(self.IO2Item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
         self.itemsSizer.Layout()
         self.discovered = True
 
@@ -789,14 +789,14 @@ class MonitorWindowItem(object):
         self.labelDeviceName.SetFont(wx.Font(10, wx.SWISS, wx.NORMAL, wx.BOLD))
         self.statusIcon = wx.StaticBitmap(self.statusPanel, -1, goosemonitor.images.getImage(goosemonitor.images.STATUS_DEVICE_STATUS_NONE))
         statusSizer = wx.BoxSizer(wx.HORIZONTAL)
-        statusSizer.Add(self.labelDeviceName, 1, wx.GROW | wx.ALL, 2)
+        statusSizer.Add(self.labelDeviceName, 1, wx.EXPAND | wx.ALL, 2)
         statusSizer.Add(self.statusIcon, 0, wx.ALL, 2)
         self.statusPanel.SetSizer(statusSizer)
         self.statusPanel.SetAutoLayout(1)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.statusPanel, 0, wx.GROW | wx.ALL, 5)
+        sizer.Add(self.statusPanel, 0, wx.EXPAND | wx.ALL, 5)
         self.itemsSizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self.itemsSizer, 1, wx.GROW | wx.ALL, 5)
+        sizer.Add(self.itemsSizer, 1, wx.EXPAND | wx.ALL, 5)
         p.SetSizer(sizer)
         p.SetAutoLayout(True)
         p.Bind(wx.EVT_PAINT, self.OnPaint, p)

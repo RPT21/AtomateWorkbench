@@ -71,7 +71,7 @@ class SerialConfigurationSegment(object):
             self.control.Bind(wx.EVT_CHECKBOX, onLockout, self.lockoutPanel)
             self.control.Bind(wx.EVT_KILL_FOCUS, self.OnAddressFocusText, self.addressText)
             mainsizer = wx.BoxSizer(wx.VERTICAL)
-            mainsizer.Add(sizer, 0, wx.GROW | wx.ALL, 10)
+            mainsizer.Add(sizer, 0, wx.EXPAND | wx.ALL, 10)
             mainsizer.Add(self.lockoutPanel, 0, wx.LEFT, 10)
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)

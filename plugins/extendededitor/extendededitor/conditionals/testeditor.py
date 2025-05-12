@@ -32,7 +32,7 @@ class ActionRowItem(object):
     def createActionControl(self, parent):
         ctrl = self.contribution.createActionRowControl(parent)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(ctrl.getControl(), 1, wx.GROW | wx.ALL | 3)
+        sizer.Add(ctrl.getControl(), 1, wx.EXPAND | wx.ALL | 3)
         parent.SetSizer(sizer)
         parent.SetAutoLayout(True)
         return ctrl
@@ -158,7 +158,7 @@ class TestRowItem(object):
         ctrl = contribution.getRightOperandControl(self.rightOperatorPanel)
         self.currentCtrl = ctrl
         sizer = self.rightOperatorPanel.GetSizer()
-        sizer.Add(ctrl.getControl(), 1, wx.GROW)
+        sizer.Add(ctrl.getControl(), 1, wx.EXPAND)
         wx.CallAfter(sizer.Layout)
 
     def clearRightOperandPanel(self):
@@ -385,21 +385,21 @@ class TestEditor(object):
         sizer = wx.BoxSizer(wx.VERTICAL)
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer.Add(wx.StaticText(self.control, -1, messages.get('dialog.testeditor.name.label')), 0, wx.ALIGN_CENTRE_VERTICAL)
-        hsizer.Add(self.testNameField, 1, wx.GROW | wx.ALIGN_CENTRE_VERTICAL)
-        sizer.Add(hsizer, 0, wx.GROW | wx.LEFT | wx.TOP | wx.RIGHT, 10)
+        hsizer.Add(self.testNameField, 1, wx.EXPAND | wx.ALIGN_CENTRE_VERTICAL)
+        sizer.Add(hsizer, 0, wx.EXPAND | wx.LEFT | wx.TOP | wx.RIGHT, 10)
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(wx.StaticText(self.control, -1, 'If ...'), 0, wx.LEFT | wx.TOP, 10)
         hsizer.Add(self.andRadio, 0, wx.RIGHT, 5)
         hsizer.Add(self.orRadio, 0)
-        sizer.Add(hsizer, 0, wx.GROW | wx.ALIGN_LEFT | wx.BOTTOM | wx.LEFT, 10)
-        sizer.Add(self.testsGrid, 1, wx.GROW | wx.LEFT | wx.RIGHT, 10)
+        sizer.Add(hsizer, 0, wx.EXPAND | wx.ALIGN_LEFT | wx.BOTTOM | wx.LEFT, 10)
+        sizer.Add(self.testsGrid, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 10)
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer.Add(self.moreButton, 0, wx.RIGHT, 5)
         hsizer.Add(self.fewerButton, 0)
-        sizer.Add(hsizer, 0, wx.GROW | wx.ALIGN_LEFT | wx.LEFT | wx.BOTTOM, 10)
+        sizer.Add(hsizer, 0, wx.EXPAND | wx.ALIGN_LEFT | wx.LEFT | wx.BOTTOM, 10)
         sizer.Add(wx.StaticText(self.control, -1, messages.get('dialog.testeditor.actiongrid.label')), 0, wx.LEFT | wx.TOP, 10)
-        sizer.Add(self.actionsGrid, 1, wx.GROW | wx.LEFT | wx.RIGHT, 10)
-        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.GROW | wx.TOP | wx.BOTTOM, 5)
+        sizer.Add(self.actionsGrid, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 10)
+        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer.Add(self.okButton, 0, wx.ALIGN_CENTRE_VERTICAL)
         hsizer.Add(self.cancelButton, 0, wx.ALIGN_CENTRE_VERTICAL)
@@ -512,7 +512,7 @@ class TestEditor(object):
 
     def addActionRowItem(self, item, refresh=True):
         self.actionRows.append(item)
-        self.actionsGridSizer.Add(item.getControl(), 0, wx.GROW | wx.ALL, 3)
+        self.actionsGridSizer.Add(item.getControl(), 0, wx.EXPAND | wx.ALL, 3)
         self.actionsGrid.SetupScrolling()
         item.getControl().SetFocus()
         if refresh:
@@ -520,7 +520,7 @@ class TestEditor(object):
 
     def addTestRowItem(self, item, refresh=True):
         self.rows.append(item)
-        self.testsGridSizer.Add(item.getControl(), 0, wx.GROW | wx.ALL, 0)
+        self.testsGridSizer.Add(item.getControl(), 0, wx.EXPAND | wx.ALL, 0)
         self.testsGrid.SetupScrolling()
         item.getControl().SetFocus()
         if refresh:

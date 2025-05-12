@@ -30,7 +30,7 @@ class EventViewerWindow(object):
         bsizer = wx.BoxSizer(wx.HORIZONTAL)
         bsizer.Add(self.clearButton, 0)
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.list, 1, wx.GROW | wx.ALL, 0)
+        sizer.Add(self.list, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(bsizer, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)

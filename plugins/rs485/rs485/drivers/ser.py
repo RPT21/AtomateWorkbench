@@ -68,7 +68,7 @@ class SerialConfigurationSegment(object):
             self.control.Bind(wx.EVT_COMBOBOX, onChoice, self.parityChoice)
             self.control.Bind(wx.EVT_COMBOBOX, onChoice, self.stopbitsChoice)
             mainsizer = wx.BoxSizer(wx.VERTICAL)
-            mainsizer.Add(sizer, 1, wx.GROW | wx.ALL, 10)
+            mainsizer.Add(sizer, 1, wx.EXPAND | wx.ALL, 10)
             self.control.SetSizer(mainsizer)
             self.control.SetAutoLayout(True)
             mainsizer.Fit(self.control)

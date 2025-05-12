@@ -94,9 +94,9 @@ class SimulationDeviceDriver(adr2100.drivers.DeviceDriver):
                 hsizer.Add(ctrl, 0, wx.ALL, 5)
                 self.digitalPorts[c].append(ctrl)
 
-            sbsizer.Add(hsizer, 0, wx.GROW | wx.ALL, 5)
+            sbsizer.Add(hsizer, 0, wx.EXPAND | wx.ALL, 5)
 
-        mainsizer.Add(sbsizer, 0, wx.GROW | wx.ALL, 5)
+        mainsizer.Add(sbsizer, 0, wx.EXPAND | wx.ALL, 5)
         sb = wx.StaticBox(self.dlg, -1, 'Analog Inputs')
         sbsizer = wx.StaticBoxSizer(sb, wx.HORIZONTAL)
         for i in range(4):
@@ -104,7 +104,7 @@ class SimulationDeviceDriver(adr2100.drivers.DeviceDriver):
             sbsizer.Add(ctrl, 0, wx.ALL, 5)
             self.analogPorts.append(ctrl)
 
-        mainsizer.Add(sbsizer, 0, wx.GROW | wx.ALL, 5)
+        mainsizer.Add(sbsizer, 0, wx.EXPAND | wx.ALL, 5)
         self.dlg.SetSizer(mainsizer)
         self.dlg.Bind(wx.EVT_CLOSE, self.OnDlgClose)
         ui.getDefault().addCloseListener(self)
