@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/hardware/src/hardware/newhardwarewizard.py
 # Compiled at: 2005-06-10 18:51:17
-import wx, sys, os, plugins.poi.poi.wizards, plugins.poi.poi.views.viewers, plugins.poi.poi.views, logging
+import wx, plugins.poi.poi.wizards, plugins.poi.poi.views.viewers, plugins.poi.poi.views, logging
 import plugins.poi.poi.views.contentprovider, plugins.hardware.hardware.hardwaremanager
 import plugins.hardware.hardware.userinterface
 logger = logging.getLogger('hardware.ui')

@@ -262,13 +262,13 @@ class GridEditorPlugin(lib.kernel.plugin.Plugin):
         def doOpen(event):
             plugins.ui.ui.getDefault().getMainFrame().showPerspective('edit')
 
-        wx.EVT_MENU(frame, ID_SHOW_GRIDEDITOR, doOpen)
+        frame.Bind(wx.EVT_MENU, doOpen, id=ID_SHOW_GRIDEDITOR)
         accel.addEntry((wx.ACCEL_CTRL | wx.ACCEL_ALT, ord('2'), ID_SHOW_RUNPERSPECTIVE))
 
         def doOpen(event):
             plugins.ui.ui.getDefault().getMainFrame().showPerspective('run')
 
-        wx.EVT_MENU(frame, ID_SHOW_RUNPERSPECTIVE, doOpen)
+        frame.Bind(wx.EVT_MENU, doOpen, id=ID_SHOW_RUNPERSPECTIVE)
         self.restorePreviousRecipe()
 
     def restorePreviousRecipe(self):

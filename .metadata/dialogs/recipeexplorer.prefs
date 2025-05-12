@@ -1,0 +1,7 @@
+[layout]
+size = 800,600
+sector.west = 150
+sector.center = 34
+sector.east = 200
+sector.snapshot = 397
+

@@ -3,10 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/recipeexplorer/__init__.py
 # Compiled at: 2004-11-20 00:28:57
-import wx, os, sys, string, configparser, logging, lib.kernel, plugins.resourcesui.resourcesui, plugins.resourcesui.resourcesui.actions
+import wx, logging, plugins.resourcesui.resourcesui, plugins.resourcesui.resourcesui.actions
 import plugins.resourcesui.resourcesui.recipeexplorer.recipesview, plugins.resourcesui.resourcesui.recipeexplorer.versionsview, plugins.resourcesui.resourcesui.recipeexplorer.runlogsview
 import plugins.resourcesui.resourcesui.recipeexplorer.snapshotview, plugins.resources.resources, plugins.poi.poi.actions.toolbarmanager, plugins.poi.poi.actions.statusbarmanager
 import plugins.poi.poi.dialogs, plugins.poi.poi.views, plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.recipeexplorer.actions
+import wx.adv, plugins.resources.resources.version, plugins.resources.resources.project
 logger = logging.getLogger('resources.ui')
 DIALOG_PREFS_FILE = 'recipeexplorer.prefs'
 
@@ -48,7 +49,7 @@ class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
         self.getView('recipes').getViewer().setInput(plugins.resources.resources.getDefault().getWorkspace())
 
     def performLayout(self):
-        la = wx.LayoutAlgorithm()
+        la = wx.adv.LayoutAlgorithm()
         la.LayoutWindow(self.stage, self.sectors['center'])
         self.stage.Refresh()
 
@@ -202,27 +203,27 @@ class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
             self.performLayout()
 
         self.stage.Bind(wx.EVT_SIZE, relayout)
-        west = wx.SashLayoutWindow(self.stage, 1000, size=wx.Size(150, 30))
-        west.SetAlignment(wx.LAYOUT_LEFT)
-        west.SetOrientation(wx.LAYOUT_VERTICAL)
-        west.SetDefaultSize((150, 30))
-        west.SetSashVisible(wx.SASH_RIGHT, True)
-        runsnap = wx.SashLayoutWindow(self.stage, 1002, size=wx.Size(600, 30))
+        west = wx.adv.SashLayoutWindow(self.stage, 1000, size=wx.Size(150, 30))
+        west.SetAlignment(wx.adv.LAYOUT_LEFT)
+        west.SetOrientation(wx.adv.LAYOUT_VERTICAL)
+        west.SetDefaultSize(wx.Size(150, 30))
+        west.SetSashVisible(wx.adv.SASH_RIGHT, True)
+        runsnap = wx.adv.SashLayoutWindow(self.stage, 1002, size=wx.Size(600, 30))
         runsnap.SetBackgroundColour(wx.GREEN)
-        runsnap.SetAlignment(wx.LAYOUT_RIGHT)
-        runsnap.SetOrientation(wx.LAYOUT_VERTICAL)
-        runsnap.SetDefaultSize((600, 30))
-        runsnap.SetSashVisible(wx.SASH_LEFT, True)
+        runsnap.SetAlignment(wx.adv.LAYOUT_RIGHT)
+        runsnap.SetOrientation(wx.adv.LAYOUT_VERTICAL)
+        runsnap.SetDefaultSize(wx.Size(600, 30))
+        runsnap.SetSashVisible(wx.adv.SASH_LEFT, True)
         center = plugins.poi.poi.views.OneChildWindow(self.stage, -1)
-        east = wx.SashLayoutWindow(runsnap, 1001, size=wx.Size(200, 30))
-        east.SetAlignment(wx.LAYOUT_LEFT)
-        east.SetOrientation(wx.LAYOUT_VERTICAL)
-        east.SetDefaultSize((200, 30))
-        east.SetSashVisible(wx.SASH_RIGHT, True)
-        snapshot = wx.SashLayoutWindow(runsnap, 1003, size=wx.Size(400, 30))
-        snapshot.SetAlignment(wx.LAYOUT_RIGHT)
-        snapshot.SetOrientation(wx.LAYOUT_VERTICAL)
-        snapshot.SetDefaultSize((400, 30))
+        east = wx.adv.SashLayoutWindow(runsnap, 1001, size=wx.Size(200, 30))
+        east.SetAlignment(wx.adv.LAYOUT_LEFT)
+        east.SetOrientation(wx.adv.LAYOUT_VERTICAL)
+        east.SetDefaultSize(wx.Size(200, 30))
+        east.SetSashVisible(wx.adv.SASH_RIGHT, True)
+        snapshot = wx.adv.SashLayoutWindow(runsnap, 1003, size=wx.Size(400, 30))
+        snapshot.SetAlignment(wx.adv.LAYOUT_RIGHT)
+        snapshot.SetOrientation(wx.adv.LAYOUT_VERTICAL)
+        snapshot.SetDefaultSize(wx.Size(400, 30))
         self.sectors = {'west': west, 'center': center, 'east': east, 'snapshot': snapshot}
 
         def draggedSash(event):
@@ -232,10 +233,10 @@ class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
             width = rect[2]
             if width < 20:
                 width = 20
-            window.SetDefaultSize((width, currsize[1]))
+            window.SetDefaultSize(wx.Size(width, currsize[1]))
             self.performLayout()
 
-        wx.EVT_SASH_DRAGGED_RANGE(self.stage, 1000, 1003, draggedSash)
+        wx.adv.EVT_SASH_DRAGGED_RANGE(self.stage, 1000, 1003, draggedSash)
 
     def getMementoID(self):
         return 'recipeexplorer.prefs'
@@ -256,12 +257,12 @@ class RecipeExplorer(plugins.poi.poi.dialogs.Dialog):
     def restoreLayoutFromMemento(self, memento):
         size = list(map(int, tuple(memento.get('layout', 'size').split(','))))
         for (key, view) in list(self.sectors.items()):
-            if not isinstance(view, wx.SashLayoutWindow):
+            if not isinstance(view, wx.adv.SashLayoutWindow):
                 continue
             width = int(memento.get('layout', '.'.join(['sector', key])))
             if width < 20:
                 width = 20
-            view.SetDefaultSize((width, -1))
+            view.SetDefaultSize(wx.Size(width, -1))
 
         self.control.SetSize(size)
         self.control.CentreOnScreen()

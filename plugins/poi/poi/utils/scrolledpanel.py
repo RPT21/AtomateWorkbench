@@ -38,8 +38,8 @@ as a proper class (and the demo is now converted to just use it.)
                 w += rate_x - w % rate_x
             if rate_y:
                 h += rate_y - h % rate_y
-            self.SetVirtualSize((w, h))
-            self.SetVirtualSizeHints(w, h)
+            self.SetVirtualSize(wx.Size(w, h))
+            self.SetSizeHints(w, h)
         self.SetScrollRate(rate_x, rate_y)
         wx.CallAfter(self.Scroll, 0, 0)
 

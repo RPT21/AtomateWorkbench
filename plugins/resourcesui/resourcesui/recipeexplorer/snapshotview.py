@@ -50,7 +50,7 @@ class ResizableBitmap(wx.Panel):
         bmp = wx.BitmapFromImage(ni)
         self.drawbitmap = bmp
         if h != nh:
-            self.SetMinSize((w, nh))
+            self.SetMinSize(wx.Size(w, nh))
             self.GetParent().Refresh()
         self.bs = (w, nh)
         return
@@ -81,7 +81,7 @@ class ProjectInfoPane(wx.Panel):
         self.projectNameLabel = wx.StaticText(self, -1, '')
         self.commentLabel = wx.StaticText(self, -1, '')
         self.sharedLabel = wx.StaticText(self, -1, '')
-        sizer = wx.FlexGridSizer(2, 2, 5, 5)
+        sizer = wx.FlexGridSizer(2, 3, 5, 5)
         sizer.AddGrowableCol(1)
         sizer.Add(MainLabel(self, 'Name:'), 0, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_RIGHT | wx.ADJUST_MINSIZE)
         sizer.Add(self.projectNameLabel, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ADJUST_MINSIZE)

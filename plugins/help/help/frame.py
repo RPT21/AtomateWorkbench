@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/help/src/help/frame.py
 # Compiled at: 2004-11-23 08:00:49
-import wx, wx.html, configparser, time, logging
+import wx, wx.html, configparser, logging
 logger = logging.getLogger('help.controller')
 
 class BookControl(wx.TreeCtrl):
@@ -59,7 +59,7 @@ class ContentControl(wx.html.HtmlWindow):
         wx.html.HtmlWindow.__init__(self, parent, style=wx.NO_FULL_REPAINT_ON_RESIZE | wx.SIMPLE_BORDER)
         self.owner = owner
         if 'gtk2' in wx.PlatformInfo:
-            self.NormalizeFontSizes()
+            self.SetStandardFonts(10, "Arial", "Courier New")
 
     def OnLinkClicked(self, linkinfo):
         logger.debug('Link Clicked: %s' % linkinfo.GetHref())
@@ -87,14 +87,14 @@ class HelpFrame(wx.Frame):
         (w, h) = (
          600, 600)
         try:
-            screenw = wx.SystemSettings_GetMetric(wx.SYS_SCREEN_X)
+            screenw = wx.SystemSettings.GetMetric(wx.SYS_SCREEN_X)
             w = screenw - screenw / 3
-            h = wx.SystemSettings_GetMetric(wx.SYS_SCREEN_Y) - 100
+            h = wx.SystemSettings.GetMetric(wx.SYS_SCREEN_Y) - 100
         except Exception as msg:
             logger.exception(msg)
 
-        self.SetSize(wx.Size(w, h))
-        self.split.SplitVertically(self.tree, self.content, w / 3)
+        self.SetSize(wx.Size(int(w), int(h)))
+        self.split.SplitVertically(self.tree, self.content, int(w / 3))
         self.SetPosition(wx.Point(0, 0))
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         self.show()

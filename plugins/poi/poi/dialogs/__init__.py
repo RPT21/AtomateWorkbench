@@ -7,6 +7,7 @@ import lib.kernel, wx, os, configparser, plugins.poi.poi.views
 import plugins.poi.poi.utils.staticwraptext, plugins.poi.poi.images as images
 import plugins.poi.poi as poi
 import plugins.core.core as core
+import plugins.core.core.utils
 
 DIALOG_PREFS_DIR = 'dialogs'
 
@@ -206,14 +207,14 @@ class MessageHeaderDialog(Dialog):
         return None
 
     def createControl(self, parent):
-        self.control = wx.Dialog(parent, -1, self.title, style=self.getStyle())
+        self.control = wx.Dialog(parent, -1, self.title, style=self.getStyle())  # Crec que el problema és que intentem afegir el mateix objecte, que esta al parent, al fill.
         self.control.Bind(wx.EVT_CLOSE, self.OnClose)
-        self.header = self.createHeader()
-        self.content = self.createContent(self.control)
+        self.header = self.createHeader()  # Al trucar aquesta funció, es crea el header i s'afegeix automaticament a self.control
+        self.content = self.createContent(self.control) # Al trucar aquesta funció, es crea el content i s'afegeix automaticament a self.control
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.header, 0, wx.EXPAND)
-        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND)
-        sizer.Add(self.content, 1, wx.EXPAND)
+        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND) # Aqui s'afegeix a self.control el static line i despres s'afegeix al sizer
+        sizer.Add(self.content, 1, wx.EXPAND)  # El problema es que self.content ja s'utilitza en parent ?
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         self.createBody(self.content)
@@ -252,7 +253,7 @@ class MessageHeaderDialog(Dialog):
         return p
 
     def createContent(self, parent):
-        b = poi.views.OneChildWindow(self.control, -1)
+        b = poi.views.OneChildWindow(parent, -1)
         return b
 
     def setImage(self, image):
@@ -322,8 +323,6 @@ class MessageHeaderDialog(Dialog):
     def createBody(self, parent):
         raise Exception('Sub-classes must implement')
 
-    def setImage(self, image):
-        pass
 
 
 class ExceptionDialog(wx.Dialog):

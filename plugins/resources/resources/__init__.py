@@ -4,8 +4,8 @@
 # Embedded file name: ../plugins/resources/src/resources/__init__.py
 # Compiled at: 2004-11-02 04:11:02
 PLUGIN_ID = 'resources'
-import stat, os, sys, shutil, configparser, plugins.core.core, plugins.core.core.preferencesstore
-import lib.kernel, lib.kernel.plugin, lib.kernel.pluginmanager as PluginManager
+import stat, os, configparser, plugins.core.core, plugins.core.core.preferencesstore
+import lib.kernel, lib.kernel.plugin
 import logging
 logger = logging.getLogger('resouces_init')
 import plugins.resources.resources.workspace as workspace

@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/poi/src/poi/views/__init__.py
 # Compiled at: 2005-06-10 18:51:25
-import wx
+import wx, wx.adv
 
 def getHeaderColor():
     if '__WXGTK__' in wx.PlatformInfo:
@@ -58,10 +58,10 @@ class StackedContent(OneChildWindow):
         self.insets = [2, 2, 2, 2]
         self.radius = 8
         self.focused = False
-        self.outlinecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNSHADOW)
-        self.facecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        self.outlinecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNSHADOW)
+        self.facecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         self.activecolor = getHeaderColor()
-        self.inactivecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_INACTIVEBORDER)
+        self.inactivecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_INACTIVEBORDER)
         self.Bind(wx.EVT_PAINT, self.OnPaint)
 
     def setFocus(self, focused):
@@ -123,12 +123,12 @@ class StackedViewHeader(object):
         self.cachedBackground = None
         self.focused = False
         self.font = wx.Font(8, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
-        self.outlinecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNSHADOW)
-        self.facecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        self.outlinecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNSHADOW)
+        self.facecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         self.inactivetextcolor = wx.BLACK
         self.activetextcolor = getHeaderTextColor()
         self.activecolor = getHeaderColor()
-        self.inactivecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_INACTIVEBORDER)
+        self.inactivecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_INACTIVEBORDER)
         self.radius = 8
         return
 
@@ -199,7 +199,7 @@ class StackedViewHeader(object):
         dc.SetFont(self.font)
         (tew, twh) = dc.GetTextExtent(self.titleText)
         top = self.calcCenter(twh, height)
-        dc.DrawLabel(self.titleText, (xoffset, top, w - xoffset, h))
+        dc.DrawLabel(self.titleText, wx.Rect(xoffset, int(top), w - xoffset, h))
         return
 
     def calcCenter(self, itemHeight, totalHeight):
@@ -269,9 +269,9 @@ class StackedView(object):
         controlSize = self.control.GetClientSize()
         self.title.getControl().SetPosition((0, 0))
         titleHeight = self.title.getHeight()
-        self.content.SetPosition((0, titleHeight))
+        self.content.SetPosition(wx.Point(0, titleHeight))
         self.title.getControl().SetSize((controlSize[0], titleHeight))
-        self.content.SetSize((controlSize[0], controlSize[1] - titleHeight))
+        self.content.SetSize(wx.Size(controlSize[0], controlSize[1] - titleHeight))
         return
 
     def createTitle(self):
@@ -316,7 +316,6 @@ class SectorView(object):
 
     def getViewID(self):
         return None
-        return
 
     def createControl(self, parent):
         pass

@@ -478,7 +478,7 @@ class DetailedExecutionView(plugins.poi.poi.utils.scrolledpanel.ScrolledPanel):
         mainsizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.EXPAND)
         mainsizer.Add(historyPanel, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 0)
         mainsizer.Add(wx.StaticLine(self, -1, style=wx.LI_VERTICAL), 0, wx.EXPAND)
-        mainsizer.Add(self.closeButton, 0, wx.ALIGN_TOP | wx.ALIGN_RIGHT | wx.ALL, 5)
+        mainsizer.Add(self.closeButton, 0, wx.ALIGN_TOP | wx.ALL, 5)
         self.SetSizer(mainsizer)
         self.SetAutoLayout(True)
 
