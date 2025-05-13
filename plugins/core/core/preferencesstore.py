@@ -36,7 +36,7 @@ class PreferencesStore(object):
 
     def removePreferencesStoreListener(self, listener):
         if listener in self.configurationStoreListeners:
-            self.configurationStoreListener.remove(listener)
+            self.configurationStoreListeners.remove(listener)
 
     def firePreferencesStoreChanged(self):
         for listener in self.configurationStoreListeners:

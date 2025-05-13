@@ -6,6 +6,7 @@
 import traceback, plugins.core.core.recipestep, copy, logging
 import plugins.core.core.configurationelement as configurationelement
 import plugins.core.core.device as device_lib
+import plugins.core.core as core
 logger = logging.getLogger('core')
 
 def loadFromFile(filename):
@@ -100,7 +101,6 @@ def findDeviceInRegistry(deviceType):
         return factory.getInstance()
     logger.error("No device module found for '%s', creating empty default." % deviceType)
     return core.device.Device(deviceType)
-    return
 
 
 class Recipe(object):
@@ -198,7 +198,6 @@ class Recipe(object):
         if index > len(self.devices):
             return None
         return self.devices[index]
-        return
 
     def getDeviceByID(self, deviceID):
         for device in self.devices:
@@ -206,7 +205,6 @@ class Recipe(object):
                 return device
 
         return None
-        return
 
     def getDeviceIndex(self, device):
         if not device in self.devices:

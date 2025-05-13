@@ -9,6 +9,13 @@ logger = logging.getLogger('core.conditionals')
 conditionalContributions = {}
 actionContributions = {}
 
+class NotImplementedException(Exception):
+    pass
+
+class NotImplementedMethod(Exception):
+    pass
+
+
 def addConditionalTestFactory(contribType, func):
     """Register a class of conditional contribution"""
     global conditionalContributions
@@ -248,7 +255,7 @@ class ConditionalTests(object):
         for test in self.conditionaltests:
             ct.conditionaltests.append(test.clone())
 
-        ct.connective = self.connectives
+        ct.connective = self.connective
         for action in self.actions:
             ct.actions.append(action.clone())
 
@@ -270,7 +277,7 @@ class ConditionalAction(object):
     def execute(self, context):
         pass
 
-
+"""
 class StepConditional(object):
     __module__ = __name__
 
@@ -289,3 +296,4 @@ class StepConditional(object):
             nc.testSuites.append(suite.clone())
 
         return nc
+"""

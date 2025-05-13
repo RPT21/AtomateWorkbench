@@ -9,7 +9,7 @@ offers access to that data.  The children are created automatically
 when they are accessed, this is so that we don't traverse the 
 DOM twice, once more after the minidom has parsed it
 """
-import encodings, encodings.aliases, xml.dom.minidom
+import xml.dom.minidom
 
 def loadFile(filename):
     """Creates a new configuration element and attempts to parse the 

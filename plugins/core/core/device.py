@@ -130,7 +130,6 @@ class Device(object):
 
     def getDeviceEditor(self):
         return None
-        return
 
     def getHardwareHints(self):
         return self.hardwarehints

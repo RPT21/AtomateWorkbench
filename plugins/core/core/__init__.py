@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/core/src/core/__init__.py
 # Compiled at: 2005-06-28 20:46:42
-import kernel.plugin, kernel.pluginmanager as PluginManager
+import lib.kernel.plugin
 _cond_contrib = []
 
 def addConditionalContribution(contrib):
@@ -30,11 +30,11 @@ def getConditionalContributions():
     return _cond_contrib
 
 
-class CorePlugin(kernel.plugin.Plugin):
+class CorePlugin(lib.kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
-        kernel.plugin.Plugin.__init__(self)
+        lib.kernel.plugin.Plugin.__init__(self)
 
     def startup(self, contextBundle):
         pass
