@@ -3,8 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/drivers/ser.py
 # Compiled at: 2004-11-19 02:19:32
-import wx, et2216e.drivers, threading, serial, logging, plugins.et2216e.et2216e.drivers.modbus
-from hardware import ResponseTimeoutException
+import wx, threading, serial, logging
+import plugins.et2216e.et2216e.drivers.modbus as modbus
+import plugins.et2216e.et2216e as et2216e
+from plugins.et2216e.et2216e.et2216enode import ERROR_CODE_STRINGS
+
 logger = logging.getLogger('et2216e.drivers.serial')
 MODE_NORMAL = 0
 MODE_STANDBY = 1

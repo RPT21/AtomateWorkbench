@@ -3,9 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/up150/src/up150/column.py
 # Compiled at: 2004-08-12 02:18:21
-from wx.grid import *
-from wx import *
-import wx, up150.images as images, grideditor.tablecolumn, grideditor.utils.numericcelleditor, grideditor.utils
+import wx, wx.grid, plugins.up150.up150.images as images, plugins.grideditor.grideditor.tablecolumn
+import plugins.grideditor.grideditor.utils.numericcelleditor
+import plugins.grideditor.grideditor as grideditor
 
 class UP150Column(grideditor.tablecolumn.ColumnContribution):
     __module__ = __name__
@@ -14,7 +14,7 @@ class UP150Column(grideditor.tablecolumn.ColumnContribution):
         grideditor.tablecolumn.ColumnContribution.__init__(self)
         self.recipeModel = None
         self.deviceIndex = -1
-        self.renderer = wxGridCellStringRenderer
+        self.renderer = wx.grid.GridCellStringRenderer
         return
 
     def getHeaderImage(self):

@@ -3,22 +3,26 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/participant.py
 # Compiled at: 2005-01-24 15:49:40
-import plugins.executionengine.executionengine.executionparticipant, plugins.resources.resources.runlog, plugins.furnacezone.furnacezone.response, logging
+import plugins.executionengine.executionengine.executionparticipant
+import plugins.furnacezone.furnacezone.response, logging
+import plugins.executionengine.executionengine as executionengine
+import plugins.furnacezone.furnacezone as furnacezone
+
 logger = logging.getLogger('et2216e.participant')
 MAX_ERRORS = 2
 
-class RecipeParticipantFactory(plugins.executionengine.executionengine.executionparticipant.ExecutionParticipantFactory):
+class RecipeParticipantFactory(executionengine.executionparticipant.ExecutionParticipantFactory):
     __module__ = __name__
 
     def getParticipant(self, hwinst, recipe):
         return RecipeParticipant(hwinst, recipe)
 
 
-class RecipeParticipant(plugins.executionengine.executionengine.executionparticipant.ExecutionParticipant):
+class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipant):
     __module__ = __name__
 
     def __init__(self, hardwareInstance, recipe):
-        plugins.executionengine.executionengine.executionparticipant.ExecutionParticipant.__init__(self, hardwareInstance, recipe)
+        executionengine.executionparticipant.ExecutionParticipant.__init__(self, hardwareInstance, recipe)
         self.stopHardwareStatusThread()
         self.coefficients = {}
         self.errorCounts = {}
@@ -66,7 +70,7 @@ class RecipeParticipant(plugins.executionengine.executionengine.executionpartici
                     else:
                         previousSetpoint = float(self.getHardwareInstance().getTemperature())
                 self.coefficients[devIdx] = [
-                 previousSetpoint, (setpoint - previousSetpoint) / step.getDuration()]
+                previousSetpoint, (setpoint - previousSetpoint) / step.getDuration()]
                 logger.debug(repr(self.coefficients))
                 logger.debug(' coefficients for a linear ramp: %d+%dt' % (self.coefficients[devIdx][0], self.coefficients[devIdx][1]))
 

@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/userinterface/initdialog.py
 # Compiled at: 2004-08-13 22:51:37
-import plugins.poi.poi.dialogs, wx, wx.lib.throbber as throb
+import plugins.poi.poi.dialogs, wx
 
 class ShutdownInitializeDialog(plugins.poi.poi.dialogs.Dialog):
     __module__ = __name__

@@ -3,10 +3,18 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/userinterface/__init__.py
 # Compiled at: 2005-01-13 01:19:49
-import plugins.validator.validator, wx, plugins.ui.ui, time, string
-import logging, plugins.poi.poi.views, plugins.core.core.utils, plugins.poi.poi.dialogs, plugins.hardware.hardware.userinterface.configurator, plugins.hardware.hardware.hardwaremanager
+import plugins.validator.validator, wx, plugins.ui.ui, time
+import logging, plugins.poi.poi.views, plugins.core.core.utils, plugins.poi.poi.dialogs
+import plugins.hardware.hardware.userinterface.configurator, plugins.hardware.hardware.hardwaremanager
 import plugins.et2216e.et2216e.drivers, plugins.et2216e.et2216e.userinterface.initdialog, plugins.et2216e.et2216e.messages as messages
 import threading, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress, wx.lib.colourselect as colourselect
+import plugins.hardware.hardware as hardware
+import plugins.et2216e.et2216e as et2216e
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+import plugins.poi.poi.utils
+import plugins.core.core as core
+import plugins.validator.validator as validator
 
 def color2str(color):
     return '%d,%d,%d' % (color.Red(), color.Green(), color.Blue())
@@ -38,7 +46,7 @@ class DeviceHardwareEditor(plugins.hardware.hardware.userinterface.DeviceHardwar
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.channelChoice, 0, wx.ALIGN_CENTRE_VERTICAL)
         label = wx.StaticText(self.control, -1, 'Units:')
-        self.unitsChoice = wx.Choice(self.control, -1, choices=getUnitChoices())
+        self.unitsChoice = wx.Choice(self.control, -1, choices=getUnitChoices())  # getUnitChoices() no està definida
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.unitsChoice, 0, wx.ALIGN_CENTRE_VERTICAL)
         label = wx.StaticText(self.control, -1, 'Range:')
@@ -49,10 +57,10 @@ class DeviceHardwareEditor(plugins.hardware.hardware.userinterface.DeviceHardwar
         self.pidProportional = wx.TextCtrl(self.control, -1, '')
         self.pidIntegral = wx.TextCtrl(self.control, -1, '')
         self.pidDerivated = wx.TextCtrl(self.control, -1, '')
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        h2sizer.Add(pidProportional, 1, wx.LEFT, 5)
-        h2sizer.Add(pidIntegral, 1, wx.LEFT, 5)
-        h2sizer.Add(pidDerivative, 1, wx.LEFT, 5)
+        h2sizer = wx.BoxSizer(wx.HORIZONTAL)
+        h2sizer.Add(self.pidProportional, 1, wx.LEFT, 5)
+        h2sizer.Add(self.pidIntegral, 1, wx.LEFT, 5)
+        h2sizer.Add(self.pidDerivated, 1, wx.LEFT, 5)
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(h2sizer, 1, wx.ALIGN_CENTRE_VERTICAL)
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -71,7 +79,7 @@ class DeviceHardwareEditor(plugins.hardware.hardware.userinterface.DeviceHardwar
     def selectUnit(self, unitStr):
         self.unitsChoice.SetStringSelection(unitStr)
         self.rangeChoice.Clear()
-        ranges = getRangeChoices(unitStr)
+        ranges = getRangeChoices(unitStr)  # getRangeChoices() no està definida
         for value in ranges:
             self.rangeChoice.Append(str(value))
 

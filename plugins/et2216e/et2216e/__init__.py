@@ -3,13 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/__init__.py
 # Compiled at: 2005-01-13 01:21:46
-import time, string, lib.kernel.plugin, plugins.et2216e.et2216e.et2216etype, plugins.et2216e.et2216e.images as images, plugins.et2216e.et2216e.messages as messages
+import time, lib.kernel.plugin, plugins.et2216e.et2216e.et2216etype, plugins.et2216e.et2216e.images as images, plugins.et2216e.et2216e.messages as messages
 import plugins.et2216e.et2216e.drivers, plugins.et2216e.et2216e.participant, plugins.et2216e.et2216e.drivers.rs485driver
 import plugins.et2216e.et2216e.drivers.ser, plugins.et2216e.et2216e.drivers.simulation, plugins.hardware.hardware, plugins.core.core.deviceregistry
 from plugins.hardware.hardware import ResponseTimeoutException
-import plugins.hardware.hardware.hardwaremanager, plugins.executionengine.executionengine, logging, threading, plugins.ui.ui
+import plugins.hardware.hardware.hardwaremanager, plugins.executionengine.executionengine, logging, plugins.ui.ui
 from plugins.hardware.hardware.utils.threads import BackgroundProcessThread, PurgeThread
 import plugins.furnacezone.furnacezone.hw
+import plugins.hardware.hardware as hardware
 logger = logging.getLogger('et2216e')
 
 class et2216ePlugin(lib.kernel.plugin.Plugin):
@@ -257,10 +258,6 @@ class et2216eHardware(plugins.hardware.hardware.hardwaremanager.Hardware, plugin
             self.logger.exception(msg)
             self.logger.error("Cannot setup driver : '%s'" % msg)
             self.fireHardwareEvent(plugins.hardware.hardware.hardwaremanager.HardwareEvent(self, plugins.hardware.hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
-        except Error as msg:
-            self.driver = None
-            self.logger.error("Cannot setup driver : '%s'" % msg)
-            self.fireHardwareEvent(plugins.hardware.hardware.hardwaremanager.HardwareEvent(self, plugins.hardware.hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
 
         return
 
@@ -290,7 +287,7 @@ class et2216eHardware(plugins.hardware.hardware.hardwaremanager.Hardware, plugin
             self.driver.shutdown()
         except Exception as msg:
             logger.error("Cannot initialize '%s'" % msg)
-            self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwareevent.EVENT_ERROR, "Error cannot initialize'%s'" % msg))
+            self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error cannot initialize'%s'" % msg))
             raise Exception(msg)
 
         self.status = hardware.hardwaremanager.STATUS_STOPPED

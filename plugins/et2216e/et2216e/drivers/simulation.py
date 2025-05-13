@@ -3,7 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/drivers/simulation.py
 # Compiled at: 2004-11-16 23:45:10
-import et2216e.drivers, wx, ui, poi, poi.actions, time
+import plugins.et2216e.et2216e.drivers, wx, plugins.poi.poi.actions, time
+import plugins.poi.poi as poi
+import plugins.ui.ui as ui
+import plugins.et2216e.et2216e as et2216e
 
 class SimConfigurationSegment(object):
     __module__ = __name__
@@ -97,7 +100,6 @@ class SimulationDeviceDriver(et2216e.drivers.DeviceDriver):
         self.dlg.Destroy()
         self.dlg = None
         return True
-        return
 
     def OnSlide(self, event):
         event.Skip()

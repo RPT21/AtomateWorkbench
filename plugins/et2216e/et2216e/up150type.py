@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/up150type.py
 # Compiled at: 2004-08-13 22:51:37
-import hardware.hardwaretype, up150, up150.userinterface
+import plugins.hardware.hardware.hardwaretype, plugins.up150.up150.userinterface
+import plugins.hardware.hardware as hardware
+import plugins.up150.up150 as up150
 
 class UP150HardwareType(hardware.hardwaretype.HardwareType):
     __module__ = __name__

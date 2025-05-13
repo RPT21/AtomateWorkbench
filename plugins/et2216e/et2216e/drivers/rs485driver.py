@@ -3,8 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/drivers/rs485driver.py
 # Compiled at: 2005-01-24 14:58:20
-import wx, time, et2216e.drivers, rs485, logging, hardware, hardware.hardwaremanager
-import et2216e.messages as messages, plugins.et2216e.et2216e.drivers.modbus
+import wx, time, logging
+import plugins.hardware.hardware as hardware, plugins.hardware.hardware.hardwaremanager
+import plugins.et2216e.et2216e.messages as messages
+import plugins.rs485.rs485 as rs485
+import plugins.et2216e.et2216e as et2216e
+import plugins.et2216e.et2216e.drivers.modbus as modbus
 
 def hextoint(hexnum):
     return eval('0x' + hexnum)
@@ -443,11 +447,11 @@ class RS485Driver(et2216e.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
 
     def setMinimumTemperature(self, mt):
         self.checkNetwork()
-        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0306 01 ' + zfill(inttohex(mt), 4) + '\x03\r'))
+        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0306 01 ' + inttohex(mt).zfill(4) + '\x03\r'))
 
     def setMaximumTemperature(self, mt):
         self.checkNetwork()
-        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0305 01 ' + zfill(inttohex(mt), 4) + '\x03\r'))
+        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0305 01 ' + inttohex(mt).zfill(4) + '\x03\r'))
 
 
 et2216e.drivers.registerDriver('rs485', RS485Driver, SerialConfigurationSegment, 'RS485')

@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/up150/src/up150/device.py
 # Compiled at: 2004-08-12 02:18:21
-import traceback, wx, up150, up150.stepentry, hardware.hardwaremanager, core.device
+import traceback, wx, plugins.up150.up150 as up150, plugins.core.core.device
+import plugins.hardware.hardware.hardwaremanager
+import plugins.hardware.hardware as hardware
+import plugins.core.core as core
+import plugins.up150.up150.stepentry
 DEVICE_ID = 'up150'
 
 class UP150DeviceEditor(core.device.DeviceEditor):
@@ -19,8 +23,8 @@ class UP150DeviceEditor(core.device.DeviceEditor):
         uibox = self.createUIBox()
         hwbox = self.createHardwareBox()
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.AddSizer(uibox, 0, wx.EXPAND | wx.ALL, 5)
-        sizer.AddSizer(hwbox, 0, wx.EXPAND | wx.ALL, 5)
+        sizer.Add(uibox, 0, wx.EXPAND | wx.ALL, 5)
+        sizer.Add(hwbox, 0, wx.EXPAND | wx.ALL, 5)
         self.control.SetSizer(sizer)
         return self.control
 

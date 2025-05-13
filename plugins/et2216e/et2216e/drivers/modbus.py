@@ -115,7 +115,7 @@ class ModbusRTUChannel(object):
 
     def parseWriteWord(self, msg):
         self.checkError(msg)
-        (addr, val) = struct.unpack('>HH', result)
+        (addr, val) = struct.unpack('>HH', msg)
         return val
 
     def writeWord(self, address, value):

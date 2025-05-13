@@ -3,7 +3,6 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/et2216e/src/et2216e/crc.py
 # Compiled at: 2004-10-24 00:23:20
-import struct
 
 def crc16(inmsg):
     CRC = 65535

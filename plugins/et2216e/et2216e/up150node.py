@@ -3,8 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/up150node.py
 # Compiled at: 2004-08-12 08:30:23
-from string import zfill
-import rs485
+import plugins.rs485.rs485 as rs485
 
 def hextoint(hexnum):
     return eval('0x' + hexnum)
@@ -35,10 +34,10 @@ class UP150DeviceNode(rs485.RS485SerialNetworkNode):
         maxTemp = self.configuration.get('max temp')
         idleTemp = self.configuration.get('idle temp')
         self.panelLockout = self.configuration.get('panel lockout')
-        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0307 01 ' + zfill(inttohex(timeUnits), 4) + '\x03\r', self.delimiters))
-        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0306 01 ' + zfill(inttohex(minTemp), 4) + '\x03\r', self.delimiters))
-        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0305 01 ' + zfill(inttohex(maxTemp), 4) + '\x03\r', self.delimiters))
-        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0228 01 ' + zfill(inttohex(idleTemp), 4) + '\x03\r', self.delimiters))
+        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0307 01 ' + inttohex(timeUnits).zfill(4) + '\x03\r', self.delimiters))
+        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0306 01 ' + inttohex(minTemp).zfill(4) + '\x03\r', self.delimiters))
+        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0305 01 ' + inttohex(maxTemp).zfill(4) + '\x03\r', self.delimiters))
+        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0228 01 ' + inttohex(idleTemp).zfill(4) + '\x03\r', self.delimiters))
         if self.panelLockout:
             self.lockPanel()
         self.initStatus = rs485.STATUS_NODE_INITIALIZED
@@ -57,7 +56,7 @@ class UP150DeviceNode(rs485.RS485SerialNetworkNode):
         if self.runStatus == rs485.STATUS_NODE_IDLE:
             self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0121 01 0002\x03\r', self.delimiters))
             self.runStatus = rs485.STATUS_NODE_RUNNING
-        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0114 01 ' + zfill(inttohex(setpoint), 4) + '\x03\r', self.delimiters))
+        self.checkError(self.rs485network.sendData('\x02' + self.address + '010WWRD0114 01 ' + inttohex(setpoint).zfill(4) + '\x03\r', self.delimiters))
         return
 
     def checkError(self, data):
