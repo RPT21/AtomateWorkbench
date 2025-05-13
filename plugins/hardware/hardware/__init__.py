@@ -130,7 +130,7 @@ class HardwarePlugin(lib.kernel.plugin.Plugin):
             instance.setDescription(description)
             initialize = False
             try:
-                initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'
+                initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
             except Exception as msg:
                 logger.exception(msg)
                 logger.warning('No startupinit tag in description')

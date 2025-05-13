@@ -246,7 +246,7 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
             runner = Runner()
             runner.start()
             while runner.is_alive():
-                if wx.IsMainThread(self):
+                if wx.IsMainThread():
                     wx.Yield()
                 time.sleep(0.01)
 

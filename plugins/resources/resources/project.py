@@ -69,7 +69,7 @@ class Project(Resource):
         lib.kernel.setAtomateGroupID()
         os.makedirs(self.location)
         self.description.create(self.location)
-        __init__.Resource.create(self)
+        super().create()
         lib.kernel.resetUserGroupID()
 
     def exists(self):
@@ -78,7 +78,7 @@ class Project(Resource):
     def load(self):
         self.description = ProjectDescription()
         self.description.parse(self.location)
-        __init__.Resource.load(self)
+        super().load()
 
     def getDescription(self):
         return self.description

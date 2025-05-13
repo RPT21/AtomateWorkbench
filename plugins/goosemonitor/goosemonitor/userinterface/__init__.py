@@ -674,7 +674,6 @@ class TempSensorHandler(DeviceHandler):
         self.ctrl.SetAutoLayout(1)
         self.sizer.Fit(self.ctrl)
         return self.ctrl
-        return
 
 
 class MonitorWindowItem(object):

@@ -358,7 +358,7 @@ class GridEditorPlugin(lib.kernel.plugin.Plugin):
                     kid.Show(child == kid)
 
                 self.activeWindow = child
-                if not wx.IsMainThread(self):
+                if not wx.IsMainThread():
                     wx.CallAfter(self.resizeActiveWindow)
                 else:
                     self.resizeActiveWindow()
