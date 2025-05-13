@@ -12,7 +12,6 @@ import core.deviceregistry, furnacezone.hw
 import plugins.executionengine.executionengine as executionengine
 from . import up150node, up150type
 logger = logging.getLogger('up150')
-instance = None
 
 def getDefault():
     global instance

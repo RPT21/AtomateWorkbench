@@ -45,8 +45,6 @@ class UIApp(wx.App):
         return True
 
 
-default = None
-
 def getDefault():
     global default
     return default

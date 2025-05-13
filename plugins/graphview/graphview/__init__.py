@@ -10,7 +10,6 @@ import plugins.graphview.graphview.view, threading, plugins.labbooks.labbooks
 import plugins.ui.ui as ui
 VIEW_ID = 'graphview.view'
 logger = logging.getLogger('graphview')
-instance = None
 
 def getDefault():
     global instance

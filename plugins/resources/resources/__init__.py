@@ -10,7 +10,6 @@ import logging
 logger = logging.getLogger('resouces_init')
 import plugins.resources.resources.workspace as workspace
 import plugins.resources.resources.utils
-default = None
 
 def getDefault():
     global default

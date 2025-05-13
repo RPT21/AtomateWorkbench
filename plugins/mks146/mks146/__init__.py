@@ -10,7 +10,6 @@ import plugins.ui.ui as ui
 from . import mks146type, mks647bctype
 from hardware.utils.threads import BackgroundProcessThread, PurgeThread
 import plugins.executionengine.executionengine as executionengine
-instance = None
 logger = logging.getLogger('mks146')
 
 def getDefault():

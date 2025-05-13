@@ -16,7 +16,6 @@ from plugins.resourcesui.resourcesui.actions import openRecipeVersion
 CONFIG_FILENAME = '.config'
 PLUGIN_ID = 'grideditor'
 VIEW_ID = 'grideditor'
-instance = None
 columnContributions = {}
 logger = logging.getLogger('grideditor')
 

@@ -8,7 +8,6 @@ import logging, plugins.ui.ui.context, plugins.panelview.panelview.images as ima
 import plugins.panelview.panelview.messages as messages, plugins.executionengine.executionengine
 VIEW_ID = 'panelview.view'
 logger = logging.getLogger('panelview')
-instance = None
 
 def getDefault():
     global instance

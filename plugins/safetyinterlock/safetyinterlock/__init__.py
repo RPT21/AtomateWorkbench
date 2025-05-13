@@ -8,7 +8,6 @@ import lib.kernel.plugin, plugins.poi.poi.actions, plugins.safetyinterlock.safet
 import plugins.poi.poi.views, plugins.poi.poi.views.viewers, plugins.poi.poi.views.contentprovider
 import plugins.hardware.hardware.hardwaremanager, plugins.safetyinterlock.safetyinterlock.images as images
 import plugins.safetyinterlock.safetyinterlock.messages as messages, logging
-instance = None
 logger = logging.getLogger('safetyinterlock')
 
 def getDefault():

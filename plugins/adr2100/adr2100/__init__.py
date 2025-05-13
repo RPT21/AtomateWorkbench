@@ -15,7 +15,6 @@ import plugins.adr2100.adr2100.messages as messages
 import plugins.ui as ui
 from plugins.hardware.hardware.utils.threads import BackgroundProcessThread
 
-instance = None
 logger = logging.getLogger('adr2100')
 
 def getDefault():

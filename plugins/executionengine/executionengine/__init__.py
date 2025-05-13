@@ -11,7 +11,6 @@ import plugins.executionengine.executionengine.userinterface.purgemanagerviewer
 import plugins.executionengine.executionengine.userinterface.engineiniterrordialog, plugins.validator.validator
 from . import purgemanager
 logger = logging.getLogger('executionengine')
-instance = None
 DEFAULT_RESOLUTION = 0.2
 PLUGIN_ID = 'executionengine'
 

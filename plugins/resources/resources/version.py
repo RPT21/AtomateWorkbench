@@ -65,10 +65,10 @@ class RecipeVersion(Resource):
         if self.exists():
             raise Exception("Recipe version '%s' already exists at '%s'" % (self.name, self.location))
         os.makedirs(self.location)
-        __init__.Resource.create(self)
+        Resource.create(self)
         self.createRecipeDataFile()
         lib.kernel.resetUserGroupID()
-        __init__.getDefault().getWorkspace().fireWorkspaceChangeEvent(__init__.workspace.WorkspaceChangeEvent(__init__.workspace.TYPE_CREATE, self))
+        getDefault().getWorkspace().fireWorkspaceChangeEvent(workspace.WorkspaceChangeEvent(workspace.TYPE_CREATE, self))
 
     def createRecipeDataFile(self):
         name = self.getRecipeDataFilename()
@@ -90,7 +90,7 @@ class RecipeVersion(Resource):
 
     def load(self):
         """Loads the buffer for the recipe"""
-        __init__.Resource.load(self)
+        Resource.load(self)
         try:
             f = open(self.getRecipeDataFilename(), 'r')
             self.buff = f.read()

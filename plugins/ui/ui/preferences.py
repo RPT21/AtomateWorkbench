@@ -40,12 +40,11 @@ class InternalManager(object):
         return None
 
 
-instance = None
-
 def init():
     global instance
     instance = InternalManager()
 
 
 def getDefault():
+    global instance
     return instance

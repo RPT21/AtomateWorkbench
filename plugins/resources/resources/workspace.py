@@ -8,7 +8,7 @@ import plugins.resources.resources.project as project_lib
 import plugins.resources.resources.version as version_lib
 import plugins.resources.resources.utils as utils_lib
 import plugins.resources.resources.runlog as runlog_lib
-from plugins.resources.resources.__init__ import * # getDefault prové de __init__
+import plugins.resources.resources as resources
 logger = logging.getLogger('resources')
 WORKSPACE_DIRNAME = 'workspace'
 suppress = False
@@ -53,8 +53,7 @@ def removeWorkspaceChangeListener(listener):
 def fireWorkspaceChangeEvent(event):
     global suppress
     if suppress:
-        return
-    list(map((lambda listener: listener.workspaceChanged(event)), workspaceChangeListeners))
+        return list(map((lambda listener: listener.workspaceChanged(event)), workspaceChangeListeners))
 
 
 def suppressWorkspaceChangeEvents(doit):
@@ -79,12 +78,11 @@ def init():
             os.makedirs(getLocalLocation())
         except Exception as msg:
             logger.exception(msg)
-            logger.error("* ERROR: Cannot initialize local workspacea at '%s':" % getLocalLocation())
+            logger.error("* ERROR: Cannot initialize local workspace at '%s':" % getLocalLocation())
             sys.exit(13)
 
     logger.debug("Local workspace initialized at: '%s'" % getLocalLocation())
     logger.debug("Shared workspace initialized at: '%s'" % getSharedLocation())
-    return
 
 
 def getProjects(shared=False, onlyShared=False):
@@ -206,7 +204,6 @@ def setLocalPrefix(prefix):
         localprefix = utils_lib.getUsersDirectory()
     else:
         localprefix = prefix
-    return
 
 
 def getSharedLocation():
@@ -229,7 +226,7 @@ def getProject(name, shared=False):
     location = os.path.join(location, name)
     project = project_lib.Project(name)
     project.setLocation(location)
-    project.internal_setParent(getDefault().getWorkspace())  # getWorkspace() pertany a la classe ResourcesPlugin, i workspace és el mòdul workspace.py
+    project.internal_setParent(resources.getDefault().getWorkspace())  # getWorkspace() pertany a la classe ResourcesPlugin, i workspace és el mòdul workspace.py, internal_setParent pertany a la classe Resource de __init__
     return project
 
 

@@ -7,7 +7,6 @@ import logging, lib.kernel.plugin, plugins.hardware.hardware.hardwaremanager
 import plugins.rs485.rs485.rs485type, plugins.rs485.rs485.drivers, plugins.rs485.rs485.drivers.ser
 import plugins.poi.poi.actions, plugins.ui.ui, threading, plugins.executionengine.executionengine
 import plugins.rs485.rs485.rs485type, plugins.hardware.hardware as hardware, plugins.rs485.rs485 as rs485
-instance = None
 logger = logging.getLogger('rs485')
 
 def getDefault():

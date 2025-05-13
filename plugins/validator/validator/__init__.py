@@ -10,7 +10,6 @@ import plugins.validator.validator.agent as agent_lib
 import logging, plugins.validator.validator.userinterface.preferences
 logger = logging.getLogger('validator')
 PLUGIN_ID = 'validator'
-instance = None
 
 def getDefault():
     global instance

@@ -7,7 +7,6 @@ import os, plugins.core.core, plugins.core.core.preferencesstore, configparser, 
 import plugins.ui.ui, plugins.poi.poi.actions, plugins.resources.resources, plugins.resourcesui.resourcesui.preferences
 import plugins.resources.resources.version, plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.images as images
 import plugins.resourcesui.resourcesui.messages as messages, plugins.resources.resources.utils, logging
-default = None
 PLUGIN_ID = 'resourcesui'
 CONFIG_FILENAME = '.config'
 logger = logging.getLogger('resources.ui')

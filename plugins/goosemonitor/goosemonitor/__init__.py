@@ -18,10 +18,10 @@ from . import goosedevicetype, userinterface
 ERROR_RETRIEVING = -1
 ERROR_PARSING = -2
 ERROR_OK = True
-instance = None
 logger = logging.getLogger('goosemonitor')
 
 def getDefault():
+    global instance
     return instance
 
 

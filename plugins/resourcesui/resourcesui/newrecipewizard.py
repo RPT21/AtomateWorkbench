@@ -3,12 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/newrecipewizard.py
 # Compiled at: 2004-11-19 02:47:44
-import re, wx, sys, os, plugins.ui.ui, threading, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import re, wx, os, plugins.ui.ui, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
 import plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.hardware.hardware.hardwaremanager, plugins.resources.resources
 import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.utils, logging
 import plugins.poi.poi.__init__
+import plugins.poi.poi as poi
 from plugins.poi.poi.wizards import Wizard, WizardPage
-from plugins.resources.resources import default
+import plugins.resources.resources as resources
 logger = logging.getLogger('resourcesui.newrecipewizard')
 
 class NewRecipeWizard(Wizard):
@@ -45,7 +46,7 @@ class FirstRecipeWizardPage(WizardPage):
         shared = self.sharedCheck.GetValue()
         defaultDevices = self.createDefaultDevicesCheck.GetValue()
 
-        class NewRecipeRunner(plugins.poi.poi.operation.RunnableWithProgress):
+        class NewRecipeRunner(poi.operation.RunnableWithProgress):
             __module__ = __name__
 
             def run(self, monitor):
@@ -53,7 +54,7 @@ class FirstRecipeWizardPage(WizardPage):
                 if defaultDevices:
                     numTasks += 1
                 monitor.beginTask('Creating new recipe', numTasks)
-                project = plugins.resources.resources.getDefault().getWorkspace().getProject(name, shared)
+                project = resources.getDefault().getWorkspace().getProject(name, shared)
                 desc = project.getDescription()
                 desc.comment = comment
                 monitor.subTask('Creating project')
@@ -77,7 +78,7 @@ class FirstRecipeWizardPage(WizardPage):
                 monitor.endTask()
 
         f = self.control
-        dlg = plugins.poi.poi.dialogs.progress.ProgressDialog(f)
+        dlg = poi.dialogs.progress.ProgressDialog(f)
         try:
             dlg.run(NewRecipeRunner(), fork=True)
         except Exception as msg:
@@ -127,7 +128,7 @@ class FirstRecipeWizardPage(WizardPage):
         return True
 
     def projectExists(self, name):
-        project = plugins.resources.resources.getDefault().getWorkspace().getProject(name)
+        project = resources.getDefault().getWorkspace().getProject(name)
         return project.exists()
 
     def updateValidControls(self, valid):

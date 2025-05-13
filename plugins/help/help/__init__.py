@@ -10,7 +10,6 @@ from . import actions, frame
 
 import plugins.ui.ui as ui
 
-instance = None
 logger = logging.getLogger('help')
 
 def getDefault():
