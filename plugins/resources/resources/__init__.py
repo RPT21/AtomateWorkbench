@@ -9,7 +9,7 @@ import lib.kernel, lib.kernel.plugin
 import logging
 logger = logging.getLogger('resouces_init')
 import plugins.resources.resources.workspace as workspace
-import plugins.resources.resources.utils
+import plugins.resources.resources.utils as utils
 
 def getDefault():
     global default

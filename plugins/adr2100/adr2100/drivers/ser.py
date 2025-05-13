@@ -3,11 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/drivers/ser.py
 # Compiled at: 2004-11-19 02:08:30
-import wx, adr2100.drivers, socket, time, threading, select, adr2100.drivers, serial, logging
-from hardware import ResponseTimeoutException
+import wx, plugins.adr2100.adr2100.drivers, socket, time, threading, select, plugins.adr2100.adr2100.drivers
+import plugins.adr2100.adr2100 as adr2100, serial, logging
+from plugins.hardware.hardware import ResponseTimeoutException
+
 logger = logging.getLogger('adr2100.drivers.serial')
-CHOICES_BAUDRATE = [
- 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+CHOICES_BAUDRATE = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 CHOICES_PARITY = ['none', 'odd', 'even']
 CHOICES_PARITY_TEXT = ['None', 'Odd', 'Even']
 CHOICES_BITS = [7, 8]

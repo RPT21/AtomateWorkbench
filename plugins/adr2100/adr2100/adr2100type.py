@@ -4,14 +4,15 @@
 # Embedded file name: ../plugins/adr2100/src/adr2100/adr2100type.py
 # Compiled at: 2004-11-09 18:19:39
 import plugins.adr2100.adr2100, plugins.hardware.hardware.hardwaretype
-import plugins.adr2100.adr2100.userinterface as userinterface
 import plugins.adr2100.adr2100.userinterface
+import plugins.hardware.hardware as hardware
+import plugins.adr2100.adr2100 as adr2100
 
-class ADR2100HardwareType(plugins.hardware.hardware.hardwaretype.HardwareType):
+class ADR2100HardwareType(hardware.hardwaretype.HardwareType):
     __module__ = __name__
 
     def __init__(self):
-        plugins.hardware.hardware.hardwaretype.HardwareType.__init__(self)
+        hardware.hardwaretype.HardwareType.__init__(self)
 
     def getType(self):
         return 'adr2100'
@@ -23,10 +24,10 @@ class ADR2100HardwareType(plugins.hardware.hardware.hardwaretype.HardwareType):
         return plugins.adr2100.adr2100.ADR2100Hardware()
 
     def getConfigurationPage(self):
-        return plugins.adr2100.adr2100.userinterface.ConfigurationPage()
+        return adr2100.userinterface.ConfigurationPage()
 
     def getDeviceHardwareEditor(self):
-        return plugins.adr2100.adr2100.userinterface.DeviceHardwareEditor()
+        return adr2100.userinterface.DeviceHardwareEditor()
 
     def getDescription(self):
         return 'ADR 2100 I/O Board'

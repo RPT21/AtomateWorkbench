@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/images.py
 # Compiled at: 2005-06-22 19:41:30
-import kernel.pluginmanager, os, wx, logging
+import os, wx, logging
 logger = logging.getLogger('goosemonitor')
 inited = False
 imagesTable = {}

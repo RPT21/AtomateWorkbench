@@ -23,7 +23,6 @@ def getDriverClassByName(driverName):
             return value['driver']
 
     return None
-    return
 
 
 def getDriverTypeByName(driverName):
@@ -32,7 +31,6 @@ def getDriverTypeByName(driverName):
             return key
 
     return None
-    return
 
 
 def getDriverPageByName(driverName):
@@ -41,7 +39,6 @@ def getDriverPageByName(driverName):
             return getDriverConfigurationPage(key)
 
     return None
-    return
 
 
 def getRegisteredDeviceKeys():
@@ -52,21 +49,18 @@ def getDriverName(driverID):
     if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['name']
-    return
 
 
 def getDriver(driverID):
     if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['driver']
-    return
 
 
 def getDriverConfigurationPage(driverID):
     if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['configpage']()
-    return
 
 
 OUTPUT = 0

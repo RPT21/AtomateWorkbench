@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/safetyparticipant.py
 # Compiled at: 2005-01-06 20:53:16
-import executionengine, executionengine.engine, safetyinterlock
+import plugins.executionengine.executionengine as executionengine
+import plugins.executionengine.executionengine.engine
+import plugins.safetyinterlock.safetyinterlock as safetyinterlock
 
 class ADR2100InterlockParticipant(safetyinterlock.InterlockParticipant):
     __module__ = __name__

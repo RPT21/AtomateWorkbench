@@ -4,7 +4,8 @@
 # Embedded file name: ../plugins/resources/src/resources/version.py
 # Compiled at: 2004-11-02 23:11:18
 import lib.kernel, os, plugins.core.core.recipe, plugins.core.core.utils
-from plugins.resources.resources.__init__ import *
+from plugins.resources.resources.__init__ import *  # Fa una còpia de funcions, objectes i variables del mòdul
+import plugins.resources.resources as resources
 RECIPE_METADATA_FILENAME = '.recipe'
 
 def isRecipeVersion(fullpath):
@@ -26,7 +27,7 @@ def getVersionWithNumber(number):
 
 
 def getNextVersionName(project):
-    existingVersions = getDefault().getWorkspace().getRecipeVersions(project)
+    existingVersions = resources.getDefault().getWorkspace().getRecipeVersions(project)
     number = 1
     if len(existingVersions) > 0:
         nextnum = existingVersions[0].getNumber() + 1
@@ -68,7 +69,7 @@ class RecipeVersion(Resource):
         Resource.create(self)
         self.createRecipeDataFile()
         lib.kernel.resetUserGroupID()
-        getDefault().getWorkspace().fireWorkspaceChangeEvent(workspace.WorkspaceChangeEvent(workspace.TYPE_CREATE, self))
+        resources.getDefault().getWorkspace().fireWorkspaceChangeEvent(workspace.WorkspaceChangeEvent(workspace.TYPE_CREATE, self))
 
     def createRecipeDataFile(self):
         name = self.getRecipeDataFilename()

@@ -3,7 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks146/src/mks146/mks146type.py
 # Compiled at: 2004-10-14 01:59:48
-import hardware.hardwaretype, mks146, mks146.userinterface
+import plugins.hardware.hardware.hardwaretype
+import plugins.mks146.mks146 as mks146
+import plugins.mks146.mks146.userinterface
+import plugins.hardware.hardware as hardware
 
 class MKS146HardwareType(hardware.hardwaretype.HardwareType):
     __module__ = __name__

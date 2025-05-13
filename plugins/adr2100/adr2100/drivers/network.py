@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/drivers/network.py
 # Compiled at: 2004-07-24 10:26:33
-import wx, mks647bc.drivers, socket, time, threading, select, mks647bc.drivers
+import wx, plugins.mks647bc.mks647bc.drivers, socket, time, threading, select
+import plugins.mks647bc.mks647bc as mks647bc
 
 class NetworkConfigurationSegment(object):
     __module__ = __name__

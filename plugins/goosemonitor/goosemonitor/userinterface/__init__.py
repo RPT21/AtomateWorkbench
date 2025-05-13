@@ -3,7 +3,15 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/userinterface/__init__.py
 # Compiled at: 2005-06-22 20:36:49
-import os, traceback, copy, wx, string, logging, core.utils, poi.views, poi.dialogs, hardware.userinterface.configurator, hardware.hardwaremanager, threading, ui, poi.operation, time, poi.dialogs.progress, ui.images as uiimages, goosemonitor, goosemonitor.images as images
+import copy, wx, logging, plugins.poi.poi.views, plugins.poi.poi as poi
+import plugins.poi.poi.dialogs, plugins.hardware.hardware.userinterface.configurator
+import plugins.hardware.hardware.hardwaremanager, plugins.ui.ui as ui
+import plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.goosemonitor.goosemonitor as goosemonitor
+import plugins.goosemonitor.goosemonitor.images as images
+import plugins.hardware.hardware as hardware
+import plugins.poi.poi.utils.scrolledpanel
+
 logger = logging.getLogger('goosemonitor.ui')
 
 class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
@@ -542,7 +550,7 @@ class DeviceHandler(object):
         return
 
     def createControl(self, parent):
-        self.ctrl = wx.Panel(parent, -1, size=(30, -1))
+        self.ctrl = wx.Panel(parent, -1, size=wx.Size(30, -1))
         self.ctrl.SetBackgroundColour(wx.RED)
         return self.ctrl
 
@@ -595,7 +603,7 @@ class WeatherDuckHandler(DeviceHandler):
                 self.ioSizer.Add(item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
 
         self.ctrl.SetSizer(self.sizer)
-        self.ctrl.SetAutoLayout(1)
+        self.ctrl.SetAutoLayout(True)
         self.sizer.Fit(self.ctrl)
         return self.ctrl
 
@@ -623,20 +631,19 @@ class AirFlowSensorHandler(DeviceHandler):
         item.invalidate()
 
     def createControl(self, parent):
-        self.ctrl = wx.Panel(parent, -1, size=(-1, 600))
+        self.ctrl = wx.Panel(parent, -1, size=wx.Size(-1, 600))
         self.ctrl.SetBackgroundColour(parent.GetBackgroundColour())
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
         fields = self.deviceData['fields']
         if not 'AirFlow' in fields:
             return None
-        item = TemperatureWidget(self.ctrl, wx.Color(115, 155, 240))
+        item = TemperatureWidget(self.ctrl, wx.Colour(115, 155, 240))
         self.item = item
         self.sizer.Add(item, 0, wx.EXPAND | wx.ALL | wx.FIXED_MINSIZE, 5)
         self.ctrl.SetSizer(self.sizer)
         self.ctrl.SetAutoLayout(1)
         self.sizer.Fit(self.ctrl)
         return self.ctrl
-        return
 
 
 class TempSensorHandler(DeviceHandler):
@@ -661,7 +668,7 @@ class TempSensorHandler(DeviceHandler):
         item.invalidate()
 
     def createControl(self, parent):
-        self.ctrl = wx.Panel(parent, -1, size=(-1, 600), style=wx.CLIP_CHILDREN)
+        self.ctrl = wx.Panel(parent, -1, size=wx.Size(-1, 600), style=wx.CLIP_CHILDREN)
         self.ctrl.SetBackgroundColour(parent.GetBackgroundColour())
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
         fields = self.deviceData['fields']
@@ -779,9 +786,9 @@ class MonitorWindowItem(object):
 
     def createControl(self, parent, window):
         self.parentWindow = window
-        p = wx.Panel(parent, -1, size=(-1, 400))
+        p = wx.Panel(parent, -1, size=wx.Size(-1, 400))
         p.SetBackgroundColour(parent.GetBackgroundColour())
-        self.statusPanel = wx.Panel(p, -1, size=(20, 20))
+        self.statusPanel = wx.Panel(p, -1, size=wx.Size(20, 20))
         self.statusPanel.SetBackgroundColour(goosemonitor.MONITOR_BACKGROUND_COLOR)
         self.labelDeviceName = wx.StaticText(self.statusPanel, -1, '')
         self.labelDeviceName.SetForegroundColour(goosemonitor.MONITOR_FOREGROUND_COLOR)

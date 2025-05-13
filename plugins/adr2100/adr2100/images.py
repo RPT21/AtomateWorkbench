@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/images.py
 # Compiled at: 2004-11-19 02:38:25
-import lib.kernel.pluginmanager, os, wx
+import os, wx
 import logging
 logger = logging.getLogger('adr2100 logger')
 inited = False

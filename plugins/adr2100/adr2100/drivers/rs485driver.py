@@ -3,9 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/drivers/rs485driver.py
 # Compiled at: 2004-12-09 00:49:28
-import wx, time, threading, select, adr2100.drivers, serial, rs485, logging, hardware, hardware.hardwaremanager
-from string import zfill
-import adr2100.messages as messages
+import wx, time, threading, select, serial, logging
+import plugins.adr2100.adr2100.messages as messages
+import plugins.adr2100.adr2100.drivers
+import plugins.adr2100.adr2100 as adr2100
+import plugins.rs485.rs485 as rs485
+import plugins.hardware.hardware as hardware
+import plugins.hardware.hardware.hardwaremanager
 
 def hextoint(hexnum):
     return eval('0x' + hexnum)
@@ -135,7 +139,6 @@ class SerialConfigurationSegment(object):
         if description is None:
             return None
         return description.getInstance()
-        return
 
     def convertAddressValue(self, address):
         try:
@@ -222,7 +225,6 @@ class RS485Driver(adr2100.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         if self.address is None:
             return 'No address'
         return self.address
-        return
 
     def cleanUp(self):
         if self.hwinst.getStatus() != hardware.hardwaremanager.STATUS_STOPPED:
@@ -301,7 +303,6 @@ class RS485Driver(adr2100.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         if self.buffer.find(delim) >= 0:
             return self.stripDelimiters(self.buffer)
         return None
-        return
 
     def stripDelimiters(self, buffer):
         return buffer.strip()
@@ -327,7 +328,6 @@ class RS485Driver(adr2100.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         if nw is None:
             raise Exception("No rs485 network configured with name: '%s'" % networkid)
         return nw.getInstance()
-        return
 
     def initialize(self):
         logger.debug('Initializing')

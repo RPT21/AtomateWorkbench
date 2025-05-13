@@ -3,17 +3,18 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/__init__.py
 # Compiled at: 2004-12-09 00:49:28
-import os, py_compile, plugins.core.core as core
+import os, py_compile, plugins.core.core as core, threading
 import lib.kernel.pluginmanager as PluginManager
 import logging, lib.kernel.plugin
-from plugins.hardware.hardware import ResponseTimeoutException
+import plugins.hardware.hardware as hardware_module
 import plugins.adr2100.adr2100.adr2100type as adr2100type
 import plugins.adr2100.adr2100.images as images
-import plugins
-import threading
 import plugins.adr2100.adr2100.messages as messages
-import plugins.ui as ui
-from plugins.hardware.hardware.utils.threads import BackgroundProcessThread
+import plugins.ui.ui as ui
+import plugins.hardware.hardware.utils.threads
+import plugins.adr2100.adr2100.drivers
+import plugins.core.core.error
+import plugins.adr2100.adr2100.safetyparticipant
 
 logger = logging.getLogger('adr2100')
 
@@ -31,7 +32,7 @@ class ADR2100Plugin(lib.kernel.plugin.Plugin):
         lib.kernel.plugin.Plugin.__init__(self)
         instance = self
         self.contextBundle = None
-        plugins.ui.ui.getDefault().setSplashText('Loading ADR 2100 plugin ...')
+        ui.getDefault().setSplashText('Loading ADR 2100 plugin ...')
         return
 
     def getContextBundle(self):
@@ -99,7 +100,7 @@ class InitializeScriptThread(threading.Thread):
     def __init__(self, inst):
         threading.Thread.__init__(self)
         self.inst = inst
-        self.setDaemon(True)
+        self.daemon = True
 
     def readScript(self):
         dirname = getDefault().getContextBundle().dirname
@@ -154,11 +155,11 @@ class InitializeScriptThread(threading.Thread):
         self.inst.resumeStatusThread()
 
 
-class StatusThread(BackgroundProcessThread):
+class StatusThread(hardware_module.utils.threads.BackgroundProcessThread):
     __module__ = __name__
 
     def __init__(self, hwinst):
-        BackgroundProcessThread.__init__(self, hwinst)
+        hardware_module.utils.threads.BackgroundProcessThread.__init__(self, hwinst)
         self.throttle = DEFAULT_CHECK_THROTTLE
         self.channels = []
         self.participant = plugins.adr2100.adr2100.safetyparticipant.ADR2100InterlockParticipant()
@@ -373,7 +374,7 @@ class ADR2100Hardware(plugins.hardware.hardware.hardwaremanager.Hardware):
         self.checkDriver()
         try:
             return self.driver.getID()
-        except ResponseTimeoutException as msg:
+        except hardware_module.ResponseTimeoutException as msg:
             self.cleanup()
             raise
 
@@ -401,7 +402,7 @@ class ADR2100Hardware(plugins.hardware.hardware.hardwaremanager.Hardware):
 
         try:
             driverType = config.get('driver', 'type')
-            inst = adr2100.drivers.getDriver(driverType)(self)
+            inst = plugins.adr2100.adr2100.drivers.getDriver(driverType)(self)
             self.setDriver(inst)
             self.driver.setConfiguration(config)
         except Exception as msg:

@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/messages.py
 # Compiled at: 2004-08-12 02:18:21
-import configparser, lib.kernel.pluginmanager, os, logging
+import configparser, os, logging
 MESSAGES_FILENAME = 'messages.prop'
 inited = False
 config = None

@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/hw.py
 # Compiled at: 2005-06-21 21:49:37
-import threading, goosemonitor, goosemonitor.userinterface, logging, hardware.hardwaremanager, urllib.request, urllib.parse, urllib.error, time, copy, xml.dom.minidom
+import threading, logging, urllib.request, urllib.parse, urllib.error, time, copy, xml.dom.minidom
+import plugins.goosemonitor.goosemonitor as goosemonitor, plugins.goosemonitor.goosemonitor.userinterface
+import plugins.hardware.hardware.hardwaremanager, plugins.hardware.hardware as hardware
 
 class RefreshThread(threading.Thread):
     __module__ = __name__
@@ -12,7 +14,7 @@ class RefreshThread(threading.Thread):
         threading.Thread.__init__(self)
         self.refreshInterval = refreshInterval
         self.callee = callee
-        self.setDaemon(True)
+        self.daemon = True
         self.done = False
 
     def run(self):

@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/drivers/simulation.py
 # Compiled at: 2004-12-07 23:11:58
-import wx, ui, adr2100.drivers, poi, poi.actions
+import wx, plugins.ui.ui as ui
+import plugins.adr2100.adr2100.drivers
+import plugins.adr2100.adr2100 as adr2100
+import plugins.adr2100.adr2100.drivers.rs485driver as rs485driver
+import plugins.poi.poi as poi, plugins.poi.poi.actions
 
 class SimConfigurationSegment(object):
     __module__ = __name__
@@ -119,13 +123,12 @@ class SimulationDeviceDriver(adr2100.drivers.DeviceDriver):
             self.dlg.Destroy()
             self.dlg = None
         return True
-        return
 
     def toggleDialog(self):
         self.dlg.Show(not self.dlg.IsShown())
 
     def getConfigurationSegment(self):
-        return SerialConfigurationSegment()
+        return rs485driver.SerialConfigurationSegment()  # Podria ser també el de ser.py
 
     def setConfiguration(self, configuration):
         adr2100.drivers.DeviceDriver.setConfiguration(self, configuration)

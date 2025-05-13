@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks146/src/mks146/participant.py
 # Compiled at: 2004-10-21 23:29:44
-import executionengine.executionparticipant, mfc.response, logging
+import plugins.executionengine.executionengine.executionparticipant
+import plugins.mfc.mfc.response, logging
+import plugins.executionengine.executionengine as executionengine
+import plugins.mfc.mfc as mfc
+
 logger = logging.getLogger('mks146.participant')
 
 class RecipeParticipantFactory(executionengine.executionparticipant.ExecutionParticipantFactory):

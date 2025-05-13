@@ -13,7 +13,8 @@ import plugins.core.core as core
 import plugins.ui.ui as ui
 import plugins.poi.poi as poi
 import plugins.poi.poi.actions
-from . import goosedevicetype, userinterface
+import plugins.goosemonitor.goosemonitor.goosedevicetype as goosedevicetype
+import plugins.goosemonitor.goosemonitor.userinterface as userinterface
 
 ERROR_RETRIEVING = -1
 ERROR_PARSING = -2
@@ -214,7 +215,7 @@ class MonitorWindow(wx.Frame):
     def updateScrollies(self):
         size = self.scrolledInnerSizer.GetMinSize()
         increment = 20
-        self.scrolledWindow.SetScrollbars(increment, increment, size[0] / increment, size[1] / increment)
+        self.scrolledWindow.SetScrollbars(increment, increment, int(size[0] / increment), int(size[1] / increment))
 
     def modifiedInternals(self):
         self.updateScrollies()
