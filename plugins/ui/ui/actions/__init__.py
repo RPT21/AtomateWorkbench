@@ -5,7 +5,9 @@
 # Compiled at: 2004-10-08 00:40:06
 import plugins.ui.ui.messages as messages, wx
 import plugins.poi.poi as poi
+import plugins.poi.poi.actions
 import plugins.ui.ui as ui
+import plugins.ui.ui.dialog.preferences
 
 class ExitAction(poi.actions.Action):
     __module__ = __name__

@@ -73,7 +73,7 @@ class ErrorViewer(object):
         stepIdx = self.getItemSelected()
         if stepIdx == -1:
             return
-        print('Step Index:', stepIdx)
+        print(('Step Index:', stepIdx))
 
     def getItemSelected(self):
         itemIndex = -1

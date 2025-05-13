@@ -46,16 +46,16 @@ def getPluginPath():
 
 
 def debugPrintPluginList(pluginList):
-    print('Num plugins:', len(pluginList))
+    print(('Num plugins:', len(pluginList)))
     for plugin in pluginList:
-        print('\t', plugin)
+        print(('\t', plugin))
 
 
 def oldbuildBootOrder(pluginList):
     """Rebuilds the plugin boot list based on the depends key.  Cyclic deps are not detected"""
     orderedList = []
-    namesList = pluginList.keys()
-    for name in pluginList.keys():
+    namesList = list(pluginList.keys())
+    for name in list(pluginList.keys()):
         plugin = pluginList[name]
         pluginName = plugin.configuration.get('Plugin', 'name')
         dependencies = plugin.configuration.get('Plugin', 'depends').split(',')
@@ -82,13 +82,13 @@ def recursiveBuildBootOrder(pluginList, name, orderedList):
         pluginName = plugin.configuration.get('Plugin', 'name')
         dependencies = plugin.configuration.get('Plugin', 'depends').split(',')
     except Exception as msg:
-        print('*WARNING: ', msg)
+        print(('*WARNING: ', msg))
         return
 
     for dep in dependencies:
         if dep == '':
             break
-        if not dep in pluginList.keys():
+        if not dep in list(pluginList.keys()):
             raise Exception("Plugin '%s' is not available" % dep)
         if dep in orderedList:
             continue
@@ -102,14 +102,14 @@ def buildBootOrder(pluginList):
     """Rebuilds the plugin boot list based on the depends key.  Cyclic deps are not detected"""
     global logger
     orderedList = []
-    namesList = pluginList.keys()
+    namesList = list(pluginList.keys())
     for name in namesList:
         recursiveBuildBootOrder(pluginList, name, orderedList)
 
     lib.kernel.logger.rootLog.debug('Pluing Boot Order: %s' % str(orderedList))
     if True:
         return orderedList
-    for name in pluginList.keys():
+    for name in list(pluginList.keys()):
         plugin = pluginList[name]
         pluginName = plugin.configuration.get('Plugin', 'name')
         dependencies = plugin.configuration.get('Plugin', 'depends').split(',')
@@ -255,7 +255,7 @@ def prepareBuildInfo():
         num = int(f.readlines()[0])
         f.close()
     except Exception as msg:
-        print('ERROR READING BUILD NUMBER:', msg)
+        print(('ERROR READING BUILD NUMBER:', msg))
 
     lib.kernel.BUILD_INFO = tuple([num])
 

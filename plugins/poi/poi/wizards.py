@@ -124,11 +124,16 @@ class Wizard(MessageHeaderDialog):
         sizer.Add(buttons, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
         panel.SetSizer(sizer)
         panel.SetAutoLayout(True)
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 0) # El problema està aquí, afegeix self.content en aquest sizer
-        sizer.Fit(composite)
-        composite.SetSizer(sizer)
-        composite.SetAutoLayout(True)
+
+        # El problema està aquí, s'afegeix panel a un sizer
+        # Aquest codi es repeteix en altres funcions, sembla que es pot esborrar.
+
+        #sizer = wx.BoxSizer(wx.VERTICAL)
+        #sizer.Add(panel, 1, wx.EXPAND | wx.ALL, 0)
+        #sizer.Fit(composite)
+        #composite.SetSizer(sizer)
+        #composite.SetAutoLayout(True)
+
         self.addPages()
         if len(list(self.pages.items())) > 0:
             self.showPage(self.startingPage)

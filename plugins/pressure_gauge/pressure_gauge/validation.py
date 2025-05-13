@@ -30,7 +30,7 @@ def validatePurgeRange(owner, recipe):
     for device in recipe.getDevices():
         if device.getType() != 'mfc':
             continue
-        print('Device has purge?', device.hasPurge())
+        print(('Device has purge?', device.hasPurge()))
         if not device.hasPurge():
             continue
         if device.getPurgeLength() == 0:

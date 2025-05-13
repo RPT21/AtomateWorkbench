@@ -229,7 +229,7 @@ def getProject(name, shared=False):
     location = os.path.join(location, name)
     project = project_lib.Project(name)
     project.setLocation(location)
-    project.internal_setParent(getDefault().getWorkspace())
+    project.internal_setParent(getDefault().getWorkspace())  # getWorkspace() pertany a la classe ResourcesPlugin, i workspace és el mòdul workspace.py
     return project
 
 

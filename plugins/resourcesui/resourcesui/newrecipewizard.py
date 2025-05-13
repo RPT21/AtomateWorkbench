@@ -8,6 +8,7 @@ import plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.hardware.ha
 import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.utils, logging
 import plugins.poi.poi.__init__
 from plugins.poi.poi.wizards import Wizard, WizardPage
+from plugins.resources.resources import default
 logger = logging.getLogger('resourcesui.newrecipewizard')
 
 class NewRecipeWizard(Wizard):

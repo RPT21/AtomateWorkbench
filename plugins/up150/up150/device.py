@@ -90,14 +90,14 @@ class UP150DeviceEditor(core.device.DeviceEditor):
             self.selectHardware(hwid)
         except Exception as msg:
             traceback.print_exc()
-            print('* WARNING: Cannot set hardware:', msg)
+            print(('* WARNING: Cannot set hardware:', msg))
 
         try:
             label = uihints.getChildNamed('label').getValue()
             self.labelField.SetValue(label)
         except Exception as msg:
             traceback.print_exc()
-            print('* WARNING: Cannot set hardware:', msg)
+            print(('* WARNING: Cannot set hardware:', msg))
 
         if self.currentHardwareEditor is not None:
             self.currentHardwareEditor.setData(None, hwhints)
@@ -118,7 +118,7 @@ class UP150DeviceEditor(core.device.DeviceEditor):
             child.Destroy()
 
     def setHardwareEditor(self, editor):
-        print('set hardare editor', editor)
+        print(('set hardare editor', editor))
         self.removeHardwareEditor()
         editor.setInstance(self.description.getInstance())
         editor.createControl(self.hardwarePanel)
@@ -138,7 +138,7 @@ class UP150DeviceEditor(core.device.DeviceEditor):
             if self.currentHardwareEditor is not None:
                 self.currentHardwareEditor.getData(hwhints)
         except Exception as msg:
-            print('* ERROR:', msg)
+            print(('* ERROR:', msg))
 
         return
 
@@ -160,7 +160,7 @@ class UP150Device(core.device.Device):
             description = hwtype.getDescription()
             return '%s (%s) - address %s' % (hardwareName, description, hardwareAddress)
         except Exception as msg:
-            print('* WARNING:', msg)
+            print(('* WARNING:', msg))
 
         return '*NOT CONFIGURED*'
 

@@ -36,7 +36,7 @@ def init():
         logging.config.fileConfig('logging.cfg')
     except Exception as msg:
         print("* WARNING: Unable to read logging configuration. Using default log configuration with filename 'errors.log'")
-        print("\t'%s-%s'" % (Exception, msg))
+        print(("\t'%s-%s'" % (Exception, msg)))
         initDefaultConfig()
         return
 

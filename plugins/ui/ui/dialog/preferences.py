@@ -138,7 +138,8 @@ class PreferencesDialog(poi_dialogs.Dialog):
         sizer = self.stage.GetSizer()
         for child in self.stage.GetChildren():
             self.stage.RemoveChild(child)
-            sizer.Remove(child)
+            # sizer.Remove(child)  # Crec que la instrucció no és correcta.
+            child.GetContainingSizer().Detach(child)  # Millor utilitzar aquesta
             child.Destroy()
 
         return
@@ -194,9 +195,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
         pages = ui.preferences.getDefault().getPages()
         idx = 0
         for page in pages:
-            data = wx.TreeItemData()
-            data.SetData(page)
-            self.tree.AppendItem(self.root, page.getTitle(), data=data)
+            self.tree.AppendItem(self.root, page.getTitle(), data=page)
             idx += 1
 
     def getMementoID(self):
@@ -244,7 +243,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
 
         pages = ui.preferences.getDefault().getPages()
         page = None
-        if pages > 0:
+        if len(pages) > 0:
             page = pages[0]
         if selectedNode.lower() is not 'none':
             found = ui.preferences.getDefault().findPage(selectedNode)

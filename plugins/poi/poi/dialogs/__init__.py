@@ -207,15 +207,19 @@ class MessageHeaderDialog(Dialog):
         return None
 
     def createControl(self, parent):
-        self.control = wx.Dialog(parent, -1, self.title, style=self.getStyle())  # Crec que el problema és que intentem afegir el mateix objecte, que esta al parent, al fill.
+        self.control = wx.Dialog(parent, -1, self.title, style=self.getStyle())
         self.control.Bind(wx.EVT_CLOSE, self.OnClose)
         self.header = self.createHeader()  # Es crea el header i s'afegeix automàticament a self.control
-        self.content = self.createContent(self.control) # Es crea el content i s'afegeix automàticament a self.control, alerta, truca el metode de wizards.py
-        if self.content.GetContainingSizer():
-            self.content.GetContainingSizer().Detach(self.content)
+        self.content = self.createContent(self.control)  # Es crea el content i s'afegeix automàticament a self.control
+
+        # Per saber a quin sizer esta, utilitzem self.content.GetContainingSizer()
+
+        # if self.content.GetContainingSizer():  # Codi provisional per solucionar problemes amb el sizer
+            # self.content.GetContainingSizer().Detach(self.content)
+
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.header, 0, wx.EXPAND)
-        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND) # Per saber a quin sizer esta, utilitzem self.content.GetContainingSizer()
+        sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND)
         sizer.Add(self.content, 1, wx.EXPAND)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
@@ -254,7 +258,7 @@ class MessageHeaderDialog(Dialog):
         bsizer.Fit(p)
         return p
 
-    def createContent(self, parent):
+    def createContent(self, parent): # Alerta hi ha override amb Wizards
         b = poi.views.OneChildWindow(parent, -1)
         return b
 

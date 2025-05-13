@@ -3,8 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/validator/src/validator/userinterface/preferences.py
 # Compiled at: 2004-09-24 02:23:05
-import re, wx, logging, plugins.poi.poi.utils.staticwraptext as ui_staticwraptext, plugins.ui.ui.dialog.preferences as dialog_preferences
-import plugins.validator.validator.messages as messages, plugins.validator.validator.constants as constants
+import re, wx, logging, plugins.poi.poi.utils.staticwraptext as ui_staticwraptext
+import plugins.ui.ui.dialog.preferences as dialog_preferences
+import plugins.validator.validator.messages as messages
+import plugins.validator.validator.constants as constants
+import plugins.ui.ui as ui
 logger = logging.getLogger('validator')
 
 class PreferencesPage(dialog_preferences.PreferencesPage):

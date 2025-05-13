@@ -12,10 +12,10 @@ def setIgnore(ignoreList):
     _ignoreList = ignoreList
 
 def makeFromFile(filename):
-    print("makeFromFile", filename)
+    print(("makeFromFile", filename))
     
     if not os.path.exists(filename):
-        print("File '%s' does not exist" % filename)
+        print(("File '%s' does not exist" % filename))
         return 0
         
     f = open(filename, "r")
@@ -28,7 +28,7 @@ def makeFromFile(filename):
 
 def make(bookList):
     """Make all the books directories passed in as a list"""
-    print("make", bookList)
+    print(("make", bookList))
     
     for book in bookList:
         makeBook(book)
@@ -49,14 +49,14 @@ def makeBook(book):
     bookName = "%s.%s"%(bookBase, "zip")
     fullpath = os.path.join(topDir, bookName)
     
-    print("top dir:", topDir)
-    print("book name:", bookName)
-    print("\t", fullpath)
+    print(("top dir:", topDir))
+    print(("book name:", bookName))
+    print(("\t", fullpath))
     
     #zf = ZipFile( fullpath, 'w' )
     
     for filename in os.listdir(book):
-        print("comp:", filename)
+        print(("comp:", filename))
         if matches(filename):
             print("!doh")
             continue

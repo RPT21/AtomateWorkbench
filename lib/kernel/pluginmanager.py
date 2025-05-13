@@ -19,4 +19,4 @@ def addPlugin(name, plugin):
 
 
 def getPlugins():
-    return _plugins.values()
+    return list(_plugins.values())
