@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/executionengine/src/executionengine/userinterface/engineiniterrordialog.py
 # Compiled at: 2004-10-28 21:04:39
-import wx, plugins.ui.ui, wx.lib.mixins.listctrl as listmix, plugins.executionengine.executionengine.messages as messages, plugins.core.core.error
+import wx, plugins.ui.ui as ui, wx.lib.mixins.listctrl as listmix
+import plugins.executionengine.executionengine.messages as messages, plugins.core.core.error
+import plugins.core.core as core
 
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
     __module__ = __name__

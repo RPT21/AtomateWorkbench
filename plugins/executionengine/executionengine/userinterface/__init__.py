@@ -4,6 +4,9 @@
 # Embedded file name: ../plugins/executionengine/src/executionengine/userinterface/__init__.py
 # Compiled at: 2004-08-18 03:36:54
 import wx, plugins.poi.poi.dialogs, threading, plugins.ui.ui, logging
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+
 EVT_RUNNING_TASK_END_ID = wx.NewId()
 EVT_RUNNING_TASK_START_ID = wx.NewId()
 
@@ -87,7 +90,7 @@ class RecipeInitializationDialog(plugins.poi.poi.dialogs.Dialog):
         sizer.Add(self.okButton, 0, wx.ALIGN_CENTRE_HORIZONTAL)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
-        self.control.SetSize((400, 500))
+        self.control.SetSize(wx.Size(400, 500))
         self.control.CentreOnScreen()
         EVT_RUNNING_TASK_END(self.control, self.OnResults)
         poi.dialogs.Dialog.createControl(self, parent)

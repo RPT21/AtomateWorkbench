@@ -3,13 +3,19 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/executionengine/src/executionengine/__init__.py
 # Compiled at: 2004-12-13 23:17:23
-import plugins.ui.ui, wx, logging, copy, plugins.core.core.preferencesstore, plugins.ui.ui.context, plugins.ui.ui.preferences, lib.kernel.plugin
+import plugins.ui.ui, wx, logging, copy, plugins.core.core.preferencesstore, plugins.ui.ui.context
 import plugins.executionengine.executionengine.messages as messages, plugins.executionengine.executionengine.actions
-import plugins.executionengine.executionengine.engine, plugins.executionengine.executionengine.perspective as perspective, plugins.executionengine.executionengine.preferences
-import plugins.executionengine.executionengine.userinterface.eventviewer, plugins.poi.poi.actions.menumanager, plugins.executionengine.executionengine.images as images
+import plugins.executionengine.executionengine.engine, plugins.executionengine.executionengine.perspective as perspective
+import plugins.executionengine.executionengine.preferences
+import plugins.executionengine.executionengine.userinterface.eventviewer, plugins.poi.poi.actions.menumanager
+import plugins.executionengine.executionengine.images as images
+import plugins.ui.ui.preferences, lib.kernel.plugin
 import plugins.executionengine.executionengine.userinterface.purgemanagerviewer
 import plugins.executionengine.executionengine.userinterface.engineiniterrordialog, plugins.validator.validator
-from . import purgemanager
+import plugins.executionengine.executionengine.purgemanager as purgemanager
+import plugins.ui.ui as ui, plugins.poi.poi as poi
+import plugins.executionengine.executionengine.actions as execution_actions
+
 logger = logging.getLogger('executionengine')
 DEFAULT_RESOLUTION = 0.2
 PLUGIN_ID = 'executionengine'
@@ -195,21 +201,21 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
 
     def createRunMenuManager(self):
         plugins.executionengine.executionengine.actions.createActions()
-        plugins.ui.ui.context.addContextChangeListener(plugins.executionengine.executionengine.actions)
-        mng = plugins.poi.poi.actions.menumanager.MenuManager(messages.get('mainmenu.run'), 'atm.run')
-        tbm = plugins.ui.ui.getDefault().getToolBarManager()
-        tbm.addItem(plugins.poi.poi.actions.Separator())
-        tbm.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.runAction))
-        tbm.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.pauseAction))
-        tbm.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.resumeAction))
-        tbm.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.advanceAction))
-        tbm.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.abortAction))
-        tbm.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.stopPurgeAction))
-        mng.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.runAction))
-        mng.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.pauseAction))
-        mng.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.resumeAction))
-        mng.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.advanceAction))
-        mng.addItem(plugins.poi.poi.actions.ActionContributionItem(plugins.executionengine.executionengine.actions.abortAction))
-        mng.addItem(plugins.poi.poi.actions.Separator('run-additions-begin'))
-        mng.addItem(plugins.poi.poi.actions.GroupMarker('run-additions-end'))
+        ui.context.addContextChangeListener(plugins.executionengine.executionengine.actions)
+        mng = poi.actions.menumanager.MenuManager(messages.get('mainmenu.run'), 'atm.run')
+        tbm = ui.getDefault().getToolBarManager()
+        tbm.addItem(poi.actions.Separator())
+        tbm.addItem(poi.actions.ActionContributionItem(execution_actions.runAction))
+        tbm.addItem(poi.actions.ActionContributionItem(execution_actions.pauseAction))
+        tbm.addItem(poi.actions.ActionContributionItem(execution_actions.resumeAction))
+        tbm.addItem(poi.actions.ActionContributionItem(execution_actions.advanceAction))
+        tbm.addItem(poi.actions.ActionContributionItem(execution_actions.abortAction))
+        tbm.addItem(poi.actions.ActionContributionItem(execution_actions.stopPurgeAction))
+        mng.addItem(poi.actions.ActionContributionItem(execution_actions.runAction))
+        mng.addItem(poi.actions.ActionContributionItem(execution_actions.pauseAction))
+        mng.addItem(poi.actions.ActionContributionItem(execution_actions.resumeAction))
+        mng.addItem(poi.actions.ActionContributionItem(execution_actions.advanceAction))
+        mng.addItem(poi.actions.ActionContributionItem(execution_actions.abortAction))
+        mng.addItem(poi.actions.Separator('run-additions-begin'))
+        mng.addItem(poi.actions.GroupMarker('run-additions-end'))
         return mng

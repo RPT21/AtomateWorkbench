@@ -4,7 +4,7 @@
 # Embedded file name: ../plugins/executionengine/src/executionengine/userinterface/purgemanagerviewer.py
 # Compiled at: 2004-12-08 05:15:20
 import wx, plugins.ui.ui, plugins.executionengine.executionengine.purgemanager
-import plugins.poi.poi.actions, wx.lib.mixins.listctrl as listmix, wx.lib.buttons as buttons
+import plugins.poi.poi.actions, wx.lib.mixins.listctrl as listmix
 import plugins.executionengine.executionengine as executionengine
 import plugins.ui.ui as ui
 import plugins.poi.poi as poi

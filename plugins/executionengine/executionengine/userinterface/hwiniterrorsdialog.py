@@ -3,15 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/executionengine/src/executionengine/userinterface/hwiniterrorsdialog.py
 # Compiled at: 2004-08-13 09:33:12
-import wx, plugins.ui.ui, plugins.poi.poi.actions, plugins.poi.poi.views, plugins.executionengine.executionengine
-import plugins.executionengine.executionengine.engine, wx.lib.mixins.listctrl as listmix, wx.lib.buttons as buttons
-from plugins.poi.poi.dialogs import Dialog
+import wx, plugins.poi.poi.dialogs
+import plugins.poi.poi as poi
 
-class RecipeInitializationDialog(plugins.poi.poi.dialogs.Dialog):
+class RecipeInitializationDialog(poi.dialogs.Dialog):
     __module__ = __name__
 
     def __init__(self):
-        Dialog.__init__(self)
+        poi.dialogs.Dialog.__init__(self)
         self.control = None
         return
 
@@ -24,7 +23,7 @@ class RecipeInitializationDialog(plugins.poi.poi.dialogs.Dialog):
         self.control.SetAutoLayout(True)
         self.control.SetSize(wx.Size(400, 200))
         self.control.CentreOnScreen()
-        Dialog.createControl(self, parent)
+        poi.dialogs.Dialog.createControl(self, parent)
         self.control.Bind(wx.EVT_BUTTON, self.OnOKPressed, self.okButton)
 
     def OnOKPressed(self, event):

@@ -3,8 +3,15 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/executionengine/src/executionengine/engine.py
 # Compiled at: 2004-12-07 11:22:43
-import plugins.ui.ui, wx, plugins.executionengine.executionengine.userinterface, plugins.executionengine.executionengine.userinterface.hwiniterrorsdialog
-import plugins.core.core.conditional, plugins.hardware.hardware.hardwaremanager, threading, copy, time, logging, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.ui.ui as ui, wx, plugins.hardware.hardware.hardwaremanager
+import threading, copy, time, logging, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.poi.poi as poi
+import plugins.hardware.hardware as hardware
+import plugins.core.core as core
+import plugins.core.core.error
+import plugins.core.core.recipestep
+import plugins.executionengine.executionengine as executionengine
+
 logger = logging.getLogger('executionengine')
 TYPE_STARTING = 'type-starting'
 TYPE_ENDING = 'type-ending'
@@ -428,7 +435,6 @@ class Engine(threading.Thread):
                 return (suite, actions)
 
         return None
-        return
 
     def atEnd(self):
         """
@@ -482,9 +488,6 @@ class Engine(threading.Thread):
         self.fireEngineEvent(TYPE_EXECUTION_ERROR, 'Error: %s' % msg)
         self.internalCleanup()
 
-    def getCurrentStep(self):
-        return self.currentStep
-
     def setStepGoals(self):
         self.fireEngineEvent(TYPE_SETTING_STEP_GOALS, self.getCurrentStep())
         for participant in list(self.recipeParticipants.values()):
@@ -495,15 +498,14 @@ class Engine(threading.Thread):
         Returns true if the loopStartStep is not none
         """
         return self.loopStartStep is not None
-        return
 
     def isAtEndOfLoop(self):
-        lstep = self.loopStartStep
+        self.lstep = self.loopStartStep
         deltaSteps = self.currentStepIndex - self.loopStartStepIndex
-        return self.getRepeatEnclosingSteps() >= deltaSteps
+        return core.recipestep.RecipeStep().getRepeatEnclosingSteps() >= deltaSteps  # Crec que no està bé
 
     def hasFinishedLooping(self):
-        return self.currentLoops >= lstep.getRepeatCount()
+        return self.currentLoops >= self.lstep.getRepeatCount()
 
     def clearLoopFlag(self):
         self.loopStartStep = None
@@ -547,7 +549,6 @@ class Engine(threading.Thread):
             participant.prepareStep(self.getRecipeTime(), self.getStepTime(), self.getTotalTime(), self.currentStep)
 
         return True
-        return
 
     def prepareDevices(self):
         """
@@ -585,7 +586,7 @@ class Engine(threading.Thread):
                         return
 
                 cancelator = Cancelator()
-                cancelator.setName('Hardware Initializer')
+                cancelator.name = ('Hardware Initializer')
                 cancelator.start()
                 failure = False
                 lendevices = len(self.recipe.getDevices())
@@ -657,7 +658,6 @@ class Engine(threading.Thread):
         if hwinst not in self.recipeParticipants:
             return None
         return self.recipeParticipants[hwinst]
-        return
 
     def createRecipeParticipant(self, hwinst, recipe):
         logger.debug("Creating recipe participant for '%s'" % str(hwinst))

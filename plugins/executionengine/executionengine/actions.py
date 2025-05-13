@@ -4,8 +4,9 @@
 # Embedded file name: ../plugins/executionengine/src/executionengine/actions.py
 # Compiled at: 2004-10-18 23:48:59
 import plugins.poi.poi.actions, plugins.executionengine.executionengine.messages as messages, plugins.executionengine.executionengine
-import plugins.executionengine.executionengine.images as images, plugins.ui.ui.context, copy, wx
+import plugins.executionengine.executionengine.images as images, plugins.ui.ui.context
 import plugins.resources.resources, plugins.executionengine.executionengine.purgemanager
+import plugins.ui.ui as ui
 isValid = False
 oldValidValue = True
 enablementState = True

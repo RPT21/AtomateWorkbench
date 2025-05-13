@@ -3,8 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/executionengine/src/executionengine/userinterface/eventviewer.py
 # Compiled at: 2004-11-19 02:45:50
-import wx, plugins.ui.ui, plugins.poi.poi.actions, plugins.poi.poi.views, plugins.executionengine.executionengine
-import plugins.executionengine.executionengine.engine, wx.lib.mixins.listctrl as listmix, wx.lib.buttons as buttons
+import wx, plugins.poi.poi.actions, plugins.poi.poi.views
+import plugins.executionengine.executionengine.engine, wx.lib.mixins.listctrl as listmix
+import plugins.executionengine.executionengine as executionengine
+import plugins.poi.poi as poi
+import plugins.ui.ui as ui
 
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
     __module__ = __name__
@@ -23,7 +26,7 @@ class EventViewerWindow(object):
 
     def createControl(self, parent):
         self.control = wx.Frame(parent, -1, 'Execution Event Viewer', size=wx.Size(300, 400), style=wx.DEFAULT_FRAME_STYLE | wx.WANTS_CHARS)
-        color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         self.control.SetBackgroundColour(color)
         self.list = self.createList()
         self.clearButton = wx.Button(self.control, -1, 'Clear Events')
@@ -41,7 +44,7 @@ class EventViewerWindow(object):
     def OnChar(self, event):
         event.Skip()
         keycode = event.GetKeyCode()
-        if keycode == wx.WXK_ESC:
+        if keycode == wx.WXK_ESCAPE:
             self.hide()
 
     def getEventString(self, key):
