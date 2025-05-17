@@ -4,7 +4,7 @@
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/hw.py
 # Compiled at: 2005-06-21 21:49:37
 import threading, logging, urllib.request, urllib.parse, urllib.error, time, copy, xml.dom.minidom
-import plugins.goosemonitor.goosemonitor as goosemonitor, plugins.goosemonitor.goosemonitor.userinterface
+import plugins.goosemonitor.goosemonitor as goosemonitor
 import plugins.hardware.hardware.hardwaremanager, plugins.hardware.hardware as hardware
 
 class RefreshThread(threading.Thread):
@@ -55,9 +55,6 @@ class GooseMonitorHardware(hardware.hardwaremanager.Hardware):
         myListeners = copy.copy(self.listeners)
         for listener in myListeners:
             listener.gooseUpdate(self, error, extra)
-
-    def dispose(self):
-        hardware.hardwaremanager.Hardware.dispose(self)
 
     def checkDriver(self):
         pass

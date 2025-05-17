@@ -20,7 +20,13 @@ ENABLED_DIR_PREFIX = os.path.join(ICONS_DIR_PREFIX, 'enabled')
 ONOFF_DEVICE_STATUS_UNKNOWN = 'onoff-device-status-unknown'
 ONOFF_DEVICE_STATUS_ON = 'onoff-device-status-on'
 ONOFF_DEVICE_STATUS_OFF = 'onoff-device-status-off'
-imagesFilenames = {SHOW_VIEW_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'goosemonitor_icon.png')), STATUS_DEVICE_STATUS_NORMAL: (os.path.join(TOOLS_DIR_PREFIX, 'status_normal.png')), STATUS_DEVICE_STATUS_ERROR: (os.path.join(TOOLS_DIR_PREFIX, 'status_error.png')), STATUS_DEVICE_STATUS_NONE: (os.path.join(TOOLS_DIR_PREFIX, 'status_none.png')), ONOFF_DEVICE_STATUS_UNKNOWN: (os.path.join(TOOLS_DIR_PREFIX, 'button_unknown.png')), ONOFF_DEVICE_STATUS_ON: (os.path.join(TOOLS_DIR_PREFIX, 'button_on.png')), ONOFF_DEVICE_STATUS_OFF: (os.path.join(TOOLS_DIR_PREFIX, 'button_off.png'))}
+imagesFilenames = {SHOW_VIEW_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'goosemonitor_icon.png')),
+                   STATUS_DEVICE_STATUS_NORMAL: (os.path.join(TOOLS_DIR_PREFIX, 'status_normal.png')),
+                   STATUS_DEVICE_STATUS_ERROR: (os.path.join(TOOLS_DIR_PREFIX, 'status_error.png')),
+                   STATUS_DEVICE_STATUS_NONE: (os.path.join(TOOLS_DIR_PREFIX, 'status_none.png')),
+                   ONOFF_DEVICE_STATUS_UNKNOWN: (os.path.join(TOOLS_DIR_PREFIX, 'button_unknown.png')),
+                   ONOFF_DEVICE_STATUS_ON: (os.path.join(TOOLS_DIR_PREFIX, 'button_on.png')),
+                   ONOFF_DEVICE_STATUS_OFF: (os.path.join(TOOLS_DIR_PREFIX, 'button_off.png'))}
 
 def init(contextBundle):
     global imagesFilenames

@@ -3,10 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/goosemonitor/src/goosemonitor/userinterface/__init__.py
 # Compiled at: 2005-06-22 20:36:49
-import copy, wx, logging, plugins.poi.poi.views, plugins.poi.poi as poi
-import plugins.poi.poi.dialogs, plugins.hardware.hardware.userinterface.configurator
+import copy, wx, logging, plugins.poi.poi as poi
+import plugins.hardware.hardware.userinterface.configurator
 import plugins.hardware.hardware.hardwaremanager, plugins.ui.ui as ui
-import plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
 import plugins.goosemonitor.goosemonitor as goosemonitor
 import plugins.goosemonitor.goosemonitor.images as images
 import plugins.hardware.hardware as hardware

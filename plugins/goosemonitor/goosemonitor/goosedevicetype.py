@@ -6,8 +6,7 @@
 import plugins.hardware.hardware.hardwaretype
 import plugins.hardware.hardware as hardware
 import plugins.goosemonitor.goosemonitor.hw as goosehardware
-import plugins.goosemonitor.goosemonitor as goosemonitor
-import plugins.goosemonitor.goosemonitor.userinterface
+import plugins.goosemonitor.goosemonitor.userinterface as goosemonitor_userinterface
 GOOSE_TYPE = 'goose'
 
 class GooseDeviceType(hardware.hardwaretype.HardwareType):
@@ -26,10 +25,10 @@ class GooseDeviceType(hardware.hardwaretype.HardwareType):
         return goosehardware.GooseMonitorHardware()
 
     def getConfigurationPage(self):
-        return goosemonitor.userinterface.ConfigurationPage()
+        return goosemonitor_userinterface.ConfigurationPage()
 
     def getDeviceHardwareEditor(self):
-        return goosemonitor.userinterface.DeviceHardwareEditor()
+        return goosemonitor_userinterface.DeviceHardwareEditor()  # Sembla que falta aquesta classe en aquest plugin
 
     def getDescription(self):
         return 'wxGoose Monitor'

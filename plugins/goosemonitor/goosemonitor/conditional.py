@@ -7,6 +7,7 @@ import wx, copy, plugins.core.core as core, plugins.core.core.conditional, loggi
 import plugins.goosemonitor.goosemonitor as goosemonitor
 import plugins.hardware.hardware.hardwaremanager
 import plugins.goosemonitor.goosemonitor.goosedevicetype
+import plugins.hardware.hardware as hardware
 logger = logging.getLogger('goosemonitor')
 
 def equals(x, y):
@@ -35,6 +36,7 @@ class GooseMonitorConditionalTest(core.conditional.ConditionalTest):
     __module__ = __name__
 
     def __init__(self, fieldKey, device, parentID, operator, value):
+        super().__init__()
         print(('creating test for device:', device, fieldKey))
         self.device = device
         self.fieldKey = fieldKey
@@ -236,7 +238,6 @@ def monitorCondCreator(node, recipe):
     test = TEST_MAKERS[field](field, {}, devID, operator, value)
     print(('created test: ', test))
     return test
-    return
 
 
 core.conditional.addConditionalTestFactory('goosemonitor', monitorCondCreator)
