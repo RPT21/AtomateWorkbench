@@ -3,8 +3,16 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/graphview/src/graphview/item.py
 # Compiled at: 2004-11-19 02:46:13
-import wx, panelview.messages as messages, executionengine, executionengine.engine, logging, executionengine.purgemanager
+import wx, plugins.panelview.panelview.messages as messages, logging
+import plugins.executionengine.executionengine as executionengine
+import plugins.executionengine.executionengine.engine, plugins.executionengine.executionengine.purgemanager
+
 logger = logging.getLogger('panelview.mainitem')
+
+
+class NotImplementedException(Exception):
+    pass
+
 
 class PanelViewItem(object):
     __module__ = __name__
@@ -37,7 +45,6 @@ def str2time(val):
     if type(val) == str:
         return '00:00:00'
     return wx.TimeSpan.Seconds(val).Format()
-    return
 
 
 class ExecutionStatusPanelItem(PanelViewItem):

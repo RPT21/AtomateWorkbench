@@ -3,7 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/graphview/src/graphview/view.py
 # Compiled at: 2004-10-29 21:43:58
-import wx, copy, poi.views, logging, threading, panelview.devicemediator, panelview.images as images, panelview.messages as messages, panelview.item, labbooks
+import wx, wx.lib.scrolledpanel, copy, plugins.poi.poi.views, logging, threading
+import plugins.panelview.panelview.devicemediator
+import plugins.panelview.panelview.images as images, plugins.panelview.panelview.messages as messages
+import plugins.panelview.panelview.item
+import plugins.labbooks.labbooks as labbooks
+import plugins.panelview.panelview as panelview
+import plugins.poi.poi as poi
+
 logger = logging.getLogger('panelview.viewer')
 
 class ViewerView(labbooks.RunLogParticipant):
@@ -39,7 +46,7 @@ class ViewerView(labbooks.RunLogParticipant):
         return self.viewcontrol
 
     def addItem(self, item, refresh=True):
-        logger.debug('Add Item: %s creating control in %s' % (item, threading.currentThread()))
+        logger.debug('Add Item: %s creating control in %s' % (item, threading.current_thread()))
         if not item in self.panelitems:
             self.panelitems.append(item)
             sizer = self.control.GetSizer()

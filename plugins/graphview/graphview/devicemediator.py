@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/graphview/src/graphview/devicemediator.py
 # Compiled at: 2004-11-19 02:22:36
-import wx, panelview.item, logging
+import wx, plugins.panelview.panelview.item, logging, plugins.panelview.panelview as panelview
+
 logger = logging.getLogger('panelview')
 itemFactories = {}
 devices = {}

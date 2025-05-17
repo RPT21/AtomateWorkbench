@@ -3,11 +3,15 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/graphview/src/graphview/__init__.py
 # Compiled at: 2004-11-16 18:55:55
-import plugins.ui.ui, plugins.poi.poi.views, wx, lib.kernel.plugin, lib.kernel.pluginmanager as PluginManager, plugins.grideditor.grideditor, logging, plugins.ui.ui.context
+import lib.kernel.plugin, logging, plugins.ui.ui.context, lib.kernel as kernel
 import plugins.graphview.graphview.images as images, plugins.graphview.graphview.messages as messages
-import plugins.executionengine.executionengine, plugins.executionengine.executionengine.engine
-import plugins.graphview.graphview.view, threading, plugins.labbooks.labbooks
+import plugins.executionengine.executionengine.engine
+import plugins.executionengine.executionengine as executionengine
+import plugins.graphview.graphview.view, threading
+import plugins.labbooks.labbooks as labbooks
 import plugins.ui.ui as ui
+import plugins.grideditor.grideditor as grideditor
+
 VIEW_ID = 'graphview.view'
 logger = logging.getLogger('graphview')
 
@@ -16,12 +20,12 @@ def getDefault():
     return instance
 
 
-class GraphViewPlugin(lib.kernel.plugin.Plugin):
+class GraphViewPlugin(kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
         global instance
-        lib.kernel.plugin.Plugin.__init__(self)
+        kernel.plugin.Plugin.__init__(self)
         self.contextBundle = None
         self.panelViewFactories = {}
         instance = self
@@ -32,10 +36,10 @@ class GraphViewPlugin(lib.kernel.plugin.Plugin):
 
     def startup(self, contextBundle):
         self.contextBundle = contextBundle
-        plugins.ui.ui.getDefault().addInitListener(self)
+        ui.getDefault().addInitListener(self)
         images.init(contextBundle)
         messages.init(contextBundle)
-        plugins.ui.ui.context.addContextChangeListener(self)
+        ui.context.addContextChangeListener(self)
 
     def contextChanged(self, event):
         key = event.getKey()
@@ -47,7 +51,7 @@ class GraphViewPlugin(lib.kernel.plugin.Plugin):
                 self.model.removeModifyListener(self)
                 self.disposeGroups()
             else:
-                self.model = plugins.grideditor.grideditor.getDefault().getEditor().getInput()
+                self.model = grideditor.getDefault().getEditor().getInput()
                 self.model.addModifyListener(self)
                 self.prepareInput()
         return
@@ -75,13 +79,13 @@ class GraphViewPlugin(lib.kernel.plugin.Plugin):
 
     def updatePanelGroups(self, eventType, device):
         deviceType = device.getType()
-        if eventType is plugins.grideditor.grideditor.recipemodel.ADD_DEVICE:
+        if eventType is grideditor.recipemodel.ADD_DEVICE:
             self.prepareGroupDevice(device)
-        if eventType is plugins.grideditor.grideditor.recipemodel.CHANGE_DEVICE:
+        if eventType is grideditor.recipemodel.CHANGE_DEVICE:
             if not self.hasDeviceGroup(deviceType):
                 return
             self.updateDeviceGroup(device)
-        if eventType is plugins.grideditor.grideditor.recipemodel.REMOVE_DEVICE:
+        if eventType is grideditor.recipemodel.REMOVE_DEVICE:
             if not self.hasDeviceGroup(deviceType):
                 return
             self.removeDeviceFromGroup(device)
@@ -102,7 +106,7 @@ class GraphViewPlugin(lib.kernel.plugin.Plugin):
     def createDeviceGroup(self, deviceType):
         if not deviceType in self.panelViewFactories:
             return False
-        panel = plugins.ui.ui.getDefault().getMainFrame().getPerspective('run').getGraphPanel()
+        panel = ui.getDefault().getMainFrame().getPerspective('run').getGraphPanel()
         group = self.panelViewFactories[deviceType](self, panel)
         self.groups[deviceType] = group
         return True
@@ -123,21 +127,21 @@ class GraphViewPlugin(lib.kernel.plugin.Plugin):
         engine.addEngineListener(self)
 
     def engineEvent(self, event):
-        if event.getType() == plugins.executionengine.executionengine.engine.TYPE_ENDING:
+        if event.getType() == executionengine.engine.TYPE_ENDING:
             self.engine.removeEngineListener(self)
 
     def handlePartInit(self, part):
-        plugins.ui.ui.getDefault().removeInitListener(self)
-        persp = plugins.ui.ui.getDefault().getMainFrame().getPerspective('run')
-        logger.debug('Creating stuff in %s' % threading.currentThread())
+        ui.getDefault().removeInitListener(self)
+        persp = ui.getDefault().getMainFrame().getPerspective('run')
+        logger.debug('Creating stuff in %s' % threading.current_thread())
 
 
-class PanelView(plugins.labbooks.labbooks.RunLogParticipant):
+class PanelView(labbooks.RunLogParticipant):
     __module__ = __name__
 
     def __init__(self, owner, panel):
-        plugins.labbooks.labbooks.RunLogParticipant.__init__(self)
-        plugins.labbooks.labbooks.getDefault().registerDeviceParticipant(self)
+        labbooks.RunLogParticipant.__init__(self)
+        labbooks.getDefault().registerDeviceParticipant(self)
         self.owner = owner
         self.devices = []
         self.panel = panel
@@ -155,13 +159,13 @@ class PanelView(plugins.labbooks.labbooks.RunLogParticipant):
         pass
 
     def dispose(self):
-        plugins.labbooks.labbooks.getDefault().deregisterParticipant(self)
+        labbooks.getDefault().deregisterParticipant(self)
 
     def getRunLogHeaders(self, devices):
         return []
 
     def handleEngineEvent(self, event, runlog):
-        if event.getType() == plugins.executionengine.executionengine.engine.TYPE_ENDING:
+        if event.getType() == executionengine.engine.TYPE_ENDING:
             self.saveSnapshot(runlog)
 
 
