@@ -3,7 +3,16 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/editor.py
 # Compiled at: 2004-11-19 03:02:18
-import wx, traceback, wx.lib.scrolledpanel, poi.views, logging, extendededitor.mediator, extendededitor.mainitem, threading, extendededitor.messages as messages, extendededitor.images as images, copy, poi.utils.scrolledpanel, ui.context, executionengine, executionengine.engine
+import wx, wx.lib.scrolledpanel, plugins.poi.poi.views, logging
+import plugins.extendededitor.extendededitor.mainitem as extendededitor_mainitem
+import plugins.extendededitor.extendededitor.messages as messages
+import plugins.extendededitor.extendededitor.images as images, copy
+import plugins.poi.poi.utils.scrolledpanel, plugins.ui.ui.context, plugins.executionengine.executionengine.engine
+import plugins.ui.ui as ui
+import plugins.executionengine.executionengine as executionengine
+import plugins.poi.poi as poi
+import plugins.extendededitor.extendededitor.mediator as extendededitor_mediator
+
 logger = logging.getLogger('extendededitor')
 
 class EditorViewer(object):
@@ -13,7 +22,7 @@ class EditorViewer(object):
         self.control = None
         self.editorPanels = []
         self.model = None
-        self.mediator = extendededitor.mediator.Mediator(self)
+        self.mediator = extendededitor_mediator.Mediator(self)
         ui.context.addContextChangeListener(self)
         executionengine.getDefault().addEngineInitListener(self)
         self.engine = None
@@ -108,7 +117,6 @@ class EditorViewer(object):
             root = root.GetParent()
 
         return None
-        return
 
     def OnFocusChild(self, event):
         event.Skip()
@@ -136,7 +144,7 @@ class EditorViewer(object):
             self.removeAllItems()
         model = newInput
         self.mediator.setRecipeModel(model)
-        item = extendededitor.mainitem.MainEditorItem()
+        item = extendededitor_mainitem.MainEditorItem()
         self.insertEditorItem(0, item)
         item.setContainerPanel(self)
         item.setRecipeModel(model)

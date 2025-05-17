@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/mediator.py
 # Compiled at: 2004-11-19 02:20:58
-import ui.context, extendededitor
+from plugins.extendededitor.extendededitor.__init__ import getContributionFactory
 
 class Mediator(object):
     __module__ = __name__
@@ -42,7 +42,7 @@ class Mediator(object):
             self.deviceAdded(event.getDevice())
 
     def deviceAdded(self, device):
-        factory = extendededitor.getContributionFactory(device.getType())
+        factory = getContributionFactory(device.getType())
         if factory is None:
             return
         self.addContribution(factory, device)
@@ -50,7 +50,7 @@ class Mediator(object):
 
     def loadContributions(self):
         for device in self.model.getDevices():
-            factory = extendededitor.getContributionFactory(device.getType())
+            factory = getContributionFactory(device.getType())
             if factory is None:
                 return
             self.addContribution(factory, device)

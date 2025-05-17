@@ -3,14 +3,22 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/mainitem.py
 # Compiled at: 2004-11-19 02:39:40
-import wx, wx.lib.masked.timectrl as timectrl, wx.lib.intctrl, ui.widgets.contentassist, extendededitor.item, extendededitor.messages as messages, extendededitor.images as images, extendededitor.conditionals.itemlist, extendededitor.utils.validation as validation, validator.participant, validator, threading, traceback, logging
+import wx, wx.lib.masked.timectrl as timectrl, wx.lib.intctrl, plugins.ui.ui.widgets.contentassist
+import plugins.extendededitor.extendededitor.item as extendededitor_item
+import plugins.extendededitor.extendededitor.messages as messages
+import plugins.extendededitor.extendededitor.images as images
+import plugins.extendededitor.extendededitor.conditionals.itemlist as conditionals_itemlist
+import plugins.extendededitor.extendededitor.utils.validation as validation, plugins.validator.validator.participant
+import plugins.validator.validator as validator, logging
+import plugins.ui.ui as ui
+
 logger = logging.getLogger('extendededitor.mainitem')
 
-class MainEditorItem(extendededitor.item.ExtendedEditorItem):
+class MainEditorItem(extendededitor_item.ExtendedEditorItem):
     __module__ = __name__
 
     def __init__(self):
-        extendededitor.item.ExtendedEditorItem.__init__(self)
+        extendededitor_item.ExtendedEditorItem.__init__(self)
         self.setTitle(messages.get('exted.title'))
         self.setImage(images.getImage(images.MAIN_ITEM))
         self.suppress = False
@@ -19,11 +27,11 @@ class MainEditorItem(extendededitor.item.ExtendedEditorItem):
         return
 
     def dispose(self):
-        extendededitor.item.ExtendedEditorItem.dispose(self)
+        extendededitor_item.ExtendedEditorItem.dispose(self)
         validator.getDefault().removeValidationListener(self)
 
     def setFocus(self, focused):
-        extendededitor.item.ExtendedEditorItem.setFocus(self, focused)
+        extendededitor_item.ExtendedEditorItem.setFocus(self, focused)
         self.supress = not self.isFocused()
 
     def recipeModelChanged(self, event):
@@ -101,7 +109,7 @@ class MainEditorItem(extendededitor.item.ExtendedEditorItem):
         return self.body
 
     def createConditionalList(self, body):
-        ctrl = extendededitor.conditionals.itemlist.ConditionalListItem()
+        ctrl = conditionals_itemlist.ConditionalListItem()
         ctrl.createControl(body)
         return ctrl
 
@@ -251,6 +259,3 @@ class MainEditorItem(extendededitor.item.ExtendedEditorItem):
     def OnShutIt(self, event):
         event.Skip()
         self.hide()
-
-    def OnKillFocus(self, event):
-        event.Skip()

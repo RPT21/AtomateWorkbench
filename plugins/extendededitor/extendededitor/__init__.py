@@ -3,8 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/__init__.py
 # Compiled at: 2004-10-08 00:47:07
-import poi.views, kernel.plugin, kernel.pluginmanager as PluginManager, logging, extendededitor.editor, extendededitor.images as images, extendededitor.messages as messages
+import plugins.poi.poi.views, lib.kernel.plugin, logging
+import plugins.extendededitor.extendededitor.images as images
+import plugins.extendededitor.extendededitor.messages as messages
 import plugins.ui.ui as ui
+import lib.kernel as kernel
+import plugins.poi.poi as poi
+import plugins.extendededitor.extendededitor.editor as editor
+
 VIEW_ID = 'extendededitor.editor'
 logger = logging.getLogger('extendededitor')
 contributionFactories = {}
@@ -50,7 +56,7 @@ class ExtendedEditorView(poi.views.SectorView):
     __module__ = __name__
 
     def createControl(self, parent):
-        self.viewer = extendededitor.editor.EditorViewer()
+        self.viewer = editor.EditorViewer()
         self.viewer.createControl(parent)
         return self.viewer.getControl()
 

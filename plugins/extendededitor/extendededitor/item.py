@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/item.py
 # Compiled at: 2004-11-19 03:03:13
-import wx, logging, poi.views, traceback
+import wx, logging, plugins.poi.poi.views
+import plugins.poi.poi as poi
 logger = logging.getLogger('extendededitor.item')
 
 class RoundedGradedHeader(object):
@@ -12,8 +13,8 @@ class RoundedGradedHeader(object):
     def __init__(self):
         self.radius = 4
         self.activecolor = poi.views.getHeaderColor()
-        self.inactivecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_INACTIVECAPTION)
-        self.facecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        self.inactivecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_INACTIVECAPTION)
+        self.facecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         self.font = wx.Font(8, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
         self.control = None
         self.childfocus = False
@@ -59,7 +60,6 @@ class RoundedGradedHeader(object):
 
     def getSize(self):
         return self.cachedSize
-        return size
 
     def setFocus(self, focused):
         self.childfocus = focused
@@ -145,7 +145,7 @@ class RoundedGradedHeader(object):
             if self.childfocus:
                 color = poi.views.getHeaderTextColor()
             else:
-                color = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+                color = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
             dc.SetTextForeground(color)
             dc.DrawLabel(self.text, (offset, top, size[0] - offset, size[1] - top * 2))
         return
@@ -172,8 +172,8 @@ class ExtendedEditorItem(object):
         self.shadowsize = 2
         self.focused = False
         self.model = None
-        self.activecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_ACTIVECAPTION)
-        self.inactivecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_INACTIVECAPTION)
+        self.activecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_ACTIVECAPTION)
+        self.inactivecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_INACTIVECAPTION)
         self.header = RoundedGradedHeader()
         self.enablementStateManagedControls = []
         self.enablementState = {}

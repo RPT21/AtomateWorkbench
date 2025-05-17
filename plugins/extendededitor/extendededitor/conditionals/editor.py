@@ -3,7 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/conditionals/editor.py
 # Compiled at: 2004-12-08 05:11:50
-import wx, ui, copy, core.conditional, extendededitor.messages as messages, extendededitor.conditionals.testeditor, poi.utils.listctrl
+import wx, plugins.ui.ui as ui, copy, plugins.core.core.conditional
+import plugins.extendededitor.extendededitor.messages as messages
+import plugins.extendededitor.extendededitor.conditionals.testeditor as conditional_testeditor
+import plugins.poi.poi.utils.listctrl
+import plugins.poi.poi as poi
+import plugins.core.core as core
 
 class ConditionalEditor(object):
     __module__ = __name__
@@ -52,7 +57,7 @@ class ConditionalEditor(object):
         sizer.Add(hsizer, 0, wx.ALIGN_RIGHT | wx.TOP | wx.BOTTOM | wx.RIGHT, 10)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
-        self.control.SetSize((400, 500))
+        self.control.SetSize(wx.Size(400, 500))
         self.control.CentreOnScreen()
         self.addButton.Bind(wx.EVT_BUTTON, self.OnAddButton)
         self.editButton.Bind(wx.EVT_BUTTON, self.OnEdit)
@@ -105,7 +110,7 @@ class ConditionalEditor(object):
                 break
             return conditionals[itemIndex]
 
-        self.setSelection(selection)
+        # self.setSelection(selection) - No crec que funcioni
 
     def OnTestSelected(self, event):
         event.Skip()
@@ -117,7 +122,7 @@ class ConditionalEditor(object):
         self.moveUpButton.Enable(conditionals.index(selection) > 0)
 
     def OnEdit(self, event):
-        dlg = extendededitor.conditionals.testeditor.TestEditor()
+        dlg = conditional_testeditor.TestEditor()
         dlg.setRecipe(self.recipe)
         dlg.createControl(ui.getDefault().getMainFrame().getControl())
         selection = self.getSelection()
@@ -134,7 +139,7 @@ class ConditionalEditor(object):
         dlg.dispose()
 
     def OnAddButton(self, event):
-        dlg = extendededitor.conditionals.testeditor.TestEditor()
+        dlg = conditional_testeditor.TestEditor()
         dlg.setRecipe(self.recipe)
         dlg.createControl(ui.getDefault().getMainFrame().getControl())
         if dlg.showModal() == wx.ID_OK:

@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/conditionals/__init__.py
 # Compiled at: 2004-11-18 18:59:11
-import core.conditional, logging
+import plugins.core.core.conditional, logging, plugins.core.core as core
 logger = logging.getLogger('extendededitor')
 
 class AbortRecipeAction(core.conditional.ConditionalAction):

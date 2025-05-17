@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/conditionals/itemlist.py
 # Compiled at: 2004-12-08 05:13:15
-import wx, ui, extendededitor.conditionals.editor, extendededitor.messages as messages
+import wx, plugins.ui.ui as ui, plugins.extendededitor.extendededitor.conditionals.editor as conditionals_editor
+import plugins.extendededitor.extendededitor.messages as messages
 
 class ConditionalListItem(object):
     __module__ = __name__
@@ -54,7 +55,7 @@ class ConditionalListItem(object):
         self.editButton.Bind(wx.EVT_BUTTON, self.OnEdit)
 
     def OnEdit(self, event):
-        dlg = extendededitor.conditionals.editor.ConditionalEditor()
+        dlg = conditionals_editor.ConditionalEditor()
         dlg.setStep(self.step)
         dlg.setRecipe(self.recipe)
         dlg.createControl(ui.getDefault().getMainFrame().getControl())

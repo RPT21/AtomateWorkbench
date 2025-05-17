@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/extendededitor/src/extendededitor/conditionals/testeditor.py
 # Compiled at: 2005-06-28 18:45:53
-import core, wx, copy, poi.utils.scrolledpanel as scrolledpanel, poi.utils.staticwraptext, ui, extendededitor.messages as messages, extendededitor.conditionals, logging
+import plugins.core.core as core, wx, copy, plugins.poi.poi.utils.scrolledpanel as scrolledpanel
+import plugins.poi.poi.utils.staticwraptext, plugins.poi.poi as poi
+import plugins.extendededitor.extendededitor.messages as messages
+import plugins.extendededitor.extendededitor.conditionals as extendededitor_conditionals, logging
+
 logger = logging.getLogger('extendededitor')
 
 class ActionRowItem(object):
@@ -14,7 +18,7 @@ class ActionRowItem(object):
         self.control = None
         self.focused = False
         self.normalcolor = wx.WHITE
-        self.highlightcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
+        self.highlightcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
         self.actionControl = None
         self.action = None
         return
@@ -85,7 +89,7 @@ class TestRowItem(object):
         self.control = None
         self.focused = False
         self.normalcolor = wx.WHITE
-        self.highlightcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
+        self.highlightcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
         self.conditionalTest = None
         self.leftOperands = []
         self.currentCtrl = None
@@ -249,11 +253,11 @@ class GlobalConditionalActionContribution(ConditionalActionContribution):
 
     def createAction(self, control):
         if control.abortRadio.GetValue():
-            return extendededitor.conditionals.AbortRecipeAction()
+            return extendededitor_conditionals.AbortRecipeAction()
         if control.holdRadio.GetValue():
-            return extendededitor.conditionals.HoldStepAction()
+            return extendededitor_conditionals.HoldStepAction()
         if control.advanceRadio.GetValue():
-            return extendededitor.conditionals.AdvanceStepAction()
+            return extendededitor_conditionals.AdvanceStepAction()
         raise Exception('Unknown action!')
 
 
@@ -406,7 +410,7 @@ class TestEditor(object):
         sizer.Add(hsizer, 0, wx.ALIGN_RIGHT | wx.TOP | wx.BOTTOM | wx.RIGHT, 10)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
-        self.control.SetSize((600, 400))
+        self.control.SetSize(wx.Size(600, 400))
         self.control.CentreOnScreen()
         self.moreButton.Bind(wx.EVT_BUTTON, self.OnMoreButton)
         self.fewerButton.Bind(wx.EVT_BUTTON, self.OnFewerButton)
