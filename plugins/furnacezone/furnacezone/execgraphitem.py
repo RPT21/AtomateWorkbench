@@ -3,8 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/execgraphitem.py
 # Compiled at: 2004-11-16 19:14:29
-import wx, os, plugins.graphview.graphview, math, plugins.executionengine.executionengine, plugins.executionengine.executionengine.engine
+import wx, os, plugins.graphview.graphview, plugins.executionengine.executionengine
+import plugins.executionengine.executionengine.engine
 import plugins.core.core.utils.caching, plugins.poi.poi.utils.bufferedwindow, time, logging
+import plugins.core.core as core
+import plugins.poi.poi as poi
+import plugins.graphview.graphview as graphview
+import plugins.executionengine.executionengine as executionengine
+
 logger = logging.getLogger('furnacezone.graphview')
 
 def graphViewFactory(plugin, perspective):
@@ -21,7 +27,7 @@ class GraphItem(wx.Panel):
         (self.width, self.height) = (0, 0)
         self.extensionLength = 10
         self.setpoint = 0
-        self.setpointColor = wx.Color(200, 200, 240)
+        self.setpointColor = wx.Colour(200, 200, 240)
         self.setpointPen = wx.Pen(self.setpointColor, 1)
         self.createSetpointFont()
         self.spp = 1.0
@@ -255,7 +261,7 @@ class GraphView(plugins.graphview.graphview.PanelView):
 
     def createUI(self, owner, panel):
         self.p = wx.Panel(panel, -1)
-        self.p.SetBackgroundColour(wx.Color(60, 60, 60))
+        self.p.SetBackgroundColour(wx.Colour(60, 60, 60))
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.p.SetSizer(self.sizer)
         self.p.SetAutoLayout(True)

@@ -3,7 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/graphitem.py
 # Compiled at: 2004-11-19 21:59:47
-import wx, grapheditor.contributor, grideditor.recipemodel, executionengine, logging
+import wx, plugins.grapheditor.grapheditor.contributor
+import plugins.grideditor.grideditor.recipemodel, logging
+import plugins.grapheditor.grapheditor as grapheditor
+import plugins.executionengine.executionengine as executionengine
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('furnacezone.ui.graphitem')
 
 class FurnaceZoneGraphItem(grapheditor.contributor.GraphContributor):
@@ -11,7 +16,7 @@ class FurnaceZoneGraphItem(grapheditor.contributor.GraphContributor):
 
     def __init__(self):
         grapheditor.contributor.GraphContributor.__init__(self)
-        self.facecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        self.facecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         self.setTitle('')
         self.engine = None
         self.events = []
@@ -152,7 +157,7 @@ class FurnaceZoneGraphItem(grapheditor.contributor.GraphContributor):
 
     def reduceColor(self, color):
         scale = 0.6
-        return wx.Color(self.normalize(color.Red()), self.normalize(color.Green()), self.normalize(color.Blue()))
+        return wx.Colour(self.normalize(color.Red()), self.normalize(color.Green()), self.normalize(color.Blue()))
 
     def normalize(self, color):
         scale = 0.6

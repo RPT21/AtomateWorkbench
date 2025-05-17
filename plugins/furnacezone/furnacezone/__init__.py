@@ -4,62 +4,76 @@
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/__init__.py
 # Compiled at: 2004-10-08 00:47:25
 DEVICE_ID = 'furnacezone'
-import plugins.ui.ui, lib.kernel.plugin, plugins.core.core.deviceregistry, plugins.executionengine.executionengine
-import plugins.furnacezone.furnacezone.execgraphitem, plugins.furnacezone.furnacezone.device
-import plugins.furnacezone.furnacezone.column, plugins.furnacezone.furnacezone.graphitem, plugins.furnacezone.furnacezone.extendededitoritem
-import plugins.furnacezone.furnacezone.participant, plugins.extendededitor.extendededitor, plugins.grideditor.grideditor
-import plugins.labbooks.labbooks, plugins.grapheditor.grapheditor, plugins.graphview.graphview, plugins.furnacezone.furnacezone.images as images
-import plugins.furnacezone.furnacezone.messages as messages, plugins.furnacezone.furnacezone.panelviewitem
-import plugins.panelview.panelview.devicemediator, logging, plugins.furnacezone.furnacezone.validation, plugins.furnacezone.furnacezone.executiongridviewcolumn
+import plugins.ui.ui as ui, lib.kernel.plugin , plugins.core.core.deviceregistry, lib.kernel as kernel
+import plugins.furnacezone.furnacezone.execgraphitem as furnacezone_execgraphitem
+import plugins.furnacezone.furnacezone.device as furnacezone_device
+import plugins.furnacezone.furnacezone.column as furnacezone_column
+import plugins.furnacezone.furnacezone.graphitem as furnacezone_graphitem
+import plugins.furnacezone.furnacezone.extendededitoritem as furnacezone_extendededitoritem
+import plugins.furnacezone.furnacezone.participant as furnacezone_participant
+import plugins.furnacezone.furnacezone.images as images
+import plugins.furnacezone.furnacezone.messages as messages
+import plugins.furnacezone.furnacezone.panelviewitem as furnacezone_panelviewitem
+import plugins.panelview.panelview.devicemediator, logging
+import plugins.furnacezone.furnacezone.validation as furnacezone_validation
+import plugins.furnacezone.furnacezone.executiongridviewcolumn
+import plugins.core.core as core
+import plugins.grideditor.grideditor as grideditor
+import plugins.panelview.panelview as panelview
+import plugins.grapheditor.grapheditor as grapheditor
+import plugins.extendededitor.extendededitor as extendededitor
+import plugins.labbooks.labbooks as labbooks
+import plugins.graphview.graphview as graphview
+
 logger = logging.getLogger('furnacezone')
 
-class FurnaceZoneDevicePlugin(lib.kernel.plugin.Plugin):
+class FurnaceZoneDevicePlugin(kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
         lib.kernel.plugin.Plugin.__init__(self)
-        plugins.ui.ui.getDefault().setSplashText('Loading Furnace Zone plugin ...')
+        ui.getDefault().setSplashText('Loading Furnace Zone plugin ...')
 
     def startup(self, contextBundle):
-        logger.debug("Registering '%s' as device" % plugins.furnacezone.furnacezone.device.DEVICE_ID)
+        logger.debug("Registering '%s' as device" % furnacezone_device.DEVICE_ID)
         images.init(contextBundle)
         messages.init(contextBundle)
-        plugins.panelview.panelview.devicemediator.registerItemContributionFactory(plugins.furnacezone.furnacezone.device.DEVICE_ID, FurnacePanelViewContributionFactory())
-        plugins.core.core.deviceregistry.addDeviceFactory(plugins.furnacezone.furnacezone.device.DEVICE_ID, FurnaceZoneDeviceFactory())
-        plugins.grideditor.grideditor.addColumnContributionFactory(plugins.furnacezone.furnacezone.device.DEVICE_ID, FurnaceZoneColumnContributionFactory())
-        plugins.grapheditor.grapheditor.addGraphContributionFactory(plugins.furnacezone.furnacezone.device.DEVICE_ID, FurnaceZoneGraphEditorContributionFactory())
-        plugins.extendededitor.extendededitor.addContributionFactory(plugins.furnacezone.furnacezone.device.DEVICE_ID, FurnaceZoneExtendedEditorContributionFactory())
-        plugins.labbooks.labbooks.getDefault().registerDeviceParticipant(plugins.furnacezone.furnacezone.participant.FurnaceZoneRunLogParticipant())
-        plugins.graphview.graphview.getDefault().registerViewFactory(plugins.furnacezone.furnacezone.device.DEVICE_ID, plugins.furnacezone.furnacezone.execgraphitem.graphViewFactory)
-        plugins.furnacezone.furnacezone.validation.init()
+        panelview.devicemediator.registerItemContributionFactory(furnacezone_device.DEVICE_ID, FurnacePanelViewContributionFactory())
+        core.deviceregistry.addDeviceFactory(furnacezone_device.DEVICE_ID, FurnaceZoneDeviceFactory())
+        grideditor.addColumnContributionFactory(furnacezone_device.DEVICE_ID, FurnaceZoneColumnContributionFactory())
+        grapheditor.addGraphContributionFactory(furnacezone_device.DEVICE_ID, FurnaceZoneGraphEditorContributionFactory())
+        extendededitor.addContributionFactory(furnacezone_device.DEVICE_ID, FurnaceZoneExtendedEditorContributionFactory())
+        labbooks.getDefault().registerDeviceParticipant(furnacezone_participant.FurnaceZoneRunLogParticipant())
+        graphview.getDefault().registerViewFactory(furnacezone_device.DEVICE_ID, furnacezone_execgraphitem.graphViewFactory)
+        furnacezone_validation.init()
 
 
 class FurnacePanelViewContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return plugins.furnacezone.furnacezone.panelviewitem.FurnaceZonePanelViewItem()
+        return furnacezone_panelviewitem.FurnaceZonePanelViewItem()
 
 
 class FurnaceZoneExtendedEditorContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return plugins.furnacezone.furnacezone.extendededitoritem.FurnaceZoneExtendedEditorItem()
+        return furnacezone_extendededitoritem.FurnaceZoneExtendedEditorItem()
 
 
 class FurnaceZoneGraphEditorContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return plugins.furnacezone.furnacezone.graphitem.FurnaceZoneGraphItem()
+        return furnacezone_graphitem.FurnaceZoneGraphItem()
 
 
 class FurnaceZoneColumnContributionFactory(object):
     __module__ = __name__
 
     def getInstance(self, deviceType):
-        return plugins.furnacezone.furnacezone.column.FurnaceZoneColumn()
+        return furnacezone_column.FurnaceZoneColumn()
 
 
 class FurnaceZoneDeviceFactory(object):
@@ -69,7 +83,7 @@ class FurnaceZoneDeviceFactory(object):
         pass
 
     def getInstance(self):
-        return plugins.furnacezone.furnacezone.device.FurnaceZoneDevice()
+        return furnacezone_device.FurnaceZoneDevice()
 
     def getTypeString(self):
         global DEVICE_ID

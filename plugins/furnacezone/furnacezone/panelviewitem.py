@@ -3,7 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/panelviewitem.py
 # Compiled at: 2004-11-19 01:37:48
-import wx, threading, wx.gizmos, hardware.hardwaremanager, panelview.devicemediator, logging, furnacezone.hw, ui.widgets.led, ui.widgets
+import wx, threading, wx.gizmos, plugins.hardware.hardware.hardwaremanager, plugins.panelview.panelview.devicemediator
+import logging, plugins.furnacezone.furnacezone.hw as furnacezone_hw, plugins.ui.ui.widgets.led
+import plugins.panelview.panelview as panelview
+import plugins.ui.ui as ui
+import plugins.hardware.hardware as hardware
+
 logger = logging.getLogger('furnacezone.ui.panelview')
 
 class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
@@ -44,7 +49,7 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
         self.updateDeviceUI()
 
     def updateDeviceUI(self):
-        logger.debug('Update device ui in thread %s' % threading.currentThread())
+        logger.debug('Update device ui in thread %s' % threading.current_thread())
         try:
             self.deviceLabel.SetLabel(self.device.getLabel())
         except Exception as msg:
@@ -86,12 +91,12 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
         wx.CallAfter(self.internalHardwareUpdate, event)
 
     def internalHardwareUpdate(self, event):
-        logger.debug('Internal hardware update %s' % threading.currentThread())
+        logger.debug('Internal hardware update %s' % threading.current_thread())
         try:
             tempval = 0
-            if event.etype == furnacezone.hw.TEMPERATURE:
+            if event.etype == furnacezone_hw.TEMPERATURE:
                 tempval = event.data
-            elif event.etype == furnacezone.hw.STOPPED:
+            elif event.etype == furnacezone_hw.STOPPED:
                 tempval = ''
             self.temperatureLED.setValue(str(tempval))
             setpoint = self.getConfiguredHardware().getSetpoint()

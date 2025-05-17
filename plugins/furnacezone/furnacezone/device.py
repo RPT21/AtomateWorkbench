@@ -3,21 +3,25 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/device.py
 # Compiled at: 2004-11-19 02:40:49
-import wx.lib.masked.timectrl as timectrl, traceback, wx, furnacezone, furnacezone.stepentry, furnacezone.conditional, hardware.hardwaremanager, core.device, ui, ui.images as uiimages, poi.utils.staticwraptext as staticwraptext, poi.images as poiimages, logging, furnacezone.messages as messages, wx.lib.colourselect as colourselect
+import wx.lib.masked.timectrl as timectrl, wx
+import plugins.furnacezone.furnacezone.conditional as furnacezone_conditional
+import plugins.furnacezone.furnacezone.stepentry as furnacezone_stepentry
+import plugins.hardware.hardware.hardwaremanager, plugins.core.core.device
+import plugins.ui.ui.images as uiimages, plugins.poi.poi.utils.staticwraptext as staticwraptext
+import plugins.poi.poi.images as poiimages, logging, plugins.furnacezone.furnacezone.messages as messages
+import wx.lib.colourselect as colourselect
+import plugins.core.core as core
+import plugins.ui.ui as ui
+import plugins.hardware.hardware as hardware
 
 def color2str(color):
     return '%d,%d,%d' % (color.Red(), color.Green(), color.Blue())
 
-
 def parseColor(colorStr):
-    return wx.Color(*list(map(int, colorStr.split(','))))
-
+    return wx.Colour(*list(map(int, colorStr.split(','))))
 
 logger = logging.getLogger('furnacezone.userinterface')
 DEVICE_ID = 'furnacezone'
-
-def parseColor(colorStr):
-    return wx.Color(*list(map(int, colorStr.split(','))))
 
 
 class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
@@ -408,7 +412,7 @@ class FurnaceZoneDevice(core.device.Device):
         uihints = self.getUIHints()
 
     def parseFromNode(self, node):
-        return furnacezone.stepentry.parseFromNode(node)
+        return furnacezone_stepentry.parseFromNode(node)
 
     def convertToNode(self, root):
         core.device.Device.convertToNode(self, root)
@@ -416,14 +420,14 @@ class FurnaceZoneDevice(core.device.Device):
     def createNewStepEntry(self, fromExisting=None):
         if fromExisting is not None:
             return fromExisting.clone()
-        return furnacezone.stepentry.FurnaceZoneStepEntry()
+        return furnacezone_stepentry.FurnaceZoneStepEntry()
 
     def getDeviceEditor(self):
         return FurnaceZoneDeviceEditor()
 
     def getConditionalContributions(self):
         return [
-         furnacezone.conditional.FurnaceZoneConditionalContribution(self)]
+         furnacezone_conditional.FurnaceZoneConditionalContribution(self)]
 
     def dispose(self):
         mainframe = ui.getDefault().getMainFrame()

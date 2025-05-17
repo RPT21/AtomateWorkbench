@@ -3,7 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/extendededitoritem.py
 # Compiled at: 2004-11-19 02:46:08
-import wx, extendededitor.item, grideditor.recipemodel, furnacezone.messages as messages, furnacezone.stepentry, ui.widgets.contentassist, logging
+import wx, plugins.extendededitor.extendededitor.item, plugins.grideditor.grideditor.recipemodel
+import plugins.furnacezone.furnacezone.messages as messages
+import plugins.furnacezone.furnacezone.stepentry as furnacezone_stepentry
+import plugins.ui.ui.widgets.contentassist, logging
+import plugins.ui.ui as ui
+import plugins.extendededitor.extendededitor as extendededitor
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('furnacezone.extendededitor')
 
 class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
@@ -137,7 +144,7 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         entry = self.model.getEntryAtStep(step, self.device)
         logger.debug("setting setpoint: '%d'" % entry.getSetpoint())
         self.setpoint.SetValue(str(entry.getSetpoint()))
-        if entry.getSetpointMode() == furnacezone.stepentry.SETPOINT_LINEAR_RAMP:
+        if entry.getSetpointMode() == furnacezone_stepentry.SETPOINT_LINEAR_RAMP:
             self.linearRampCheckbox.SetValue(True)
             self.rampOriginSetpoint.Enable(True)
             self.rampOriginTemp.Enable(True)
@@ -167,13 +174,13 @@ class FurnaceZoneExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
 
         checked = self.linearRampCheckbox.IsChecked()
         if checked:
-            entry.setSetpointMode(furnacezone.stepentry.SETPOINT_LINEAR_RAMP)
+            entry.setSetpointMode(furnacezone_stepentry.SETPOINT_LINEAR_RAMP)
             if self.rampOriginSetpoint.GetValue():
-                entry.setRampStart(furnacezone.stepentry.RAMP_FROM_SETPOINT)
+                entry.setRampStart(furnacezone_stepentry.RAMP_FROM_SETPOINT)
             else:
-                entry.setRampStart(furnacezone.stepentry.RAMP_FROM_LAST)
+                entry.setRampStart(furnacezone_stepentry.RAMP_FROM_LAST)
         else:
-            entry.setSetpointMode(furnacezone.stepentry.SETPOINT_SINGLE)
+            entry.setSetpointMode(furnacezone_stepentry.SETPOINT_SINGLE)
         self.validateStep()
         self.model.updateStepEntry(self.currentStep)
         return

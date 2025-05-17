@@ -3,8 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/validation.py
 # Compiled at: 2004-10-27 04:34:26
-import validator.participant, furnacezone.device, logging
+import plugins.validator.validator.participant, logging
 import plugins.validator.validator as validator
+
 logger = logging.getLogger('furnacezone.validation')
 
 class FurnaceZoneInvalidRange(validator.participant.ValidationError):

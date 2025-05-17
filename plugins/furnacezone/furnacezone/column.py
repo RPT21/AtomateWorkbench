@@ -3,9 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/column.py
 # Compiled at: 2004-09-21 20:05:48
-from wx.grid import *
 from wx import *
-import wx, furnacezone.images as images, grideditor.tablecolumn, grideditor.utils.numericcelleditor, grideditor.utils, grideditor, logging
+import wx, plugins.furnacezone.furnacezone.images as images, plugins.grideditor.grideditor.tablecolumn
+import plugins.grideditor.grideditor.utils.numericcelleditor, plugins.grideditor.grideditor as grideditor
+import logging
 logger = logging.getLogger('furnacezone')
 
 class FurnaceZoneCellEditor(grideditor.utils.numericcelleditor.NumericCellEditor):

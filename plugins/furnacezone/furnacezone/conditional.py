@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/conditional.py
 # Compiled at: 2004-09-22 20:17:39
-import wx, core.conditional, logging, core.conditional, furnacezone
+import wx, plugins.core.core.conditional, logging
+import plugins.core.core as core
 logger = logging.getLogger('furnacezone')
 
 def equals(x, y):
@@ -53,6 +54,7 @@ class FurnaceZoneConditionalTest(core.conditional.ConditionalTest):
     __module__ = __name__
 
     def __init__(self, device, operator, temperature):
+        super().__init__()
         self.device = device
         self.operator = operator
         self.comparator = OPERATOR_METHODS[operator]

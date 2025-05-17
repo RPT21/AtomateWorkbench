@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/furnacezone/src/furnacezone/stepentry.py
 # Compiled at: 2004-08-23 08:14:46
-import core.stepentry, logging
+import plugins.core.core.stepentry, logging, plugins.core.core as core
 SETPOINT_SINGLE = 0
 SETPOINT_LINEAR_RAMP = 1
 RAMP_FROM_LAST = 0
@@ -106,7 +106,7 @@ class FurnaceZoneStepEntry(core.stepentry.StepEntry):
         except Exception as msg:
             logger.exception(msg)
             logger.warning('Unable to convert recipe to node.  Using default values')
-            setpointNode.setAttribute('mode', setpointModeToTag[SETPOINT_SINGLE])
+            setpointNode.setAttribute('mode', setpointModeToTags[SETPOINT_SINGLE])
 
     def clone(self):
         stepentry = FurnaceZoneStepEntry()
