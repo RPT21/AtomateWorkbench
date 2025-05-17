@@ -9162,3 +9162,617 @@ DEBUG/perspective.run/perspective.py-268	Shutting down detailed view timer threa
 DEBUG/perspective.run/perspective.py-284	Exiting detailed view timer thread
 DEBUG/perspective.run/perspective.py-271	Joined timer thread
 DEBUG/grideditor/__init__.py-139	Saving recipe ...
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-193	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-30	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-38	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001910EC392E0>]
+DEBUG/goosemonitor/__init__.py-85	but the instance is null =(
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-37	UP150 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'update'
+DEBUG/hardware/__init__.py-125	Initializing startup hardware
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001910EC392E0>]
+ERROR/adr2100/__init__.py-401	No option 'checkinterval' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'checkinterval'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 399, in setupDriver
+    self.throttleCheck = config.get('main', 'checkInterval')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'checkinterval' in section: 'main'
+ERROR/adr2100Hardware/__init__.py-410	No section: 'driver'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 404, in setupDriver
+    driverType = config.get('driver', 'type')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 759, in get
+    d = self._unify_values(section, vars)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 1130, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'driver'
+ERROR/adr2100Hardware/__init__.py-411	Cannot initialize driver: 'No section: 'driver''
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001910EC392E0>]
+ERROR/adr2100/__init__.py-401	No option 'checkinterval' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'checkinterval'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 399, in setupDriver
+    self.throttleCheck = config.get('main', 'checkInterval')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'checkinterval' in section: 'main'
+ERROR/adr2100Hardware/__init__.py-410	No section: 'driver'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 404, in setupDriver
+    driverType = config.get('driver', 'type')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 759, in get
+    d = self._unify_values(section, vars)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 1130, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'driver'
+ERROR/adr2100Hardware/__init__.py-411	Cannot initialize driver: 'No section: 'driver''
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001910EC392E0>]
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001910EC392E0>]
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001910EC392E0>]
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/help/__init__.py-70	Loading default book 'books/getting_started.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/usersguide.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/recipes.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/devices.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/mfc.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/furnacezone.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/addingusers.zip'
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/grideditor/__init__.py-290	invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\__init__.py", line 287, in restorePreviousRecipe
+    versionNumber = int(self.config.get('main', 'versionnumber'))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+DEBUG/grideditor/__init__.py-291	No previous recipe specified
+DEBUG/graphview/__init__.py-132	Creating stuff in <_MainThread(MainThread, started 28588)>
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/ui/__init__.py-34	Dumping threads
+DEBUG/ui/__init__.py-35	----------------------------
+DEBUG/ui/__init__.py-36	TOTAL THREADS: 5
+DEBUG/ui/__init__.py-38		THREAD: <_MainThread(MainThread, started 28588)> - MainThread
+DEBUG/ui/__init__.py-38		THREAD: <StatusThread(Thread-1, started 32312)> - Thread-1
+DEBUG/ui/__init__.py-38		THREAD: <StatusThread(Thread-2, started 15488)> - Thread-2
+DEBUG/ui/__init__.py-38		THREAD: <TimerThread(Thread-3, started daemon 14004)> - Thread-3
+DEBUG/ui/__init__.py-38		THREAD: <Timer(Thread-4, started 17060)> - Thread-4
+DEBUG/progress/progress.py-87	Creating progress dialog 205/206/<plugins.poi.poi.dialogs.progress.ProgressDialog object at 0x0000019113CABDA0>
+DEBUG/progress/progress.py-269	Did not fork.  Executing in thread '<_MainThread(MainThread, started 28588)>'
+DEBUG/progress/progress.py-155	activate
+DEBUG/progress/progress.py-237	Running runnable
+DEBUG/hardware/__init__.py-153	Starting ...
+DEBUG/hardware/__init__.py-165	Calling hardware manager shutdown
+DEBUG/hardware/__init__.py-167	Finalizing
+DEBUG/progress/progress.py-194	closing dialog 206/205/<_MainThread(MainThread, started 28588)>
+DEBUG/progress/progress.py-155	activate
+DEBUG/progress/progress.py-196	Past End Modal
+DEBUG/perspective.run/perspective.py-268	Shutting down detailed view timer thread
+DEBUG/perspective.run/perspective.py-284	Exiting detailed view timer thread
+DEBUG/perspective.run/perspective.py-271	Joined timer thread
+DEBUG/grideditor/__init__.py-139	Saving recipe ...
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-193	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-30	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-38	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001D050B91400>]
+DEBUG/goosemonitor/__init__.py-85	but the instance is null =(
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-31	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+DEBUG/root/boot.py-172	Booting plugin 'mks647bc'
+DEBUG/root/boot.py-172	Booting plugin 'pressure_gauge'
+DEBUG/pressure_gauge/__init__.py-21	Registering 'pressure_gauge' as device
+DEBUG/root/boot.py-172	Booting plugin 'mkspdr2000'
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.ser.SerialDeviceDriver'>/<class 'mkspdr2000.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/mkspdr2000/__init__.py-16	Registering driver <class 'mkspdr2000.drivers.simulation.SimulationDeviceDriver'>/<class 'mkspdr2000.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/mkspdr2000/__init__.py-30	mkspdr2000 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'schematicspanel'
+DEBUG/root/boot.py-172	Booting plugin 'up150'
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.rs485driver.RS485Driver'>/<class 'up150.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/up150/__init__.py-16	Registering driver <class 'up150.drivers.simulation.SimulationDeviceDriver'>/<class 'up150.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/up150/__init__.py-37	UP150 Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'update'
+DEBUG/hardware/__init__.py-125	Initializing startup hardware
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001D050B91400>]
+ERROR/adr2100/__init__.py-401	No option 'checkinterval' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'checkinterval'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 399, in setupDriver
+    self.throttleCheck = config.get('main', 'checkInterval')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'checkinterval' in section: 'main'
+ERROR/adr2100Hardware/__init__.py-410	No section: 'driver'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 404, in setupDriver
+    driverType = config.get('driver', 'type')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 759, in get
+    d = self._unify_values(section, vars)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 1130, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'driver'
+ERROR/adr2100Hardware/__init__.py-411	Cannot initialize driver: 'No section: 'driver''
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001D050B91400>]
+ERROR/adr2100/__init__.py-401	No option 'checkinterval' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'checkinterval'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 399, in setupDriver
+    self.throttleCheck = config.get('main', 'checkInterval')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'checkinterval' in section: 'main'
+ERROR/adr2100Hardware/__init__.py-410	No section: 'driver'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\adr2100\adr2100\__init__.py", line 404, in setupDriver
+    driverType = config.get('driver', 'type')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 759, in get
+    d = self._unify_values(section, vars)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 1130, in _unify_values
+    raise NoSectionError(section) from None
+configparser.NoSectionError: No section: 'driver'
+ERROR/adr2100Hardware/__init__.py-411	Cannot initialize driver: 'No section: 'driver''
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001D050B91400>]
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001D050B91400>]
+ERROR/hardware/__init__.py-135	No option 'startupinit' in section: 'main'
+Traceback (most recent call last):
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 767, in get
+    value = d[option]
+            ~^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1014, in __getitem__
+    return self.__missing__(key)            # support subclasses that define __missing__
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\collections\__init__.py", line 1006, in __missing__
+    raise KeyError(key)
+KeyError: 'startupinit'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\hardware\hardware\__init__.py", line 133, in createHardwareInstances
+    initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'  # description.getConfiguration()['main']._options() per veure les opcions
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\AppData\Local\Programs\Python\Python312\Lib\configparser.py", line 770, in get
+    raise NoOptionError(option, section)
+configparser.NoOptionError: No option 'startupinit' in section: 'main'
+WARNING/hardware/__init__.py-136	No startupinit tag in description
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001D050B91400>]
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/help/__init__.py-70	Loading default book 'books/getting_started.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/usersguide.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/recipes.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/devices.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/mfc.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/furnacezone.zip'
+DEBUG/help/__init__.py-70	Loading default book 'books/addingusers.zip'
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/grideditor/__init__.py-290	invalid literal for int() with base 10: ''
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor\grideditor\__init__.py", line 287, in restorePreviousRecipe
+    versionNumber = int(self.config.get('main', 'versionnumber'))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+DEBUG/grideditor/__init__.py-291	No previous recipe specified
+DEBUG/graphview/__init__.py-132	Creating stuff in <_MainThread(MainThread, started 27304)>
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+ERROR/poi.toolbarmanager/toolbarmanager.py-68	wrapped C/C++ object of type StaticBitmap has been deleted
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\poi\poi\actions\toolbarmanager.py", line 65, in removeAllItems
+    self.widget.RemoveChild(item.widget)
+RuntimeError: wrapped C/C++ object of type StaticBitmap has been deleted
+DEBUG/ui/__init__.py-34	Dumping threads
+DEBUG/ui/__init__.py-35	----------------------------
+DEBUG/ui/__init__.py-36	TOTAL THREADS: 5
+DEBUG/ui/__init__.py-38		THREAD: <_MainThread(MainThread, started 27304)> - MainThread
+DEBUG/ui/__init__.py-38		THREAD: <StatusThread(Thread-1, started 12624)> - Thread-1
+DEBUG/ui/__init__.py-38		THREAD: <StatusThread(Thread-2, started 32708)> - Thread-2
+DEBUG/ui/__init__.py-38		THREAD: <TimerThread(Thread-3, started daemon 28500)> - Thread-3
+DEBUG/ui/__init__.py-38		THREAD: <Timer(Thread-4, started 12304)> - Thread-4
+DEBUG/progress/progress.py-87	Creating progress dialog 205/206/<plugins.poi.poi.dialogs.progress.ProgressDialog object at 0x000001D055F1BA40>
+DEBUG/progress/progress.py-269	Did not fork.  Executing in thread '<_MainThread(MainThread, started 27304)>'
+DEBUG/progress/progress.py-155	activate
+DEBUG/progress/progress.py-237	Running runnable
+DEBUG/hardware/__init__.py-153	Starting ...
+DEBUG/hardware/__init__.py-165	Calling hardware manager shutdown
+DEBUG/hardware/__init__.py-167	Finalizing
+DEBUG/progress/progress.py-194	closing dialog 206/205/<_MainThread(MainThread, started 27304)>
+DEBUG/progress/progress.py-155	activate
+DEBUG/progress/progress.py-196	Past End Modal
+DEBUG/perspective.run/perspective.py-268	Shutting down detailed view timer thread
+DEBUG/perspective.run/perspective.py-284	Exiting detailed view timer thread
+DEBUG/perspective.run/perspective.py-271	Joined timer thread
+DEBUG/grideditor/__init__.py-139	Saving recipe ...

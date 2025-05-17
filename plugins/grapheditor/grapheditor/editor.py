@@ -8,9 +8,12 @@ Manages the graphs and its contribution on the editor.
 
 it uses a buffered drawing method
 """
-import random, wx, time, poi.views, copy
+import random, wx, time, plugins.poi.poi.views
 random.seed()
-import grapheditor, grapheditor.images as images, grapheditor.messages as messages, logging
+import plugins.poi.poi as poi
+import plugins.grapheditor.grapheditor.images as images, logging
+import plugins.grapheditor.grapheditor.messages as messages
+from plugins.grapheditor.grapheditor.__init__ import getGraphContributionFactory
 logger = logging.getLogger('grapheditor.editor')
 DEFAULT_SB_WIDTH = 18
 ZOOMCONTROL_WIDTH = 100
@@ -132,7 +135,6 @@ class EditorViewer(object):
         if device not in self.deviceToContribution:
             return None
         return self.deviceToContribution[device]
-        return
 
     def loadGraphItemContributions(self):
         recipe = self.editor.getInput()
@@ -140,7 +142,7 @@ class EditorViewer(object):
             self.addGraphItemContributionForDevice(device)
 
     def addGraphItemContributionForDevice(self, device):
-        factory = grapheditor.getGraphContributionFactory(device.getType())
+        factory = getGraphContributionFactory(device.getType())
         logger.debug('Contributing to graph factory: %s- %s' % (factory, device))
         if factory is None:
             return
