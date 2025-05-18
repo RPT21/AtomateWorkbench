@@ -10,7 +10,12 @@ Two values: setpoint and actualflow setpoint.
             Actual Flow Setpoint is the value after the setpoint is multiplied by 
             the GCF
 """
-import wx, mfc.utils, extendededitor.item, grideditor.recipemodel, mfc.messages as messages, ui.widgets.contentassist, logging
+import wx, plugins.extendededitor.extendededitor.item, plugins.grideditor.grideditor.recipemodel
+import plugins.mfc.mfc.messages as messages, plugins.ui.ui.widgets.contentassist, logging
+import plugins.ui.ui as ui
+import plugins.extendededitor.extendededitor as extendededitor
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('mfc.extendededitor')
 
 class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
@@ -56,7 +61,6 @@ class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
         self.addStateManagedControl(self.actualFlow)
         self.updateDeviceInfo()
         return self.body
-        return
 
     def OnSetFocusText(self, event, ctrl):
         event.Skip()

@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/pressure_gauge/src/pressure_gauge/participant.py
 # Compiled at: 2004-11-23 04:02:59
-import labbooks, pressure_gauge.device, logging
+import plugins.labbooks.labbooks as labbooks, logging
+
 logger = logging.getLogger('pressure_gauge.labbooks')
 
 class PressureGaugeRunLogParticipant(labbooks.RunLogParticipant):

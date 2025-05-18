@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/executiongridviewcolumn.py
 # Compiled at: 2004-09-15 00:23:52
-import grideditor.executiongridviewer, logging
+import plugins.grideditor.grideditor.executiongridviewer, logging
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('mfc.execgridview')
 
 def factoryFunc(device, recipe):

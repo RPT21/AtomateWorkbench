@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/graphitem.py
 # Compiled at: 2004-10-27 04:37:26
-import wx, grapheditor.contributor, grideditor.recipemodel, executionengine, logging
+import wx, plugins.grapheditor.grapheditor.contributor, plugins.grideditor.grideditor.recipemodel, logging
+import plugins.executionengine.executionengine as executionengine
+import plugins.grideditor.grideditor as grideditor
+import plugins.grapheditor.grapheditor as grapheditor
+
 logger = logging.getLogger('mfc.ui.graphitem')
 
 class MFCGraphItem(grapheditor.contributor.GraphContributor):
@@ -132,7 +136,7 @@ class MFCGraphItem(grapheditor.contributor.GraphContributor):
 
     def reduceColor(self, color):
         scale = 0.6
-        return wx.Color(self.normalize(color.Red()), self.normalize(color.Green()), self.normalize(color.Blue()))
+        return wx.Colour(self.normalize(color.Red()), self.normalize(color.Green()), self.normalize(color.Blue()))
 
     def normalize(self, color):
         scale = 0.6

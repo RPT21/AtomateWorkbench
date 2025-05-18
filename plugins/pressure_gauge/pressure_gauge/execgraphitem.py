@@ -3,7 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/pressure_gauge/src/pressure_gauge/execgraphitem.py
 # Compiled at: 2004-11-19 02:34:25
-import wx, os, graphview, math, random, executionengine, executionengine.engine, core.utils.caching, poi.utils.bufferedwindow
+import wx, os, math
+import plugins.executionengine.executionengine.engine, plugins.core.core.utils.caching
+import plugins.poi.poi.utils.bufferedwindow
+import plugins.core.core as core
+import plugins.poi.poi as poi
+import plugins.executionengine.executionengine as executionengine
+import plugins.graphview.graphview as graphview
 
 def graphViewFactory(plugin, perspective):
     return GraphView(plugin, perspective)

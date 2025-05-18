@@ -3,7 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/validation.py
 # Compiled at: 2004-10-27 04:33:50
-import validator, validator.participant, mfc.device, logging
+import plugins.validator.validator.participant, plugins.mfc.mfc.device, logging
+import plugins.validator.validator as validator
+import plugins.mfc.mfc as mfc
+
 logger = logging.getLogger('mfc.validation')
 
 class MFCInvalidRange(validator.participant.ValidationError):
@@ -45,7 +48,6 @@ def validatePurgeRange(owner, recipe):
             valid = False
 
     return valid
-    return
 
 
 def validateRange(owner, recipe):
@@ -74,7 +76,6 @@ def validateRange(owner, recipe):
                 owner.addError(MFCInvalidRange(step, device, 'Setpoint is outside the range. Should be below %0.3f (%0.3f with %0.2f gcf)' % (range, range * gcf, gcf)))
 
     return valid
-    return
 
 
 class CompositeValidationParticipant(validator.participant.ValidationParticipant):

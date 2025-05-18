@@ -3,11 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/column.py
 # Compiled at: 2004-10-29 20:49:59
-from wxPython.grid import *
-from wxPython.wx import *
-import wx, logging, mfc.images as images
-from mfc.utils import *
-import grideditor, grideditor.tablecolumn, grideditor.utils.numericcelleditor, grideditor.utils
+from wx import *
+import wx, logging, plugins.mfc.mfc.images as images
+from plugins.mfc.mfc.utils import *
+import plugins.grideditor.grideditor.tablecolumn
+import plugins.grideditor.grideditor.utils.numericcelleditor
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('mfc')
 
 class MFCCellEditor(grideditor.utils.numericcelleditor.NumericCellEditor):
@@ -118,7 +120,7 @@ class MFCColumn(grideditor.tablecolumn.ColumnContribution):
     __module__ = __name__
 
     def __init__(self):
-        grideditor.tablecolumn.ColumnContribution.__init__(self)
+        grideditor.tablecolumn.ColumnContribution.__init__(self)  # Podria ser que column sigui una variable eliminable
         self.recipeModel = None
         self.useGCF = True
         self.GCF = 100.0

@@ -3,12 +3,19 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/pressure_gauge/src/pressure_gauge/device.py
 # Compiled at: 2004-11-11 02:37:26
-import wx, wx.lib.masked.timectrl as timectrl, wx.lib.colourselect as colourselect, traceback, threading, pressure_gauge, pressure_gauge.stepentry, hardware.hardwaremanager, core.device, poi.utils.scrolledpanel, logging, ui.context, pressure_gauge.messages as messages
+import wx, plugins.hardware.hardware.hardwaremanager
+import plugins.pressure_gauge.pressure_gauge.stepentry as pressure_gauge_stepentry
+import plugins.core.core.device, plugins.poi.poi.utils.scrolledpanel, logging
+import plugins.pressure_gauge.pressure_gauge.messages as messages
+import plugins.core.core as core
+import plugins.poi.poi as poi
+import plugins.hardware.hardware as hardware
+
 logger = logging.getLogger('pressure_gauge.userinterface')
 DEVICE_ID = 'pressure_gauge'
 
 def parseColor(colorStr):
-    return wx.Color(*list(map(int, colorStr.split(','))))
+    return wx.Colour(*list(map(int, colorStr.split(','))))
 
 
 class PressureGaugeDeviceEditor(core.device.DeviceEditor):
@@ -199,7 +206,7 @@ class PressureGaugeDevice(core.device.Device):
         uihints = self.getUIHints()
 
     def parseFromNode(self, node):
-        result = pressure_gauge.stepentry.parseFromNode(node)
+        result = pressure_gauge_stepentry.parseFromNode(node)
         self.configurationUpdated()
         return result
 
@@ -209,8 +216,7 @@ class PressureGaugeDevice(core.device.Device):
     def createNewStepEntry(self, fromExisting=None):
         if fromExisting is not None:
             return fromExisting.clone()
-        return pressure_gauge.stepentry.PressureGaugeStepEntry()
-        return
+        return pressure_gauge_stepentry.PressureGaugeStepEntry()
 
     def getDeviceEditor(self):
         return PressureGaugeDeviceEditor()

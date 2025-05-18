@@ -3,7 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/pressure_gauge/src/pressure_gauge/panelviewitem.py
 # Compiled at: 2004-11-23 01:09:00
-import wx, pressure_gauge.hardwarestatusprovider, wx.gizmos, hardware.hardwaremanager, panelview.devicemediator, logging, poi.utils.LEDdisplay, ui.widgets.led
+import wx, wx.gizmos
+import plugins.pressure_gauge.pressure_gauge.hardwarestatusprovider as pressure_gauge_hardwarestatusprovider
+import plugins.hardware.hardware.hardwaremanager, plugins.panelview.panelview.devicemediator, logging
+import plugins.poi.poi.utils.LEDdisplay
+import plugins.poi.poi as poi
+import plugins.hardware.hardware as hardware
+import plugins.panelview.panelview as panelview
+
 logger = logging.getLogger('pressure_gauge.panelview')
 
 class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
@@ -95,13 +102,12 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
             leftover = 0
         frmt = '%%0.0%df' % leftover
         return frmt % flow
-        return
 
     def internalHardwareUpdate(self, event):
         try:
-            if event.etype == pressure_gauge.hardwarestatusprovider.PRESSURE:
+            if event.etype == pressure_gauge_hardwarestatusprovider.PRESSURE:
                 pressure = event.data
-            elif event.etype == pressure_gauge.hardwarestatusprovider.STOPPED:
+            elif event.etype == pressure_gauge_hardwarestatusprovider.STOPPED:
                 pressure = (
                  '', '')
             else:

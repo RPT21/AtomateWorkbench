@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/pressure_gauge/src/pressure_gauge/stepentry.py
 # Compiled at: 2004-11-11 02:31:52
-import core.stepentry, logging
+import plugins.core.core.stepentry, logging
+import plugins.core.core as core
+
 logger = logging.getLogger('pressure_gauge')
 
 def parseFromNode(node):
