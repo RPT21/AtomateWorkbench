@@ -4,7 +4,9 @@
 # Embedded file name: ../plugins/panelview/src/panelview/view.py
 # Compiled at: 2004-11-23 19:48:35
 import wx, copy, plugins.poi.poi.views, logging, threading, plugins.panelview.panelview.devicemediator
-import plugins.panelview.panelview.images as images, plugins.panelview.panelview.messages as messages, plugins.panelview.panelview.item
+import plugins.panelview.panelview.item, wx.lib.scrolledpanel
+import plugins.panelview.panelview.devicemediator as panelview_devicemediator
+
 logger = logging.getLogger('panelview.viewer')
 
 class ViewerView(object):
@@ -51,7 +53,7 @@ class ViewerView(object):
         return self.control
 
     def addItem(self, item, refresh=True):
-        logger.debug('Add Item: %s creating control in %s' % (item, threading.currentThread()))
+        logger.debug('Add Item: %s creating control in %s' % (item, threading.current_thread()))
         if not item in self.panelitems:
             self.panelitems.append(item)
             sizer = self.control.GetSizer()
@@ -144,5 +146,5 @@ class ViewerView(object):
         return
 
     def internalPrepareNewPanels(self, model):
-        panelview.devicemediator.setRecipeModel(model)
+        panelview_devicemediator.setRecipeModel(model)
         self.updateMe()

@@ -3,9 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/panelview/src/panelview/__init__.py
 # Compiled at: 2004-11-04 19:42:53
-import plugins.ui.ui as ui, plugins.poi.poi.views, lib.kernel.plugin, plugins.panelview.panelview.view
-import logging, plugins.ui.ui.context, plugins.panelview.panelview.images as images
-import plugins.panelview.panelview.messages as messages, plugins.executionengine.executionengine
+import plugins.ui.ui as ui, plugins.poi.poi.views, lib.kernel.plugin
+import plugins.panelview.panelview.view as panelview_view
+import logging, plugins.panelview.panelview.images as images
+import plugins.panelview.panelview.messages as messages
+import plugins.executionengine.executionengine as executionengine
+import lib.kernel as kernel
+import plugins.poi.poi as poi
+
 VIEW_ID = 'panelview.view'
 logger = logging.getLogger('panelview')
 
@@ -14,12 +19,12 @@ def getDefault():
     return instance
 
 
-class PanelViewPlugin(lib.kernel.plugin.Plugin):
+class PanelViewPlugin(kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
         global instance
-        lib.kernel.plugin.Plugin.__init__(self)
+        kernel.plugin.Plugin.__init__(self)
         self.contextBundle = None
         self.panelViewFactories = {}
         instance = self
@@ -27,7 +32,7 @@ class PanelViewPlugin(lib.kernel.plugin.Plugin):
 
     def startup(self, contextBundle):
         self.contextBundle = contextBundle
-        plugins.ui.ui.getDefault().addInitListener(self)
+        ui.getDefault().addInitListener(self)
         images.init(contextBundle)
         messages.init(contextBundle)
 
@@ -37,7 +42,7 @@ class PanelViewPlugin(lib.kernel.plugin.Plugin):
         engine.addEngineListener(self)
 
     def engineEvent(self, event):
-        if event.getType() == plugins.executionengine.executionengine.engine.TYPE_ENDING:
+        if event.getType() == executionengine.engine.TYPE_ENDING:
             self.engine.removeEngineListener(self)
 
     def handlePartInit(self, part):
@@ -51,11 +56,11 @@ class PanelViewPlugin(lib.kernel.plugin.Plugin):
         return view
 
 
-class PanelView(plugins.poi.poi.views.SectorView):
+class PanelView(poi.views.SectorView):
     __module__ = __name__
 
     def createControl(self, parent, horizontal=True):
-        self.viewer = plugins.panelview.panelview.view.ViewerView(horizontal)
+        self.viewer = panelview_view.ViewerView(horizontal)
         self.viewer.createControl(parent)
         return self.viewer.getControl()
 

@@ -4,7 +4,10 @@
 # Embedded file name: ../plugins/panelview/src/panelview/item.py
 # Compiled at: 2004-11-19 22:27:06
 import wx, plugins.panelview.panelview.messages as messages, logging
+import plugins.executionengine.executionengine as executionengine
+
 logger = logging.getLogger('panelview.mainitem')
+
 
 class PanelViewItem(object):
     __module__ = __name__
@@ -16,7 +19,7 @@ class PanelViewItem(object):
         return
 
     def createControl(self, parent, horizontal=False):
-        raise NotImplementedException()
+        raise Exception("Not Implemented Exception")
 
     def getControl(self):
         return self.control
@@ -51,7 +54,7 @@ if False:
         def __init__(self):
             PanelViewItem.__init__(self)
             self.engine = None
-            plugins.executionengine.executionengine.getDefault().addEngineInitListener(self)
+            executionengine.getDefault().addEngineInitListener(self)
             executionengine.purgemanager.addListener(self)
             self.lasttext = 'Stopped'
             return

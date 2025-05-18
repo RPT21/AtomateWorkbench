@@ -5,6 +5,7 @@
 # Compiled at: 2004-10-28 00:15:40
 import wx, plugins.panelview.panelview.item, logging
 from plugins.panelview.panelview.item import *
+
 logger = logging.getLogger('panelview')
 itemFactories = {}
 devices = {}
