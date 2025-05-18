@@ -10,15 +10,19 @@ Two values: setpoint and actualflow setpoint.
             Actual Flow Setpoint is the value after the setpoint is multiplied by 
             the GCF
 """
-import wx, plugins.mfc.mfc.utils, plugins.extendededitor.extendededitor.item, plugins.grideditor.grideditor.recipemodel
+import wx, plugins.extendededitor.extendededitor.item, plugins.grideditor.grideditor.recipemodel
 import plugins.mfc.mfc.messages as messages, plugins.ui.ui.widgets.contentassist, logging
+import plugins.ui.ui as ui
+import plugins.grideditor.grideditor as grideditor
+import plugins.extendededitor.extendededitor as extendededitor
+
 logger = logging.getLogger('mfc.extendededitor')
 
-class MFCExtendedEditorItem(plugins.extendededitor.extendededitor.item.ExtendedEditorItem):
+class MFCExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
     __module__ = __name__
 
     def __init__(self):
-        plugins.extendededitor.extendededitor.item.ExtendedEditorItem.__init__(self)
+        extendededitor.item.ExtendedEditorItem.__init__(self)
         self.device = None
         self.model = None
         self.suppress = False
@@ -220,7 +224,7 @@ class MFCExtendedEditorItem(plugins.extendededitor.extendededitor.item.ExtendedE
         pass
 
     def recipeModelChanged(self, event):
-        if event.getEventType() == plugins.grideditor.grideditor.recipemodel.CHANGE_DEVICE:
+        if event.getEventType() == grideditor.recipemodel.CHANGE_DEVICE:
             if event.getDevice() != self.device:
                 return
             self.updateDeviceInfo()
@@ -238,7 +242,7 @@ class MFCExtendedEditorItem(plugins.extendededitor.extendededitor.item.ExtendedE
             self.disable()
 
     def dispose(self):
-        plugins.extendededitor.extendededitor.item.ExtendedEditorItem.dispose(self)
+        extendededitor.item.ExtendedEditorItem.dispose(self)
         if self.model is not None:
             self.model.removeModifyListener(self)
         return

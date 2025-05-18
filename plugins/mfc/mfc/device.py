@@ -3,10 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/device.py
 # Compiled at: 2004-11-19 02:41:21
-import wx, wx.lib.masked.timectrl as timectrl, wx.lib.colourselect as colourselect, traceback, threading
+import wx, wx.lib.masked.timectrl as timectrl, wx.lib.colourselect as colourselect
 import plugins.mfc.mfc, plugins.mfc.mfc.stepentry, plugins.mfc.mfc.widgets, plugins.hardware.hardware.hardwaremanager
 import plugins.core.core.device, plugins.poi.poi.utils.scrolledpanel
 import logging, plugins.ui.ui.context, plugins.mfc.mfc.messages as messages
+import plugins.mfc.mfc.widgets as mfc_widgets
+import plugins.core.core as core
+import plugins.poi.poi as poi
+
 logger = logging.getLogger('mfc.userinterface')
 DEVICE_ID = 'mfc'
 
@@ -14,17 +18,17 @@ def parseColor(colorStr):
     return wx.Colour(*list(map(int, colorStr.split(','))))
 
 
-class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
+class MFCDeviceEditor(core.device.DeviceEditor):
     __module__ = __name__
 
     def __init__(self):
         self.device = None
-        plugins.core.core.device.DeviceEditor.__init__(self)
+        core.device.DeviceEditor.__init__(self)
         self.currentHardwareEditor = None
         return
 
     def createControl(self, parent):
-        self.control = plugins.poi.poi.utils.scrolledpanel.ScrolledPanel(parent, -1)
+        self.control = poi.utils.scrolledpanel.ScrolledPanel(parent, -1)
         uibox = self.createUIBox()
         hwbox = self.createHardwareBox()
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -60,7 +64,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         self.control.Bind(wx.EVT_CHECKBOX, self.OnPurgeCheck, self.purgeCheckbox)
         fsizer.Add(wx.Panel(self.control, -1))
         fsizer.Add(self.purgeCheckbox, 0, wx.ALL)
-        self.purgeSetpointText = mfc.widgets.PurgetSetpointCtrl(self.control)
+        self.purgeSetpointText = mfc_widgets.PurgetSetpointCtrl(self.control)
         self.purgeSetpointText.Enable(False)
         fsizer.Add(wx.StaticText(self.control, -1, messages.get('device.config.purge.setpoint.label')), 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.purgeSetpointText, 1, wx.EXPAND | wx.ALL)
@@ -169,7 +173,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
 
         try:
             colors = uihints.getChildNamed('colors')
-            self.plotColor.SetValue(parseColor(colors.getChildNamed('plot').getValue()))
+            self.plotColor.SetValue(self.parseColor(colors.getChildNamed('plot').getValue()))
         except Exception as msg:
             logger.exception(msg)
             logger.warning('Cannot set color: %s' % msg)
@@ -209,6 +213,9 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         if self.currentHardwareEditor is not None:
             self.currentHardwareEditor.setData(None, hwhints)
         return
+
+    def parseColor(self, val):
+        return wx.Colour(*list(map(int, val.split(','))))
 
     def channelSelected(self, channel):
         hwid = self.getSelectedHardwareInstance()
@@ -275,7 +282,7 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         mainsizer.SetItemMinSize(self.hardwarePanel, size)
         s = self.control.GetContainingSizer()
         (w, h) = self.control.GetSize()
-        s.SetItemMinSize(self.control, (w, h))
+        s.SetItemMinSize(self.control, wx.Size(w, h))
         self.control.GetParent().Layout()
 
     def getGCFValue(self):
@@ -334,12 +341,12 @@ class MFCDeviceEditor(plugins.core.core.device.DeviceEditor):
         return
 
 
-class MFCDevice(plugins.core.core.device.Device):
+class MFCDevice(core.device.Device):
     __module__ = __name__
 
     def __init__(self):
         global DEVICE_ID
-        plugins.core.core.device.Device.__init__(self, DEVICE_ID)
+        core.device.Device.__init__(self, DEVICE_ID)
         self.haspurge = False
         self.channelNum = -1
         self.colors = {'plot': (wx.Colour(0, 0, 0))}
@@ -414,7 +421,7 @@ class MFCDevice(plugins.core.core.device.Device):
         return self.colors['plot']
 
     def configurationUpdated(self):
-        plugins.core.core.device.Device.configurationUpdated(self)
+        core.device.Device.configurationUpdated(self)
         hwhints = self.getHardwareHints()
         try:
             self.channelNum = int(hwhints.getChildNamed('channel').getValue())
@@ -440,7 +447,7 @@ class MFCDevice(plugins.core.core.device.Device):
             return 100
 
     def updateUIHints(self):
-        plugins.core.core.device.Device.updateUIHints(self)
+        core.device.Device.updateUIHints(self)
         uihints = self.getUIHints()
         try:
             colors = uihints.getChildNamed('colors')
@@ -455,7 +462,7 @@ class MFCDevice(plugins.core.core.device.Device):
         return result
 
     def convertToNode(self, root):
-        plugins.core.core.device.Device.convertToNode(self, root)
+        core.device.Device.convertToNode(self, root)
 
     def createNewStepEntry(self, fromExisting=None):
         if fromExisting is not None:

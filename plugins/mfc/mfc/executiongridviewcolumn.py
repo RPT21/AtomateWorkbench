@@ -4,17 +4,19 @@
 # Embedded file name: ../plugins/mfc/src/mfc/executiongridviewcolumn.py
 # Compiled at: 2004-09-15 00:23:52
 import plugins.grideditor.grideditor.executiongridviewer, logging
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('mfc.execgridview')
 
 def factoryFunc(device, recipe):
     return ExecutionGridColumnContribution(device, recipe)
 
 
-class ExecutionGridColumnContribution(plugins.grideditor.grideditor.executiongridviewer.ExecutionGridColumnContribution):
+class ExecutionGridColumnContribution(grideditor.executiongridviewer.ExecutionGridColumnContribution):
     __module__ = __name__
 
     def __init__(self, device, recipe):
-        plugins.grideditor.grideditor.executiongridviewer.ExecutionGridColumnContribution.__init__(self, device, recipe)
+        grideditor.executiongridviewer.ExecutionGridColumnContribution.__init__(self, device, recipe)
         self.configureDevice()
 
     def configureDevice(self):
@@ -53,4 +55,4 @@ class ExecutionGridColumnContribution(plugins.grideditor.grideditor.executiongri
         return entry.getFlow()
 
 
-plugins.grideditor.grideditor.executiongridviewer.addExecutionGridColumnContributionFactory('mfc', factoryFunc)
+grideditor.executiongridviewer.addExecutionGridColumnContributionFactory('mfc', factoryFunc)

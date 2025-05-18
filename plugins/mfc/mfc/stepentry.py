@@ -5,6 +5,7 @@
 # Compiled at: 2004-09-17 02:44:24
 import plugins.core.core.stepentry, logging
 import plugins.core.core as core
+
 logger = logging.getLogger('mfc')
 
 def parseFromNode(node):

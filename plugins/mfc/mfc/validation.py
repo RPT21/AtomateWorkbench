@@ -3,25 +3,26 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/validation.py
 # Compiled at: 2004-11-19 01:57:26
-import plugins.validator.validator, plugins.validator.validator.participant, plugins.mfc.mfc.device, logging
+import plugins.validator.validator as validator, plugins.validator.validator.participant
+import plugins.mfc.mfc.device, logging
 logger = logging.getLogger('mfc.validation')
 
-class MFCInvalidRange(plugins.validator.validator.participant.ValidationError):
+class MFCInvalidRange(validator.participant.ValidationError):
     __module__ = __name__
 
     def __init__(self, step, device, description):
-        plugins.validator.validator.participant.ValidationError.__init__(self, [
-         plugins.validator.validator.participant.KEY_STEP, plugins.validator.validator.participant.KEY_ENTRY], 'Invalid setpoint: %s' % description, step, device)
-        self.setSeverity(plugins.validator.validator.participant.SEVERITY_ERROR)
+        validator.participant.ValidationError.__init__(self, [
+         validator.participant.KEY_STEP, validator.participant.KEY_ENTRY], 'Invalid setpoint: %s' % description, step, device)
+        self.setSeverity(validator.participant.SEVERITY_ERROR)
 
 
-class MFCInvalidPurgeRange(plugins.validator.validator.participant.ValidationError):
+class MFCInvalidPurgeRange(validator.participant.ValidationError):
     __module__ = __name__
 
     def __init__(self, device, description):
-        plugins.validator.validator.participant.ValidationError.__init__(self, [
-         plugins.validator.validator.participant.KEY_ENTRY], 'Invalid purge setpoint: %s.  Device %s' % (description, device.getLabel()), None, device)
-        self.setSeverity(plugins.validator.validator.participant.SEVERITY_ERROR)
+        validator.participant.ValidationError.__init__(self, [
+         validator.participant.KEY_ENTRY], 'Invalid purge setpoint: %s.  Device %s' % (description, device.getLabel()), None, device)
+        self.setSeverity(validator.participant.SEVERITY_ERROR)
         return
 
 
@@ -74,16 +75,16 @@ def validateRange(owner, recipe):
     return valid
 
 
-class CompositeValidationParticipant(plugins.validator.validator.participant.ValidationParticipant):
+class CompositeValidationParticipant(validator.participant.ValidationParticipant):
     __module__ = __name__
 
     def __init__(self):
-        plugins.validator.validator.participant.ValidationParticipant.__init__(self)
+        validator.participant.ValidationParticipant.__init__(self)
         self.validators = [validateRange, validatePurgeRange]
 
     def validate(self, recipe):
         """Return True if valid, false otherwise."""
-        plugins.validator.validator.participant.ValidationParticipant.validate(self, recipe)
+        validator.participant.ValidationParticipant.validate(self, recipe)
         valid = True
         for func in self.validators:
             if not func(self, recipe):
@@ -93,4 +94,4 @@ class CompositeValidationParticipant(plugins.validator.validator.participant.Val
 
 
 def init():
-    plugins.validator.validator.getDefault().addValidationParticipant(CompositeValidationParticipant())
+    validator.getDefault().addValidationParticipant(CompositeValidationParticipant())

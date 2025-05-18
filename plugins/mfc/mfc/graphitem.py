@@ -4,7 +4,9 @@
 # Embedded file name: ../plugins/mfc/src/mfc/graphitem.py
 # Compiled at: 2004-11-19 21:59:25
 import wx, plugins.grapheditor.grapheditor.contributor, plugins.grideditor.grideditor.recipemodel
-import plugins.executionengine.executionengine, logging
+import plugins.executionengine.executionengine as executionengine, logging
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('mfc.ui.graphitem')
 
 class MFCGraphItem(plugins.grapheditor.grapheditor.contributor.GraphContributor):
@@ -28,7 +30,7 @@ class MFCGraphItem(plugins.grapheditor.grapheditor.contributor.GraphContributor)
 
     def engineEvent(self, event):
         logger.debug('Engine event: %s' % event)
-        if event.getType() == plugins.executionengine.executionengine.engine.TYPE_ENDING:
+        if event.getType() == executionengine.engine.TYPE_ENDING:
             self.engine.removeEngineListener(self)
 
     def setDevice(self, device):
@@ -53,7 +55,7 @@ class MFCGraphItem(plugins.grapheditor.grapheditor.contributor.GraphContributor)
         return
 
     def recipeModelChanged(self, event):
-        if event.getEventType() == plugins.grideditor.grideditor.recipemodel.CHANGE_DEVICE:
+        if event.getEventType() == grideditor.recipemodel.CHANGE_DEVICE:
             if not self.device == event.getDevice():
                 return
             self.updateDeviceInfo()
@@ -133,7 +135,7 @@ class MFCGraphItem(plugins.grapheditor.grapheditor.contributor.GraphContributor)
 
     def reduceColor(self, color):
         scale = 0.6
-        return wx.Color(self.normalize(color.Red()), self.normalize(color.Green()), self.normalize(color.Blue()))
+        return wx.Colour(self.normalize(color.Red()), self.normalize(color.Green()), self.normalize(color.Blue()))
 
     def normalize(self, color):
         scale = 0.6

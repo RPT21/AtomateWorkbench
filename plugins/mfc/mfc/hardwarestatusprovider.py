@@ -10,7 +10,8 @@ FLOW = 3
 SET_SETPOINT = 4
 GET_SETPOINT = 5
 PURGING = 6
-TYPE2STR = {RUNNING: 'Running', STOPPED: 'Stopped', FLOW: 'Flow', SET_SETPOINT: 'Set Setpoint', GET_SETPOINT: 'Get Setpoint', PURGING: 'Purging'}
+TYPE2STR = {RUNNING: 'Running', STOPPED: 'Stopped', FLOW: 'Flow', SET_SETPOINT: 'Set Setpoint',
+            GET_SETPOINT: 'Get Setpoint', PURGING: 'Purging'}
 
 class HardwareStatusEvent(object):
     __module__ = __name__

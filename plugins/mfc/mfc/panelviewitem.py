@@ -5,13 +5,14 @@
 # Compiled at: 2004-12-09 00:49:30
 import wx, plugins.mfc.mfc.hardwarestatusprovider, wx.gizmos, plugins.hardware.hardware.hardwaremanager
 import plugins.panelview.panelview.devicemediator, logging, plugins.ui.ui.widgets.led, plugins.ui.ui.widgets
+import plugins.panelview.panelview as panelview
 logger = logging.getLogger('mfc.panelview')
 
-class MFCPanelViewItem(plugins.panelview.panelview.devicemediator.DevicePanelViewContribution):
+class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
     __module__ = __name__
 
     def __init__(self):
-        plugins.panelview.panelview.devicemediator.DevicePanelViewContribution.__init__(self)
+        panelview.devicemediator.DevicePanelViewContribution.__init__(self)
         self.hwinst = None
         self.range = 1
         self.gcf = 100
@@ -32,7 +33,7 @@ class MFCPanelViewItem(plugins.panelview.panelview.devicemediator.DevicePanelVie
         return self.control
 
     def setDevice(self, device):
-        plugins.panelview.panelview.devicemediator.DevicePanelViewContribution.setDevice(self, device)
+        panelview.devicemediator.DevicePanelViewContribution.setDevice(self, device)
         self.deviceChanged()
 
     def deviceChanged(self):
@@ -63,7 +64,7 @@ class MFCPanelViewItem(plugins.panelview.panelview.devicemediator.DevicePanelVie
         return None
 
     def dispose(self):
-        plugins.panelview.panelview.devicemediator.DevicePanelViewContribution.dispose(self)
+        panelview.devicemediator.DevicePanelViewContribution.dispose(self)
         self.unhookDeviceFromHardware()
 
     def unhookDeviceFromHardware(self):

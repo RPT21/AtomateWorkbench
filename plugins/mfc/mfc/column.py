@@ -3,19 +3,20 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mfc/src/mfc/column.py
 # Compiled at: 2004-10-29 20:49:59
-from wx.grid import *
 from wx import *
 import wx, logging, plugins.mfc.mfc.images as images
 from plugins.mfc.mfc.utils import *
-import plugins.grideditor.grideditor, plugins.grideditor.grideditor.tablecolumn
-import plugins.grideditor.grideditor.utils.numericcelleditor, plugins.grideditor.grideditor.utils
+import plugins.grideditor.grideditor.tablecolumn
+import plugins.grideditor.grideditor.utils.numericcelleditor
+import plugins.grideditor.grideditor as grideditor
+
 logger = logging.getLogger('mfc')
 
-class MFCCellEditor(plugins.grideditor.grideditor.utils.numericcelleditor.NumericCellEditor):
+class MFCCellEditor(grideditor.utils.numericcelleditor.NumericCellEditor):
     __module__ = __name__
 
     def __init__(self, column):
-        plugins.grideditor.grideditor.utils.numericcelleditor.NumericCellEditor.__init__(self, column, float)
+        grideditor.utils.numericcelleditor.NumericCellEditor.__init__(self, column, float)
         self.range = 0.0
         self.usegcf = True
         self.gcf = 100
@@ -37,10 +38,10 @@ class MFCCellEditor(plugins.grideditor.grideditor.utils.numericcelleditor.Numeri
         return
 
     def getInvalidCellColor(self):
-        return plugins.grideditor.grideditor.getDefault().getInvalidCellColor()
+        return grideditor.getDefault().getInvalidCellColor()
 
     def getHighlightStepColor(self):
-        return plugins.grideditor.grideditor.getDefault().getHighlightStepColor()
+        return grideditor.getDefault().getHighlightStepColor()
 
     def validate(self):
         value = self.getValue()
@@ -54,15 +55,15 @@ class MFCCellEditor(plugins.grideditor.grideditor.utils.numericcelleditor.Numeri
         self.control.Refresh()
 
     def controlUpdate(self):
-        plugins.grideditor.grideditor.utils.numericcelleditor.NumericCellEditor.controlUpdate(self)
+        grideditor.utils.numericcelleditor.NumericCellEditor.controlUpdate(self)
         self.validate()
 
 
-class MFCCellRenderer(plugins.grideditor.grideditor.tablecolumn.StringCellRenderer):
+class MFCCellRenderer(grideditor.tablecolumn.StringCellRenderer):
     __module__ = __name__
 
     def __init__(self):
-        plugins.grideditor.grideditor.tablecolumn.StringCellRenderer.__init__(self)
+        grideditor.tablecolumn.StringCellRenderer.__init__(self)
         self.range = 0
         self.gcf = 100
         self.usegcf = False
@@ -78,10 +79,10 @@ class MFCCellRenderer(plugins.grideditor.grideditor.tablecolumn.StringCellRender
         return compval <= self.range
 
     def getInvalidCellColor(self):
-        return plugins.grideditor.grideditor.getDefault().getInvalidCellColor()
+        return grideditor.getDefault().getInvalidCellColor()
 
     def getHighlightStepColor(self):
-        return plugins.grideditor.grideditor.getDefault().getHighlightStepColor()
+        return grideditor.getDefault().getHighlightStepColor()
 
     def setRange(self, range):
         self.range = range
@@ -115,11 +116,11 @@ class MFCCellRenderer(plugins.grideditor.grideditor.tablecolumn.StringCellRender
         dc.DrawText(text, rect.x + x, rect.y + y)
 
 
-class MFCColumn(plugins.grideditor.grideditor.tablecolumn.ColumnContribution):
+class MFCColumn(grideditor.tablecolumn.ColumnContribution):
     __module__ = __name__
 
     def __init__(self):
-        plugins.grideditor.grideditor.tablecolumn.ColumnContribution.__init__(self)
+        grideditor.tablecolumn.ColumnContribution.__init__(self)  # Demana una columna, que no sé quin tipus de variable és, podria ser que column sigui una variable eliminable
         self.recipeModel = None
         self.useGCF = True
         self.GCF = 100.0
@@ -133,7 +134,7 @@ class MFCColumn(plugins.grideditor.grideditor.tablecolumn.ColumnContribution):
 
     def setInput(self, recipeModel, device):
         self.unhookRecipeModel()
-        plugins.grideditor.grideditor.tablecolumn.ColumnContribution.setInput(self, recipeModel, device)
+        grideditor.tablecolumn.ColumnContribution.setInput(self, recipeModel, device)
         self.hookToRecipeModel()
 
     def recipeModelChanged(self, event):
@@ -199,7 +200,7 @@ class MFCColumn(plugins.grideditor.grideditor.tablecolumn.ColumnContribution):
         entry.setFlow(float(realvalue))
 
     def handleDoubleClick(self):
-        plugins.grideditor.grideditor.utils.showRecipeOptions(self.getDevice())
+        grideditor.utils.showRecipeOptions(self.getDevice())
 
     def cellValueChanged(self, index, value):
         """
@@ -221,11 +222,11 @@ class MFCColumn(plugins.grideditor.grideditor.tablecolumn.ColumnContribution):
         return MFCHeaderCellRenderer(self)
 
 
-class MFCHeaderCellRenderer(plugins.grideditor.grideditor.tablecolumn.StringHeaderCellRenderer):
+class MFCHeaderCellRenderer(grideditor.tablecolumn.StringHeaderCellRenderer):
     __module__ = __name__
 
     def draw(self, dc, rect):
-        plugins.grideditor.grideditor.tablecolumn.StringHeaderCellRenderer.draw(self, dc, rect)
+        grideditor.tablecolumn.StringHeaderCellRenderer.draw(self, dc, rect)
         dc.SetBrush(wx.Brush(self.column.device.getPlotColor(), wx.SOLID))
         dc.SetPen(wx.TRANSPARENT_PEN)
         dc.DrawRectangle(rect[0][0], rect[0][1] + rect[1][1] - 3, rect[1][0], 3)

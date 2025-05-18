@@ -4,12 +4,14 @@
 # Embedded file name: ../plugins/mfc/src/mfc/response.py
 # Compiled at: 2004-08-09 11:44:20
 import plugins.executionengine.executionengine.engine
+import plugins.executionengine.executionengine as executionengine
 
-class MFCDeviceResponse(plugins.executionengine.executionengine.engine.DeviceResponse):
+
+class MFCDeviceResponse(executionengine.engine.DeviceResponse):
     __module__ = __name__
 
     def __init__(self, device, flow):
-        plugins.executionengine.executionengine.engine.DeviceResponse.__init__(self, device)
+        executionengine.engine.DeviceResponse.__init__(self, device)
         self.flow = flow
 
     def getFlow(self):
