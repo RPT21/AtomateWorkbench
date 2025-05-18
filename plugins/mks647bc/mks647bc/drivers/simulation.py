@@ -3,8 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/drivers/simulation.py
 # Compiled at: 2004-11-18 22:13:01
-import wx, mks647bc.drivers, socket, time, threading, select, mks647bc.drivers, serial, logging, poi, ui
-from hardware import ResponseTimeoutException
+import wx, time, logging
+import plugins.poi.poi as poi
+import plugins.ui.ui as ui
+import plugins.mks647bc.mks647bc.drivers as mks647bc_drivers
+import plugins.poi.poi.actions
+
 logger = logging.getLogger('mks647.drivers.simulation')
 
 class SimulationConfigurationSegment(object):
@@ -65,11 +69,11 @@ class ShowPanelAction(poi.actions.Action):
         self.driver.toggleDialog()
 
 
-class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
+class SimulationDeviceDriver(mks647bc_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self):
-        mks647bc.drivers.DeviceDriver.__init__(self)
+        mks647bc_drivers.DeviceDriver.__init__(self)
         self.lockoutPanel = True
         self.channelRanges = {1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0}
         self.channels = []
@@ -116,7 +120,7 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         return SimulationConfigurationSegment()
 
     def setConfiguration(self, configuration):
-        mks647bc.drivers.DeviceDriver.setConfiguration(self, configuration)
+        mks647bc_drivers.DeviceDriver.setConfiguration(self, configuration)
 
     def initialize(self):
         try:
@@ -176,7 +180,6 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         if output.find('-') >= 0:
             return self.channelRanges[channelNum] + 1
         return int(output)
-        return
 
     def getID(self):
         sid = '647'
@@ -215,7 +218,7 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         self.channelRanges[channelNum] = conversion
 
     def shutdown(self):
-        if not self.status == mks647bc.drivers.STATUS_INITIALIZED:
+        if not self.status == mks647bc_drivers.STATUS_INITIALIZED:
             return
         try:
             if self.lockoutPanel:
@@ -223,7 +226,7 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         except Exception as msg:
             print(('* ERROR: Cannot unlock panel', msg))
 
-        self.status = mks647bc.drivers.STATUS_UNINITIALIZED
+        self.status = mks647bc_drivers.STATUS_UNINITIALIZED
 
     def __del__(self):
         if self.dlg is not None:
@@ -234,4 +237,4 @@ class SimulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         return
 
 
-mks647bc.drivers.registerDriver('simulation', SimulationDeviceDriver, SimulationConfigurationSegment, 'Simulation')
+mks647bc_drivers.registerDriver('simulation', SimulationDeviceDriver, SimulationConfigurationSegment, 'Simulation')

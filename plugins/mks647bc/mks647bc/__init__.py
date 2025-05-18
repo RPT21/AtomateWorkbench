@@ -3,13 +3,20 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/__init__.py
 # Compiled at: 2004-11-29 21:24:53
-import os, shutil, configparser, core.deviceregistry, logging, kernel.plugin, kernel.pluginmanager as PluginManager, hardware.hardwaremanager
-from hardware import ResponseTimeoutException
-import mks647bc.mks647bctype, mks647bc.drivers, mks647bc.drivers.network, mks647bc.drivers.simulation, mks647bc.drivers.ser, mks647bc.participant, mfc.hardwarestatusprovider, poi.actions, ui, threading, core.error
-from hardware.utils.threads import BackgroundProcessThread, PurgeThread
+import os, shutil, logging, threading
+import lib.kernel as kernel, lib.kernel.plugin
+from plugins.hardware.hardware import ResponseTimeoutException
+import plugins.mks647bc.mks647bc.mks647bctype as mks647bctype, plugins.mks647bc.mks647bc.drivers as mks647bc_drivers
+import plugins.mks647bc.mks647bc.drivers.network, plugins.mks647bc.mks647bc.drivers.simulation
+import plugins.mks647bc.mks647bc.drivers.ser, plugins.mks647bc.mks647bc.participant as mks647bc_participant
+from plugins.hardware.hardware.utils.threads import BackgroundProcessThread, PurgeThread
 import plugins.executionengine.executionengine as executionengine
-from . import mks647bctype
 import plugins.ui.ui as ui
+import plugins.mfc.mfc as mfc
+import plugins.hardware.hardware as hardware
+import plugins.core.core as core
+import plugins.core.core.error
+
 logger = logging.getLogger('mks647bc')
 
 def getDefault():
@@ -36,7 +43,7 @@ class MKS647BCPlugin(kernel.plugin.Plugin):
         self.contextBundle = contextBundle
         hwType = mks647bctype.MKS647HardwareType()
         hardware.hardwaremanager.registerHardwareType(hwType)
-        executionengine.getDefault().registerRecipeParticipantFactory(hwType.getType(), mks647bc.participant.RecipeParticipantFactory())
+        executionengine.getDefault().registerRecipeParticipantFactory(hwType.getType(), mks647bc_participant.RecipeParticipantFactory())
         hw = hardware.hardwaremanager.getHardwareByType(hwType.getType())
 
     def beginInstantiation(self, descriptions):
@@ -250,7 +257,6 @@ class MKS647Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
             devices.append(device)
 
         return devices
-        return
 
     def finishedPurge(self):
         self.resumeStatusThread()
@@ -377,7 +383,7 @@ class MKS647Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
         config = description.getConfiguration()
         try:
             driverType = config.get('driver', 'type')
-            inst = mks647bc.drivers.getDriver(driverType)()
+            inst = mks647bc_drivers.getDriver(driverType)()
             self.setDriver(inst)
             self.driver.setConfiguration(config)
         except Exception as msg:

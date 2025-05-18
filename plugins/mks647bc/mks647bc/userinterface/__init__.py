@@ -3,17 +3,29 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/userinterface/__init__.py
 # Compiled at: 2004-12-09 00:49:30
-import wx, core.utils, logging, poi.views, poi.dialogs, hardware.userinterface.configurator, hardware.hardwaremanager, mks647bc.drivers, mks647bc.userinterface.initdialog, threading, ui, poi.operation, time, poi.dialogs.progress, mfc.messages as messages, ui.images as uiimages
+import wx, plugins.core.core.utils, logging, plugins.poi.poi.dialogs
+import plugins.hardware.hardware.userinterface.configurator, plugins.hardware.hardware.hardwaremanager
+import plugins.mks647bc.mks647bc.userinterface.initdialog, threading
+import plugins.poi.poi.operation, time, plugins.poi.poi.dialogs.progress
+import plugins.mfc.mfc.messages as messages, plugins.ui.ui.images as uiimages
+import plugins.ui.ui as ui
+import plugins.hardware.hardware as hardware
+import plugins.poi.poi as poi
+import plugins.core.core as core
+import plugins.mks647bc.mks647bc.drivers as mks647bc_drivers
+import plugins.poi.poi.utils.scrolledpanel
+
 SCCM = 'sccm'
 SLM = 'slm'
 SCMM = 'scmm'
 SCFH = 'scfh'
 SCFM = 'scfm'
-UNITS = [
- SCCM, SLM, SCMM, SCFH, SCFM]
-RANGES = {SCCM: {0: 1, 1: 2, 2: 5, 3: 10, 4: 20, 5: 50, 6: 100, 7: 200, 8: 500}, SLM: {9: 1, 10: 2, 11: 5, 12: 10, 13: 20, 38: 30, 14: 50, 15: 100, 16: 200, 39: 300, 17: 400, 18: 500}, SCMM: {19: 1}, SCFH: {20: 1, 21: 2, 22: 5, 23: 10, 24: 20, 25: 50, 26: 100, 27: 200, 28: 500}, SCFM: {29: 1, 30: 2, 31: 5, 32: 10, 33: 20, 34: 50, 35: 100, 36: 200, 37: 500}}
-CHANNEL_CHOICES = [
- '4', '8']
+UNITS = [SCCM, SLM, SCMM, SCFH, SCFM]
+RANGES = {SCCM: {0: 1, 1: 2, 2: 5, 3: 10, 4: 20, 5: 50, 6: 100, 7: 200, 8: 500},
+          SLM: {9: 1, 10: 2, 11: 5, 12: 10, 13: 20, 38: 30, 14: 50, 15: 100, 16: 200, 39: 300, 17: 400, 18: 500},
+          SCMM: {19: 1}, SCFH: {20: 1, 21: 2, 22: 5, 23: 10, 24: 20, 25: 50, 26: 100, 27: 200, 28: 500},
+          SCFM: {29: 1, 30: 2, 31: 5, 32: 10, 33: 20, 34: 50, 35: 100, 36: 200, 37: 500}}
+CHANNEL_CHOICES = ['4', '8']
 logger = logging.getLogger('mks647bc.ui')
 
 def getUnitChoices():
@@ -234,7 +246,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
     def OnDriverChoice(self, event):
         self.setDirty(True)
         choice = event.GetString()
-        page = mks647bc.drivers.getDriverPageByName(choice)
+        page = mks647bc_drivers.getDriverPageByName(choice)
         wx.CallAfter(self.updateDriverSegment, page)
 
     def markDirty(self, event=None):
@@ -268,13 +280,12 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             sizer.SetItemMinSize(page.getControl(), size)
             self.control.SetupScrolling()
         return page
-        return
 
     def getDriverOptions(self):
-        keys = mks647bc.drivers.getRegisteredDeviceKeys()
+        keys = mks647bc_drivers.getRegisteredDeviceKeys()
         names = []
         for key in keys:
-            names.append(mks647bc.drivers.getDriverName(key))
+            names.append(mks647bc_drivers.getDriverName(key))
 
         return names
 
@@ -317,11 +328,11 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
 
     def setDriverConfig(self, config):
         driverType = config.get('driver', 'type')
-        driverName = mks647bc.drivers.getDriverName(driverType)
+        driverName = mks647bc_drivers.getDriverName(driverType)
         options = self.getDriverOptions()
         idx = options.index(driverName)
         self.driverCombo.SetSelection(idx)
-        page = mks647bc.drivers.getDriverConfigurationPage(driverType)
+        page = mks647bc_drivers.getDriverConfigurationPage(driverType)
         self.updateDriverSegment(page)
         page.setData(config)
 
@@ -349,7 +360,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         config.set('main', 'startupinit', its)
         if not config.has_section('driver'):
             config.add_section('driver')
-        driverType = mks647bc.drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
+        driverType = mks647bc_drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
         if driverType is not None:
             config.set('driver', 'type', driverType)
         self.driverSegment.getData(config)
@@ -402,7 +413,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             dlg.run(runner, fork=False)
         except Exception as invocation:
             logger.exception(invocation)
-            poi.dialogs.ExceptionDialog(f, invocation[1], 'Error Initializing Hardware').ShowModal()
+            poi.dialogs.ExceptionDialog(f, invocation, 'Error Initializing Hardware').ShowModal()  # invocation[1] podria ser necessari
 
     def shutdownHardware(self):
         """Attempt to shutdown hardware"""
@@ -445,7 +456,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             dlg.run(runner, fork=False)
         except Exception as msg:
             logger.exception(msg)
-            poi.dialogs.ExceptionDialog(f, msg.getWrapped(), 'Error Shutting Down Hardware').ShowModal()
+            poi.dialogs.ExceptionDialog(f, msg, 'Error Shutting Down Hardware').ShowModal()  # getWrapped() podria ser necessari
 
     def applied(self):
         if not self.isDirty():

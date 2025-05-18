@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/drivers/__init__.py
 # Compiled at: 2004-09-22 19:29:22
-import threading, traceback, logging
+import threading, logging
 logger = logging.getLogger('mks647bc.drivers')
 STATUS_INITIALIZED = 0
 STATUS_UNINITIALIZED = 1
@@ -39,7 +39,6 @@ def getDriverPageByName(driverName):
             return getDriverConfigurationPage(key)
 
     return None
-    return
 
 
 def getRegisteredDeviceKeys():
@@ -50,21 +49,18 @@ def getDriverName(driverID):
     if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['name']
-    return
 
 
 def getDriver(driverID):
     if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['driver']
-    return
 
 
 def getDriverConfigurationPage(driverID):
     if driverID not in DRIVERS:
         return None
     return DRIVERS[driverID]['configpage']()
-    return
 
 
 class DeviceDriver(object):

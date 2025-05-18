@@ -3,8 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/drivers/ser.py
 # Compiled at: 2005-08-13 03:03:00
-import wx, mks647bc.drivers, socket, time, threading, select, mks647bc.drivers, serial, logging
-from hardware import ResponseTimeoutException
+import wx, time, threading, serial, logging
+from plugins.hardware.hardware import ResponseTimeoutException
+import  plugins.mks647bc.mks647bc.drivers as mks647bc_drivers
+
 logger = logging.getLogger('mks647.drivers.serial')
 CHOICES_BAUDRATE = [
  3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
@@ -155,11 +157,11 @@ class SerialConfigurationSegment(object):
 DEFAULT_TIMEOUT = 1000
 THROTTLE = 0.002
 
-class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
+class SerialDeviceDriver(mks647bc_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self):
-        mks647bc.drivers.DeviceDriver.__init__(self)
+        mks647bc_drivers.DeviceDriver.__init__(self)
         self.port = None
         self.portnum = None
         self.baudrate = None
@@ -188,11 +190,10 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             self.buff = self.buff[idx + len(self.delimeter):]
             return cmd
         return None
-        return
 
     def setConfiguration(self, configuration):
         global SERIAL_PARITY
-        mks647bc.drivers.DeviceDriver.setConfiguration(self, configuration)
+        mks647bc_drivers.DeviceDriver.setConfiguration(self, configuration)
         try:
             self.portnum = int(configuration.get('driver', 'port'))
             self.baudrate = int(configuration.get('driver', 'baudrate'))
@@ -209,7 +210,7 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             self.port = serial.Serial(port=self.portnum, baudrate=self.baudrate, parity=self.parity, stopbits=self.stopbits)
             self.port.open()
             self.checkInterrupt()
-            self.status = mks647bc.drivers.STATUS_INITIALIZED
+            self.status = mks647bc_drivers.STATUS_INITIALIZED
             self.discardAllInput()
             self.checkInterrupt()
             logger.debug('Get ID')
@@ -287,7 +288,6 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
         logger.debug("spork '%s'" % output)
         logger.debug('the flow is: %s' % str(output))
         return int(output)
-        return
 
     def getID(self):
         sid = self.sendAndWait('ID\r', self.timeout)
@@ -329,7 +329,7 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
         self.channelRanges[channelNum] = conversion
 
     def shutdown(self):
-        if not self.status == mks647bc.drivers.STATUS_INITIALIZED:
+        if not self.status == mks647bc_drivers.STATUS_INITIALIZED:
             return
         try:
             if self.lockoutPanel:
@@ -338,16 +338,16 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             print(('* ERROR: Cannot unlock panel', msg))
 
         self.port.close()
-        self.status = mks647bc.drivers.STATUS_UNINITIALIZED
+        self.status = mks647bc_drivers.STATUS_UNINITIALIZED
 
     def sendCommand(self, command):
-        if not self.status == mks647bc.drivers.STATUS_INITIALIZED:
+        if not self.status == mks647bc_drivers.STATUS_INITIALIZED:
             raise Exception('Driver is not initialized')
         self.port.write(command)
         self.port.flushOutput()
 
     def discardAllInput(self):
-        mks647bc.drivers.DeviceDriver.discardAllInput(self)
+        mks647bc_drivers.DeviceDriver.discardAllInput(self)
         self.ir = False
         self.buff = ''
         self.clearBuffer()
@@ -396,9 +396,6 @@ class SerialDeviceDriver(mks647bc.drivers.DeviceDriver):
             rcpt = data
             return rcpt
 
-        return None
-        return
 
-
-mks647bc.drivers.registerDriver('serial', SerialDeviceDriver, SerialConfigurationSegment, 'Serial')
+mks647bc_drivers.registerDriver('serial', SerialDeviceDriver, SerialConfigurationSegment, 'Serial')
 # global CHOICES_BITS ## Warning: Unused global

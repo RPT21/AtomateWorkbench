@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/participant.py
 # Compiled at: 2004-12-07 10:31:19
-import executionengine.executionparticipant, time, mfc.response, logging, mks647bc.userinterface
+import plugins.executionengine.executionengine.executionparticipant, time, logging
+import plugins.mks647bc.mks647bc.userinterface as mks647bc_userinterface
+import plugins.mfc.mfc.response as mfc_response
+import plugins.executionengine.executionengine as executionengine
+
 logger = logging.getLogger('mks647bc.participant')
 
 class RecipeParticipantFactory(executionengine.executionparticipant.ExecutionParticipantFactory):
@@ -37,7 +41,7 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
         gcf = device.getGCF()
         units = device.getUnits()
         range = device.getRange()
-        rangeIndex = mks647bc.userinterface.getRangeIndex(units, range)
+        rangeIndex = mks647bc_userinterface.getRangeIndex(units, range)
         inst.channelOn(channelNum)
         inst.setRangeIndex(channelNum, rangeIndex, range)
         inst.setGCF(channelNum, gcf)
@@ -66,7 +70,7 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
             logger.debug('Asking channel %d for flow' % device.getChannelNumber())
             then = time.time()
             flow = instance.getChannelFlow(device.getChannelNumber())
-            response = mfc.response.MFCDeviceResponse(device, flow)
+            response = mfc_response.MFCDeviceResponse(device, flow)
             responses.append(response)
             now = time.time()
             logger.debug('Took %f to gather one channel' % (now - then))
@@ -75,7 +79,6 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
 
     def checkConditions(self, recipeTime, stepTime, totalTime, step):
         return None
-        return
 
     def handleRecipeEnd(self, recipeTime, stepTime, totalTime, recipe):
         self.startPurge()

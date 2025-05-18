@@ -3,8 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/drivers/emulation.py
 # Compiled at: 2004-11-19 02:46:47
-import wx, poi, poi.actions, mks647bc.drivers, ui, logging
+import wx, plugins.poi.poi.actions, logging
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+import plugins.mks647bc.mks647bc.drivers as mks647bc_drivers
+
 logger = logging.getLogger('mks647bc.drivers.emulation')
+
 
 class UserInterface(object):
     __module__ = __name__
@@ -98,7 +103,6 @@ class UserInterface(object):
 
     def isDisposed(self):
         return self.window is None
-        return
 
 
 class EmulationConfigurationSegment(object):
@@ -144,11 +148,11 @@ class ShowEmulationControl(poi.actions.Action):
         self.owner.toggleDisplay()
 
 
-class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
+class EmulationDeviceDriver(mks647bc_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self):
-        mks647bc.drivers.DeviceDriver.__init__(self)
+        mks647bc_drivers.DeviceDriver.__init__(self)
         self.wnd = UserInterface(self)
         self.channelValues = [0, 0, 0, 0]
         self.respond = True
@@ -204,7 +208,7 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
 
     def displayUI(self):
         logger.debug('Display UI')
-        if self.getStatus() != mks647bc.drivers.STATUS_INITIALIZED:
+        if self.getStatus() != mks647bc_drivers.STATUS_INITIALIZED:
             logger.debug('Not initialized')
             return
         logger.debug('Asking to create control')
@@ -223,23 +227,23 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         logger.debug('Initialize')
         if not self.wnd.isDisposed():
             self.wnd.restore()
-        if self.status == mks647bc.drivers.STATUS_INITIALIZED:
+        if self.status == mks647bc_drivers.STATUS_INITIALIZED:
             logger.debug('Driver already initialized')
             return
         self.channelValues = list(map((lambda x: 0), list(range(int(self.configuration.get('main', 'channels'))))))
         if self.checkInterrupt():
             logger.debug('Interrupted')
             return
-        self.status = mks647bc.drivers.STATUS_INITIALIZED
+        self.status = mks647bc_drivers.STATUS_INITIALIZED
         if self.wnd.isDisposed():
             self.displayUI()
 
     def shutdown(self):
         if self.checkInterrupt():
             return
-        self.status = mks647bc.drivers.STATUS_UNINITIALIZED
+        self.status = mks647bc_drivers.STATUS_UNINITIALIZED
         if not self.wnd.isDisposed():
             self.wnd.dispose()
 
 
-mks647bc.drivers.registerDriver('emulation', EmulationDeviceDriver, EmulationConfigurationSegment, 'Emulation')
+mks647bc_drivers.registerDriver('emulation', EmulationDeviceDriver, EmulationConfigurationSegment, 'Emulation')

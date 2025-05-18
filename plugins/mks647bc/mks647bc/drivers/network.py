@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/drivers/network.py
 # Compiled at: 2004-11-19 02:32:36
-import wx, mks647bc.drivers, socket, time, threading, select, mks647bc.drivers
+import wx, plugins.mks647bc.mks647bc.drivers as mks647bc_drivers, socket, time, select
+
 
 class NetworkConfigurationSegment(object):
     __module__ = __name__
@@ -78,11 +79,11 @@ class NetworkConfigurationSegment(object):
         return self.complete
 
 
-class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
+class NetworkDeviceDriver(mks647bc_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self):
-        mks647bc.drivers.DeviceDriver.__init__(self)
+        mks647bc_drivers.DeviceDriver.__init__(self)
         self.socket = None
         self.host = None
         self.port = None
@@ -111,7 +112,7 @@ class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
         return None
 
     def setConfiguration(self, configuration):
-        mks647bc.drivers.DeviceDriver.setConfiguration(self, configuration)
+        mks647bc_drivers.DeviceDriver.setConfiguration(self, configuration)
         try:
             self.port = configuration.get('driver', 'port')
             self.host = configuration.get('driver', 'host')
@@ -156,21 +157,21 @@ class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
     def real_initialize(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.host, int(self.port)))
-        self.status = mks647bc.drivers.STATUS_INITIALIZED
+        self.status = mks647bc_drivers.STATUS_INITIALIZED
 
     def real_shutdown(self):
-        if not self.status == mks647bc.drivers.STATUS_INITIALIZED:
+        if not self.status == mks647bc_drivers.STATUS_INITIALIZED:
             return
         self.socket.close()
-        self.status = mks647bc.drivers.STATUS_UNINITIALIZED
+        self.status = mks647bc_drivers.STATUS_UNINITIALIZED
 
     def sendCommand(self, command):
-        if not self.status == mks647bc.drivers.STATUS_INITIALIZED:
+        if not self.status == mks647bc_drivers.STATUS_INITIALIZED:
             raise Exception('Driver is not initialized')
         self.socket.send(command)
 
     def discardAllInput(self):
-        mks647bc.drivers.DeviceDriver.discardAllInput(self)
+        mks647bc_drivers.DeviceDriver.discardAllInput(self)
         self.ir = False
         self.cv.acquire()
         self.buff = ''
@@ -217,9 +218,5 @@ class NetworkDeviceDriver(mks647bc.drivers.DeviceDriver):
             self.cv.release()
             return rcpt
 
-        self.cv.release()
-        return None
-        return
 
-
-mks647bc.drivers.registerDriver('network', NetworkDeviceDriver, NetworkConfigurationSegment, 'Network')
+mks647bc_drivers.registerDriver('network', NetworkDeviceDriver, NetworkConfigurationSegment, 'Network')
