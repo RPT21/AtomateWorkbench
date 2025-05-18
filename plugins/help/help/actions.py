@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/help/src/help/actions.py
 # Compiled at: 2004-08-04 10:37:15
-import poi.actions, help.messages as messages, help.images as images
+import plugins.poi.poi.actions, plugins.help.help.messages as messages, plugins.help.help.images as images
+import plugins.poi.poi as poi
 
 class HelpContentsAction(poi.actions.Action):
     __module__ = __name__

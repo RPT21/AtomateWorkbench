@@ -5,9 +5,8 @@
 # Compiled at: 2004-11-23 07:30:57
 import wx, os, wx.html, lib.kernel.plugin, logging, configparser
 import plugins.poi.poi as poi, plugins.poi.poi.actions, plugins.help.help.messages as messages
-import plugins.help.help.actions, plugins.help.help.images as images
-from . import actions, frame
-
+import plugins.help.help.actions as help_actions, plugins.help.help.images as images
+import plugins.help.help.frame as help_frame
 import plugins.ui.ui as ui
 
 logger = logging.getLogger('help')
@@ -47,7 +46,7 @@ class HelpPlugin(lib.kernel.plugin.Plugin):
     def handlePartInit(self, part):
         ui.getDefault().removeInitListener(self)
         helpManager = ui.getDefault().getMenuManager().findByPath('atm.help')
-        helpManager.appendToGroup('help-additions-begin', poi.actions.ActionContributionItem(actions.HelpContentsAction(self)))
+        helpManager.appendToGroup('help-additions-begin', poi.actions.ActionContributionItem(help_actions.HelpContentsAction(self)))
         helpManager.update()
         wx.FileSystem.AddHandler(wx.ZipFSHandler())
         provider = wx.SimpleHelpProvider()
@@ -94,7 +93,7 @@ class HelpPlugin(lib.kernel.plugin.Plugin):
         self.addBooks()
 
     def createController(self):
-        self.controller = frame.HelpFrame()
+        self.controller = help_frame.HelpFrame()
         self.addBooks()
 
     def ShowHelp(self):
