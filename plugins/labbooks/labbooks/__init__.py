@@ -5,10 +5,12 @@
 # Compiled at: 2004-12-17 20:49:55
 import copy, os, logging, time
 import lib.kernel as kernel
+import lib.kernel.plugin
 import plugins.ui.ui as ui
 import plugins.executionengine.executionengine as executionengine
 import plugins.resources.resources as resources
-from . import caching
+import plugins.labbooks.labbooks.caching as labbooks_caching
+
 logger = logging.getLogger('labbooks')
 global instance
 
@@ -50,7 +52,7 @@ class LabBooksPlugin(kernel.plugin.Plugin):
 
     def createCache(self, prefix, f):
         logger.debug('Cache created: %s' % prefix)
-        return caching.CacheFile(prefix, f)
+        return labbooks_caching.CacheFile(prefix, f)
 
     def createRunLog(self):
         """Creates a run log file and the cache"""

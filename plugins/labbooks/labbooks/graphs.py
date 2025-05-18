@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/labbooks/src/labbooks/graphs.py
 # Compiled at: 2004-09-30 21:45:55
-
+import wx
 
 class GraphItem(object):
     __module__ = __name__
@@ -26,8 +26,8 @@ class GraphPanel(wx.Window):
         self.canvas = wx.Window(self, -1)
         self.canvasBuffer = None
         self.createBuffer()
-        self.Bind(wx.EVT_SIZE, self.canvas.OnSize)
-        self.Bind(wx.EVT_PAINT, self.canvas.OnPaint)
+        self.Bind(wx.EVT_SIZE, self.canvas.OnSize)  # Sembla ser de wx.Frame
+        self.Bind(wx.EVT_PAINT, self.canvas.OnPaint)  # Sembla ser de wx.Frame
         return
 
     def OnPaint(self, event):
