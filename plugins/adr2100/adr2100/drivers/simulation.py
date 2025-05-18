@@ -4,7 +4,6 @@
 # Embedded file name: ../plugins/adr2100/src/adr2100/drivers/simulation.py
 # Compiled at: 2004-12-07 23:11:58
 import wx, plugins.ui.ui as ui
-import plugins.adr2100.adr2100.drivers
 import plugins.adr2100.adr2100 as adr2100
 import plugins.adr2100.adr2100.drivers.rs485driver as rs485driver
 import plugins.poi.poi as poi, plugins.poi.poi.actions
@@ -60,7 +59,6 @@ class ShowPanelAction(poi.actions.Action):
 
 OUTPUT = adr2100.drivers.OUTPUT
 INPUT = adr2100.drivers.INPUT
-import traceback
 
 class SimulationDeviceDriver(adr2100.drivers.DeviceDriver):
     __module__ = __name__

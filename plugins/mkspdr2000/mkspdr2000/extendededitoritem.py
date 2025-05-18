@@ -3,7 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/up150/src/up150/extendededitoritem.py
 # Compiled at: 2004-08-12 02:18:21
-import wx, extendededitor.item, grideditor.recipemodel, up150.messages as messages, ui.widgets.contentassist
+import wx, plugins.extendededitor.extendededitor.item, plugins.grideditor.grideditor.recipemodel
+import plugins.up150.up150.messages as messages, plugins.ui.ui.widgets.contentassist
+import plugins.extendededitor.extendededitor as extendededitor
+import plugins.ui.ui as ui
+import plugins.grideditor.grideditor as grideditor
+
 
 class UP150ExtendedEditorItem(extendededitor.item.ExtendedEditorItem):
     __module__ = __name__

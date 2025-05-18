@@ -3,14 +3,25 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mkspdr2000/src/mkspdr2000/__init__.py
 # Compiled at: 2004-12-09 00:49:30
-import core.error, time, string, kernel.plugin, mkspdr2000.mkspdr2000type, mkspdr2000.images as images, mkspdr2000.messages as messages, mkspdr2000.drivers, mkspdr2000.participant, mkspdr2000.drivers.ser, mkspdr2000.drivers.simulation, hardware
-from hardware import ResponseTimeoutException
-import hardware.hardwaremanager, executionengine, logging, threading
-from hardware.utils.threads import BackgroundProcessThread, PurgeThread
-from . import mkspdr2000type, mkspdr2000node
-import core.deviceregistry, pressure_gauge.hardwarestatusprovider
-import plugins.ui.ui as ui
+import plugins.core.core.error, lib.kernel.plugin, plugins.mkspdr2000.mkspdr2000.mkspdr2000type
+import plugins.mkspdr2000.mkspdr2000.images as images, plugins.mkspdr2000.mkspdr2000.messages as messages
+import plugins.mkspdr2000.mkspdr2000.participant as mkspdr2000_participant
+import plugins.mkspdr2000.mkspdr2000.drivers as mkspdr2000_drivers
+import plugins.mkspdr2000.mkspdr2000.drivers.simulation
+import plugins.hardware.hardware as hardware
+from plugins.hardware.hardware import ResponseTimeoutException
+import plugins.hardware.hardware.hardwaremanager, logging
+from plugins.hardware.hardware.utils.threads import BackgroundProcessThread
+import plugins.mkspdr2000.mkspdr2000.mkspdr2000node as mkspdr2000node
+import plugins.mkspdr2000.mkspdr2000.mkspdr2000type as mkspdr2000type
+import plugins.core.core.deviceregistry
+import plugins.pressure_gauge.pressure_gauge.hardwarestatusprovider
+import plugins.ui.ui as ui, lib.kernel as kernel
 import plugins.executionengine.executionengine as executionengine
+import plugins.pressure_gauge.pressure_gauge as pressure_gauge
+import plugins.core.core as core
+
+
 logger = logging.getLogger('mkspdr2000')
 
 class MKSPDR2000Plugin(kernel.plugin.Plugin):
@@ -32,7 +43,7 @@ class MKSPDR2000Plugin(kernel.plugin.Plugin):
         messages.init(contextBundle)
         hwtype = mkspdr2000type.mkspdr2000HardwareType()
         hardware.hardwaremanager.registerHardwareType(hwtype)
-        executionengine.getDefault().registerRecipeParticipantFactory(hwtype.getType(), mkspdr2000.participant.RecipeParticipantFactory())
+        executionengine.getDefault().registerRecipeParticipantFactory(hwtype.getType(), mkspdr2000_participant.RecipeParticipantFactory())
 
 
 class StatusThread(BackgroundProcessThread):
@@ -155,7 +166,7 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
         config = description.getConfiguration()
         try:
             driverType = config.get('driver', 'type')
-            inst = mkspdr2000.drivers.getDriver(driverType)(self)
+            inst = mkspdr2000_drivers.getDriver(driverType)(self)
             self.setDriver(inst)
             self.driver.setConfiguration(config)
         except Exception as msg:
@@ -163,11 +174,6 @@ class mkspdr2000Hardware(hardware.hardwaremanager.Hardware, pressure_gauge.hardw
             self.logger.exception(msg)
             self.logger.error("Cannot setup driver : '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
-        except Error as msg:
-            self.driver = None
-            self.logger.error("Cannot setup driver : '%s'" % msg)
-            self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
-
         return
 
     def setDriver(self, driver):

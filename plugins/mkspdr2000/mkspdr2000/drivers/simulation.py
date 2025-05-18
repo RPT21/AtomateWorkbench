@@ -3,7 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mkspdr2000/src/mkspdr2000/drivers/simulation.py
 # Compiled at: 2004-11-23 21:54:18
-import wx, ui, mkspdr2000.drivers, poi, poi.actions
+import wx, plugins.mkspdr2000.mkspdr2000.drivers as mkspdr2000_drivers
+import plugins.poi.poi as poi, plugins.poi.poi.actions
+import plugins.ui.ui as ui
+
+OUTPUT = 0
+INPUT = 1
+
 
 class SimConfigurationSegment(object):
     __module__ = __name__
@@ -58,11 +64,11 @@ class ShowPanelAction(poi.actions.Action):
         self.driver.toggleDialog()
 
 
-class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
+class SimulationDeviceDriver(mkspdr2000_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self, hwinst):
-        mkspdr2000.drivers.DeviceDriver.__init__(self, hwinst)
+        mkspdr2000_drivers.DeviceDriver.__init__(self, hwinst)
         self.gauges = [
          'Off', 'Off']
         self.action = poi.actions.ActionContributionItem(ShowPanelAction(self))
@@ -133,7 +139,6 @@ class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
         self.dlg.Destroy()
         self.dlg = None
         return True
-        return
 
     def toggleDialog(self):
         self.dlg.Show(not self.dlg.IsShown())
@@ -142,7 +147,7 @@ class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
         return SimConfigurationSegment()
 
     def setConfiguration(self, configuration):
-        mkspdr2000.drivers.DeviceDriver.setConfiguration(self, configuration)
+        mkspdr2000_drivers.DeviceDriver.setConfiguration(self, configuration)
 
     def initialize(self):
         pass
@@ -170,6 +175,7 @@ class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
     def outputBinaryData(self, port, data):
 
         def doit(port, data):
+            global OUTPUT
             x = -1
             port = port.upper()
             for datum in data:
@@ -185,9 +191,9 @@ class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
         return list(map((lambda x: x.GetValue()), self.digitalPorts[port]))
 
     def shutdown(self):
-        if not self.status == mkspdr2000.drivers.STATUS_INITIALIZED:
+        if not self.status == mkspdr2000_drivers.STATUS_INITIALIZED:
             return
-        self.status = mkspdr2000.drivers.STATUS_UNINITIALIZED
+        self.status = mkspdr2000_drivers.STATUS_UNINITIALIZED
 
     def __del__(self):
         if self.dlg is not None:
@@ -198,4 +204,4 @@ class SimulationDeviceDriver(mkspdr2000.drivers.DeviceDriver):
         return
 
 
-mkspdr2000.drivers.registerDriver('simulation', SimulationDeviceDriver, SimConfigurationSegment, 'Simulation')
+mkspdr2000_drivers.registerDriver('simulation', SimulationDeviceDriver, SimConfigurationSegment, 'Simulation')

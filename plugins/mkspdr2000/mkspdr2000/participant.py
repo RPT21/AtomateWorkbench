@@ -3,8 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mkspdr2000/src/mkspdr2000/participant.py
 # Compiled at: 2004-11-23 04:03:11
-import executionengine.executionparticipant, resources.runlog, pressure_gauge.response, logging
+import plugins.executionengine.executionengine.executionparticipant
+import plugins.pressure_gauge.pressure_gauge.response, logging
+import plugins.executionengine.executionengine as executionengine
+import plugins.pressure_gauge.pressure_gauge as pressure_gauge
+
 logger = logging.getLogger('mkspdr2000.participant')
+
 
 class RecipeParticipantFactory(executionengine.executionparticipant.ExecutionParticipantFactory):
     __module__ = __name__
@@ -58,7 +63,6 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
 
     def checkConditions(self, recipeTime, stepTime, totalTime, step):
         return None
-        return
 
     def handleRecipeEnd(self, recipeTime, stepTime, totalTime, recipe):
         pass

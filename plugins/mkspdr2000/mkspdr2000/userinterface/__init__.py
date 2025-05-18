@@ -3,7 +3,17 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mkspdr2000/src/mkspdr2000/userinterface/__init__.py
 # Compiled at: 2004-11-23 21:55:51
-import validator, wx, ui, time, core.utils, string, logging, poi.views, poi.dialogs, hardware.userinterface.configurator, hardware.hardwaremanager, mkspdr2000.drivers, mkspdr2000.userinterface.initdialog, threading, poi.operation, poi.dialogs.progress
+import wx, time, plugins.core.core.utils, logging
+import plugins.poi.poi.dialogs, plugins.hardware.hardware.userinterface.configurator
+import plugins.hardware.hardware.hardwaremanager, plugins.mkspdr2000.mkspdr2000.drivers as mkspdr2000_drivers
+import plugins.mkspdr2000.mkspdr2000.userinterface.initdialog, threading
+import plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.hardware.hardware as hardware
+import plugins.poi.poi as poi
+import plugins.ui.ui as ui
+import plugins.validator.validator as validator
+import plugins.core.core as core
+
 logger = logging.getLogger('mkspdr2000.ui')
 
 class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
@@ -112,7 +122,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
     def OnDriverChoice(self, event):
         self.setDirty(True)
         choice = event.GetString()
-        page = mkspdr2000.drivers.getDriverPageByName(choice)
+        page = mkspdr2000_drivers.getDriverPageByName(choice)
         self.updateDriverSegment(page)
 
     def markDirty(self, event=None):
@@ -146,13 +156,12 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             self.control.Layout()
         self.control.Refresh()
         return page
-        return
 
     def getDriverOptions(self):
-        keys = mkspdr2000.drivers.getRegisteredDeviceKeys()
+        keys = mkspdr2000_drivers.getRegisteredDeviceKeys()
         names = []
         for key in keys:
-            names.append(mkspdr2000.drivers.getDriverName(key))
+            names.append(mkspdr2000_drivers.getDriverName(key))
 
         return names
 
@@ -189,11 +198,11 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
 
     def setDriverConfig(self, config):
         driverType = config.get('driver', 'type')
-        driverName = mkspdr2000.drivers.getDriverName(driverType)
+        driverName = mkspdr2000_drivers.getDriverName(driverType)
         options = self.getDriverOptions()
         idx = options.index(driverName)
         self.driverCombo.SetSelection(idx)
-        page = mkspdr2000.drivers.getDriverConfigurationPage(driverType)
+        page = mkspdr2000_drivers.getDriverConfigurationPage(driverType)
         self.updateDriverSegment(page)
         page.setData(config)
 
@@ -222,7 +231,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         config.set('main', 'startupinit', its)
         if not config.has_section('driver'):
             config.add_section('driver')
-        driverType = mkspdr2000.drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
+        driverType = mkspdr2000_drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
         if driverType is not None:
             config.set('driver', 'type', driverType)
         self.driverSegment.getData(config)
@@ -274,7 +283,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             dlg.run(runner, fork=False)
         except Exception as invocation:
             logger.exception(invocation)
-            (e, v, t) = invocation.getWrapped()
+            (e, v, t) = invocation.getWrapped()  # Que significa getWrapped?
             poi.dialogs.ExceptionDialog(f, v, 'Error Initializing Hardware').ShowModal()
 
     def shutdownHardware(self):

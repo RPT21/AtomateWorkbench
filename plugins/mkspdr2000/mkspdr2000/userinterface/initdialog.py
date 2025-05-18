@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mkspdr2000/src/mkspdr2000/userinterface/initdialog.py
 # Compiled at: 2004-08-13 22:51:37
-import poi.dialogs, wx, wx.lib.throbber as throb
+import plugins.poi.poi.dialogs, wx
+import plugins.poi.poi as poi
+
 
 class ShutdownInitializeDialog(poi.dialogs.Dialog):
     __module__ = __name__
@@ -25,7 +27,7 @@ class ShutdownInitializeDialog(poi.dialogs.Dialog):
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         sizer.Fit(self.control)
-        self.control.SetSize((300, -1))
+        self.control.SetSize(wx.Size(300, -1))
         poi.dialogs.Dialog.createControl(self, parent)
         return self.control
 

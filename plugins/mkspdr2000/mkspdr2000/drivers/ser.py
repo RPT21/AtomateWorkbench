@@ -3,8 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mkspdr2000/src/mkspdr2000/drivers/ser.py
 # Compiled at: 2004-12-07 10:31:20
-import wx, mkspdr2000.drivers, socket, time, threading, select, serial, logging
-from hardware import ResponseTimeoutException
+import wx, plugins.mkspdr2000.mkspdr2000.drivers as mkspdr2000_drivers, time, threading, serial, logging
+from plugins.hardware.hardware import ResponseTimeoutException
+from plugins.mkspdr2000.mkspdr2000.drivers.rs485driver import ERROR_CODE_STRINGS
+
 logger = logging.getLogger('mkspdr2000.drivers.serial')
 MODE_NORMAL = 0
 MODE_STANDBY = 1
@@ -168,11 +170,11 @@ class SerialConfigurationSegment(object):
 
 DEFAULT_TIMEOUT = 1000
 
-class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
+class SerialDeviceDriver(mkspdr2000_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self, hwinst):
-        mkspdr2000.drivers.DeviceDriver.__init__(self, hwinst)
+        mkspdr2000_drivers.DeviceDriver.__init__(self, hwinst)
         self.softwareVersion = None
         self.port = None
         self.portnum = None
@@ -199,7 +201,7 @@ class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
 
     def setConfiguration(self, configuration):
         global SERIAL_PARITY
-        mkspdr2000.drivers.DeviceDriver.setConfiguration(self, configuration)
+        mkspdr2000_drivers.DeviceDriver.setConfiguration(self, configuration)
         try:
             self.portnum = int(configuration.get('driver', 'port'))
             self.baudrate = int(configuration.get('driver', 'baudrate'))
@@ -217,7 +219,7 @@ class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
             self.port = serial.Serial(port=self.portnum, baudrate=self.baudrate, parity=self.parity, stopbits=self.stopbits, bytesize=self.wordsize)
             self.port.open()
             self.checkInterrupt()
-            self.status = mkspdr2000.drivers.STATUS_INITIALIZED
+            self.status = mkspdr2000_drivers.STATUS_INITIALIZED
             self.checkInterrupt()
             self.softwareVersion = self.getID()
             logger.debug('Software version %s' % self.softwareVersion)
@@ -254,10 +256,10 @@ class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
         return self.sendAndWait('v')
 
     def shutdown(self):
-        if not self.status == mkspdr2000.drivers.STATUS_INITIALIZED:
+        if not self.status == mkspdr2000_drivers.STATUS_INITIALIZED:
             return
         self.port.close()
-        self.status = mkspdr2000.drivers.STATUS_UNINITIALIZED
+        self.status = mkspdr2000_drivers.STATUS_UNINITIALIZED
 
     def scanBufferForCommand(self):
         cmd = ''
@@ -308,8 +310,4 @@ class SerialDeviceDriver(mkspdr2000.drivers.DeviceDriver):
 
             rcpt = data
 
-        return rcpt
-        return
-
-
-mkspdr2000.drivers.registerDriver('serial', SerialDeviceDriver, SerialConfigurationSegment, 'Serial')
+mkspdr2000_drivers.registerDriver('serial', SerialDeviceDriver, SerialConfigurationSegment, 'Serial')

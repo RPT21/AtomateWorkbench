@@ -3,14 +3,17 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/up150/src/up150/graphitem.py
 # Compiled at: 2004-08-12 02:18:21
-import wx, grapheditor.contributor, grideditor.recipemodel
+import wx, plugins.grapheditor.grapheditor.contributor, plugins.grideditor.grideditor.recipemodel
+import plugins.grapheditor.grapheditor as grapheditor
+import plugins.grideditor.grideditor as grideditor
+
 
 class UP150GraphItem(grapheditor.contributor.GraphContributor):
     __module__ = __name__
 
     def __init__(self):
         grapheditor.contributor.GraphContributor.__init__(self)
-        self.facecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        self.facecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         self.setTitle('')
 
     def setDevice(self, device):

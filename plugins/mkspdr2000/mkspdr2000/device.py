@@ -3,7 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/up150/src/up150/device.py
 # Compiled at: 2004-08-12 02:18:21
-import traceback, wx, up150, up150.stepentry, hardware.hardwaremanager, core.device
+import traceback, wx, plugins.up150.up150.stepentry
+import plugins.hardware.hardware.hardwaremanager, plugins.core.core.device
+import plugins.core.core as core
+import plugins.up150.up150 as up150
+import plugins.hardware.hardware as hardware
+
 DEVICE_ID = 'up150'
 
 class UP150DeviceEditor(core.device.DeviceEditor):
@@ -177,7 +182,6 @@ class UP150Device(core.device.Device):
         if fromExisting is not None:
             return fromExisting.clone()
         return up150.stepentry.UP150StepEntry()
-        return
 
     def getDeviceEditor(self):
         return UP150DeviceEditor()

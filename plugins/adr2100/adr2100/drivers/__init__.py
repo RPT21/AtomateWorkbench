@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/adr2100/src/adr2100/drivers/__init__.py
 # Compiled at: 2004-12-07 22:46:58
-import threading, traceback, logging
+import threading, logging
 logger = logging.getLogger('adr2100.drivers')
 STATUS_INITIALIZED = 0
 STATUS_UNINITIALIZED = 1
