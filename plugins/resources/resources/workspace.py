@@ -9,6 +9,7 @@ import plugins.resources.resources.version as version_lib
 import plugins.resources.resources.utils as utils_lib
 import plugins.resources.resources.runlog as runlog_lib
 import plugins.resources.resources as resources
+
 logger = logging.getLogger('resources')
 WORKSPACE_DIRNAME = 'workspace'
 suppress = False

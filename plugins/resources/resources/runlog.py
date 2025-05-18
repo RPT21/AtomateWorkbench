@@ -3,8 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resources/src/resources/runlog.py
 # Compiled at: 2004-11-02 01:45:16
-import wx, lib.kernel, glob, os
-from plugins.resources.resources.__init__ import *
+import wx, lib.kernel, glob, os, logging
+import plugins.resources.resources.__init__ as  resources
+
 logger = logging.getLogger('runlog')
 RUNLOG_SUFFIX = '.runlog'
 
@@ -13,11 +14,11 @@ def isRunLog(fullpath):
     return fullpath.endswith(RUNLOG_SUFFIX)
 
 
-class RunLog(Resource):
+class RunLog(resources.Resource):
     __module__ = __name__
 
     def __init__(self, number):
-        Resource.__init__(self, number)
+        resources.Resource.__init__(self, number)
         self.dataBuffer = ''
 
     def create(self):

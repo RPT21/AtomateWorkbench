@@ -3,9 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resources/src/resources/project.py
 # Compiled at: 2004-12-17 20:47:14
-import lib.kernel, os, configparser, __init__
+import lib.kernel, os, configparser
 import plugins.resources.resources.version as version_lib
-from plugins.resources.resources.__init__ import *
+import plugins.resources.resources.__init__ as resources
 
 
 class ProjectDescription(object):
@@ -49,11 +49,11 @@ def isProject(fullpath):
     return PROJECT_METADATA_FILENAME in files
 
 
-class Project(Resource):
+class Project(resources.Resource):
     __module__ = __name__
 
     def __init__(self, name):
-        Resource.__init__(self, name)
+        resources.Resource.__init__(self, name)
         self.description = ProjectDescription()
 
     def promoteVersion(self, src):

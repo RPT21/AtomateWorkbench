@@ -4,8 +4,9 @@
 # Embedded file name: ../plugins/resources/src/resources/version.py
 # Compiled at: 2004-11-02 23:11:18
 import lib.kernel, os, plugins.core.core.recipe, plugins.core.core.utils
-from plugins.resources.resources.__init__ import *  # Fa una còpia de funcions, objectes i variables del mòdul
-import plugins.resources.resources as resources
+import plugins.resources.resources.__init__ as resources
+import plugins.resources.resources.workspace as workspace
+
 RECIPE_METADATA_FILENAME = '.recipe'
 
 def isRecipeVersion(fullpath):
@@ -36,11 +37,11 @@ def getNextVersionName(project):
     return getVersionWithNumber(number)
 
 
-class RecipeVersion(Resource):
+class RecipeVersion(resources.Resource):
     __module__ = __name__
 
     def __init__(self, name):
-        Resource.__init__(self, name)
+        resources.Resource.__init__(self, name)
         self.parseDigits(name)
         self.buff = None
         return
@@ -66,7 +67,7 @@ class RecipeVersion(Resource):
         if self.exists():
             raise Exception("Recipe version '%s' already exists at '%s'" % (self.name, self.location))
         os.makedirs(self.location)
-        Resource.create(self)
+        resources.Resource.create(self)
         self.createRecipeDataFile()
         lib.kernel.resetUserGroupID()
         resources.getDefault().getWorkspace().fireWorkspaceChangeEvent(workspace.WorkspaceChangeEvent(workspace.TYPE_CREATE, self))
@@ -91,7 +92,7 @@ class RecipeVersion(Resource):
 
     def load(self):
         """Loads the buffer for the recipe"""
-        Resource.load(self)
+        resources.Resource.load(self)
         try:
             f = open(self.getRecipeDataFilename(), 'r')
             self.buff = f.read()
