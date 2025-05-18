@@ -3,8 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/utils/__init__.py
 # Compiled at: 2004-11-19 02:30:04
-import wx, plugins.ui.ui, plugins.ui.ui.context, plugins.resourcesui.resourcesui, plugins.executionengine.executionengine
-import plugins.executionengine.executionengine.engine, plugins.grideditor.grideditor, plugins.grideditor.grideditor.recipeoptionsdialog, logging
+import wx, plugins.ui.ui as ui, plugins.ui.ui.context, logging
+import plugins.executionengine.executionengine.engine
+import plugins.resourcesui.resourcesui as resourcesui
+import plugins.executionengine.executionengine as executionengine
+import plugins.resourcesui.resourcesui.utils
+import plugins.grideditor.grideditor.recipeoptionsdialog as grideditor_recipeoptionsdialog
+import plugins.grideditor.grideditor.__init__ as grideditor
+
 saving = False
 logger = logging.getLogger('grideditor')
 
@@ -26,7 +32,7 @@ class ExecutionListener(object):
 
     def __init__(self):
         self.engine = None
-        plugins.executionengine.executionengine.getDefault().addEngineInitListener(self)
+        executionengine.getDefault().addEngineInitListener(self)
         return
 
     def engineInit(self, engine):
@@ -35,13 +41,13 @@ class ExecutionListener(object):
 
     def engineEvent(self, event):
         t = event.getType()
-        if t == plugins.executionengine.executionengine.engine.TYPE_STARTING:
+        if t == executionengine.engine.TYPE_STARTING:
             logger.debug('setting has run to true')
-            plugins.resourcesui.resourcesui.utils.setHasRun(True)
-        elif t == plugins.executionengine.executionengine.engine.TYPE_HARDWARE_INIT_ERROR:
+            resourcesui.utils.setHasRun(True)
+        elif t == executionengine.engine.TYPE_HARDWARE_INIT_ERROR:
             logger.debug('Setting has run to false')
-            plugins.resourcesui.resourcesui.utils.setHasRun(False)
-        if t == plugins.executionengine.executionengine.engine.TYPE_ENDING:
+            resourcesui.utils.setHasRun(False)
+        if t == executionengine.engine.TYPE_ENDING:
             self.engine.removeEngineListener(self)
 
 
@@ -95,17 +101,16 @@ def saveCurrentRecipe():
     recipe.setDirty(False)
     markRecipeModelDirty()
     saving = False
-    return
 
 
 def markRecipeModelDirty():
-    recipeModel = plugins.grideditor.grideditor.getDefault().getEditor().getInput()
+    recipeModel = grideditor.getDefault().getEditor().getInput()
     recipeModel.touch()
 
 
 def showRecipeOptions(device):
-    editor = plugins.grideditor.grideditor.getActiveEditor()
-    dlg = plugins.grideditor.grideditor.recipeoptionsdialog.RecipeOptionsDialog(editor)
-    dlg.createControl(plugins.ui.ui.getDefault().getMainFrame().getControl())
+    editor = grideditor.getActiveEditor()
+    dlg = grideditor_recipeoptionsdialog.RecipeOptionsDialog(editor)
+    dlg.createControl(ui.getDefault().getMainFrame().getControl())
     dlg.setShowDevice(device)
     dlg.showModal()

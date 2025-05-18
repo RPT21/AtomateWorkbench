@@ -3,10 +3,18 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/executiongridviewer.py
 # Compiled at: 2004-09-23 02:40:57
-from wx.grid import *
 from wx import *
-import wx.grid as gridlib
-import logging, poi.views.viewers, threading, wx, ui, poi.actions.menumanager, poi.actions, ui.undomanager, grideditor.recipegridviewercontentprovider, grideditor.recipegrideditortable, grideditor.recipemodel, grideditor.selections, grideditor.images as images, grideditor.messages as messages, grideditor.actions, grideditor.gutter, grideditor.tablecolumn, executionengine, executionengine.engine, resourcesui.utils
+import wx.grid
+import logging, wx
+import plugins.grideditor.grideditor.messages as messages
+import plugins.grideditor.grideditor.tablecolumn as grideditor_tablecolumn
+import plugins.poi.poi as poi
+import plugins.ui.ui as ui
+import plugins.poi.poi.views.viewers
+import plugins.executionengine.executionengine as executionengine
+import plugins.executionengine.executionengine.engine
+import plugins.grideditor.grideditor.__init__ as grideditor
+
 DEBUG = False
 logger = logging.getLogger('grideditor')
 executionGridColumnContributionsFactories = {}
@@ -67,14 +75,14 @@ class ExecutionGridViewer(object):
         view.setTitle(messages.get('executionview.title'))
         self.view = view
         panel = wx.Panel(view.getContent(), -1)
-        self.grid = gridlib.wxGrid(panel, -1)
+        self.grid = wx.grid.Grid(panel, -1)
         self.mediator = ExecutionGridMediator()
         self.table = ExecutionGridTable(self.mediator)
         self.mediator.setManagedTable(self.table)
         self.grid.SetTable(self.table)
         self.grid.SetScrollRate(10, 10)
         self.grid.SetDefaultRowSize(20, True)
-        self.grid.SetGridLineColour(gridlib.wxSystemSettings_GetColour(gridlib.wxSYS_COLOUR_3DDKSHADOW))
+        self.grid.SetGridLineColour(wx.wxSystemSettings.GetColour(wx.SYS_COLOUR_3DDKSHADOW))
         self.grid.EnableDragRowSize(False)
         self.grid.SetColLabelSize(10)
         self.grid.EnableEditing(False)
@@ -91,8 +99,8 @@ class ExecutionGridViewer(object):
         def ignore(event):
             pass
 
-        self.grid.Bind(EVT_GRID_CELL_LEFT_CLICK, ignore, self.grid)
-        self.grid.Bind(EVT_GRID_LABEL_LEFT_CLICK, ignore, self.grid)
+        self.grid.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, ignore, self.grid)
+        self.grid.Bind(wx.grid.EVT_GRID_LABEL_LEFT_CLICK, ignore, self.grid)
         wnd = self.grid.GetGridColLabelWindow()
         wx.EVT_PAINT(wnd, self.OnHeaderLabelPaint)
         self.closeViewButton.Bind(wx.EVT_BUTTON, self.OnCloseView)
@@ -110,8 +118,7 @@ class ExecutionGridViewer(object):
             renderer = self.mediator.getHeaderRenderer(col)
             if renderer is None:
                 continue
-            (w, h) = (
-             self.grid.GetColSize(col), self.grid.GetColLabelSize())
+            (w, h) = (self.grid.GetColSize(col), self.grid.GetColLabelSize())
             bestsize = renderer.getBestSize()
             if bestsize[1] > h:
                 self.grid.SetColLabelSize(bestsize[1])
@@ -183,17 +190,17 @@ class ExecutionGridViewer(object):
             self.grid.SetRowLabelSize(width)
 
 
-class ExecutionGridTable(gridlib.GridTableBase):
+class ExecutionGridTable(wx.grid.GridTableBase):
     __module__ = __name__
 
     def __init__(self, mediator):
-        gridlib.GridTableBase.__init__(self)
+        wx.grid.GridTableBase.__init__(self)
         self.mediator = mediator
 
     def InsertCols(self, pos, num):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_COLS_INSERTED, pos, num)
+        msg = wx.wxGridTableMessage(self, wx.wxGRIDTABLE_NOTIFY_COLS_INSERTED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -203,7 +210,7 @@ class ExecutionGridTable(gridlib.GridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_ROWS_DELETED, pos, num)
+        msg = wx.wxGridTableMessage(self, wx.wxGRIDTABLE_NOTIFY_ROWS_DELETED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -213,7 +220,7 @@ class ExecutionGridTable(gridlib.GridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_COLS_DELETED, pos, num)
+        msg = wx.wxGridTableMessage(self, wx.wxGRIDTABLE_NOTIFY_COLS_DELETED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -221,7 +228,7 @@ class ExecutionGridTable(gridlib.GridTableBase):
     def InsertRows(self, pos, num):
         grid = self.GetView()
         grid.BeginBatch()
-        msg = gridlib.wxGridTableMessage(self, gridlib.wxGRIDTABLE_NOTIFY_ROWS_INSERTED, pos, num)
+        msg = wx.wxGridTableMessage(self, wx.wxGRIDTABLE_NOTIFY_ROWS_INSERTED, pos, num)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
         grid.AdjustScrollbars()
@@ -256,7 +263,7 @@ class ExecutionGridColumn(object):
         self.rendererWrapper = CellRendererWrapper(self.renderer, self)
 
     def createHeaderRenderer(self):
-        return grideditor.tablecolumn.StringHeaderCellRenderer(self)
+        return grideditor_tablecolumn.StringHeaderCellRenderer(self)
 
     def createRenderer(self):
         return StringCellRenderer()
@@ -269,11 +276,9 @@ class ExecutionGridColumn(object):
 
     def getHeaderImage(self):
         return None
-        return
 
     def getHeaderLabel(self):
         return None
-        return
 
     def getValueAt(self, row):
         return ''
@@ -316,14 +321,14 @@ class CellRenderer(object):
         pass
 
     def getBestSize(self, value):
-        return (
-         0, 0)
+        return (0, 0)
 
 
 class StringCellRenderer(CellRenderer):
     __module__ = __name__
 
     def __init__(self):
+        super().__init__()
         self.font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
         self.inset = 5
 
@@ -353,11 +358,10 @@ class StringCellRenderer(CellRenderer):
         dc.SetBrush(wx.NullBrush)
         dc.SetPen(wx.NullPen)
 
-    def getBestSize(self, value):
+    def getBestSize(self, value, dc):
         text = str(value)
         (w, h) = dc.GetTextExtent(text)
-        return (
-         w, h)
+        return (w, h)
 
 
 class DurationCellRenderer(StringCellRenderer):
@@ -373,11 +377,11 @@ class DurationCellRenderer(StringCellRenderer):
         dc.DrawText(text, rect.x + x, rect.y + y)
 
 
-class CellRendererWrapper(gridlib.GridCellRenderer):
+class CellRendererWrapper(wx.grid.GridCellRenderer):
     __module__ = __name__
 
     def __init__(self, renderer, column):
-        gridlib.GridCellRenderer.__init__(self)
+        wx.grid.GridCellRenderer.__init__(self)
         self.renderer = renderer
         self.column = column
         self.currentStep = -1
@@ -389,7 +393,7 @@ class CellRendererWrapper(gridlib.GridCellRenderer):
         value = self.column.getValueAt(row)
         self.renderer.draw(grid, value, dc, isSelected, rect, row, self.currentStep == row)
 
-    def GetBestSize(self):
+    def GetBestSize(self, row):
         value = self.column.getValueAt(row)
         return self.renderer.getBestSize(value)
 
@@ -459,7 +463,6 @@ class ExecutionGridMediator(object):
         if self.recipe is None:
             return 0
         return self.recipe.getStepsCount()
-        return
 
     def getValueAt(self, row, col):
         return self.columns[col].getValueAt(row, col)
@@ -469,14 +472,13 @@ class ExecutionGridMediator(object):
             return None
         column = self.columns[col]
         if column not in self.colattrs:
-            attr = wxGridCellAttr()
+            attr = wx.grid.GridCellAttr()
             self.colattrs[column] = attr
             attr.SetRenderer(column.getCellRendererWrapper())
         else:
             attr = self.colattrs[column]
         if attr == None:
-            attr = wxGridCellAttr()
+            attr = wx.grid.GridCellAttr()
             self.colattrs[column] = attr
             attr.SetRenderer(column.getCellRendererWrapper())
         return attr.Clone()
-        return

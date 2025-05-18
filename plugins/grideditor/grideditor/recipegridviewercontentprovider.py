@@ -5,11 +5,16 @@
 # Compiled at: 2004-11-19 02:29:39
 from wx.grid import *
 from wx import *
-import wx, logging, plugins.grideditor.grideditor, plugins.grideditor.grideditor.durationcolumn, plugins.grideditor.grideditor.recipemodel
-logger = logging.getLogger('grideditor.contentprovider')
-from plugins.grideditor.grideditor.recipemodel import RecipeModelEventListener
+import wx, logging
+import plugins.grideditor.grideditor.durationcolumn as grideditor_durationcolumn
+import plugins.grideditor.grideditor.recipemodel as grideditor_recipemodel
+import plugins.grideditor.grideditor.tablecolumn as grideditor_tablecolumn
+import plugins.grideditor.grideditor.__init__ as grideditor
 
-class RecipeGridViewerContentProvider(RecipeModelEventListener):
+logger = logging.getLogger('grideditor.contentprovider')
+
+
+class RecipeGridViewerContentProvider(grideditor_recipemodel.RecipeModelEventListener):
     __module__ = __name__
 
     def __init__(self):
@@ -41,20 +46,20 @@ class RecipeGridViewerContentProvider(RecipeModelEventListener):
         if self.suppress:
             return
         etype = event.getEventType()
-        if etype == plugins.grideditor.grideditor.recipemodel.ADD:
-            if event.getRowOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
+        if etype == grideditor_recipemodel.ADD:
+            if event.getRowOffset() != grideditor_recipemodel.ALL:
                 self.managedTable.insertRows(event.getRowOffset(), event.getNumRows())
-            elif event.getColOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
+            elif event.getColOffset() != grideditor_recipemodel.ALL:
                 pass
-        elif etype == plugins.grideditor.grideditor.recipemodel.ADD_DEVICE:
+        elif etype == grideditor_recipemodel.ADD_DEVICE:
             self.addDeviceColumnContribution(event.getDevice())
-        elif etype == plugins.grideditor.grideditor.recipemodel.REMOVE_DEVICE:
+        elif etype == grideditor_recipemodel.REMOVE_DEVICE:
             self.removeDeviceColumnContribution(event.getDevice())
-        elif etype == plugins.grideditor.grideditor.recipemodel.REMOVE:
-            if event.getRowOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
+        elif etype == grideditor_recipemodel.REMOVE:
+            if event.getRowOffset() != grideditor_recipemodel.ALL:
                 self.managedTable.removeRows(event.getRowOffset(), event.getNumRows())
-        elif etype == plugins.grideditor.grideditor.recipemodel.CHANGE:
-            if event.getRowOffset() != plugins.grideditor.grideditor.recipemodel.ALL:
+        elif etype == grideditor_recipemodel.CHANGE:
+            if event.getRowOffset() != grideditor_recipemodel.ALL:
                 pass
             else:
                 self.managedTable.updateAll()
@@ -66,14 +71,14 @@ class RecipeGridViewerContentProvider(RecipeModelEventListener):
         realIndex = self.getRealIndexOfCol(col)
         column = self.visibleColumns[col]
         if not column in self.colattrs:
-            attr = wxGridCellAttr()
+            attr = wx.GridCellAttr()
             self.colattrs[column] = attr
             attr.SetEditor(column.getCellEditor())
             attr.SetRenderer(column.getCellRenderer())
         else:
             attr = self.colattrs[column]
         if attr == None:
-            attr = wxGridCellAttr()
+            attr = wx.GridCellAttr()
             self.colattrs[column] = attr
             attr.SetEditor(column.getCellEditor())
             attr.SetRenderer(column.getCellRenderer())
@@ -200,7 +205,7 @@ class RecipeGridViewerContentProvider(RecipeModelEventListener):
         if factory is None:
             return None
         contribution = factory.getInstance(deviceType)
-        column = grideditor.tablecolumn.ColumnContributorTableColumnAdapter(contribution, device, self.input)
+        column = grideditor_tablecolumn.ColumnContributorTableColumnAdapter(contribution, device, self.input)
         self.contributions.append(column)
         uihints = device.getUIHints()
         columnhints = uihints.getChildNamed('column')
@@ -254,4 +259,4 @@ class RecipeGridViewerContentProvider(RecipeModelEventListener):
         del self.visibleColumns[0:]
 
     def createDurationColumn(self):
-        self.addColumn(grideditor.durationcolumn.DurationColumn(self.input))
+        self.addColumn(grideditor_durationcolumn.DurationColumn(self.input))

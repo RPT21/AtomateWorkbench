@@ -3,7 +3,6 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/recipegrideditortable.py
 # Compiled at: 2004-10-13 03:17:33
-from wx.grid import *
 from wx import *
 import wx
 import wx.grid as gridlib
@@ -29,7 +28,7 @@ class RecipeGridEditorTable(gridlib.GridTableBase):
             return
         grid = self.GetView()
         grid.BeginBatch()
-        msg = wxGridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_ROWS_DELETED, pos, numRows)
+        msg = wx.grid.GridTableMessage(self, gridlib.GRIDTABLE_NOTIFY_ROWS_DELETED, pos, numRows)
         grid.ProcessTableMessage(msg)
         grid.EndBatch()
 

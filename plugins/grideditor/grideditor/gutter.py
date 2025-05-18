@@ -3,7 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/gutter.py
 # Compiled at: 2004-11-05 20:16:50
-import wx, grideditor, validator, grideditor.utils.validation, ui.images, ui.widgets.contentassist, copy
+import wx, copy
+import plugins.ui.ui as ui
+import plugins.ui.ui.widgets.contentassist
+import plugins.validator.validator as validator
+import plugins.grideditor.grideditor.utils.validation as grideditor_validation
+import plugins.validator.validator.participant
+
 _DEFAULT_WIDTH = 10
 _DEBUG = True
 
@@ -158,7 +164,7 @@ class Gutter(object):
         (x, y) = self.grid.GetVirtualSize()
         self.old = (x, y)
         self.y = 0
-        self.control.SetVirtualSize((_DEFAULT_WIDTH, y))
+        self.control.SetVirtualSize(wx.Size(_DEFAULT_WIDTH, y))
         wnd = self.grid
         wnd.Bind(wx.EVT_SCROLLWIN, self.OnScroll)
         self.control.Bind(wx.EVT_SIZE, self.OnSize)
@@ -196,7 +202,6 @@ class Gutter(object):
         headerHeight = self.grid.GetColLabelSize()
         rowHeight = self.grid.GetDefaultRowSize()
         return headerHeight + rowHeight * index
-        return
 
     def getHeaderHeight(self):
         return self.grid.GetColLabelSize()
@@ -359,7 +364,7 @@ class LoopColumn(GutterColumn):
 
     def __init__(self, parent):
         GutterColumn.__init__(self, parent)
-        self.SetSize((self.getWidth(), -1))
+        self.SetSize(wx.Size(self.getWidth(), -1))
         self.invalidPen = wx.Pen(wx.RED, 2)
         self.normalPen = wx.Pen(wx.BLACK, 1)
 
@@ -376,7 +381,7 @@ class LoopColumn(GutterColumn):
         if v.isValid():
             return True
         for error in v.getErrors():
-            if grideditor.utils.validation.KEY_LOOPING in error.getKeys():
+            if grideditor_validation.KEY_LOOPING in error.getKeys():
                 if error.getStep() == step:
                     return False
 

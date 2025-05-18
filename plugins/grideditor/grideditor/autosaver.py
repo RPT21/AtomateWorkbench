@@ -3,9 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/autosaver.py
 # Compiled at: 2004-08-26 20:56:44
-import core.utils, grideditor.utils, logging, ui.context, threading, time
+import logging, threading
 import plugins.grideditor.grideditor as grideditor
 import plugins.grideditor.grideditor.constants as constants
+import plugins.ui.ui as ui
+
 logger = logging.getLogger('grideditor.autosaver')
 
 class AutoSaver(object):
@@ -37,7 +39,7 @@ class AutoSaver(object):
         if self.called:
             del self.timer
             self.timer = threading.Timer(self.interval, self.save)
-            self.timer.setName('AutoSaverTimer')
+            self.timer.name = 'AutoSaverTimer'
             self.timer.start()
             self.called = False
 

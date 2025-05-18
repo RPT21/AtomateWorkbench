@@ -3,10 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/utils/validation.py
 # Compiled at: 2004-11-12 19:14:23
-import logging, copy, hardware.hardwaremanager
+import logging, copy, plugins.hardware.hardware.hardwaremanager, plugins.hardware.hardware as hardware
 from plugins.validator.validator.participant import ValidationParticipant, ValidationError
 import plugins.validator.validator.participant as participant
 import plugins.validator.validator as validator
+
 logger = logging.getLogger('grideditor.validation')
 KEY_DURATION = 'duration'
 KEY_LOOPING = 'looping'
@@ -124,7 +125,6 @@ def validateDevices(owner, recipe):
             valid = False
 
     return valid
-    return
 
 
 class CompositeValidationParticipant(ValidationParticipant):

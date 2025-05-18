@@ -3,7 +3,6 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/tablecolumn.py
 # Compiled at: 2004-10-14 00:26:32
-from wx.grid import *
 from wx import *
 import wx
 import wx.grid as gridlib
@@ -306,7 +305,7 @@ class StringCellRenderer(CellRenderer):
         dc.SetBrush(wx.NullBrush)
         dc.SetPen(wx.NullPen)
 
-    def getBestSize(self, value):
+    def getBestSize(self, value, dc):
         text = str(value)
         (w, h) = dc.GetTextExtent(text)
         return (
@@ -327,7 +326,7 @@ class CellRendererWrapper(gridlib.GridCellRenderer):
         isColSelected = grid.GetGridCursorCol() == col
         self.renderer.draw(grid, value, dc, isSelected, rect, row, col, isColSelected=isColSelected, isRowSelected=isRowSelected)
 
-    def GetBestSize(self):
+    def GetBestSize(self, row):
         value = self.column.getValueAt(row)
         return self.renderer.getBestSize(value)
 
@@ -407,8 +406,8 @@ class CellEditorWrapper(gridlib.GridCellEditor):
 class ColumnContribution(object):
     __module__ = __name__
 
-    def __init__(self):
-        self.celleditor = self.createCellEditor()
+    def __init__(self, column):
+        self.celleditor = self.createCellEditor(column)
         self.cellrenderer = self.createCellRenderer()
         self.cellEditorWrapper = CellEditorWrapper(self.celleditor, self)
         self.cellRendererWrapper = CellRendererWrapper(self.cellrenderer, self)
@@ -438,8 +437,8 @@ class ColumnContribution(object):
     def createCellRenderer(self):
         return StringCellRenderer()
 
-    def createCellEditor(self):
-        return TextCellEditor()
+    def createCellEditor(self, column):
+        return TextCellEditor(column)
 
     def getDevice(self):
         return self.device

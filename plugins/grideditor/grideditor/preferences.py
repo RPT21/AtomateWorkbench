@@ -3,7 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/preferences.py
 # Compiled at: 2004-11-19 02:46:29
-import re, wx, logging, ui.dialog.preferences, grideditor.messages as messages, grideditor.constants, wx.lib.colourselect as colourselect
+import re, wx, logging, plugins.ui.ui.dialog.preferences, wx.lib.colourselect as colourselect
+import plugins.grideditor.grideditor.messages as messages
+import plugins.grideditor.grideditor.constants as grideditor_constants
+
+import plugins.ui.ui as ui
+
 logger = logging.getLogger('grideditor')
 
 class PreferencesPage(ui.dialog.preferences.PreferencesPage):
@@ -17,24 +22,24 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
         self.control = wx.Panel(parent, -1)
         fsizer = wx.FlexGridSizer(0, 2, 5, 5)
         self.values = {}
-        label = wx.StaticText(self.control, -1, messages.get(grideditor.constants.MESSAGE_AUTOSAVE_INTERVAL_LABEL))
+        label = wx.StaticText(self.control, -1, messages.get(grideditor_constants.MESSAGE_AUTOSAVE_INTERVAL_LABEL))
         self.autoSaveInterval = wx.TextCtrl(self.control, -1)
         self.autoSaveInterval.SetMaxLength(len('00000'))
-        helplabel = wx.StaticText(self.control, -1, messages.get(grideditor.constants.MESSAGE_AUTOSAVE_INTERVAL_HELP))
+        helplabel = wx.StaticText(self.control, -1, messages.get(grideditor_constants.MESSAGE_AUTOSAVE_INTERVAL_HELP))
         fsizer.Add(label, 0, wx.ALIGN_CENTRE_VERTICAL | wx.LEFT, 10)
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer.Add(self.autoSaveInterval, 0, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
         hsizer.Add(helplabel, 0, wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(hsizer, 0, wx.ALIGN_CENTRE_VERTICAL)
-        self.tabAcquires = wx.CheckBox(self.control, -1, messages.get(grideditor.constants.MESSAGE_TAB_ACQUIRES_PREVIOUS_LABEL))
+        self.tabAcquires = wx.CheckBox(self.control, -1, messages.get(grideditor_constants.MESSAGE_TAB_ACQUIRES_PREVIOUS_LABEL))
         fsizer.Add(wx.Panel(self.control, -1, size=wx.Size(1, 1)), 0, wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.tabAcquires, 1, wx.ALIGN_CENTRE_VERTICAL)
-        fsizer.Add(wx.StaticText(self.control, -1, messages.get(grideditor.constants.MESSAGE_SELECTION_COLOR)), 0, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
+        fsizer.Add(wx.StaticText(self.control, -1, messages.get(grideditor_constants.MESSAGE_SELECTION_COLOR)), 0, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
         fsizer.Add(wx.Panel(self.control, -1, size=wx.Size(1, 1)), 0, wx.ALIGN_CENTRE_VERTICAL)
         self.gridCellColor = colourselect.ColourSelect(self.control, -1, size=wx.Size(60, 20))
         self.control.Bind(colourselect.EVT_COLOURSELECT, self.OnColorSelect)
         fsizer.Add(self.gridCellColor, 0, wx.ALIGN_CENTRE_VERTICAL)
-        defaultsButton = wx.Button(self.control, -1, messages.get(grideditor.constants.MESSAGE_RESTORE_DEFAULTS_LABEL))
+        defaultsButton = wx.Button(self.control, -1, messages.get(grideditor_constants.MESSAGE_RESTORE_DEFAULTS_LABEL))
         mainsizer = wx.BoxSizer(wx.VERTICAL)
         mainsizer.Add(fsizer, 0, wx.EXPAND)
         mainsizer.Add(defaultsButton, 0, wx.ALIGN_RIGHT | wx.TOP, 10)
@@ -47,7 +52,7 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
     def validateFields(self):
         text = self.autoSaveInterval.GetValue().strip()
         if len(text) == 0:
-            self.setError(messages.get(grideditor.constants.MESSAGE_ERROR_EMPTY_FIELD))
+            self.setError(messages.get(grideditor_constants.MESSAGE_ERROR_EMPTY_FIELD))
             self.setCanPressOK(False)
             self.update()
             return
@@ -55,7 +60,7 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
         m = c.match(text)
         self.setCanPressOK(m is None)
         if m:
-            self.setError(messages.get(grideditor.constants.MESSAGE_ERROR_NON_NUMERIC_FIELD))
+            self.setError(messages.get(grideditor_constants.MESSAGE_ERROR_NON_NUMERIC_FIELD))
         else:
             self.setError(None)
         self.update()
@@ -128,7 +133,7 @@ class PreferencesPage(ui.dialog.preferences.PreferencesPage):
             logger.exception(msg)
 
     def getTitle(self):
-        return messages.get(grideditor.constants.MESSAGE_EDITOR_PREFERENCES_TITLE)
+        return messages.get(grideditor_constants.MESSAGE_EDITOR_PREFERENCES_TITLE)
 
     def getPath(self):
         return 'editor'

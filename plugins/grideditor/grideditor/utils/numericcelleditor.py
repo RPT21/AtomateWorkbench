@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/utils/numericcelleditor.py
 # Compiled at: 2004-10-13 02:16:12
-import wx, re, grideditor.tablecolumn, logging
+import wx, plugins.grideditor.grideditor.tablecolumn as grideditor_tablecolumn, logging
+
 logger = logging.getLogger('grideditor.utils')
 
 class NumericChangeHandler(wx.EvtHandler):
@@ -19,11 +20,11 @@ class NumericChangeHandler(wx.EvtHandler):
         self.owner.controlUpdate()
 
 
-class NumericCellEditor(grideditor.tablecolumn.TextCellEditor):
+class NumericCellEditor(grideditor_tablecolumn.TextCellEditor):
     __module__ = __name__
 
     def __init__(self, column, as_type=int):
-        grideditor.tablecolumn.TextCellEditor.__init__(self, column)
+        grideditor_tablecolumn.TextCellEditor.__init__(self, column)
         self.oldValue = None
         self.as_type = as_type
         self.acceptedStartKeys = [wx.WXK_SPACE, ord('1'), ord('2'), ord('3'), ord('4'), ord('5'), ord('6'), ord('7'), ord('8'), ord('9'), ord('0')]
@@ -36,13 +37,13 @@ class NumericCellEditor(grideditor.tablecolumn.TextCellEditor):
         return keycode in self.acceptedStartKeys
 
     def createControl(self, parent):
-        self.control = grideditor.tablecolumn.TextCellEditor.createControl(self, parent)
+        self.control = grideditor_tablecolumn.TextCellEditor.createControl(self, parent)
         self.control.PushEventHandler(NumericChangeHandler(self))
         return self.control
 
     def setValue(self, value):
         self.oldValue = value
-        grideditor.tablecolumn.TextCellEditor.setValue(self, str(value))
+        grideditor_tablecolumn.TextCellEditor.setValue(self, str(value))
 
     def controlUpdate(self):
         value = self.getValue()
@@ -56,12 +57,12 @@ class NumericCellEditor(grideditor.tablecolumn.TextCellEditor):
             return self.as_type(0)
 
     def getValue(self):
-        value = grideditor.tablecolumn.TextCellEditor.getValue(self)
+        value = grideditor_tablecolumn.TextCellEditor.getValue(self)
         return self.convertValue(self.formatValue(value))
 
     def formatValue(self, value):
         return value
 
     def beginEdit(self):
-        grideditor.tablecolumn.TextCellEditor.beginEdit(self)
+        grideditor_tablecolumn.TextCellEditor.beginEdit(self)
         self.control.SetSelection(0, self.control.GetLastPosition())

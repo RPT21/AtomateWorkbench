@@ -3,9 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/recipeoptionsdialog.py
 # Compiled at: 2004-12-08 05:05:12
-import wx, os, sys, plugins.ui.ui.context, plugins.ui.ui, lib.kernel, plugins.core.core.recipe, plugins.poi.poi.dialogs
-import plugins.poi.poi.views, plugins.grideditor.grideditor.adddevicedialog, plugins.grideditor.grideditor.messages as messages
+import wx, plugins.poi.poi.dialogs
+import plugins.grideditor.grideditor.messages as messages
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor.adddevicedialog as grideditor_adddevicedialog
+
 DIALOG_PREFS_FILE = 'recipeoptions.prefs'
 
 class MixedInListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
@@ -16,11 +21,11 @@ class MixedInListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         ListCtrlAutoWidthMixin.__init__(self)
 
 
-class DeviceEditorDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
+class DeviceEditorDialog(poi.dialogs.MessageHeaderDialog):
     __module__ = __name__
 
     def __init__(self, device):
-        plugins.poi.poi.dialogs.MessageHeaderDialog.__init__(self, title='Device Editor')
+        poi.dialogs.MessageHeaderDialog.__init__(self, title='Device Editor')
         self.setStyle(wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.device = device
 
@@ -47,7 +52,7 @@ class DeviceEditorDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
         return sizer
 
     def createControl(self, parent):
-        plugins.poi.poi.dialogs.MessageHeaderDialog.createControl(self, parent)
+        poi.dialogs.MessageHeaderDialog.createControl(self, parent)
         self.control.SetSize((500, 500))
         self.control.CentreOnScreen()
 
@@ -87,7 +92,7 @@ class DeviceEditorDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
 
     def showModal(self):
         self.editor.setData(self.device)
-        return plugins.poi.poi.dialogs.MessageHeaderDialog.showModal(self)
+        return poi.dialogs.MessageHeaderDialog.showModal(self)
 
     def handleClosing(self, id):
         if id == wx.ID_OK:
@@ -95,14 +100,14 @@ class DeviceEditorDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
             self.device.configurationUpdated()
 
     def endModal(self, id):
-        plugins.poi.poi.dialogs.MessageHeaderDialog.endModal(self, id)
+        poi.dialogs.MessageHeaderDialog.endModal(self, id)
 
 
-class RecipeOptionsDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
+class RecipeOptionsDialog(poi.dialogs.MessageHeaderDialog):
     __module__ = __name__
 
     def __init__(self, editor):
-        plugins.poi.poi.dialogs.MessageHeaderDialog.__init__(self, title=messages.get('dialog.recipeoptions.title'))
+        poi.dialogs.MessageHeaderDialog.__init__(self, title=messages.get('dialog.recipeoptions.title'))
         self.control = None
         self.id2objects = {}
         self.setSaveLayout(True)
@@ -113,7 +118,7 @@ class RecipeOptionsDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
         return
 
     def createControl(self, parent):
-        plugins.poi.poi.dialogs.MessageHeaderDialog.createControl(self, parent)
+        poi.dialogs.MessageHeaderDialog.createControl(self, parent)
         self.control.Bind(wx.EVT_ACTIVATE, self.activated)
 
     def activated(self, event):
@@ -151,7 +156,7 @@ class RecipeOptionsDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
 
     def showModal(self):
         self.fillRecipeData()
-        return plugins.poi.poi.dialogs.MessageHeaderDialog.showModal(self)
+        return poi.dialogs.MessageHeaderDialog.showModal(self)
 
     def clearEntries(self):
         self.listctrl.DeleteAllItems()
@@ -163,10 +168,10 @@ class RecipeOptionsDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
             self.insertDeviceEntry(device)
 
     def getEditor(self):
-        return plugins.grideditor.grideditor.getDefault().getEditor()
+        return grideditor.getDefault().getEditor()
 
     def getRecipe(self):
-        recipe = plugins.ui.ui.context.getProperty('recipe')
+        recipe = ui.context.getProperty('recipe')
         return recipe
 
     def insertDeviceEntry(self, device):
@@ -222,7 +227,7 @@ class RecipeOptionsDialog(plugins.poi.poi.dialogs.MessageHeaderDialog):
         self.setInfo(messages.get('recipeoptions.messages.selected'))
 
     def OnAddButton(self, event):
-        dlg = plugins.grideditor.grideditor.adddevicedialog.AddDeviceDialog()
+        dlg = grideditor_adddevicedialog.AddDeviceDialog()
         dlg.createControl(self.control)
         if dlg.showModal() == wx.ID_OK:
             factory = dlg.getDeviceFactory()

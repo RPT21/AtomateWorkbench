@@ -3,20 +3,27 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/actions.py
 # Compiled at: 2004-12-01 23:27:38
-import logging, pickle, plugins.poi.poi.actions, plugins.poi.poi.views, plugins.resources.resources, plugins.core.core.recipe
-import wx, plugins.ui.ui, plugins.ui.ui.clipboard, plugins.ui.ui.undomanager, plugins.grideditor.grideditor
-import plugins.grideditor.grideditor.utils, plugins.grideditor.grideditor.images as images, plugins.hardware.hardware.hardwaremanager
+import logging, plugins.poi.poi.actions, plugins.poi.poi.views, plugins.resources.resources, plugins.core.core.recipe
+import wx, plugins.ui.ui.clipboard, plugins.ui.ui.undomanager, plugins.grideditor.grideditor
+import plugins.grideditor.grideditor.utils, plugins.grideditor.grideditor.images as images
+import plugins.hardware.hardware.hardwaremanager
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+import plugins.core.core as core
+import plugins.grideditor.grideditor.__init__ as grideditor
+
+
 logger = logging.getLogger('grideditor')
 import plugins.grideditor.grideditor.recipeoptionsdialog
 recipeOptionsAction = None
 saveRecipeAction = None
 visibilityStateActions = []
 
-class UndoableRemoveStepsAction(plugins.ui.ui.undomanager.UndoableAction):
+class UndoableRemoveStepsAction(ui.undomanager.UndoableAction):
     __module__ = __name__
 
     def __init__(self, description, undodesc, offset, steps, editor):
-        plugins.ui.ui.undomanager.UndoableAction.__init__(self, description, undodesc)
+        ui.undomanager.UndoableAction.__init__(self, description, undodesc)
         self.offset = offset
         self.steps = steps
         self.editor = editor
@@ -45,14 +52,14 @@ class UndoableCutStepsAction(UndoableRemoveStepsAction):
         UndoableRemoveStepsAction.__init__(self, 'Undo Cut Steps', 'Redo Cut Steps', offset, steps, editor)
 
 
-class UndoablePasteStepAction(plugins.ui.ui.undomanager.UndoableAction):
+class UndoablePasteStepAction(ui.undomanager.UndoableAction):
     __module__ = __name__
 
     def __init__(self, offset, steps, editor):
         """
         steps are cloned!
         """
-        plugins.ui.ui.undomanager.UndoableAction.__init__(self, 'Undo Paste Step', 'Redo Paste Step')
+        ui.undomanager.UndoableAction.__init__(self, 'Undo Paste Step', 'Redo Paste Step')
         self.steps = steps
         self.offset = offset
         self.editor = editor
@@ -67,14 +74,14 @@ class UndoablePasteStepAction(plugins.ui.ui.undomanager.UndoableAction):
         return "Undo/Redo Paste: offset='%d',len='%d'" % (self.offset, len(self.steps))
 
 
-class UndoableInsertStepAction(plugins.ui.ui.undomanager.UndoableAction):
+class UndoableInsertStepAction(ui.undomanager.UndoableAction):
     __module__ = __name__
 
     def __init__(self, offset, editor):
         """
         Step is completele created. NOT CLONED!!!!
         """
-        plugins.ui.ui.undomanager.UndoableAction.__init__(self, 'Undo Insert Step', 'Redo Insert Step')
+        ui.undomanager.UndoableAction.__init__(self, 'Undo Insert Step', 'Redo Insert Step')
         self.offset = offset
         self.editor = editor
 
@@ -103,11 +110,11 @@ def convertStepsToTabbed(selection):
     return buff
 
 
-class SelectionDispatchAction(plugins.poi.poi.actions.Action):
+class SelectionDispatchAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self, name, image=None):
-        plugins.poi.poi.actions.Action.__init__(self, name, image)
+        poi.actions.Action.__init__(self, name, image)
         self.selection = []
 
     def handleSelectionChanged(self, event):
@@ -138,9 +145,9 @@ def handleActionContextChange(newValue, oldValue):
 def removeActions():
     global saveRecipeAction
     global visibilityStateActions
-    tbm = plugins.ui.ui.getDefault().getToolBarManager()
+    tbm = ui.getDefault().getToolBarManager()
     visibilityStateActions = []
-    menumanager = plugins.ui.ui.getDefault().getMenuManager()
+    menumanager = ui.getDefault().getMenuManager()
     editManager = menumanager.findByPath('atm.edit')
     tbm.remove(tbm.findByPath('recipe-options'))
     runManager = menumanager.findByPath('atm.run')
@@ -149,9 +156,9 @@ def removeActions():
     editManager.remove(menumanager.findByPath('atm.edit/recipe-edit-sep2'))
     editManager.remove(menumanager.findByPath('atm.edit/recipe-insert-step'))
     editManager.remove(menumanager.findByPath('atm.edit/recipe-delete-step'))
-    plugins.poi.poi.actions.removeGlobalActionHandler('global.edit.cut')
-    plugins.poi.poi.actions.removeGlobalActionHandler('global.edit.copy')
-    plugins.poi.poi.actions.removeGlobalActionHandler('global.edit.paste')
+    poi.actions.removeGlobalActionHandler('global.edit.cut')
+    poi.actions.removeGlobalActionHandler('global.edit.copy')
+    poi.actions.removeGlobalActionHandler('global.edit.paste')
     fileManager = menumanager.findByPath('atm.file')
     fileManager.remove(menumanager.findByPath('atm.file/recipe-save'))
     fileManager.update()
@@ -165,10 +172,10 @@ def removeActions():
 def addActions():
     global recipeOptionsAction
     global saveRecipeAction
-    editor = plugins.grideditor.grideditor.getDefault().getEditor()
-    tbm = plugins.ui.ui.getDefault().getToolBarManager()
-    editManager = plugins.ui.ui.getDefault().getMenuManager().findByPath('atm.edit')
-    runManager = plugins.ui.ui.getDefault().getMenuManager().findByPath('atm.run')
+    editor = grideditor.getDefault().getEditor()
+    tbm = ui.getDefault().getToolBarManager()
+    editManager = ui.getDefault().getMenuManager().findByPath('atm.edit')
+    runManager = ui.getDefault().getMenuManager().findByPath('atm.run')
     saveRecipeAction = SaveRecipeAction()
     recipeOptionsAction = RecipeOptionsAction()
     deleteStepAction = DeleteStepAction(editor)
@@ -180,67 +187,67 @@ def addActions():
     visibilityStateActions.append(cutStepAction)
     visibilityStateActions.append(copyStepAction)
     visibilityStateActions.append(insertStepAction)
-    tbm.appendToGroup('edit-actions-begin', plugins.poi.poi.actions.ActionContributionItem(recipeOptionsAction, 'recipe-options'))
-    runManager.appendToGroup('run-additions-begin', plugins.poi.poi.actions.ActionContributionItem(recipeOptionsAction, 'recipe-options'))
-    editManager.appendToGroup('edit-additions-begin', plugins.poi.poi.actions.Separator('recipe-edit-sep1'))
-    editManager.appendToGroup('edit-additions-begin', plugins.poi.poi.actions.ActionContributionItem(deleteStepAction, 'recipe-delete-step'))
-    editManager.appendToGroup('edit-additions-begin', plugins.poi.poi.actions.ActionContributionItem(insertStepAction, 'recipe-insert-step'))
-    editManager.appendToGroup('edit-additions-begin', plugins.poi.poi.actions.Separator('recipe-edit-sep2'))
-    plugins.poi.poi.actions.setGlobalActionHandler('global.edit.cut', cutStepAction)
-    plugins.poi.poi.actions.setGlobalActionHandler('global.edit.copy', copyStepAction)
-    plugins.poi.poi.actions.setGlobalActionHandler('global.edit.paste', pasteStepAction)
+    tbm.appendToGroup('edit-actions-begin', poi.actions.ActionContributionItem(recipeOptionsAction, 'recipe-options'))
+    runManager.appendToGroup('run-additions-begin', poi.actions.ActionContributionItem(recipeOptionsAction, 'recipe-options'))
+    editManager.appendToGroup('edit-additions-begin', poi.actions.Separator('recipe-edit-sep1'))
+    editManager.appendToGroup('edit-additions-begin', poi.actions.ActionContributionItem(deleteStepAction, 'recipe-delete-step'))
+    editManager.appendToGroup('edit-additions-begin', poi.actions.ActionContributionItem(insertStepAction, 'recipe-insert-step'))
+    editManager.appendToGroup('edit-additions-begin', poi.actions.Separator('recipe-edit-sep2'))
+    poi.actions.setGlobalActionHandler('global.edit.cut', cutStepAction)
+    poi.actions.setGlobalActionHandler('global.edit.copy', copyStepAction)
+    poi.actions.setGlobalActionHandler('global.edit.paste', pasteStepAction)
     editManager.update()
-    fileManager = plugins.ui.ui.getDefault().getMenuManager().findByPath('atm.file')
-    fileManager.insertAfter('close-group-end', plugins.poi.poi.actions.ActionContributionItem(saveRecipeAction, 'recipe-save'))
+    fileManager = ui.getDefault().getMenuManager().findByPath('atm.file')
+    fileManager.insertAfter('close-group-end', poi.actions.ActionContributionItem(saveRecipeAction, 'recipe-save'))
     fileManager.update()
     tbm.update(True)
 
 
-class CreateDefaultDevicesAction(plugins.poi.poi.actions.Action):
+class CreateDefaultDevicesAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.actions.Action.__init__(self, 'Create Default Devices', '', '')
+        poi.actions.Action.__init__(self, 'Create Default Devices', '', '')
 
     def run(self):
         lst = plugins.hardware.hardware.hardwaremanager.createDevicesForConfiguredHardware()
-        editor = plugins.grideditor.grideditor.getDefault().getEditor()
+        editor = grideditor.getDefault().getEditor()
         for device in lst:
             editor.addDevice(device)
 
 
-class ToggleEditorViewAction(plugins.poi.poi.actions.Action):
+class ToggleEditorViewAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.actions.Action.__init__(self, 'DEBUG-TOGGLE EDITOR VIEW\tt', '', '')
+        poi.actions.Action.__init__(self, 'DEBUG-TOGGLE EDITOR VIEW\tt', '', '')
         self.showing = True
 
     def run(self):
-        plugins.grideditor.grideditor.getDefault().getView().showGridEditorView(not self.showing)
+        grideditor.getDefault().getView().showGridEditorView(not self.showing)
         self.showing = not self.showing
 
 
-class DebugDumpRecipe(plugins.poi.poi.actions.Action):
+class DebugDumpRecipe(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.actions.Action.__init__(self, 'DEBUG-DUMP RECIPE CONSOLE\td', '', '')
+        poi.actions.Action.__init__(self, 'DEBUG-DUMP RECIPE CONSOLE\td', '', '')
 
     def run(self):
-        editor = plugins.grideditor.grideditor.getActiveEditor().getEditor()
+        editor = grideditor.getActiveEditor().getEditor()
         recipe = editor.getInput().getRecipe()
 
 
-class RecipeOptionsAction(plugins.poi.poi.actions.Action):
+class RecipeOptionsAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.actions.Action.__init__(self, 'Recipe Options ...', '', '')
+        poi.actions.Action.__init__(self, 'Recipe Options ...', '', '')
         self.setImage(images.getImage(images.RECIPE_OPTIONS))
 
     def run(self):
-        plugins.grideditor.grideditor.utils.showRecipeOptions(None)
+        grideditor.utils.showRecipeOptions(None)
         return
 
 
@@ -270,15 +277,15 @@ class CutStepAction(SelectionDispatchAction):
         self.setEnabled(len(selection) > 0)
 
     def runWithSelection(self, selection):
-        plugins.ui.ui.clipboard.createObject()
-        plugins.ui.ui.clipboard.setObject(selection)
-        plugins.ui.ui.clipboard.setText(convertStepsToTabbed(selection))
-        if not plugins.ui.ui.clipboard.commit():
+        ui.clipboard.createObject()
+        ui.clipboard.setObject(selection)
+        ui.clipboard.setText(convertStepsToTabbed(selection))
+        if not ui.clipboard.commit():
             return
         offset = self.editor.getIndexOfSelection()
         self.editor.deleteSelectedSteps()
         undoaction = UndoableCutStepsAction(offset, selection, self.editor)
-        plugins.ui.ui.undomanager.addUndoableAction(undoaction)
+        ui.undomanager.addUndoableAction(undoaction)
 
 
 class CopyStepAction(SelectionDispatchAction):
@@ -297,25 +304,25 @@ class CopyStepAction(SelectionDispatchAction):
         self.setEnabled(len(selection) > 0)
 
     def runWithSelection(self, selection):
-        plugins.ui.ui.clipboard.createObject()
-        plugins.ui.ui.clipboard.setObject(selection)
-        plugins.ui.ui.clipboard.setText(convertStepsToTabbed(selection))
-        if not plugins.ui.ui.clipboard.commit():
+        ui.clipboard.createObject()
+        ui.clipboard.setObject(selection)
+        ui.clipboard.setText(convertStepsToTabbed(selection))
+        if not ui.clipboard.commit():
             pass
 
 
-class PasteStepAction(plugins.poi.poi.actions.Action):
+class PasteStepAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self, editor):
-        plugins.poi.poi.actions.Action.__init__(self, 'Paste', '', '')
+        poi.actions.Action.__init__(self, 'Paste', '', '')
         self.editor = editor
 
     def isDataSteps(self, data):
         if not isinstance(data, list):
             return False
         for item in data:
-            if not isinstance(item, plugins.core.core.recipestep.RecipeStep):
+            if not isinstance(item, core.recipestep.RecipeStep):
                 return False
 
         return True
@@ -330,31 +337,31 @@ class PasteStepAction(plugins.poi.poi.actions.Action):
         
         return self.isDataSteps(ui.clipboard.getObject())
         """
-        return plugins.grideditor.grideditor.getDefault().getView().getViewer().isShowing()
+        return grideditor.getDefault().getView().getViewer().isShowing()
 
     def run(self):
-        if plugins.ui.ui.clipboard.hasPyObject():
-            steps = plugins.ui.ui.clipboard.getObject()
+        if ui.clipboard.hasPyObject():
+            steps = ui.clipboard.getObject()
             if not self.isDataSteps(steps):
                 return
             offset = self.editor.insertStepsAfterSelection(steps)
             undoaction = UndoablePasteStepAction(offset, steps, self.editor)
-            plugins.ui.ui.undomanager.addUndoableAction(undoaction)
-        elif plugins.ui.ui.clipboard.hasText():
-            text = plugins.ui.ui.clipboard.getText()
+            ui.undomanager.addUndoableAction(undoaction)
+        elif ui.clipboard.hasText():
+            text = ui.clipboard.getText()
 
 
-class InsertStepAction(plugins.poi.poi.actions.Action):
+class InsertStepAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self, editor):
-        plugins.poi.poi.actions.Action.__init__(self, 'Insert Step\tCtrl+I', 'Insert a step after the selection', 'Insert ')
+        poi.actions.Action.__init__(self, 'Insert Step\tCtrl+I', 'Insert a step after the selection', 'Insert ')
         self.editor = editor
 
     def run(self):
         offset = self.editor.createNewStepAfterSelection()
         undoaction = UndoableInsertStepAction(offset, self.editor)
-        plugins.ui.ui.undomanager.addUndoableAction(undoaction)
+        ui.undomanager.addUndoableAction(undoaction)
 
 
 class DeleteStepAction(SelectionDispatchAction):
@@ -381,7 +388,7 @@ class DeleteStepAction(SelectionDispatchAction):
         offset = self.editor.getIndexOfSelection()
         self.editor.deleteSelectedSteps()
         undoaction = UndoableDeleteStepsAction(offset, selection, self.editor)
-        plugins.ui.ui.undomanager.addUndoableAction(undoaction)
+        ui.undomanager.addUndoableAction(undoaction)
 
 
 class ActionButtonEventHandler(wx.EvtHandler):
@@ -425,12 +432,12 @@ class ActionButton(object):
         return self.button
 
 
-class SaveRecipeAction(plugins.poi.poi.actions.Action):
+class SaveRecipeAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.actions.Action.__init__(self, 'Save\tCtrl+S', '', '')
-        plugins.ui.ui.context.addContextChangeListener(self)
+        poi.actions.Action.__init__(self, 'Save\tCtrl+S', '', '')
+        ui.context.addContextChangeListener(self)
         self.setEnabled(False)
 
     def contextChanged(self, event):
@@ -442,18 +449,18 @@ class SaveRecipeAction(plugins.poi.poi.actions.Action):
         return
 
     def run(self):
-        plugins.grideditor.grideditor.utils.saveCurrentRecipe()
+        grideditor.utils.saveCurrentRecipe()
 
     def dispose(self):
-        plugins.ui.ui.context.removeContextChangeListener(self)
+        ui.context.removeContextChangeListener(self)
 
 
-class BundkDebugOpenRecipe(plugins.poi.poi.actions.Action):
+class BundkDebugOpenRecipe(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.actions.Action.__init__(self, 'Debug - Open Recipe ...', '', '')
-        plugins.ui.ui.context.addContextChangeListener(self)
+        poi.actions.Action.__init__(self, 'Debug - Open Recipe ...', '', '')
+        ui.context.addContextChangeListener(self)
 
     def contextChanged(self, event):
         key = event.getKey()
@@ -462,9 +469,9 @@ class BundkDebugOpenRecipe(plugins.poi.poi.actions.Action):
 
     def run(self):
         """Open a file dialog and finds a recipe to execute, prepares all user interfaces for debug session"""
-        item = plugins.ui.ui.context.getProperty('recipe')
+        item = ui.context.getProperty('recipe')
         if item is None:
-            dlg = wx.FileDialog(plugins.ui.ui.getDefault().getMainFrame().getControl(), 'Select a recipe file', plugins.resources.resources.getDefault().getWorkspace().getSharedLocation(), wildcard='Recipe Files (*.recipe)|*.recipe', style=wx.OPEN)
+            dlg = wx.FileDialog(ui.getDefault().getMainFrame().getControl(), 'Select a recipe file', plugins.resources.resources.getDefault().getWorkspace().getSharedLocation(), wildcard='Recipe Files (*.recipe)|*.recipe', style=wx.OPEN)
             dlg.CentreOnScreen()
             loaded = False
             if dlg.ShowModal() == wx.ID_OK:
@@ -474,15 +481,15 @@ class BundkDebugOpenRecipe(plugins.poi.poi.actions.Action):
             del dlg
             if loaded:
                 try:
-                    recipe = plugins.core.core.recipe.loadFromFile(path)
+                    recipe = core.recipe.loadFromFile(path)
                 except Exception as msg:
                     print(('* ERROR: Unable to parse recipe:', msg))
                     return
                 else:
-                    plugins.ui.ui.context.setProperty('recipe', recipe)
-                    plugins.ui.ui.context.setProperty('recipe-path', path)
+                    ui.context.setProperty('recipe', recipe)
+                    ui.context.setProperty('recipe-path', path)
         else:
-            plugins.ui.ui.context.setProperty('recipe', None)
+            ui.context.setProperty('recipe', None)
         return
 
 
@@ -491,5 +498,5 @@ def updateActions():
         Grid Editor"""
     logger.debug('UPDATE ACTIONS')
     for action in visibilityStateActions:
-        logger.debug('\t %s - %s' % (action, plugins.grideditor.grideditor.getDefault().getView().getViewer().isShowing()))
-        action.setEnabled(plugins.grideditor.grideditor.getDefault().getView().getViewer().isShowing())
+        logger.debug('\t %s - %s' % (action, grideditor.getDefault().getView().getViewer().isShowing()))
+        action.setEnabled(grideditor.getDefault().getView().getViewer().isShowing())

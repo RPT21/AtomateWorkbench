@@ -3,9 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/adddevicedialog.py
 # Compiled at: 2004-12-08 05:09:27
-import wx, os, sys, ui.context, ui, kernel, core.deviceregistry, poi.dialogs, poi.views
+import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
-import grideditor.messages as messages
+import plugins.grideditor.grideditor.messages as messages
+import plugins.core.core as core
+import plugins.poi.poi as poi
+import plugins.poi.poi.dialogs
+import plugins.core.core.deviceregistry
 
 class MixedInListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     __module__ = __name__
