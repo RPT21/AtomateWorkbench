@@ -3,14 +3,16 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/preferences.py
 # Compiled at: 2004-11-19 02:47:50
-import os, sys, wx, plugins.ui.ui, wx.html, wx.lib.wxpTag, plugins.ui.ui.dialog.preferences, plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui, logging
+import os, wx, plugins.ui.ui as ui, wx.html, wx.lib.wxpTag, plugins.ui.ui.dialog.preferences
+import plugins.resourcesui.resourcesui.messages as messages, logging
+
 logger = logging.getLogger('resources.userinterface')
 
-class PreferencesPage(plugins.ui.ui.dialog.preferences.PreferencesPage):
+class PreferencesPage(ui.dialog.preferences.PreferencesPage):
     __module__ = __name__
 
     def __init__(self, ps):
-        plugins.ui.ui.dialog.preferences.PreferencesPage.__init__(self, ps)
+        ui.dialog.preferences.PreferencesPage.__init__(self, ps)
 
     def createControl(self, parent):
         self.control = wx.Panel(parent, -1)
@@ -30,7 +32,7 @@ class PreferencesPage(plugins.ui.ui.dialog.preferences.PreferencesPage):
 
     def OnBrowseLocalWorkspace(self, event):
         prefs = self.getPreferencesStore().getPreferences()
-        dlg = wx.DirDialog(plugins.ui.ui.getDefault().getMainFrame().getControl(), messages.get('preferences.localworkspace.browse.title'), prefs.get('workspace', 'localworkspace.path'), style=wx.DD_NEW_DIR_BUTTON)
+        dlg = wx.DirDialog(ui.getDefault().getMainFrame().getControl(), messages.get('preferences.localworkspace.browse.title'), prefs.get('workspace', 'localworkspace.path'), style=wx.DD_NEW_DIR_BUTTON)
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
             self.localWorkspaceField.SetValue(path)

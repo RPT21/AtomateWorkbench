@@ -3,16 +3,18 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/recipeexplorer/runlogexportwizard.py
 # Compiled at: 2004-11-04 02:42:23
-import re, wx, sys, os, plugins.ui.ui, threading, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs
-import plugins.poi.poi.dialogs.progress, plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.resources.resources
-import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, logging, shutil
+import re, wx, os, plugins.poi.poi.wizards, plugins.poi.poi.dialogs
+import logging, shutil
+import plugins.poi.poi as poi
+import plugins.ui.ui as ui
+
 logger = logging.getLogger('resourcesui.exportrunlogwizard')
 
-class ExportRunlogWizard(plugins.poi.poi.wizards.Wizard):
+class ExportRunlogWizard(poi.wizards.Wizard):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.wizards.Wizard.__init__(self)
+        poi.wizards.Wizard.__init__(self)
         self.runlog = None
         return
 
@@ -28,7 +30,7 @@ class ExportRunlogWizard(plugins.poi.poi.wizards.Wizard):
         self.setStartingPage(firstPage)
 
     def createControl(self, parent):
-        plugins.poi.poi.wizards.Wizard.createControl(self, parent)
+        poi.wizards.Wizard.createControl(self, parent)
         self.control.SetSize((600, 600))
         self.control.CentreOnScreen()
 
@@ -36,11 +38,11 @@ class ExportRunlogWizard(plugins.poi.poi.wizards.Wizard):
         pass
 
 
-class FirstRecipeWizardPage(plugins.poi.poi.wizards.WizardPage):
+class FirstRecipeWizardPage(poi.wizards.WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.wizards.WizardPage.__init__(self, 'first', 'Export Recipe')
+        poi.wizards.WizardPage.__init__(self, 'first', 'Export Recipe')
         self.setMessage('Select Destination')
         self.setDescription('Click browse to select a destination for the runlog')
         self.runlog = None
@@ -52,7 +54,7 @@ class FirstRecipeWizardPage(plugins.poi.poi.wizards.WizardPage):
         try:
             shutil.copy2(srcfilename, fname)
         except Exception as msg:
-            dlg = plugins.poi.poi.dialogs.MessageDialog(plugins.ui.ui.getDefault().getMainFrame().getControl(), str(msg), 'Error exporting log', wx.ICON_ERROR | wx.OK)
+            dlg = poi.dialogs.MessageDialog(ui.getDefault().getMainFrame().getControl(), str(msg), 'Error exporting log', wx.ICON_ERROR | wx.OK)
             dlg.ShowModal()
             dlg.Destroy()
 
@@ -91,6 +93,7 @@ class FirstRecipeWizardPage(plugins.poi.poi.wizards.WizardPage):
             return False
         rp = os.path.expanduser(name)
         filename = os.path.basename(rp)
+        validchars = '.*[^a-zA-Z0-9_\\ ].*'
         cmp = re.compile(validchars)
         m = cmp.match(filename)
         if m is not None:

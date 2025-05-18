@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/images.py
 # Compiled at: 2004-11-05 00:57:10
-import kernel.pluginmanager, os, wx, logging
+import os, wx, logging
 inited = False
 imagesTable = {}
 logger = logging.getLogger('resources.ui')
@@ -15,7 +15,6 @@ EXPORT_RUNLOG_ICON = 'export-runlog-icon'
 DELETE_ICON = 'delete-icon'
 DELETE_VERSION_ICON = 'delete-version-icon'
 OPEN_VERSION_ICON = 'open-version-icon'
-PROJECT_ICON = 'project-icon'
 SHARED_ICON = 'shared-icon'
 SHARE_ACTION_ICON = 'share-action-icon'
 UNSHARE_ACTION_ICON = 'unshare-action-icon'

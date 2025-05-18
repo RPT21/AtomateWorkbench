@@ -3,16 +3,18 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/exportrecipewizard.py
 # Compiled at: 2004-11-02 05:40:32
-import re, wx, sys, os, plugins.ui.ui, threading, plugins.poi.poi.wizards, plugins.poi.poi.operation
+import wx, os, plugins.ui.ui, plugins.poi.poi.wizards, plugins.poi.poi.operation
 import plugins.poi.poi.dialogs.progress, plugins.poi.poi.views.viewers, plugins.poi.poi.views
-import plugins.resources.resources, plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, logging
+import plugins.resources.resources, plugins.resourcesui.resourcesui.actions, logging
+import plugins.poi.poi as poi
+
 logger = logging.getLogger('resourcesui.exportrecipewizard')
 
-class ExportRecipeWizard(plugins.poi.poi.wizards.Wizard):
+class ExportRecipeWizard(poi.wizards.Wizard):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.wizards.Wizard.__init__(self)
+        poi.wizards.Wizard.__init__(self)
 
     def setResource(self, resource):
         pass
@@ -27,7 +29,7 @@ class ExportRecipeWizard(plugins.poi.poi.wizards.Wizard):
         self.setStartingPage(firstPage)
 
     def createControl(self, parent):
-        plugins.poi.poi.wizards.Wizard.createControl(self, parent)
+        poi.wizards.Wizard.createControl(self, parent)
         self.control.SetSize((600, 600))
         self.control.CentreOnScreen()
 
@@ -35,11 +37,11 @@ class ExportRecipeWizard(plugins.poi.poi.wizards.Wizard):
         pass
 
 
-class SecondPage(plugins.poi.poi.wizards.WizardPage):
+class SecondPage(poi.wizards.WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.wizards.WizardPage.__init__(self, 'second', 'Second Page')
+        poi.wizards.WizardPage.__init__(self, 'second', 'Second Page')
         self.setMessage('Second Page Yeah')
         self.setDescription('This is the second page')
 
@@ -53,11 +55,11 @@ class SecondPage(plugins.poi.poi.wizards.WizardPage):
         return self.control
 
 
-class FirstRecipeWizardPage(plugins.poi.poi.wizards.WizardPage):
+class FirstRecipeWizardPage(poi.wizards.WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.wizards.WizardPage.__init__(self, 'first', 'Export Recipe')
+        poi.wizards.WizardPage.__init__(self, 'first', 'Export Recipe')
         self.setMessage('Select Destination')
         self.setDescription('Click browse to select a destination for the project')
 

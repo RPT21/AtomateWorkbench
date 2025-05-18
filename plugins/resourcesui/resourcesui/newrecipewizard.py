@@ -3,20 +3,23 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/newrecipewizard.py
 # Compiled at: 2004-11-19 02:47:44
-import re, wx, os, plugins.ui.ui, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
-import plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.hardware.hardware.hardwaremanager, plugins.resources.resources
-import plugins.resourcesui.resourcesui.messages as messages, plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.utils, logging
-import plugins.poi.poi.__init__
+import re, wx, os, plugins.poi.poi.wizards, plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.poi.poi.views.viewers, plugins.poi.poi.views, plugins.hardware.hardware.hardwaremanager
+import plugins.resourcesui.resourcesui.actions, plugins.resourcesui.resourcesui.utils, logging
 import plugins.poi.poi as poi
-from plugins.poi.poi.wizards import Wizard, WizardPage
+import plugins.poi.poi.wizards as poi_wizards
+import plugins.resourcesui.resourcesui.messages as messages
+import plugins.resourcesui.resourcesui.actions as resourcesui_actions
 import plugins.resources.resources as resources
+import plugins.hardware.hardware as hardware
+
 logger = logging.getLogger('resourcesui.newrecipewizard')
 
-class NewRecipeWizard(Wizard):
+class NewRecipeWizard(poi_wizards.Wizard):
     __module__ = __name__
 
     def __init__(self):
-        Wizard.__init__(self)
+        poi_wizards.Wizard.__init__(self)
 
     def addPages(self):
         firstPage = FirstRecipeWizardPage()
@@ -24,7 +27,7 @@ class NewRecipeWizard(Wizard):
         self.setStartingPage(firstPage)
 
     def createControl(self, parent):
-        Wizard.createControl(self, parent)
+        poi_wizards.Wizard.createControl(self, parent)
         self.control.SetSize((600, 600))
         self.control.CentreOnScreen()
 
@@ -32,11 +35,11 @@ class NewRecipeWizard(Wizard):
         pass
 
 
-class FirstRecipeWizardPage(WizardPage):
+class FirstRecipeWizardPage(poi_wizards.WizardPage):
     __module__ = __name__
 
     def __init__(self):
-        WizardPage.__init__(self, 'first', 'New Recipe')
+        poi_wizards.WizardPage.__init__(self, 'first', 'New Recipe')
         self.setMessage('General Recipe Information')
         self.setDescription('Enter a name for the recipe')
 
@@ -61,19 +64,19 @@ class FirstRecipeWizardPage(WizardPage):
                 project.create()
                 monitor.worked(1)
                 monitor.subTask('Creating initial version')
-                version = plugins.resourcesui.resourcesui.actions.createInitialVersionAction(project)
+                version = resourcesui_actions.createInitialVersionAction(project)
                 monitor.worked(1)
                 if defaultDevices:
                     monitor.subTask('Creating default devices')
-                    lst = plugins.hardware.hardware.hardwaremanager.createDevicesForConfiguredHardware()
-                    recipe = plugins.resourcesui.resourcesui.actions.getRecipeFromVersion(version)
+                    lst = hardware.hardwaremanager.createDevicesForConfiguredHardware()
+                    recipe = resourcesui_actions.getRecipeFromVersion(version)
                     for device in lst:
                         recipe.addDevice(device)
 
                     plugins.resourcesui.resourcesui.utils.writeRecipe(recipe, version)
                     monitor.worked(1)
                 monitor.subTask('Opening new version in editor')
-                plugins.resourcesui.resourcesui.actions.openRecipeVersion(version)
+                resourcesui_actions.openRecipeVersion(version)
                 monitor.worked(1)
                 monitor.endTask()
 

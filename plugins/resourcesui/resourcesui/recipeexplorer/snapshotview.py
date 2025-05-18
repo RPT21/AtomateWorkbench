@@ -3,7 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/recipeexplorer/snapshotview.py
 # Compiled at: 2004-11-19 21:54:36
-import wx, time, plugins.poi.poi.views, plugins.poi.poi.utils.scrolledpanel, plugins.resourcesui.resourcesui.messages as messages
+import wx, time, plugins.poi.poi.views, plugins.poi.poi.utils.scrolledpanel
+import plugins.resourcesui.resourcesui.messages as messages
+import plugins.poi.poi as poi
+
 
 class MainLabel(wx.StaticText):
     __module__ = __name__
@@ -168,11 +171,11 @@ class RunlogInfoPane(wx.Panel):
         self.SetAutoLayout(True)
 
 
-class SnapshotView(plugins.poi.poi.views.StackedView):
+class SnapshotView(poi.views.StackedView):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.views.StackedView.__init__(self)
+        poi.views.StackedView.__init__(self)
         self.project = None
         self.version = None
         self.runlog = None
@@ -232,7 +235,7 @@ class SnapshotView(plugins.poi.poi.views.StackedView):
         return
 
     def createBody(self, parent):
-        self.viewer = plugins.poi.poi.utils.scrolledpanel.ScrolledPanel(parent)
+        self.viewer = poi.utils.scrolledpanel.ScrolledPanel(parent)
         self.viewer.SetupScrolling()
         self.sps = []
         self.mainsizer = wx.BoxSizer(wx.HORIZONTAL)
