@@ -9,6 +9,8 @@ import threading, time, plugins.poi.poi.operation as operation
 import logging, plugins.hardware.hardware.images as images
 import plugins.poi.poi as poi
 import plugins.poi.poi.actions
+import plugins.poi.poi.dialogs.progress
+
 logger = logging.getLogger('hardware')
 PLUGIN_ID = 'hardware'
 EVT_START_EXITING_ID = wx.NewId()
@@ -141,7 +143,7 @@ class HardwarePlugin(lib.kernel.plugin.Plugin):
 
     def xcancelableShutdownHardware(self):
         t = threading.Thread()
-        t.run = self.caca
+        t.run = self.caca  # Is this a joke?
         t.start()
 
     def cancelableShutdownHardware(self):

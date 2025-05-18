@@ -19,23 +19,18 @@ class HardwareType(object):
 
     def getConfigurationPage(self):
         return None
-        return
 
     def getInstance(self):
         raise Exception('Not implemented')
 
     def getManufacturer(self):
         return None
-        return
 
     def getDescription(self):
         return None
-        return
 
     def getLargeImage(self):
         return None
-        return
 
     def getDeviceHardwareEditor(self):
         return None
-        return

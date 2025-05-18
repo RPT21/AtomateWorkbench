@@ -6,6 +6,7 @@
 import wx, plugins.poi.poi.wizards, plugins.poi.poi.views.viewers, plugins.poi.poi.views, logging
 import plugins.poi.poi.views.contentprovider, plugins.hardware.hardware.hardwaremanager
 import plugins.hardware.hardware.userinterface
+
 logger = logging.getLogger('hardware.ui')
 
 class NewHardwareWizard(plugins.poi.poi.wizards.Wizard):

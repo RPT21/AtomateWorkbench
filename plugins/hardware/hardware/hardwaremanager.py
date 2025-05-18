@@ -3,8 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/hardware/src/hardware/hardwaremanager.py
 # Compiled at: 2005-06-10 18:53:52
-import copy, os, sys, lib.kernel, string, configparser, plugins.hardware.hardware as hardware, logging
-import plugins.poi.poi.actions as actions, plugins.ui.ui as ui
+import copy, os, lib.kernel, string, configparser, plugins.hardware.hardware as hardware, logging
+
 logger = logging.getLogger('hardwaremanager')
 HARDWARE_CONFIG_DIRNAME = 'configs'
 HARDWARE_CONFIG_FILE_SUFFIX = '.cfg'
@@ -304,7 +304,7 @@ def getHardwareConfigPath():
 def getFilenameFromName(name):
     newname = ''
     allowed = []
-    allowed.extend(string.ascii_letter)
+    allowed.extend(string.ascii_letters)
     allowed.extend(string.ascii_lowercase)
     for char in name:
         if char not in string.printable:

@@ -5,6 +5,7 @@
 # Compiled at: 2005-06-10 18:51:17
 import plugins.poi.poi.views.contentprovider as contentprovider
 
+
 class DeviceHardwareEditor(object):
     __module__ = __name__
 

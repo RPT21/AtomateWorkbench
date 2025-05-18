@@ -3,18 +3,21 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/hardware/src/hardware/userinterface/configurator.py
 # Compiled at: 2005-06-10 18:51:17
-import wx, plugins.hardware.hardware, plugins.hardware.hardware.hardwaremanager
+import wx
 import logging, plugins.poi.poi.dialogs, plugins.poi.poi.views, plugins.hardware.hardware.images as images
 import plugins.poi.poi.views.contentprovider, plugins.hardware.hardware.newhardwarewizard
 import plugins.poi.poi.views.viewers
+import plugins.poi.poi as poi
+import plugins.hardware.hardware as hardware, plugins.hardware.hardware.hardwaremanager
+
 DIALOG_PREFS_FILE = 'hwconfig.prefs'
 logger = logging.getLogger('hardware.configuration')
 
-class ConfiguredHardwareLabelProvider(plugins.poi.poi.views.contentprovider.LabelProvider):
+class ConfiguredHardwareLabelProvider(poi.views.contentprovider.LabelProvider):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.views.contentprovider.LabelProvider.__init__(self)
+        poi.views.contentprovider.LabelProvider.__init__(self)
 
     def getImage(self, element):
         return None
@@ -25,15 +28,15 @@ class ConfiguredHardwareLabelProvider(plugins.poi.poi.views.contentprovider.Labe
             status = instance.getStatusText()
         else:
             status = 'not initialized'
-        htype = plugins.hardware.hardware.hardwaremanager.getHardwareType(element.getHardwareType())
+        htype = hardware.hardwaremanager.getHardwareType(element.getHardwareType())
         return ' - '.join([element.getName(), status, htype.getDescription()])
 
 
-class ConfiguredHardwareContentProvider(plugins.poi.poi.views.contentprovider.ContentProvider):
+class ConfiguredHardwareContentProvider(poi.views.contentprovider.ContentProvider):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.views.contentprovider.ContentProvider.__init__(self)
+        poi.views.contentprovider.ContentProvider.__init__(self)
         self.tinput = None
         return
 
@@ -131,22 +134,22 @@ class NoConfigurationPage(ConfigurationPage):
         self.control.Destroy()
 
 
-class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
+class HardwareConfigurator(poi.dialogs.MessageHeaderDialog):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.dialogs.MessageHeaderDialog.__init__(self, image=images.getImage(images.CONFIG_WIZARD))
+        poi.dialogs.MessageHeaderDialog.__init__(self, image=images.getImage(images.CONFIG_WIZARD))
         self.control = None
         self.setSaveLayout(True)
         self.counts = 0
         self.setStyle(wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.oldSelection = None
         self.currentPage = None
-        plugins.hardware.hardware.hardwaremanager.addHardwareManagerListener(self)
+        hardware.hardwaremanager.addHardwareManagerListener(self)
         return
 
     def dispose(self):
-        plugins.hardware.hardware.hardwaremanager.removeHardwareManagerListener(self)
+        hardware.hardwaremanager.removeHardwareManagerListener(self)
 
     def hardwareManagerUpdated(self):
         self.updateInput()
@@ -155,13 +158,13 @@ class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
         self.viewer.refresh()
 
     def updateInput(self):
-        hw = plugins.hardware.hardware.hardwaremanager.getHardware()
+        hw = hardware.hardwaremanager.getHardware()
         for item in hw:
             inst = item.getInstance()
             if inst is not None:
                 inst.addHardwareStatusListener(self)
 
-        self.viewer.setInput(plugins.hardware.hardware.hardwaremanager)
+        self.viewer.setInput(hardware.hardwaremanager)
         return
 
     def createBody(self, parent):
@@ -174,12 +177,12 @@ class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
         self.deleteButton.Enable(False)
         left.Bind(wx.EVT_BUTTON, self.OnNewButton, id=self.newButton.GetId())
         left.Bind(wx.EVT_BUTTON, self.OnDeleteButton, id=self.deleteButton.GetId())
-        self.viewer = plugins.poi.poi.views.viewers.TableViewer(left)
+        self.viewer = poi.views.viewers.TableViewer(left)
         control = self.viewer.getControl()
         control.InsertColumn(0, 'Hardware')
         self.viewer.setContentProvider(ConfiguredHardwareContentProvider())
         self.viewer.setLabelProvider(ConfiguredHardwareLabelProvider())
-        self.viewer.setInput(plugins.hardware.hardware.hardwaremanager)
+        self.viewer.setInput(hardware.hardwaremanager)
         self.updateInput()
 
         class HardwareListEventHandler(object):
@@ -239,10 +242,10 @@ class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
         config = hw.getConfiguration()
         try:
             self.currentPage.getData(config)
-            plugins.hardware.hardware.hardwaremanager.save(hw)
+            hardware.hardwaremanager.save(hw)
         except Exception as msg:
             print(('* ERROR: Unable to save hardware configuration:', msg))
-            dlg = plugins.poi.poi.dialogs.MessageDialog(self.control, 'Error:\n\n%s' % msg, 'Configuration Error', style=wx.OK | wx.ICON_ERROR)
+            dlg = poi.dialogs.MessageDialog(self.control, 'Error:\n\n%s' % msg, 'Configuration Error', style=wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             dlg.Destroy()
             return
@@ -273,14 +276,14 @@ class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
         dlg = wx.MessageDialog(self.control, "Are you sure you want to '%s'?" % selected.getName(), 'Delete Hardware', wx.YES_NO | wx.ICON_QUESTION)
         if dlg.ShowModal() == wx.ID_NO:
             return
-        plugins.hardware.hardware.hardwaremanager.delete(selected)
+        hardware.hardwaremanager.delete(selected)
         self.removeCurrentConfigPage()
         self.showNoConfigBody()
-        if len(plugins.hardware.hardware.hardwaremanager.getHardware()) == 0:
+        if len(hardware.hardwaremanager.getHardware()) == 0:
             self.removeCurrentConfigPage()
 
     def OnNewButton(self, event):
-        dlg = plugins.hardware.hardware.newhardwarewizard.NewHardwareWizard()
+        dlg = hardware.newhardwarewizard.NewHardwareWizard()
         dlg.createControl(self.control)
         if dlg.showModal() == wx.ID_OK:
             description = dlg.getHardware()
@@ -343,7 +346,7 @@ class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
         selection = selection[0]
         self.oldSelection = selection
         hwtypestr = selection.getHardwareType()
-        hwtype = plugins.hardware.hardware.hardwaremanager.getHardwareType(hwtypestr)
+        hwtype = hardware.hardwaremanager.getHardwareType(hwtypestr)
         configPage = hwtype.getConfigurationPage()
         if configPage == None:
             self.showNoConfigBody()
@@ -377,7 +380,7 @@ class HardwareConfigurator(plugins.poi.poi.dialogs.MessageHeaderDialog):
         if self.oldSelection is not None:
             self.performPageChange(self.oldSelection)
             self.removeCurrentConfigPage()
-        hardwares = plugins.hardware.hardware.hardwaremanager.getHardware()
+        hardwares = hardware.hardwaremanager.getHardware()
         for item in hardwares:
             inst = item.getInstance()
             if inst is not None:
