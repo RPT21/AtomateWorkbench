@@ -12,9 +12,10 @@ There are two ways to call it:
             then handle event dispatching so as not to starve the thread
 
 """
-import gc, sys, wx, traceback, threading, plugins.poi.poi.dialogs, plugins.poi.poi.operation, time, logging
+import gc, sys, wx, threading, plugins.poi.poi.dialogs, plugins.poi.poi.operation, time, logging
 from plugins.poi.poi.dialogs import Dialog
 import plugins.poi.poi as poi
+
 logger = logging.getLogger('progress')
 EVT_TASK_END_ID = wx.NewId()
 EVT_TASK_START_ID = wx.NewId()
@@ -191,7 +192,7 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
         pass
 
     def close(self):
-        logger.debug('closing dialog %d/%d/%s' % (self.openId, self.closeId, threading.currentThread()))
+        logger.debug('closing dialog %d/%d/%s' % (self.openId, self.closeId, threading.current_thread()))
         self.control.EndModal(wx.ID_OK)
         logger.debug('Past End Modal')
 
@@ -266,6 +267,6 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
             forker = ForkerThread()
             forker.start()
         else:
-            logger.debug("Did not fork.  Executing in thread '%s'" % threading.currentThread())
+            logger.debug("Did not fork.  Executing in thread '%s'" % threading.current_thread())
             doit()
         return

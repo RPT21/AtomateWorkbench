@@ -16,7 +16,6 @@ class ContentProvider(object):
 
     def getElements(self, inputElement):
         return None
-        return
 
     def dispose(self):
         pass
@@ -30,12 +29,9 @@ class LabelProvider(object):
 
     def getImage(self, element):
         return None
-        return
 
     def getText(self, element):
         return None
-        return
 
     def getToolTipText(self, element):
         return None
-        return

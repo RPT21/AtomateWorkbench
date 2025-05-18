@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/poi/src/poi/images.py
 # Compiled at: 2005-06-10 18:51:25
-import lib.kernel.pluginmanager, os, wx, logging
+import os, wx, logging
 inited = False
 imagesTable = {}
 logger = logging.getLogger('poi')
@@ -17,7 +17,12 @@ ICONS_DIR_PREFIX = 'icons'
 DISABLED_DIR_PREFIX = os.path.join(ICONS_DIR_PREFIX, 'disabled')
 ENABLED_DIR_PREFIX = os.path.join(ICONS_DIR_PREFIX, 'enabled')
 TOOLS_DIR_PREFIX = os.path.join(ICONS_DIR_PREFIX, 'tools')
-imagesFilenames = {ERROR_ICON: (os.path.join(ENABLED_DIR_PREFIX, 'error.gif')), WARNING_ICON_32: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_warning_icon_32x32.png')), TOOLBAR_SEPARATOR_IMAGE: (os.path.join(TOOLS_DIR_PREFIX, 'toolbar_separator.png')), DIALOG_ERROR_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_error_icon.png')), DIALOG_WARNING_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_warning_icon.png')), DIALOG_INFO_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_info_icon.png'))}
+imagesFilenames = {ERROR_ICON: (os.path.join(ENABLED_DIR_PREFIX, 'error.gif')),
+                   WARNING_ICON_32: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_warning_icon_32x32.png')),
+                   TOOLBAR_SEPARATOR_IMAGE: (os.path.join(TOOLS_DIR_PREFIX, 'toolbar_separator.png')),
+                   DIALOG_ERROR_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_error_icon.png')),
+                   DIALOG_WARNING_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_warning_icon.png')),
+                   DIALOG_INFO_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'dialog_info_icon.png'))}
 
 def init(contextBundle):
     global imagesFilenames
@@ -37,7 +42,6 @@ def getImage(key):
     if key in imagesTable:
         return imagesTable[key]
     return None
-    return
 
 
 def dispose():

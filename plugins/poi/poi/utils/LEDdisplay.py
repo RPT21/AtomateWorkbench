@@ -16,7 +16,14 @@ LINE7 = 64
 LINE8 = 128
 LINE9 = 256
 ALLON = LINE1 | LINE2 | LINE3 | LINE4 | LINE5 | LINE6 | LINE7 | LINE8
-CHARACTERS = {'0': (LINE1 | LINE2 | LINE3 | LINE5 | LINE6 | LINE7), '1': (LINE3 | LINE6), '2': (LINE1 | LINE3 | LINE4 | LINE5 | LINE7), '3': (LINE1 | LINE3 | LINE4 | LINE6 | LINE7), '4': (LINE2 | LINE3 | LINE4 | LINE6), '5': (LINE1 | LINE2 | LINE4 | LINE6 | LINE7), '6': (LINE1 | LINE2 | LINE4 | LINE5 | LINE6 | LINE7), '7': (LINE1 | LINE3 | LINE6), '8': (LINE1 | LINE2 | LINE3 | LINE4 | LINE5 | LINE6 | LINE7), '9': (LINE1 | LINE2 | LINE3 | LINE4 | LINE6 | LINE7), '.': LINE8, '-': LINE4, 'E': (LINE1 | LINE2 | LINE4 | LINE5 | LINE7), 'O': (LINE1 | LINE2 | LINE3 | LINE5 | LINE6 | LINE7), 'F': (LINE1 | LINE2 | LINE4 | LINE5), 'L': (LINE5 | LINE7 | LINE2)}
+CHARACTERS = {'0': (LINE1 | LINE2 | LINE3 | LINE5 | LINE6 | LINE7), '1': (LINE3 | LINE6),
+              '2': (LINE1 | LINE3 | LINE4 | LINE5 | LINE7), '3': (LINE1 | LINE3 | LINE4 | LINE6 | LINE7),
+              '4': (LINE2 | LINE3 | LINE4 | LINE6), '5': (LINE1 | LINE2 | LINE4 | LINE6 | LINE7),
+              '6': (LINE1 | LINE2 | LINE4 | LINE5 | LINE6 | LINE7), '7': (LINE1 | LINE3 | LINE6),
+              '8': (LINE1 | LINE2 | LINE3 | LINE4 | LINE5 | LINE6 | LINE7),
+              '9': (LINE1 | LINE2 | LINE3 | LINE4 | LINE6 | LINE7), '.': LINE8, '-': LINE4,
+              'E': (LINE1 | LINE2 | LINE4 | LINE5 | LINE7), 'O': (LINE1 | LINE2 | LINE3 | LINE5 | LINE6 | LINE7),
+              'F': (LINE1 | LINE2 | LINE4 | LINE5), 'L': (LINE5 | LINE7 | LINE2)}
 
 class LEDDisplay(wx.Window):
     __module__ = __name__
@@ -39,22 +46,21 @@ class LEDDisplay(wx.Window):
             self.h = DISPLAY_RATIO * self.w
         elif self.h < DISPLAY_RATIO * self.w:
             self.w = self.h / DISPLAY_RATIO
-        self.cellSpacing = wx.Point(self.w / 4, 0.0)
-        line1 = (
-         wx.Point(0.122 * self.w, 0.088 * self.h), wx.Point(0.196 * self.w, 0.088 * self.h))
-        line2 = (wx.Point(0.096 * self.w, 0.146 * self.h), wx.Point(0.072 * self.w, 0.443 * self.h))
-        line3 = (wx.Point(0.214 * self.w, 0.146 * self.h), wx.Point(0.19 * self.w, 0.443 * self.h))
-        line4 = (wx.Point(0.089 * self.w, 0.5 * self.h), wx.Point(0.164 * self.w, 0.5 * self.h))
-        line5 = (wx.Point(0.063 * self.w, 0.557 * self.h), wx.Point(0.039 * self.w, 0.854 * self.h))
-        line6 = (wx.Point(0.181 * self.w, 0.557 * self.h), wx.Point(0.157 * self.w, 0.854 * self.h))
-        line7 = (wx.Point(0.056 * self.w, 0.912 * self.h), wx.Point(0.131 * self.w, 0.912 * self.h))
-        line8 = (wx.Point(0.218 * self.w, 0.912 * self.h), wx.Point(0.218 * self.w, 0.912 * self.h))
+        self.cellSpacing = wx.Point(int(self.w / 4), 0)
+        line1 = (wx.Point(int(0.122 * self.w), int(0.088 * self.h)), wx.Point(int(0.196 * self.w), int(0.088 * self.h)))
+        line2 = (wx.Point(int(0.096 * self.w), int(0.146 * self.h)), wx.Point(int(0.072 * self.w), int(0.443 * self.h)))
+        line3 = (wx.Point(int(0.214 * self.w), int(0.146 * self.h)), wx.Point(int(0.19 * self.w), int(0.443 * self.h)))
+        line4 = (wx.Point(int(0.089 * self.w), int(0.5 * self.h)), wx.Point(int(0.164 * self.w), int(0.5 * self.h)))
+        line5 = (wx.Point(int(0.063 * self.w), int(0.557 * self.h)), wx.Point(int(0.039 * self.w), int(0.854 * self.h)))
+        line6 = (wx.Point(int(0.181 * self.w), int(0.557 * self.h)), wx.Point(int(0.157 * self.w), int(0.854 * self.h)))
+        line7 = (wx.Point(int(0.056 * self.w), int(0.912 * self.h)), wx.Point(int(0.131 * self.w), int(0.912 * self.h)))
+        line8 = (wx.Point(int(0.218 * self.w), int(0.912 * self.h)), wx.Point(int(0.218 * self.w), int(0.912 * self.h)))
         self.LEDSegments = {LINE1: line1, LINE2: line2, LINE3: line3, LINE4: line4, LINE5: line5, LINE6: line6, LINE7: line7, LINE8: line8}
-        self.LEDPen.SetWidth(0.044 * self.w)
-        self.LEDOffPen.SetWidth(0.037 * self.w)
+        self.LEDPen.SetWidth(int(0.044 * self.w))
+        self.LEDOffPen.SetWidth(int(0.037 * self.w))
 
     def drawDisplay(self, dc):
-        offset = wx.Point(0.0, 0.0)
+        offset = wx.Point(0, 0)
         for character in self.getCharacters():
             for (displaySegment, points) in list(self.LEDSegments.items()):
                 if displaySegment & character:
@@ -128,7 +134,6 @@ if __name__ == '__main__':
             led.setValue('00e0')
             f.Show()
             return True
-            return
 
 
     app = SomeApp(redirect=None)

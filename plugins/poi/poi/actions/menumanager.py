@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/poi/src/poi/actions/menumanager.py
 # Compiled at: 2005-06-10 18:51:25
-import wx, plugins.ui.ui.images, math
+import wx
 from wx import MenuBar, Menu, MenuItem, NewId, EvtHandler, EVT_MENU_OPEN
 import plugins.poi.poi as poi
 

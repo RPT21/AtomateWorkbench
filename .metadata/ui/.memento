@@ -1,6 +1,6 @@
 [mainframe.layout]
 maximized = False
-dimension = 745,246,600,566
+dimension = 440,253,600,566
 sector.south = 574,100
 sector.east = 100,348
 sector.west = 100,348

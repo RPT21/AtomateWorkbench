@@ -41,7 +41,7 @@ as a proper class (and the demo is now converted to just use it.)
             self.SetVirtualSize(wx.Size(w, h))
             self.SetSizeHints(w, h)
         self.SetScrollRate(rate_x, rate_y)
-        wx.CallAfter(self.Scroll, 0, 0)
+        wx.CallAfter(self.Scroll, wx.Point(0, 0))
 
     def OnChildFocus(self, evt):
         evt.Skip()

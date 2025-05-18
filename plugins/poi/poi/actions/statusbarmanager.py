@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/poi/src/poi/actions/statusbarmanager.py
 # Compiled at: 2005-06-10 18:51:25
-import wx, plugins.ui.ui.images, math, plugins.poi.poi as poi
+import wx, plugins.poi.poi as poi
 
 class StatusBarManager(poi.actions.ContributionManager, poi.actions.ContributionItem):
     __module__ = __name__

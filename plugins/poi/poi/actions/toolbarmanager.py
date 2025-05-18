@@ -4,6 +4,7 @@
 # Embedded file name: ../plugins/poi/src/poi/actions/toolbarmanager.py
 # Compiled at: 2005-06-10 18:51:25
 import wx, logging, plugins.poi.poi as poi
+
 logger = logging.getLogger('poi.toolbarmanager')
 
 class ToolBarManager(poi.actions.ContributionManager, poi.actions.ContributionItem):
