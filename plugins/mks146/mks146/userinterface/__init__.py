@@ -3,14 +3,24 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks146/src/mks146/userinterface/__init__.py
 # Compiled at: 2004-11-23 21:58:29
-import traceback, wx, logging, core.utils, poi.views, poi.dialogs, hardware.userinterface.configurator, hardware.hardwaremanager, mks146.drivers, mks146.userinterface.initdialog, threading, ui, poi.operation, time, poi.dialogs.progress, mfc.messages as messages, ui.images as uiimages
-RANGES = [
- 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-CHANNEL_CHOICES = [
- '4', '8']
+import wx, logging, plugins.poi.poi.dialogs
+import plugins.hardware.hardware.userinterface.configurator
+import plugins.hardware.hardware.hardwaremanager, plugins.mks146.mks146.drivers as mks146_drivers
+import plugins.mks146.mks146.userinterface.initdialog, threading
+import plugins.poi.poi.operation, time, plugins.poi.poi.dialogs.progress
+import plugins.mfc.mfc.messages as messages, plugins.ui.ui.images as uiimages
+import plugins.hardware.hardware as hardware
+import plugins.poi.poi as poi
+import plugins.core.core as core, plugins.core.core.utils
+import plugins.poi.poi.utils.scrolledpanel
+import plugins.ui.ui as ui
+
+RANGES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+CHANNEL_CHOICES = ['4', '8']
 logger = logging.getLogger('mks146.ui')
 
 def getUnitChoices():
+    global UNITS
     return UNITS
 
 
@@ -205,7 +215,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
     def OnDriverChoice(self, event):
         self.setDirty(True)
         choice = event.GetString()
-        page = mks146.drivers.getDriverPageByName(choice)
+        page = mks146_drivers.getDriverPageByName(choice)
         wx.CallAfter(self.updateDriverSegment, page)
 
     def markDirty(self, event=None):
@@ -239,13 +249,12 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             sizer.SetItemMinSize(page.getControl(), size)
             self.control.SetupScrolling()
         return page
-        return
 
     def getDriverOptions(self):
-        keys = mks146.drivers.getRegisteredDeviceKeys()
+        keys = mks146_drivers.getRegisteredDeviceKeys()
         names = []
         for key in keys:
-            names.append(mks146.drivers.getDriverName(key))
+            names.append(mks146_drivers.getDriverName(key))
 
         return names
 
@@ -288,11 +297,11 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
 
     def setDriverConfig(self, config):
         driverType = config.get('driver', 'type')
-        driverName = mks146.drivers.getDriverName(driverType)
+        driverName = mks146_drivers.getDriverName(driverType)
         options = self.getDriverOptions()
         idx = options.index(driverName)
         self.driverCombo.SetSelection(idx)
-        page = mks146.drivers.getDriverConfigurationPage(driverType)
+        page = mks146_drivers.getDriverConfigurationPage(driverType)
         self.updateDriverSegment(page)
         page.setData(config)
 
@@ -320,7 +329,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         config.set('main', 'startupinit', its)
         if not config.has_section('driver'):
             config.add_section('driver')
-        driverType = mks146.drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
+        driverType = mks146_drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
         if driverType is not None:
             config.set('driver', 'type', driverType)
         self.driverSegment.getData(config)
@@ -356,7 +365,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
                 except Exception as msg:
                     logger.exception(msg)
                     canceller.done = True
-                    exc = core.util.WrappedException()
+                    exc = core.utils.WrappedException()
 
                 monitor.worked(1)
                 monitor.endTask()
@@ -374,7 +383,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             dlg.run(runner, fork=False)
         except Exception as invocation:
             logger.exception(invocation)
-            poi.dialogs.ExceptionDialog(f, msg.getWrapped()[1], 'Error Initializing Hardware').ShowModal()
+            poi.dialogs.ExceptionDialog(f, invocation, 'Error Initializing Hardware').ShowModal()  # Podria ser que el getWrapped() fes falta
 
     def shutdownHardware(self):
         """Attempt to shutdown hardware"""
@@ -417,7 +426,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             dlg.run(runner, fork=False)
         except Exception as msg:
             logger.exception(msg)
-            poi.dialogs.ExceptionDialog(f, msg.getWrapped(), 'Error Shutting Down Hardware').ShowModal()
+            poi.dialogs.ExceptionDialog(f, msg, 'Error Shutting Down Hardware').ShowModal()  # Podria ser que el getWrapped() fes falta
 
     def applied(self):
         if not self.isDirty():

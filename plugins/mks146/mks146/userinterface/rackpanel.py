@@ -25,7 +25,7 @@ class MKS647RackPanel(object):
             self.channelNums.append(led)
             sizer.Add(led, 0, wx.EXPAND | wx.ALL, 5)
 
-        sizer.Fit(control)
+        sizer.Fit(self.control)
         self.control.SetSizer(sizer)
         self.control.SetAutoLayout(True)
         return self.control

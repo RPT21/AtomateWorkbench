@@ -14888,3 +14888,123 @@ Traceback (most recent call last):
                           ^^^^^^^^^^^
 AttributeError: module 'poi' has no attribute 'actions'
 DEBUG/root/boot.py-184	Exiting with 12
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-193	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-30	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-38	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001DF9CAADF40>]
+DEBUG/goosemonitor/__init__.py-85	but the instance is null =(
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-38	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+ERROR/root/boot.py-183	module 'poi' has no attribute 'actions'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(f"plugins.{classNS}.{classNS}", globals(), locals(), ['*'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks146\mks146\__init__.py", line 8, in <module>
+    import mks146.mks146type, mks146.drivers, mks146.drivers.ser, mks146.participant, mfc.hardwarestatusprovider, poi.actions, threading
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks146\mks146\__init__.py", line 8, in <module>
+    import mks146.mks146type, mks146.drivers, mks146.drivers.ser, mks146.participant, mfc.hardwarestatusprovider, poi.actions, threading
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks146\mks146\drivers\ser.py", line 6, in <module>
+    import wx, mks647bc.drivers, socket, time, threading, select, mks146.drivers, serial, logging
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks647bc\mks647bc\__init__.py", line 8, in <module>
+    import mks647bc.mks647bctype, mks647bc.drivers, mks647bc.drivers.network, mks647bc.drivers.simulation, mks647bc.drivers.ser, mks647bc.participant, mfc.hardwarestatusprovider, poi.actions, ui, threading, core.error
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks647bc\mks647bc\drivers\simulation.py", line 57, in <module>
+    class ShowPanelAction(poi.actions.Action):
+                          ^^^^^^^^^^^
+AttributeError: module 'poi' has no attribute 'actions'
+DEBUG/root/boot.py-184	Exiting with 12
+INFO/root/boot.py-204	Starting up
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__init__.py, skipping
+WARNING/root/boot.py-146	No plugin.ini defined for C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\__pycache__, skipping
+DEBUG/root/boot.py-109	Pluing Boot Order: ['poi', 'core', 'ui', 'hardware', 'resources', 'validator', 'panelview', 'executionengine', 'safetyinterlock', 'adr2100', 'rs485', 'et2216e', 'extendededitor', 'help', 'grapheditor', 'resourcesui', 'grideditor', 'labbooks', 'graphview', 'furnacezone', 'goosemonitor', 'mfc', 'mks146', 'mks647bc', 'pressure_gauge', 'mkspdr2000', 'schematicspanel', 'up150', 'update']
+DEBUG/root/boot.py-172	Booting plugin 'poi'
+DEBUG/root/boot.py-172	Booting plugin 'core'
+DEBUG/root/boot.py-172	Booting plugin 'ui'
+DEBUG/ui/__init__.py-193	Create App
+DEBUG/root/boot.py-172	Booting plugin 'hardware'
+DEBUG/root/boot.py-172	Booting plugin 'resources'
+DEBUG/resources/workspace.py-84	Local workspace initialized at: 'C:\Users\marre\workspace'
+DEBUG/resources/workspace.py-85	Shared workspace initialized at: 'C:\Users\marre\PycharmProjects\AtomateWorkbench\workspace'
+DEBUG/root/boot.py-172	Booting plugin 'validator'
+DEBUG/root/boot.py-172	Booting plugin 'panelview'
+DEBUG/root/boot.py-172	Booting plugin 'executionengine'
+DEBUG/root/boot.py-172	Booting plugin 'safetyinterlock'
+DEBUG/root/boot.py-172	Booting plugin 'adr2100'
+DEBUG/root/boot.py-172	Booting plugin 'rs485'
+DEBUG/rs485/__init__.py-14	Registering driver <class 'plugins.rs485.rs485.drivers.ser.SerialNetworkDriver'>/<class 'plugins.rs485.rs485.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/root/boot.py-172	Booting plugin 'et2216e'
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.rs485driver.RS485Driver'>/<class 'plugins.et2216e.et2216e.drivers.rs485driver.SerialConfigurationSegment'>/RS485
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.ser.SerialDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.ser.SerialConfigurationSegment'>/Serial
+DEBUG/et2216e/__init__.py-16	Registering driver <class 'plugins.et2216e.et2216e.drivers.simulation.SimulationDeviceDriver'>/<class 'plugins.et2216e.et2216e.drivers.simulation.SimConfigurationSegment'>/Simulation
+DEBUG/et2216e/__init__.py-30	2216e Plugin startup sequence
+DEBUG/root/boot.py-172	Booting plugin 'extendededitor'
+DEBUG/root/boot.py-172	Booting plugin 'help'
+DEBUG/root/boot.py-172	Booting plugin 'grapheditor'
+DEBUG/root/boot.py-172	Booting plugin 'resourcesui'
+DEBUG/root/boot.py-172	Booting plugin 'grideditor'
+WARNING/grideditor/messages.py-23	Unable to load messages from 'C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\grideditor':'While reading from 'C:\\Users\\marre\\PycharmProjects\\AtomateWorkbench\\plugins\\grideditor\\messages.prop' [line 26]: option 'dialog.errorviewer.title' in section 'messages' already exists'
+DEBUG/root/boot.py-172	Booting plugin 'labbooks'
+DEBUG/root/boot.py-172	Booting plugin 'graphview'
+DEBUG/root/boot.py-172	Booting plugin 'furnacezone'
+DEBUG/furnacezone/__init__.py-38	Registering 'furnacezone' as device
+DEBUG/root/boot.py-172	Booting plugin 'goosemonitor'
+DEBUG/goosemonitor/__init__.py-80	Define all geese: [<plugins.hardware.hardware.hardwaremanager.HardwareDescription object at 0x000001459BDDE090>]
+DEBUG/goosemonitor/__init__.py-85	but the instance is null =(
+DEBUG/root/boot.py-172	Booting plugin 'mfc'
+DEBUG/mfc/__init__.py-38	Registering 'mfc' as device
+DEBUG/root/boot.py-172	Booting plugin 'mks146'
+ERROR/root/boot.py-183	module 'poi' has no attribute 'actions'
+Traceback (most recent call last):
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\lib\kernel\boot.py", line 181, in bootPlugins
+    module = __import__(f"plugins.{classNS}.{classNS}", globals(), locals(), ['*'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks146\mks146\__init__.py", line 9, in <module>
+    import plugins.mks146.mks146.mks146type as mks146type
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks146\mks146\mks146type.py", line 9, in <module>
+    import plugins.mks146.mks146.__init__ as mks146
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks146\mks146\__init__.py", line 10, in <module>
+    import plugins.mks146.mks146.mks647bctype as mks647bctype
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks146\mks146\mks647bctype.py", line 7, in <module>
+    import plugins.mks647bc.mks647bc.userinterface as mks647bc_userinterface
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks647bc\mks647bc\__init__.py", line 8, in <module>
+    import mks647bc.mks647bctype, mks647bc.drivers, mks647bc.drivers.network, mks647bc.drivers.simulation, mks647bc.drivers.ser, mks647bc.participant, mfc.hardwarestatusprovider, poi.actions, ui, threading, core.error
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks647bc\mks647bc\__init__.py", line 8, in <module>
+    import mks647bc.mks647bctype, mks647bc.drivers, mks647bc.drivers.network, mks647bc.drivers.simulation, mks647bc.drivers.ser, mks647bc.participant, mfc.hardwarestatusprovider, poi.actions, ui, threading, core.error
+  File "C:\Users\marre\PycharmProjects\AtomateWorkbench\plugins\mks647bc\mks647bc\drivers\simulation.py", line 57, in <module>
+    class ShowPanelAction(poi.actions.Action):
+                          ^^^^^^^^^^^
+AttributeError: module 'poi' has no attribute 'actions'
+DEBUG/root/boot.py-184	Exiting with 12

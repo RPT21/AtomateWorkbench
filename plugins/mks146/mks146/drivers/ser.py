@@ -3,8 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks146/src/mks146/drivers/ser.py
 # Compiled at: 2005-01-14 20:47:46
-import wx, mks647bc.drivers, socket, time, threading, select, mks146.drivers, serial, logging
-from hardware import ResponseTimeoutException
+import wx, threading, serial, logging, time
+from plugins.hardware.hardware import ResponseTimeoutException
+import plugins.mks146.mks146.drivers as mks146_drivers
+
 logger = logging.getLogger('mks146.drivers.serial')
 CHOICES_BAUDRATE = [
  3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
@@ -13,7 +15,9 @@ CHOICES_PARITY_TEXT = ['None', 'Odd', 'Even']
 CHOICES_BITS = [7, 8]
 CHOICES_STOPBITS = [1, 2]
 CHOICES_PORTS = list(map((lambda p: p), list(range(9))))
-ERROR_CODE_STRINGS = {111: {'short': 'Unrecognized command', 'long': 'The command transmitted is not recognized'}, 112: {'short': 'Syntax Error', 'long': 'The command sent is inproperly fomatted'}, 122: {'short': 'Invalid Data Field', 'long': 'The command parameter does not have a decimal form, or invalid characters were found within the parameter'}}
+ERROR_CODE_STRINGS = {111: {'short': 'Unrecognized command', 'long': 'The command transmitted is not recognized'},
+                      112: {'short': 'Syntax Error', 'long': 'The command sent is inproperly fomatted'},
+                      122: {'short': 'Invalid Data Field', 'long': 'The command parameter does not have a decimal form, or invalid characters were found within the parameter'}}
 SERIAL_PARITY = {'none': (serial.PARITY_NONE), 'even': (serial.PARITY_EVEN), 'odd': (serial.PARITY_ODD)}
 THROTTLE = 0.025
 
@@ -165,11 +169,11 @@ class SerialConfigurationSegment(object):
 DEFAULT_TIMEOUT = 1000
 CONDITION_DICT = {'A': 'on', 'B': 'low-power-degas', 'C': 'underranged', 'D': 'overranged', 'E': 'manually-off', 'F': 'auto-off', 'G': 'high-power-degas', 'H': 'initializing', 'I': 'zeroing', 'J': 'bad-sensor', 'K': 'disconnected', 'L': 'not-installed'}
 
-class SerialDeviceDriver(mks146.drivers.DeviceDriver):
+class SerialDeviceDriver(mks146_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self):
-        mks146.drivers.DeviceDriver.__init__(self)
+        mks146_drivers.DeviceDriver.__init__(self)
         self.softwareVersion = None
         self.port = None
         self.portnum = None
@@ -199,11 +203,10 @@ class SerialDeviceDriver(mks146.drivers.DeviceDriver):
             self.buff = self.buff[idx + len(self.delimeter):]
             return cmd
         return None
-        return
 
     def setConfiguration(self, configuration):
         global SERIAL_PARITY
-        mks146.drivers.DeviceDriver.setConfiguration(self, configuration)
+        mks146_drivers.DeviceDriver.setConfiguration(self, configuration)
         try:
             self.portnum = int(configuration.get('driver', 'port'))
             self.baudrate = int(configuration.get('driver', 'baudrate'))
@@ -221,7 +224,7 @@ class SerialDeviceDriver(mks146.drivers.DeviceDriver):
             self.port = serial.Serial(port=self.portnum, baudrate=self.baudrate, parity=self.parity, stopbits=self.stopbits, bytesize=self.wordsize)
             self.port.open()
             self.checkInterrupt()
-            self.status = mks146.drivers.STATUS_INITIALIZED
+            self.status = mks146_drivers.STATUS_INITIALIZED
             self.checkInterrupt()
             self.softwareVersion = self.getSoftwareVersion()
             logger.debug('Software version %s' % self.softwareVersion)
@@ -333,7 +336,7 @@ class SerialDeviceDriver(mks146.drivers.DeviceDriver):
         return result
 
     def shutdown(self):
-        if not self.status == mks146.drivers.STATUS_INITIALIZED:
+        if not self.status == mks146_drivers.STATUS_INITIALIZED:
             return
         try:
             if self.lockoutPanel:
@@ -342,16 +345,16 @@ class SerialDeviceDriver(mks146.drivers.DeviceDriver):
             print(('* ERROR: Cannot unlock panel', msg))
 
         self.port.close()
-        self.status = mks146.drivers.STATUS_UNINITIALIZED
+        self.status = mks146_drivers.STATUS_UNINITIALIZED
 
     def sendCommand(self, command):
-        if not self.status == mks146.drivers.STATUS_INITIALIZED:
+        if not self.status == mks146_drivers.STATUS_INITIALIZED:
             raise Exception('Driver is not initialized')
         self.port.write(command)
         self.port.flushOutput()
 
     def discardAllInput(self):
-        mks146.drivers.DeviceDriver.discardAllInput(self)
+        mks146_drivers.DeviceDriver.discardAllInput(self)
         self.ir = False
         self.buff = ''
         self.clearBuffer()
@@ -400,8 +403,5 @@ class SerialDeviceDriver(mks146.drivers.DeviceDriver):
             rcpt = data
             return rcpt
 
-        return None
-        return
 
-
-mks146.drivers.registerDriver('serial', SerialDeviceDriver, SerialConfigurationSegment, 'Serial')
+mks146_drivers.registerDriver('serial', SerialDeviceDriver, SerialConfigurationSegment, 'Serial')

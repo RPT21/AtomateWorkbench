@@ -3,7 +3,12 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks647bc/src/mks647bc/drivers/emulation.py
 # Compiled at: 2004-08-18 03:37:00
-import wx, poi, poi.actions, mks647bc.drivers, ui, logging
+import wx, plugins.poi.poi.actions, logging
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+import plugins.mks647bc.mks647bc.drivers
+import plugins.mks647bc.mks647bc as mks647bc
+
 logger = logging.getLogger('mks647bc.drivers.emulation')
 
 class UserInterface(object):
@@ -84,7 +89,7 @@ class UserInterface(object):
 
     def internalCreateControl(self):
         mainframe = ui.getDefault().getMainFrame().getControl()
-        self.window = wx.MiniFrame(ui.getDefault().getMainFrame().getControl(), -1, 'MKS647 Emulation', size=wx.Size(300, 300), pos=(0, 0))
+        self.window = wx.MiniFrame(ui.getDefault().getMainFrame().getControl(), -1, 'MKS647 Emulation', size=wx.Size(300, 300), pos=wx.Point(0, 0))
         self.createInterface()
         self.window.Show()
 
@@ -100,7 +105,6 @@ class UserInterface(object):
 
     def isDisposed(self):
         return self.window is None
-        return
 
 
 class EmulationConfigurationSegment(object):

@@ -3,13 +3,20 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/mks146/src/mks146/__init__.py
 # Compiled at: 2004-11-19 22:12:40
-import os, shutil, core.error, core.deviceregistry, configparser, logging, kernel.plugin, kernel.pluginmanager as PluginManager, hardware.hardwaremanager
-from hardware import ResponseTimeoutException
-import mks146.mks146type, mks146.drivers, mks146.drivers.ser, mks146.participant, mfc.hardwarestatusprovider, poi.actions, threading
-import plugins.ui.ui as ui
-from . import mks146type, mks647bctype
-from hardware.utils.threads import BackgroundProcessThread, PurgeThread
+import os, shutil, plugins.core.core.error, plugins.core.core.deviceregistry, logging, lib.kernel.plugin
+from plugins.hardware.hardware import ResponseTimeoutException
+import plugins.mks146.mks146.drivers as mks146_drivers, threading
+import plugins.mks146.mks146.mks146type as mks146type
+import plugins.mks146.mks146.mks647bctype as mks647bctype
+import plugins.mks146.mks146.participant as mks146_participant
+import plugins.mfc.mfc as mfc, plugins.mfc.mfc.hardwarestatusprovider
+from plugins.hardware.hardware.utils.threads import BackgroundProcessThread, PurgeThread
 import plugins.executionengine.executionengine as executionengine
+import plugins.ui.ui as ui
+import plugins.core.core as core
+import plugins.hardware.hardware as hardware, plugins.hardware.hardware.hardwaremanager
+import lib.kernel as kernel
+
 logger = logging.getLogger('mks146')
 
 def getDefault():
@@ -36,7 +43,7 @@ class MKS146Plugin(kernel.plugin.Plugin):
         self.contextBundle = contextBundle
         hwType = mks146type.MKS146HardwareType()
         hardware.hardwaremanager.registerHardwareType(hwType)
-        executionengine.getDefault().registerRecipeParticipantFactory(hwType.getType(), mks146.participant.RecipeParticipantFactory())
+        executionengine.getDefault().registerRecipeParticipantFactory(hwType.getType(), mks146_participant.RecipeParticipantFactory())
         hw = hardware.hardwaremanager.getHardwareByType(hwType.getType())
 
     def beginInstantiation(self, descriptions):
@@ -366,7 +373,7 @@ class MKS146Hardware(hardware.hardwaremanager.Hardware, mfc.hardwarestatusprovid
         config = description.getConfiguration()
         try:
             driverType = config.get('driver', 'type')
-            inst = mks146.drivers.getDriver(driverType)()
+            inst = mks146_drivers.getDriver(driverType)()
             self.setDriver(inst)
             self.driver.setConfiguration(config)
         except Exception as msg:
