@@ -55,7 +55,7 @@ class QuickFix(object):
     def setDescriptionse(self, description):
         self.description = description
 
-    def setDetails(self):
+    def setDetails(self, details):
         self.details = details
 
     def getDescription(self):

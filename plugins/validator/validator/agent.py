@@ -4,7 +4,11 @@
 # Embedded file name: ../plugins/validator/src/validator/agent.py
 # Compiled at: 2004-09-16 00:20:16
 import threading, plugins.core.core.utils
-import plugins.validator.validator, plugins.validator.validator.utils, logging, plugins.ui.ui.context, time
+import plugins.validator.validator.utils, logging, plugins.ui.ui.context
+import plugins.validator.validator.constants as validator_constants
+import plugins.validator.validator.__init__ as validator
+import plugins.ui.ui as ui
+
 logger = logging.getLogger('validator')
 
 class ValidatorAgent(object):
@@ -28,7 +32,7 @@ class ValidatorAgent(object):
 
     def validate(self):
         self.running = False
-        plugins.validator.validator.getDefault().validate()
+        validator.getDefault().validate()
 
     def stop(self):
         if self.running:
@@ -47,7 +51,7 @@ class ValidatorAgent(object):
         self.updateConfiguration()
 
     def getPreferencesStore(self):
-        return plugins.validator.validator.getDefault().getPreferencesStore()
+        return validator.getDefault().getPreferencesStore()
 
     def stopIfNecessary(self, canedit):
         if self.running:
@@ -60,21 +64,21 @@ class ValidatorAgent(object):
             return
         if self.interval == 0:
             return
-        if not plugins.ui.ui.context.getProperty('can-edit'):
+        if not ui.context.getProperty('can-edit'):
             return
         if self.running:
             return
         logger.debug('Starting validation at %f' % (self.interval / 1000.0))
         self.running = True
         self.timer = threading.Timer(self.interval / 1000.0, self.perform)
-        self.timer.setName('ValidatorAgentTimer')
+        self.timer.name = 'ValidatorAgentTimer'
         self.timer.start()
 
     def updateConfiguration(self):
         store = self.getPreferencesStore()
         try:
             prefs = store.getPreferences()
-            self.interval = int(prefs.get('main', plugins.validator.validator.constants.TAG_VALIDATORDELAY))
+            self.interval = int(prefs.get('main', validator_constants.TAG_VALIDATORDELAY))
             self.startIfNecessary()
         except Exception as msg:
             logger.exception(msg)

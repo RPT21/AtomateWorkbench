@@ -8,6 +8,7 @@ import plugins.ui.ui as ui
 import plugins.validator.validator.messages as messages_lib
 import plugins.validator.validator.agent as agent_lib
 import logging, plugins.validator.validator.userinterface.preferences
+
 logger = logging.getLogger('validator')
 PLUGIN_ID = 'validator'
 

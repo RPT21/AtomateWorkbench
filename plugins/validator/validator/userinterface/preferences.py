@@ -8,7 +8,9 @@ import plugins.ui.ui.dialog.preferences as dialog_preferences
 import plugins.validator.validator.messages as messages
 import plugins.validator.validator.constants as constants
 import plugins.ui.ui as ui
+
 logger = logging.getLogger('validator')
+
 
 class PreferencesPage(dialog_preferences.PreferencesPage):
     __module__ = __name__

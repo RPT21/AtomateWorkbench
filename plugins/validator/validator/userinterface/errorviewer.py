@@ -3,7 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/validator/src/validator/userinterface/errorviewer.py
 # Compiled at: 2004-09-09 22:57:57
-import wx, ui, poi, poi.actions, validator, validator.messages as messages, wx.lib.mixins.listctrl as listmix, wx.lib.buttons as buttons
+import wx, plugins.ui.ui as ui, plugins.poi.poi as poi, plugins.poi.poi.actions
+import plugins.validator.validator.__init__ as validator
+import plugins.validator.validator.messages as messages, wx.lib.mixins.listctrl as listmix
+
 
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
     __module__ = __name__
