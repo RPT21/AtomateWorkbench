@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/ui/src/ui/widgets/led.py
 # Compiled at: 2004-11-04 21:38:28
-import wx, poi.utils.LEDdisplay
+import wx, plugins.poi.poi.utils.LEDdisplay
+import plugins.poi.poi as poi
 
 class LEDSetpointDisplay(wx.Panel):
     """LED Display with setpoint on top-right corner"""
