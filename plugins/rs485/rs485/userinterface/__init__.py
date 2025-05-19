@@ -3,9 +3,14 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/rs485/src/rs485/userinterface/__init__.py
 # Compiled at: 2004-11-23 21:59:58
-import wx, plugins.ui.ui, logging, plugins.core.core.utils, plugins.poi.poi.views, plugins.poi.poi.dialogs, plugins.hardware.hardware.userinterface.configurator
-import plugins.hardware.hardware.hardwaremanager, plugins.rs485.rs485.drivers, plugins.rs485.rs485.userinterface.initdialog
+import wx, logging, plugins.poi.poi.dialogs, plugins.hardware.hardware.userinterface.configurator
+import plugins.hardware.hardware.hardwaremanager, plugins.rs485.rs485.drivers as rs485_drivers
+import plugins.rs485.rs485.userinterface.initdialog
 import plugins.poi.poi.operation, plugins.poi.poi.dialogs.progress
+import plugins.poi.poi as poi
+import plugins.hardware.hardware as hardware
+import plugins.ui.ui as ui
+
 SCCM = 'sccm'
 SLM = 'slm'
 SCMM = 'scmm'
@@ -31,11 +36,11 @@ def getRangeChoices(unitKey):
     return values
 
 
-class DeviceHardwareEditor(plugins.hardware.hardware.userinterface.DeviceHardwareEditor):
+class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
     __module__ = __name__
 
     def __init__(self):
-        plugins.hardware.hardware.userinterface.DeviceHardwareEditor.__init__(self)
+        hardware.userinterface.DeviceHardwareEditor.__init__(self)
         self.control = None
         return
 
@@ -112,11 +117,11 @@ class DeviceHardwareEditor(plugins.hardware.hardware.userinterface.DeviceHardwar
         data.createChildIfNotExists('conversion-factor').setValue(str(gcf))
 
 
-class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.ConfigurationPage):
+class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
     __module__ = __name__
 
     def __init__(self):
-        plugins.hardware.hardware.userinterface.configurator.ConfigurationPage.__init__(self)
+        hardware.userinterface.configurator.ConfigurationPage.__init__(self)
         self.changedDriverSegment = False
 
     def getDriverSegmentChanged(self):
@@ -207,7 +212,7 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
     def OnDriverChoice(self, event):
         self.setDirty(True)
         choice = event.GetString()
-        page = rs485.drivers.getDriverPageByName(choice)
+        page = rs485_drivers.getDriverPageByName(choice)
         self.updateDriverSegment(page)
 
     def markDirty(self, event=None):
@@ -241,10 +246,10 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
         return page
 
     def getDriverOptions(self):
-        keys = rs485.drivers.getRegisteredDeviceKeys()
+        keys = rs485_drivers.getRegisteredDeviceKeys()
         names = []
         for key in keys:
-            names.append(rs485.drivers.getDriverName(key))
+            names.append(rs485_drivers.getDriverName(key))
 
         return names
 
@@ -282,11 +287,11 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
 
     def setDriverConfig(self, config):
         driverType = config.get('driver', 'type')
-        driverName = rs485.drivers.getDriverName(driverType)
+        driverName = rs485_drivers.getDriverName(driverType)
         options = self.getDriverOptions()
         idx = options.index(driverName)
         self.driverCombo.SetSelection(idx)
-        page = rs485.drivers.getDriverConfigurationPage(driverType)
+        page = rs485_drivers.getDriverConfigurationPage(driverType)
         self.updateDriverSegment(page)
         page.setData(config)
 
@@ -314,7 +319,7 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
         config.set('main', 'startupinit', its)
         if not config.has_section('driver'):
             config.add_section('driver')
-        driverType = rs485.drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
+        driverType = rs485_drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
         if driverType is not None:
             config.set('driver', 'type', driverType)
         self.driverSegment.getData(config)

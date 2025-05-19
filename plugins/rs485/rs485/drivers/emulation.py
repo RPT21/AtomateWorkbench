@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/rs485/src/rs485/drivers/emulation.py
 # Compiled at: 2004-11-19 02:47:58
-import wx, rs485.drivers, ui
+import wx, plugins.rs485.rs485.drivers as rs485_drivers, plugins.ui.ui as ui
 
 class UserInterface(object):
     __module__ = __name__
@@ -111,11 +111,11 @@ class EmulationConfigurationSegment(object):
         pass
 
 
-class EmulationDeviceDriver(rs485.drivers.DeviceDriver):
+class EmulationDeviceDriver(rs485_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self):
-        rs485.drivers.DeviceDriver.__init__(self)
+        rs485_drivers.DeviceDriver.__init__(self)
         self.wnd = None
         self.addressValues = {'01': 0, '02': 0, '03': 0}
         self.respond = True
@@ -161,7 +161,7 @@ class EmulationDeviceDriver(rs485.drivers.DeviceDriver):
         return -1
 
     def displayUI(self):
-        if self.getStatus() != rs485.drivers.STATUS_INITIALIZED:
+        if self.getStatus() != rs485_drivers.STATUS_INITIALIZED:
             return
         self.wnd.createControl()
 
@@ -172,17 +172,17 @@ class EmulationDeviceDriver(rs485.drivers.DeviceDriver):
         if self.checkInterrupt():
             return
         self.wnd = UserInterface(self)
-        self.status = rs485.drivers.STATUS_INITIALIZED
+        self.status = rs485_drivers.STATUS_INITIALIZED
         self.displayUI()
 
     def shutdown(self):
         if self.checkInterrupt():
             return
-        self.status = rs485.drivers.STATUS_UNINITIALIZED
+        self.status = rs485_drivers.STATUS_UNINITIALIZED
         self.wnd.dispose()
         del self.wnd
         self.wnd = None
         return
 
 
-rs485.drivers.registerDriver('emulation', EmulationDeviceDriver, EmulationConfigurationSegment, 'Emulation')
+rs485_drivers.registerDriver('emulation', EmulationDeviceDriver, EmulationConfigurationSegment, 'Emulation')

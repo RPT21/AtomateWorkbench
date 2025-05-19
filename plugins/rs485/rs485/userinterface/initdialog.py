@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/rs485/src/rs485/userinterface/initdialog.py
 # Compiled at: 2004-08-10 09:09:48
-import plugins.poi.poi.dialogs, wx, wx.lib.throbber as throb
+import plugins.poi.poi.dialogs, wx
+import plugins.poi.poi as poi
+
 
 class ShutdownInitializeDialog(plugins.poi.poi.dialogs.Dialog):
     __module__ = __name__

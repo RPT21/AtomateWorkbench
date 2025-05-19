@@ -3,9 +3,10 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/rs485/src/rs485/drivers/ser.py
 # Compiled at: 2004-12-07 10:31:20
-import wx, socket, time, threading, select, plugins.rs485.rs485.drivers, logging, serial
+import wx, time, threading, plugins.rs485.rs485.drivers as rs485_drivers, logging, serial
 from plugins.rs485.rs485.drivers import DeviceDriver, registerDriver
 from plugins.hardware.hardware import ResponseTimeoutException
+
 logger = logging.getLogger('rs485.drivers.serial')
 CHOICES_BAUDRATE = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 CHOICES_PARITY = ['none', 'odd', 'even']
@@ -188,7 +189,7 @@ class SerialNetworkDriver(DeviceDriver):
             print(('\tStop Bits:', self.stopbits))
             self.port = serial.Serial(port=self.portnum, baudrate=self.baudrate, parity=self.parity, stopbits=self.stopbits)
             self.port.open()
-            self.status = rs485.drivers.STATUS_INITIALIZED
+            self.status = rs485_drivers.STATUS_INITIALIZED
         except Exception as msg:
             import traceback
             traceback.print_exc()
@@ -216,14 +217,14 @@ class SerialNetworkDriver(DeviceDriver):
 
     def shutdown(self):
         logger.debug('shutdown')
-        if not self.status == plugins.rs485.rs485.drivers.STATUS_INITIALIZED:
+        if not self.status == rs485_drivers.STATUS_INITIALIZED:
             print('returning not intialized')
             return
         self.port.close()
-        self.status = plugins.rs485.rs485.drivers.STATUS_UNINITIALIZED
+        self.status = rs485_drivers.STATUS_UNINITIALIZED
 
     def sendCommand(self, command):
-        if not self.status == plugins.rs485.rs485.drivers.STATUS_INITIALIZED:
+        if not self.status == rs485_drivers.STATUS_INITIALIZED:
             raise Exception('Driver is not initialized')
         self.port.write(command)
         self.port.flush()

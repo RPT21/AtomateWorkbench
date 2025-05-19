@@ -4,9 +4,14 @@
 # Embedded file name: ../plugins/rs485/src/rs485/__init__.py
 # Compiled at: 2005-03-09 18:51:42
 import logging, lib.kernel.plugin, plugins.hardware.hardware.hardwaremanager
-import plugins.rs485.rs485.rs485type, plugins.rs485.rs485.drivers, plugins.rs485.rs485.drivers.ser
-import plugins.poi.poi.actions, plugins.ui.ui, threading, plugins.executionengine.executionengine
-import plugins.rs485.rs485.rs485type, plugins.hardware.hardware as hardware, plugins.rs485.rs485 as rs485
+import plugins.rs485.rs485.rs485type, plugins.rs485.rs485.drivers.ser
+import plugins.rs485.rs485.drivers as rs485_drivers
+import threading
+import plugins.hardware.hardware as hardware
+import plugins.ui.ui as ui
+import plugins.rs485.rs485.rs485type as rs485_rs485type
+
+
 logger = logging.getLogger('rs485')
 
 def getDefault():
@@ -23,7 +28,7 @@ class RS485Plugin(lib.kernel.plugin.Plugin):
         lib.kernel.plugin.Plugin.__init__(self)
         instance = self
         self.contextBundle = None
-        plugins.ui.ui.getDefault().setSplashText('Loading RS 485 plugin ...')
+        ui.getDefault().setSplashText('Loading RS 485 plugin ...')
         return
 
     def getContextBundle(self):
@@ -31,9 +36,9 @@ class RS485Plugin(lib.kernel.plugin.Plugin):
 
     def startup(self, contextBundle):
         self.contextBundle = contextBundle
-        hwType = plugins.rs485.rs485.rs485type.RS485HardwareType()
-        plugins.hardware.hardware.hardwaremanager.registerHardwareType(hwType)
-        hw = plugins.hardware.hardware.hardwaremanager.getHardwareByType(hwType.getType())
+        hwType = rs485_rs485type.RS485HardwareType()
+        hardware.hardwaremanager.registerHardwareType(hwType)
+        hw = hardware.hardwaremanager.getHardwareByType(hwType.getType())
 
     def beginInstantiation(self, descriptions):
         for description in descriptions:
@@ -42,7 +47,7 @@ class RS485Plugin(lib.kernel.plugin.Plugin):
                 __module__ = __name__
 
                 def run(innerself):
-                    hardware = plugins.rs485.rs485.RS485Hardware(description)
+                    hardware = RS485Hardware(description)  # No existeix aquesta classe
                     initialize = False
                     try:
                         initialize = description.getConfiguration().get('main', 'startupinit').lower() == 'true'
@@ -84,7 +89,7 @@ class StateCaller(threading.Thread):
             time.sleep(0.25)
 
 
-class RS485SerialNetwork(plugins.hardware.hardware.hardwaremanager.Hardware):
+class RS485SerialNetwork(hardware.hardwaremanager.Hardware):
     __module__ = __name__
 
     def __init__(self):
@@ -160,7 +165,7 @@ class RS485SerialNetwork(plugins.hardware.hardware.hardwaremanager.Hardware):
         config = description.getConfiguration()
         try:
             driverType = config.get('driver', 'type')
-            inst = rs485.drivers.getDriver(driverType)()
+            inst = rs485_drivers.getDriver(driverType)()
             self.setDriver(inst)
             self.driver.setConfiguration(config)
         except Exception as msg:
