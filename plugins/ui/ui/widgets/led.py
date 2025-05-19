@@ -54,7 +54,7 @@ class LEDSetpointDisplay(wx.Panel):
 
     def setBackgroundColor(self, color):
         self.bgcolor = color
-        self.SetBackgroundColour(wx.Color(*self.bgcolor))
+        self.SetBackgroundColour(wx.Colour(*self.bgcolor))
         self.valueCtrl.setBackgroundColor(*color)
         if self.showSetpoint:
             self.setpointCtrl.setBackgroundColor(*color)
