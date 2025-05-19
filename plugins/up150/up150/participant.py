@@ -3,7 +3,11 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/participant.py
 # Compiled at: 2005-06-07 18:39:30
-import executionengine.executionparticipant, resources.runlog, furnacezone.response, logging
+import plugins.executionengine.executionengine.executionparticipant
+import plugins.furnacezone.furnacezone.response, logging
+import plugins.executionengine.executionengine as executionengine
+import plugins.furnacezone.furnacezone as furnacezone
+
 logger = logging.getLogger('up150.participant')
 
 class RecipeParticipantFactory(executionengine.executionparticipant.ExecutionParticipantFactory):
@@ -60,7 +64,7 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
                     else:
                         previousSetpoint = float(self.getHardwareInstance().getTemperature())
                 self.coefficients[devIdx] = [
-                 previousSetpoint, (setpoint - previousSetpoint) / step.getDuration()]
+                previousSetpoint, (setpoint - previousSetpoint) / step.getDuration()]
                 logger.debug(repr(self.coefficients))
                 logger.debug(' coefficients for a linear ramp: %d+%dt' % (self.coefficients[devIdx][0], self.coefficients[devIdx][1]))
 
@@ -119,7 +123,6 @@ class RecipeParticipant(executionengine.executionparticipant.ExecutionParticipan
 
     def checkConditions(self, recipeTime, stepTime, totalTime, step):
         return None
-        return
 
     def handleRecipeEnd(self, recipeTime, stepTime, totalTime, recipe):
         self.enterPurgeState()

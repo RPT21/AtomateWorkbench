@@ -4,6 +4,7 @@
 # Embedded file name: ../plugins/up150/src/up150/messages.py
 # Compiled at: 2004-08-12 02:18:21
 import configparser, os, logging
+
 MESSAGES_FILENAME = 'messages.prop'
 inited = False
 config = None

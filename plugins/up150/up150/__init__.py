@@ -3,14 +3,23 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/__init__.py
 # Compiled at: 2004-11-19 01:56:28
-import os, shutil, core.error, time, string, kernel.plugin, up150.up150type, up150.images as images, up150.messages as messages, up150.drivers, up150.participant, up150.drivers.rs485driver, up150.drivers.simulation, hardware
-from hardware import ResponseTimeoutException
-import hardware.hardwaremanager, executionengine, logging, threading
-import plugins.ui.ui as ui
-from hardware.utils.threads import BackgroundProcessThread, PurgeThread
-import core.deviceregistry, furnacezone.hw
+import os, shutil, plugins.core.core.error, time, lib.kernel.plugin
+import plugins.up150.up150.images as images, plugins.up150.up150.messages as messages
+import plugins.up150.up150.drivers as up150_drivers
+import plugins.up150.up150.participant as up150_participant
+import plugins.up150.up150.drivers.rs485driver, plugins.up150.up150.drivers.simulation
+import plugins.hardware.hardware as hardware
+from plugins.hardware.hardware import ResponseTimeoutException
+import plugins.hardware.hardware.hardwaremanager, logging
+import plugins.up150.up150.up150type as up150type
+import plugins.ui.ui as ui, lib.kernel as kernel
+from plugins.hardware.hardware.utils.threads import BackgroundProcessThread, PurgeThread
+import plugins.core.core.deviceregistry, plugins.furnacezone.furnacezone.hw
 import plugins.executionengine.executionengine as executionengine
-from . import up150node, up150type
+import plugins.up150.up150.up150node
+import plugins.core.core as core
+import plugins.furnacezone.furnacezone as furnacezone
+
 logger = logging.getLogger('up150')
 
 def getDefault():
@@ -39,7 +48,7 @@ class UP150Plugin(kernel.plugin.Plugin):
         messages.init(contextBundle)
         hwtype = up150type.UP150HardwareType()
         hardware.hardwaremanager.registerHardwareType(hwtype)
-        executionengine.getDefault().registerRecipeParticipantFactory(hwtype.getType(), up150.participant.RecipeParticipantFactory())
+        executionengine.getDefault().registerRecipeParticipantFactory(hwtype.getType(), up150_participant.RecipeParticipantFactory())
 
 
 class StatusThread(BackgroundProcessThread):
@@ -74,7 +83,7 @@ class StatusThread(BackgroundProcessThread):
 def createDefaultHardwareNode(root, num, units, range, gcf):
     root.createChildIfNotExists('channel').setValue(str(num))
     root.createChildIfNotExists('units').setValue(units)
-    root.createChildIfNotExists('range').setValue(str(rangeValue))
+    root.createChildIfNotExists('range').setValue(str(range))
     root.createChildIfNotExists('conversion-factor').setValue(str(gcf))
 
 
@@ -267,29 +276,23 @@ class UP150Hardware(hardware.hardwaremanager.Hardware, furnacezone.hw.HardwareSt
         if not self.driver.isConfigured():
             return False
         return True
-        return
 
     def getExtraData(self):
         if self.driver is None:
             return ''
         return self.driver.getDescription()
-        return
 
     def setupDriver(self, description):
         self.driver = None
         config = description.getConfiguration()
         try:
             driverType = config.get('driver', 'type')
-            inst = up150.drivers.getDriver(driverType)(self)
+            inst = up150_drivers.getDriver(driverType)(self)
             self.setDriver(inst)
             self.driver.setConfiguration(config)
         except Exception as msg:
             self.driver = None
             self.logger.exception(msg)
-            self.logger.error("Cannot setup driver : '%s'" % msg)
-            self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
-        except Error as msg:
-            self.driver = None
             self.logger.error("Cannot setup driver : '%s'" % msg)
             self.fireHardwareEvent(hardware.hardwaremanager.HardwareEvent(self, hardware.hardwaremanager.EVENT_ERROR, "Error, cannot setup driver:'%s'" % msg))
 

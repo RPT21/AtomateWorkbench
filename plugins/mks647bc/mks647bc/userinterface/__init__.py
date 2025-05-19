@@ -43,6 +43,7 @@ def getRangeIndex(unitKey, rangeValue):
 
 
 def getRangeChoices(unitKey):
+    global RANGES
     values = list(RANGES[unitKey].values())
     values.sort()
     return values

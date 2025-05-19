@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/drivers/simulation.py
 # Compiled at: 2004-11-13 00:03:05
-import up150.drivers, wx, ui, poi, poi.actions
+import plugins.up150.up150.drivers as up150_drivers
+import  wx, plugins.ui.ui as ui, plugins.poi.poi as poi, plugins.poi.poi.actions
+
 
 class SimConfigurationSegment(object):
     __module__ = __name__
@@ -57,11 +59,11 @@ class ShowPanelAction(poi.actions.Action):
         self.driver.toggleDialog()
 
 
-class SimulationDeviceDriver(up150.drivers.DeviceDriver):
+class SimulationDeviceDriver(up150_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self, hwinst):
-        up150.drivers.DeviceDriver.__init__(self, hwinst)
+        up150_drivers.DeviceDriver.__init__(self, hwinst)
         self.temperature = 0
         self.action = poi.actions.ActionContributionItem(ShowPanelAction(self))
         mng = ui.getDefault().getMenuManager().findByPath('atm.views')
@@ -97,7 +99,6 @@ class SimulationDeviceDriver(up150.drivers.DeviceDriver):
         self.dlg.Destroy()
         self.dlg = None
         return True
-        return
 
     def OnSlide(self, event):
         event.Skip()
@@ -152,10 +153,10 @@ class SimulationDeviceDriver(up150.drivers.DeviceDriver):
         return ''
 
     def initialize(self):
-        self.status = up150.drivers.STATUS_INITIALIZED
+        self.status = up150_drivers.STATUS_INITIALIZED
 
     def shutdown(self):
-        self.status = up150.drivers.STATUS_UNINITIALIZED
+        self.status = up150_drivers.STATUS_UNINITIALIZED
 
     def __del__(self):
         if self.dlg is not None:
@@ -166,4 +167,4 @@ class SimulationDeviceDriver(up150.drivers.DeviceDriver):
         return
 
 
-up150.drivers.registerDriver('simulation', SimulationDeviceDriver, SimConfigurationSegment, 'Simulation')
+up150_drivers.registerDriver('simulation', SimulationDeviceDriver, SimConfigurationSegment, 'Simulation')

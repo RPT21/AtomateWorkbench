@@ -3,7 +3,9 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/up150type.py
 # Compiled at: 2004-08-13 22:51:37
-import hardware.hardwaretype, up150, up150.userinterface
+import plugins.hardware.hardware.hardwaretype, plugins.up150.up150.__init__ as up150
+import plugins.up150.up150.userinterface as up150_userinterface
+import plugins.hardware.hardware as hardware
 
 class UP150HardwareType(hardware.hardwaretype.HardwareType):
     __module__ = __name__
@@ -22,7 +24,7 @@ class UP150HardwareType(hardware.hardwaretype.HardwareType):
         return up150.UP150Hardware()
 
     def getConfigurationPage(self):
-        return up150.userinterface.ConfigurationPage()
+        return up150_userinterface.ConfigurationPage()
 
     def getDescription(self):
         return 'UP150 Controller'

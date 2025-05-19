@@ -3,9 +3,20 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/drivers/rs485driver.py
 # Compiled at: 2004-11-03 22:16:45
-import wx, time, threading, select, up150.drivers, serial, rs485, logging, hardware, hardware.hardwaremanager
-import up150.messages as messages
-ERROR_CODE_STRINGS = {'02': {'short': 'Unknown Command', 'long': 'The command transmitted is unknown'}, '03': {'short': 'Register Error', 'long': 'Specified register is unavailable for use'}, '04': {'short': 'Invalid Value', 'long': 'Parameter specified is outside the range'}, '05': {'short': 'Command Count Error', 'long': 'Invalid number of commands were specified'}, '06': {'short': 'Monitoring Error', 'long': 'Monitoring execution without monitor definition was attempted'}, '08': {'short': 'Parameter Error', 'long': 'Illegal parameter has been sent'}, '42': {'short': 'Checksum error', 'long': 'Expected value does not match the checksum'}, '43': {'short': 'Buffer Overflow', 'long': 'Received data is larger than the expected value'}, '44': {'short': 'EOT Timeout', 'long': 'End of data was not received before timeout'}}
+import wx, plugins.rs485.rs485 as rs485, logging
+import plugins.hardware.hardware as hardware, plugins.hardware.hardware.hardwaremanager
+import plugins.up150.up150.drivers as up150_drivers
+import plugins.up150.up150.messages as messages
+
+ERROR_CODE_STRINGS = {'02': {'short': 'Unknown Command', 'long': 'The command transmitted is unknown'},
+                      '03': {'short': 'Register Error', 'long': 'Specified register is unavailable for use'},
+                      '04': {'short': 'Invalid Value', 'long': 'Parameter specified is outside the range'},
+                      '05': {'short': 'Command Count Error', 'long': 'Invalid number of commands were specified'},
+                      '06': {'short': 'Monitoring Error', 'long': 'Monitoring execution without monitor definition was attempted'},
+                      '08': {'short': 'Parameter Error', 'long': 'Illegal parameter has been sent'},
+                      '42': {'short': 'Checksum error', 'long': 'Expected value does not match the checksum'},
+                      '43': {'short': 'Buffer Overflow', 'long': 'Received data is larger than the expected value'},
+                      '44': {'short': 'EOT Timeout', 'long': 'End of data was not received before timeout'}}
 
 def hextoint(hexnum):
     return eval('0x' + hexnum)
@@ -142,7 +153,6 @@ class SerialConfigurationSegment(object):
         if description is None:
             return None
         return description.getInstance()
-        return
 
     def convertAddressValue(self, address):
         try:
@@ -221,18 +231,18 @@ class SerialConfigurationSegment(object):
 
 DEFAULT_TIMEOUT = 1.0
 
-class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
+class RS485Driver(up150_drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
     __module__ = __name__
 
     def __init__(self, hwinst):
-        up150.drivers.DeviceDriver.__init__(self, hwinst)
+        up150_drivers.DeviceDriver.__init__(self, hwinst)
         rs485.RS485SerialNetworkNode.__init__(self, None)
         self.timeout = DEFAULT_TIMEOUT
         self.networkid = None
         self.network = None
         self.address = None
         self.configured = False
-        self.runningMode = up150.drivers.MODE_RESET
+        self.runningMode = up150_drivers.MODE_RESET
         return
 
     def getDescription(self):
@@ -259,13 +269,12 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         if self.buffer.find(delim) >= 0:
             return self.stripDelimiters(self.buffer)
         return None
-        return
 
     def isConfigured(self):
         return self.configured
 
     def setConfiguration(self, configuration):
-        up150.drivers.DeviceDriver.setConfiguration(self, configuration)
+        up150_drivers.DeviceDriver.setConfiguration(self, configuration)
         logger.debug('Setting configuration for driver')
         try:
             self.address = configuration.get('driver', 'address')
@@ -311,7 +320,7 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             self.network.removeNode(self)
             raise
 
-        self.status = up150.drivers.STATUS_INITIALIZED
+        self.status = up150_drivers.STATUS_INITIALIZED
 
     def checkNetwork(self):
         if self.network == None:
@@ -320,7 +329,7 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
 
     def shutdown(self):
         logger.debug('Shutdown')
-        if not self.status == up150.drivers.STATUS_INITIALIZED:
+        if not self.status == up150_drivers.STATUS_INITIALIZED:
             logger.debug('returning not intialized')
             return
         if self.runningMode:
@@ -347,7 +356,7 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
         self.checkNetwork()
         if not self.runningMode:
             self.activate()
-        return self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0114 01 ' + zfill(inttohex(setpoint), 4) + '\x03\r', timeout))
+        return self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0114 01 ' + inttohex(setpoint).zfill(4) + '\x03\r', timeout))
 
     def checkError(self, data):
         if data.count('OK') > 0:
@@ -361,7 +370,6 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
             raise Exception("Device Error['%s']: '%s'-'%s'" % (data, ERROR_CODE_STRINGS[errorcode]['short'], ERROR_CODE_STRINGS[errorcode]['long']))
         else:
             raise Exception('Device Error: Unknown Error')
-        return data
 
     def translateData(self, data):
         """checks data, only valid for data acquisition commands"""
@@ -381,22 +389,22 @@ class RS485Driver(up150.drivers.DeviceDriver, rs485.RS485SerialNetworkNode):
     def activate(self):
         self.checkNetwork()
         self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0121 01 0002\x03\r'))
-        self.runStatus = up150.drivers.MODE_LOCAL
+        self.runStatus = up150_drivers.MODE_LOCAL
 
     def deactivate(self):
         self.checkNetwork()
         self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0121 01 0000\x03\r'))
         if self.lockout:
             self.unlockPanel()
-        self.runStatus = up150.drivers.MODE_RESET
+        self.runStatus = up150_drivers.MODE_RESET
 
     def setMinimumTemperature(self, mt):
         self.checkNetwork()
-        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0306 01 ' + zfill(inttohex(mt), 4) + '\x03\r'))
+        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0306 01 ' + inttohex(mt).zfill(4) + '\x03\r'))
 
     def setMaximumTemperature(self, mt):
         self.checkNetwork()
-        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0305 01 ' + zfill(inttohex(mt), 4) + '\x03\r'))
+        self.checkError(self.sendAndWait('\x02' + self.address + '010WWRD0305 01 ' + inttohex(mt).zfill(4) + '\x03\r'))
 
 
-up150.drivers.registerDriver('rs485', RS485Driver, SerialConfigurationSegment, 'RS485')
+up150_drivers.registerDriver('rs485', RS485Driver, SerialConfigurationSegment, 'RS485')

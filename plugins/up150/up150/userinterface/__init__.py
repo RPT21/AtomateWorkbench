@@ -3,7 +3,26 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/up150/src/up150/userinterface/__init__.py
 # Compiled at: 2004-11-23 22:00:44
-import validator, wx, ui, time, string, logging, core.utils, poi.views, poi.dialogs, hardware.userinterface.configurator, hardware.hardwaremanager, up150.drivers, up150.userinterface.initdialog, up150.messages as messages, threading, poi.operation, poi.dialogs.progress, wx.lib.colourselect as colourselect
+import plugins.validator.validator as validator, wx, plugins.ui.ui as ui, time, logging
+import plugins.core.core.utils, plugins.poi.poi.dialogs
+import plugins.hardware.hardware.userinterface.configurator, plugins.hardware.hardware.hardwaremanager
+import plugins.up150.up150.drivers as up150_drivers, plugins.up150.up150.userinterface.initdialog
+import plugins.up150.up150.messages as messages, threading,  plugins.poi.poi.operation
+import plugins.poi.poi.dialogs.progress, wx.lib.colourselect as colourselect
+import plugins.hardware.hardware as hardware
+import plugins.poi.poi as poi
+import plugins.core.core as core
+
+def getUnitChoices():
+    global UNITS  # no està definit
+    return UNITS
+
+def getRangeChoices(unitKey):
+    global RANGES  # no està definit
+    values = list(RANGES[unitKey].values())
+    values.sort()
+    return values
+
 logger = logging.getLogger('up150.ui')
 
 def color2str(color):
@@ -11,7 +30,7 @@ def color2str(color):
 
 
 def parseColor(colorStr):
-    return wx.Color(*list(map(int, colorStr.split(','))))
+    return wx.Colour(*list(map(int, colorStr.split(','))))
 
 
 class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
@@ -30,7 +49,7 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
         def modapp(i):
             return str(i + 1)
 
-        self.channelChoice = wx.ComboBox(self.control, -1, choices=list(map(modapp, list(range(self.instance.getChannelCount())))), style=wx.CB_READONL)
+        self.channelChoice = wx.ComboBox(self.control, -1, choices=list(map(modapp, list(range(self.instance.getChannelCount())))), style=wx.CB_READONLY)
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(self.channelChoice, 0, wx.ALIGN_CENTRE_VERTICAL)
         label = wx.StaticText(self.control, -1, 'Units:')
@@ -45,10 +64,10 @@ class DeviceHardwareEditor(hardware.userinterface.DeviceHardwareEditor):
         self.pidProportional = wx.TextCtrl(self.control, -1, '')
         self.pidIntegral = wx.TextCtrl(self.control, -1, '')
         self.pidDerivated = wx.TextCtrl(self.control, -1, '')
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        h2sizer.Add(pidProportional, 1, wx.LEFT, 5)
-        h2sizer.Add(pidIntegral, 1, wx.LEFT, 5)
-        h2sizer.Add(pidDerivative, 1, wx.LEFT, 5)
+        h2sizer = wx.BoxSizer(wx.HORIZONTAL)
+        h2sizer.Add(self.pidProportional, 1, wx.LEFT, 5)
+        h2sizer.Add(self.pidIntegral, 1, wx.LEFT, 5)
+        h2sizer.Add(self.pidDerivated, 1, wx.LEFT, 5)
         fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
         fsizer.Add(h2sizer, 1, wx.ALIGN_CENTRE_VERTICAL)
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -207,7 +226,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
     def OnDriverChoice(self, event):
         self.setDirty(True)
         choice = event.GetString()
-        page = up150.drivers.getDriverPageByName(choice)
+        page = up150_drivers.getDriverPageByName(choice)
         self.updateDriverSegment(page)
 
     def markDirty(self, event=None):
@@ -241,13 +260,12 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             self.control.Layout()
         self.control.Refresh()
         return page
-        return
 
     def getDriverOptions(self):
-        keys = up150.drivers.getRegisteredDeviceKeys()
+        keys = up150_drivers.getRegisteredDeviceKeys()
         names = []
         for key in keys:
-            names.append(up150.drivers.getDriverName(key))
+            names.append(up150_drivers.getDriverName(key))
 
         return names
 
@@ -294,11 +312,11 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
 
     def setDriverConfig(self, config):
         driverType = config.get('driver', 'type')
-        driverName = up150.drivers.getDriverName(driverType)
+        driverName = up150_drivers.getDriverName(driverType)
         options = self.getDriverOptions()
         idx = options.index(driverName)
         self.driverCombo.SetSelection(idx)
-        page = up150.drivers.getDriverConfigurationPage(driverType)
+        page = up150_drivers.getDriverConfigurationPage(driverType)
         self.updateDriverSegment(page)
         page.setData(config)
 
@@ -332,7 +350,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             inst.setPIDSettings(None)
         if not config.has_section('driver'):
             config.add_section('driver')
-        driverType = up150.drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
+        driverType = up150_drivers.getDriverTypeByName(self.driverCombo.GetStringSelection())
         if driverType is not None:
             config.set('driver', 'type', driverType)
         self.driverSegment.getData(config)
@@ -387,7 +405,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
             dlg.run(runner, fork=False)
         except Exception as invocation:
             logger.exception(invocation)
-            poi.dialogs.ExceptionDialog(f, msg.getWrapped()[1], 'Error Initializing Hardware').ShowModal()
+            poi.dialogs.ExceptionDialog(f, invocation.getWrapped()[1], 'Error Initializing Hardware').ShowModal()
 
     def shutdownHardware(self):
         """Attempt to shutdown hardware"""
