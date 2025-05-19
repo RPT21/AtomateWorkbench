@@ -4,15 +4,17 @@
 # Embedded file name: ../plugins/safetyinterlock/src/safetyinterlock/hw.py
 # Compiled at: 2004-10-19 02:46:39
 import plugins.hardware.hardware.hardwaremanager
+import plugins.hardware.hardware as hardware
 
-class SafetyInterlockHardware(plugins.hardware.hardware.hardwaremanager.Hardware):
+
+class SafetyInterlockHardware(hardware.hardwaremanager.Hardware):
     __module__ = __name__
 
     def __init__(self):
-        plugins.hardware.hardware.hardwaremanager.Hardware.__init__(self)
+        hardware.hardwaremanager.Hardware.__init__(self)
 
     def dispose(self):
-        plugins.hardware.hardware.hardwaremanager.Hardware.dispose(self)
+        hardware.hardwaremanager.Hardware.dispose(self)
 
     def initialize(self):
         pass

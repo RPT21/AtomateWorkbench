@@ -3,7 +3,8 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/safetyinterlock/src/safetyinterlock/images.py
 # Compiled at: 2004-10-19 00:46:18
-import kernel.pluginmanager, os, wx, logging
+import os, wx, logging
+
 logger = logging.getLogger('safetyinterlock')
 inited = False
 imagesTable = {}
@@ -13,7 +14,8 @@ ICONS_DIR_PREFIX = 'icons'
 TOOLS_DIR_PREFIX = os.path.join(ICONS_DIR_PREFIX, 'tools')
 DISABLED_DIR_PREFIX = os.path.join(ICONS_DIR_PREFIX, 'disabled')
 ENABLED_DIR_PREFIX = os.path.join(ICONS_DIR_PREFIX, 'enabled')
-imagesFilenames = {STATUS_VIEW_FAILURE_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'safety_interlock_failure.gif')), STATUS_VIEW_NORMAL_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'safety_interlock_normal.gif'))}
+imagesFilenames = {STATUS_VIEW_FAILURE_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'safety_interlock_failure.gif')),
+                   STATUS_VIEW_NORMAL_ICON: (os.path.join(TOOLS_DIR_PREFIX, 'safety_interlock_normal.gif'))}
 
 def init(contextBundle):
     global imagesFilenames

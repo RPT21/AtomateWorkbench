@@ -3,11 +3,18 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/safetyinterlock/src/safetyinterlock/__init__.py
 # Compiled at: 2004-11-19 02:36:57
-import wx, os, plugins.safetyinterlock.safetyinterlock.hw, plugins.executionengine.executionengine, plugins.ui.ui, plugins.ui.ui.images as uiimages
-import lib.kernel.plugin, plugins.poi.poi.actions, plugins.safetyinterlock.safetyinterlock.actions, plugins.poi.poi.actions
-import plugins.poi.poi.views, plugins.poi.poi.views.viewers, plugins.poi.poi.views.contentprovider
-import plugins.hardware.hardware.hardwaremanager, plugins.safetyinterlock.safetyinterlock.images as images
+import wx, os, plugins.safetyinterlock.safetyinterlock.hw
+import plugins.ui.ui.images as uiimages
+import lib.kernel.plugin, lib.kernel as kernel, plugins.safetyinterlock.safetyinterlock.actions
+import plugins.poi.poi.actions
+import plugins.poi.poi.views.viewers, plugins.poi.poi.views.contentprovider
+import plugins.hardware.hardware.hardwaremanager
+import plugins.safetyinterlock.safetyinterlock.images as images
 import plugins.safetyinterlock.safetyinterlock.messages as messages, logging
+import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+import plugins.executionengine.executionengine as executionengine
+
 logger = logging.getLogger('safetyinterlock')
 
 def getDefault():
@@ -15,18 +22,18 @@ def getDefault():
     return instance
 
 
-class SafetyInterlockPlugin(lib.kernel.plugin.Plugin):
+class SafetyInterlockPlugin(kernel.plugin.Plugin):
     __module__ = __name__
 
     def __init__(self):
         global instance
-        lib.kernel.plugin.Plugin.__init__(self)
+        kernel.plugin.Plugin.__init__(self)
         self.controller = None
         self.provider = None
         self.books = []
         self.participants = []
         self.status = True
-        plugins.ui.ui.getDefault().setSplashText('Loading Safety Interlock plugin ...')
+        ui.getDefault().setSplashText('Loading Safety Interlock plugin ...')
         instance = self
         self.ready = False
         return
@@ -35,9 +42,9 @@ class SafetyInterlockPlugin(lib.kernel.plugin.Plugin):
         self.contextBundle = contextBundle
         messages.init(contextBundle)
         images.init(contextBundle)
-        plugins.ui.ui.getDefault().addInitListener(self)
-        plugins.ui.ui.getDefault().addCloseListener(self)
-        plugins.executionengine.executionengine.getDefault().addEnablementStateParticipant(self)
+        ui.getDefault().addInitListener(self)
+        ui.getDefault().addCloseListener(self)
+        executionengine.getDefault().addEnablementStateParticipant(self)
         self.createStatusDialog()
 
     def hardwareManagerUpdated(self):
@@ -96,15 +103,15 @@ class SafetyInterlockPlugin(lib.kernel.plugin.Plugin):
         return self.status
 
     def handlePartInit(self, part):
-        plugins.ui.ui.getDefault().removeInitListener(self)
+        ui.getDefault().removeInitListener(self)
         action = ShowSafetyLockStatusAction(self)
         self.action = action
-        mng = plugins.ui.ui.getDefault().getMenuManager().findByPath('atm.views')
-        mng.addItem(plugins.poi.poi.actions.ActionContributionItem(action))
+        mng = ui.getDefault().getMenuManager().findByPath('atm.views')
+        mng.addItem(poi.actions.ActionContributionItem(action))
         mng.update()
-        tbm = plugins.ui.ui.getDefault().getToolBarManager()
-        tbm.addItem(plugins.poi.poi.actions.Separator())
-        tbm.addItem(plugins.poi.poi.actions.ActionContributionItem(action))
+        tbm = ui.getDefault().getToolBarManager()
+        tbm.addItem(poi.actions.Separator())
+        tbm.addItem(poi.actions.ActionContributionItem(action))
         tbm.update(True)
         self.ready = True
         self.setStatus(self.status)
@@ -122,7 +129,7 @@ class SafetyInterlockPlugin(lib.kernel.plugin.Plugin):
             self.action.setImage(images.getImage(images.STATUS_VIEW_FAILURE_ICON))
         else:
             self.action.setImage(images.getImage(images.STATUS_VIEW_NORMAL_ICON))
-        tbm = plugins.ui.ui.getDefault().getToolBarManager()
+        tbm = ui.getDefault().getToolBarManager()
         tbm.update(True)
 
     def getStatus(self):
@@ -148,11 +155,11 @@ class InterlockParticipant(object):
         return '[no name]'
 
 
-class ParticipantLabelProvider(plugins.poi.poi.views.contentprovider.LabelProvider):
+class ParticipantLabelProvider(poi.views.contentprovider.LabelProvider):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.views.contentprovider.LabelProvider.__init__(self)
+        poi.views.contentprovider.LabelProvider.__init__(self)
 
     def getImage(self, element):
         if not element.isValid():
@@ -167,11 +174,11 @@ class ParticipantLabelProvider(plugins.poi.poi.views.contentprovider.LabelProvid
         return ''
 
 
-class ParticipantContentProvider(plugins.poi.poi.views.contentprovider.ContentProvider):
+class ParticipantContentProvider(poi.views.contentprovider.ContentProvider):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.views.contentprovider.ContentProvider.__init__(self)
+        poi.views.contentprovider.ContentProvider.__init__(self)
         self.tinput = None
         return
 
@@ -186,11 +193,11 @@ class ParticipantContentProvider(plugins.poi.poi.views.contentprovider.ContentPr
         return self.tinput.getParticipants()
 
 
-class ParticipantErrorsContentProvider(plugins.poi.poi.views.contentprovider.ContentProvider):
+class ParticipantErrorsContentProvider(poi.views.contentprovider.ContentProvider):
     __module__ = __name__
 
     def __init__(self):
-        plugins.poi.poi.views.contentprovider.ContentProvider.__init__(self)
+        poi.views.contentprovider.ContentProvider.__init__(self)
         self.tinput = None
         return
 
@@ -214,7 +221,7 @@ class StatusDialog(wx.Dialog):
         wx.Dialog.__init__(self, None, -1, 'Safety Interlock Status', size=wx.Size(400, 400), style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
         self.interlock = getDefault()
         sizer = wx.BoxSizer(wx.VERTICAL)
-        self.participantList = plugins.poi.poi.views.viewers.TableViewer(self)
+        self.participantList = poi.views.viewers.TableViewer(self)
         self.participantList.setContentProvider(ParticipantContentProvider())
         self.participantList.setLabelProvider(ParticipantLabelProvider())
         self.participantList.setInput(getDefault())
@@ -240,7 +247,7 @@ class StatusDialog(wx.Dialog):
         self.normalFont = wx.Font(20, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
         sizer.Add(self.mainStatusPanel, 0, wx.EXPAND | wx.ALL, 3)
         sizer.Add(control, 1, wx.EXPAND | wx.ALL, 5)
-        self.messagesList = plugins.poi.poi.views.viewers.TableViewer(self)
+        self.messagesList = poi.views.viewers.TableViewer(self)
         self.messagesList.setContentProvider(ParticipantErrorsContentProvider())
         control = self.messagesList.getControl()
         control.InsertColumn(0, 'Detailed Messages')
@@ -301,11 +308,11 @@ class StatusDialog(wx.Dialog):
         wx.CallAfter(doFire)
 
 
-class ShowSafetyLockStatusAction(plugins.poi.poi.actions.Action):
+class ShowSafetyLockStatusAction(poi.actions.Action):
     __module__ = __name__
 
     def __init__(self, owner):
-        plugins.poi.poi.actions.Action.__init__(self, 'Safety Lock Status')
+        poi.actions.Action.__init__(self, 'Safety Lock Status')
         self.owner = owner
         self.setImage(images.getImage(images.STATUS_VIEW_NORMAL_ICON))
 
