@@ -6,7 +6,7 @@
 import threading, plugins.core.core.utils
 import plugins.validator.validator.utils, logging, plugins.ui.ui.context
 import plugins.validator.validator.constants as validator_constants
-import plugins.validator.validator.__init__ as validator
+import plugins.validator.validator as validator  # Sense __init__ troba la instancia, interessant...
 import plugins.ui.ui as ui
 
 logger = logging.getLogger('validator')
