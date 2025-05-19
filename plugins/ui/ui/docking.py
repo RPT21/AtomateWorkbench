@@ -31,14 +31,12 @@ class DockingWindow(wx.Window):
         if self.parent is not None:
             return self.parent.getRootWindow()
         return None
-        return
 
     def getChildWindowCount(self):
         return 0
 
     def getChildWindow(self, index):
         return None
-        return
 
     def getWindowParent(self):
         return self.parent
@@ -237,7 +235,6 @@ if __name__ == '__main__':
             f.SetAutoLayout(True)
             f.Show()
             return True
-            return
 
 
     def OnSplit(self, event):

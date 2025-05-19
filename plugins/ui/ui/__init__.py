@@ -15,7 +15,6 @@ from plugins.ui.ui.actions import ExitAction
 import plugins.poi.poi.actions.statusbarmanager as statusbarmanager
 import plugins.poi.poi.actions.toolbarmanager as toolbarmanager
 import plugins.poi.poi.actions.menumanager as menumanager
-
 import configparser
 
 MB_FILE = 'atm.file'
@@ -33,9 +32,9 @@ def dumpThreads():
     global logger
     logger.debug('Dumping threads')
     logger.debug('----------------------------')
-    logger.debug('TOTAL THREADS: %d' % threading.activeCount())
+    logger.debug('TOTAL THREADS: %d' % threading.active_count())
     for thread in threading.enumerate():
-        logger.debug('\tTHREAD: %s - %s' % (str(thread), thread.getName()))
+        logger.debug('\tTHREAD: %s - %s' % (str(thread), thread.name))
 
 
 class UIApp(wx.App):
@@ -119,7 +118,7 @@ class UIPlugin(lib.kernel.plugin.Plugin):
 
     def createView(self, sectorID, viewID):
         global VIEW_CHANGE_TYPE_ADDED
-        logger.debug('CREATE VIEW: %s %s IN THREAD %s' % (sectorID, viewID, threading.currentThread()))
+        logger.debug('CREATE VIEW: %s %s IN THREAD %s' % (sectorID, viewID, threading.current_thread()))
         if not viewID in self.viewProviders:
             raise Exception("No view provider registered for '%s'" % viewID)
         self.getMainFrame().createView(sectorID, self.viewProviders[viewID], viewID)

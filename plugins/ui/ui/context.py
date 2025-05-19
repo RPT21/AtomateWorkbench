@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/ui/src/ui/context.py
 # Compiled at: 2004-09-22 08:18:49
-import plugins.ui.ui as ui, wx, threading, logging
+import plugins.ui.ui as ui, wx, logging
 logger = logging.getLogger('ui.context')
 contextChangeListeners = []
 properties = {'state': None}
@@ -29,7 +29,7 @@ class EndTaskEvent(wx.PyEvent):
 
     def __init__(self):
         wx.PyEvent.__init__(self)
-        self.SetEventType(EVT_TASK_END_ID)
+        self.SetEventType(EVT_TASK_END_ID)  # No he trobat què és
 
 
 def OnContextChange(event):

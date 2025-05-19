@@ -135,14 +135,12 @@ def getUndoableAction():
     if pointer >= 0:
         return undostack[pointer]
     return None
-    return
 
 
 def getRedoableAction():
     if pointer < len(undostack):
         return undostack[pointer + 1]
     return None
-    return
 
 
 def getUndoableActionTuple():
@@ -150,13 +148,11 @@ def getUndoableActionTuple():
     Returns a tuple with the previous item if available or None if not,
     and the current item
     """
-    tup = [
-     None, None]
+    tup = [None, None]
     if pointer > 0:
         tup[0] = undostack[pointer - 1]
     tup[1] = undostack[pointer]
     return tup
-    return
 
 
 class UndoAction(actions.Action):
