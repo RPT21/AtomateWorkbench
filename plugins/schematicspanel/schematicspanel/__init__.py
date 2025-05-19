@@ -3,8 +3,13 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/schematicspanel/src/schematicspanel/__init__.py
 # Compiled at: 2004-08-10 09:09:48
-import ui, poi.views, kernel.plugin, kernel.pluginmanager as PluginManager, logging, schematicspanel.images as images, schematicspanel.messages as messages, schematicspanel.editor
+import plugins.poi.poi.views, lib.kernel.plugin, lib.kernel as kernel, logging
+import plugins.schematicspanel.schematicspanel.images as images
+import plugins.schematicspanel.schematicspanel.messages as messages
+import plugins.schematicspanel.schematicspanel.editor as schematicspanel_editor
 import plugins.ui.ui as ui
+import plugins.poi.poi as poi
+
 VIEW_ID = 'schematicspanel.editor'
 logger = logging.getLogger('schematicspanel')
 
@@ -37,7 +42,7 @@ class SchematicsPanelView(poi.views.SectorView):
     __module__ = __name__
 
     def createControl(self, parent):
-        self.viewer = schematicspanel.editor.EditorViewer()
+        self.viewer = schematicspanel_editor.EditorViewer()
         self.viewer.createControl(parent)
         return self.viewer.getControl()
 
