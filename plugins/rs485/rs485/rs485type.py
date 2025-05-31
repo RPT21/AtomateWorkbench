@@ -6,7 +6,7 @@
 import plugins.hardware.hardware.hardwaretype
 import plugins.rs485.rs485.userinterface as rs485_userinterface
 import plugins.hardware.hardware as hardware
-import plugins.rs485.rs485.__init__ as rs485
+import plugins.rs485.rs485 as rs485
 
 class RS485HardwareType(hardware.hardwaretype.HardwareType):
     __module__ = __name__

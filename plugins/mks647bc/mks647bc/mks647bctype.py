@@ -6,7 +6,7 @@
 import plugins.hardware.hardware.hardwaretype
 import plugins.hardware.hardware as hardware
 import plugins.mks647bc.mks647bc.userinterface as mks647bc_userinterface
-import plugins.mks647bc.mks647bc.__init__ as mks647bc
+import plugins.mks647bc.mks647bc as mks647bc
 
 class MKS647HardwareType(hardware.hardwaretype.HardwareType):
     __module__ = __name__

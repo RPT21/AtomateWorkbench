@@ -4,7 +4,7 @@
 # Embedded file name: /home/maldoror/apps/eclipse/workspace/com.atomate.workbench/plugins/validator/src/validator/userinterface/errorviewer.py
 # Compiled at: 2004-09-09 22:57:57
 import wx, plugins.ui.ui as ui, plugins.poi.poi as poi, plugins.poi.poi.actions
-import plugins.validator.validator.__init__ as validator
+import plugins.validator.validator as validator
 import plugins.validator.validator.messages as messages, wx.lib.mixins.listctrl as listmix
 
 
