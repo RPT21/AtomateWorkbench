@@ -4,13 +4,10 @@
 # Embedded file name: ../plugins/ui/src/ui/preferences.py
 # Compiled at: 2004-08-04 10:40:36
 
+from functools import cmp_to_key
 
-# def pageCmd(a, b): #  Crec que ara ja no es necessita utilitzar dos parametres :D
-    # return a.getOrder() - b.getOrder()
-
-def pageCmd(a):
-    return a.getOrder()
-
+def pageCmd(a, b):
+    return a.getOrder() - b.getOrder()
 
 class InternalManager(object):
     __module__ = __name__
@@ -22,12 +19,12 @@ class InternalManager(object):
     def addPage(self, page):
         if not page in self.pages:
             self.pages.append(page)
-            self.pages.sort(key=pageCmd)
+            self.pages.sort(key=cmp_to_key(pageCmd))
 
     def removePage(self, page):
         if page in self.pages:
             self.pages.remove(page)
-            self.pages.sort(key=pageCmd)
+            self.pages.sort(key=cmp_to_key(pageCmd))
 
     def getPages(self):
         return self.pages

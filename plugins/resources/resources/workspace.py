@@ -10,6 +10,8 @@ import plugins.resources.resources.utils as utils_lib
 import plugins.resources.resources.runlog as runlog_lib
 import plugins.resources.resources as resources
 
+from functools import cmp_to_key
+
 logger = logging.getLogger('resources')
 WORKSPACE_DIRNAME = 'workspace'
 suppress = False
@@ -153,7 +155,7 @@ def getRecipeVersions(project):
         version.load()
         results.append(version)
 
-    results.sort(cmpOnNumber)
+    results.sort(key=cmp_to_key(cmpOnNumber))
     return results
 
 
@@ -176,7 +178,7 @@ def getRunLogs(version):
         runlog.load()
         results.append(runlog)
 
-    results.sort(cmpOnModDates)
+    results.sort(key=cmp_to_key(cmpOnModDates))
     return results
 
 

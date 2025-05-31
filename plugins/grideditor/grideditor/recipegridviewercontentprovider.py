@@ -10,6 +10,7 @@ import plugins.grideditor.grideditor.durationcolumn as grideditor_durationcolumn
 import plugins.grideditor.grideditor.recipemodel as grideditor_recipemodel
 import plugins.grideditor.grideditor.tablecolumn as grideditor_tablecolumn
 import plugins.grideditor.grideditor as grideditor
+from functools import cmp_to_key
 
 logger = logging.getLogger('grideditor.contentprovider')
 
@@ -242,7 +243,7 @@ class RecipeGridViewerContentProvider(grideditor_recipemodel.RecipeModelEventLis
                 return 1
             return 0
 
-        ordering.sort(sortit)
+        ordering.sort(key=cmp_to_key(sortit))
         index = 0
         for item in ordering:
             if item[1]:
