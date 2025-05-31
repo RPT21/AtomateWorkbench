@@ -24,7 +24,6 @@ def getLocalSite():
     if not os.path.exists(dirp):
         os.makedirs(dirp)
     return dirp
-    return
 
 
 def getMetadataDir():
@@ -52,7 +51,7 @@ def setNiceMask():
 
 
 def getGroupID():
-    return pwd.getpwnam(os.environ['USER'])[3]
+    return pwdpy.getpwnam(os.environ['USER'])[3]
 
 
 def resetUserGroupID():

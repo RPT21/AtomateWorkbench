@@ -10,7 +10,6 @@ def getPlugin(name):
     if not name in _plugins:
         return None
     return _plugins[name]
-    return
 
 
 def addPlugin(name, plugin):
