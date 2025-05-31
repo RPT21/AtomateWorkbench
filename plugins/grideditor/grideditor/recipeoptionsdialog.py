@@ -8,7 +8,7 @@ import plugins.grideditor.grideditor.messages as messages
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 import plugins.ui.ui as ui
 import plugins.poi.poi as poi
-import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor as grideditor
 import plugins.grideditor.grideditor.adddevicedialog as grideditor_adddevicedialog
 
 DIALOG_PREFS_FILE = 'recipeoptions.prefs'

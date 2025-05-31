@@ -6,7 +6,7 @@
 import plugins.hardware.hardware.hardwaretype
 import plugins.mks146.mks146.userinterface as mks146_userinterface
 import plugins.hardware.hardware as hardware
-import plugins.mks146.mks146.__init__ as mks146
+import plugins.mks146.mks146 as mks146
 
 class MKS146HardwareType(hardware.hardwaretype.HardwareType):
     __module__ = __name__

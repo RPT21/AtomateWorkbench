@@ -6,7 +6,7 @@
 import plugins.mkspdr2000.mkspdr2000.userinterface
 import plugins.hardware.hardware as hardware
 import plugins.hardware.hardware.hardwaretype
-import plugins.mkspdr2000.mkspdr2000.__init__ as mkspdr2000
+import plugins.mkspdr2000.mkspdr2000 as mkspdr2000
 
 
 class mkspdr2000HardwareType(hardware.hardwaretype.HardwareType):

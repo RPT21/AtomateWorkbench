@@ -6,7 +6,7 @@
 import wx.lib.masked.timectrl as timectrl
 from wx import *
 import wx
-import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor as grideditor
 import plugins.grideditor.grideditor.tablecolumn as grideditor_tablecolumn
 
 class DurationChangeHandler(wx.EvtHandler):

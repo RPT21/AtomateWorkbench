@@ -18,7 +18,7 @@ from plugins.grideditor.grideditor.recipemodel import RecipeModelEventListener
 from plugins.poi.poi.views.viewers import SelectionProvider
 import plugins.poi.poi as poi
 import plugins.ui.ui as ui
-import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor as grideditor
 
 DEBUG = False
 logger = logging.getLogger('grideditor')

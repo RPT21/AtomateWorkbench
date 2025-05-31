@@ -10,7 +10,7 @@ import plugins.hardware.hardware.hardwaremanager
 import plugins.ui.ui as ui
 import plugins.poi.poi as poi
 import plugins.core.core as core
-import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor as grideditor
 
 
 logger = logging.getLogger('grideditor')

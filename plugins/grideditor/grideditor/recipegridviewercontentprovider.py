@@ -9,7 +9,7 @@ import wx, logging
 import plugins.grideditor.grideditor.durationcolumn as grideditor_durationcolumn
 import plugins.grideditor.grideditor.recipemodel as grideditor_recipemodel
 import plugins.grideditor.grideditor.tablecolumn as grideditor_tablecolumn
-import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor as grideditor
 
 logger = logging.getLogger('grideditor.contentprovider')
 

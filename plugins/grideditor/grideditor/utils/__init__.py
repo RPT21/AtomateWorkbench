@@ -9,7 +9,7 @@ import plugins.resourcesui.resourcesui as resourcesui
 import plugins.executionengine.executionengine as executionengine
 import plugins.resourcesui.resourcesui.utils
 import plugins.grideditor.grideditor.recipeoptionsdialog as grideditor_recipeoptionsdialog
-import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor as grideditor
 
 saving = False
 logger = logging.getLogger('grideditor')

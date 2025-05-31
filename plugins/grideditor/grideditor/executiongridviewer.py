@@ -13,7 +13,7 @@ import plugins.ui.ui as ui
 import plugins.poi.poi.views.viewers
 import plugins.executionengine.executionengine as executionengine
 import plugins.executionengine.executionengine.engine
-import plugins.grideditor.grideditor.__init__ as grideditor
+import plugins.grideditor.grideditor as grideditor
 
 DEBUG = False
 logger = logging.getLogger('grideditor')
