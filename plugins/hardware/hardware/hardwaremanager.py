@@ -257,6 +257,7 @@ def shutdown():
 
 
 def delete(hardwareDescription):
+    global hardwareList
     if not hardwareDescription in hardwareList:
         return
     inst = hardwareDescription.getInstance()
@@ -281,15 +282,18 @@ def delete(hardwareDescription):
 
 
 def registerHardwareType(hardwareType):
+    global hardwareTypes
     hardwareTypes.append(hardwareType)
     fireHardwareManagerUpdated()
 
 
 def getHardwareTypes():
+    global hardwareTypes
     return hardwareTypes
 
 
 def getHardware():
+    global hardwareList
     return hardwareList
 
 
@@ -321,6 +325,7 @@ def create(name, hardwareType):
     config.add_section('main')
     config.set('main', 'name', name)
     config.set('main', 'hardwareType', hardwareType.getType())
+    config.set('main', 'startupinit', 'true')  # Afegit per mi
     filename = name
     fullpath = os.path.join(path, filename + HARDWARE_CONFIG_FILE_SUFFIX)
     f = open(fullpath, 'w')
@@ -375,7 +380,7 @@ def getHardwareByName(name):
 
 
 def createDevicesForConfiguredHardware():
-    """Runs thru the list of configured hardware and creates devices
+    """Runs through the list of configured hardware and creates devices
         for the recipe"""
     devices = []
     for hw in getHardware():

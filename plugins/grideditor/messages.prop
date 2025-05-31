@@ -22,8 +22,3 @@ dialog.errorviewer.column.description=Description
 dialog.preferences.tab.acquires.previous.label=Tab Acquires Value From Cell Above
 dialog.preferences.tab.acquires.previous.help=Pressing tab will replace the value of the current cell with the value from the cell above it on the grid editor
 dialog.preferences.grid.selection.color=Grid Selection Color:
-
-dialog.errorviewer.title=Error Viewer
-dialog.errorviewer.column.step=Steps
-dialog.errorviewer.column.description=Description
-

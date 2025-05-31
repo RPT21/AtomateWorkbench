@@ -810,7 +810,7 @@ class MonitorWindowItem(object):
 
     def OnPaint(self, event):
         event.Skip()
-        (width, height) = self.ctrl.GetClientSizeTuple()
+        (width, height) = self.ctrl.GetClientSize()
         dc = wx.PaintDC(self.ctrl)
         dc.BeginDrawing()
         dc.SetPen(wx.Pen(goosemonitor.MONITOR_FOREGROUND_COLOR))
