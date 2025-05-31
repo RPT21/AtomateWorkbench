@@ -5,7 +5,7 @@
 # Compiled at: 2004-12-17 20:47:14
 import lib.kernel, os, configparser
 import plugins.resources.resources.version as version_lib
-import plugins.resources.resources.__init__ as resources
+import plugins.resources.resources as resources
 
 
 class ProjectDescription(object):

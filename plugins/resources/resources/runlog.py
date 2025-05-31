@@ -4,7 +4,7 @@
 # Embedded file name: ../plugins/resources/src/resources/runlog.py
 # Compiled at: 2004-11-02 01:45:16
 import wx, lib.kernel, glob, os, logging
-import plugins.resources.resources.__init__ as  resources
+import plugins.resources.resources as resources
 
 logger = logging.getLogger('runlog')
 RUNLOG_SUFFIX = '.runlog'

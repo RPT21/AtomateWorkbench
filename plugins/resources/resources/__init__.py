@@ -7,9 +7,7 @@ PLUGIN_ID = 'resources'
 import stat, os, configparser, plugins.core.core, plugins.core.core.preferencesstore
 import lib.kernel, lib.kernel.plugin
 import logging
-logger = logging.getLogger('resouces_init')
-import plugins.resources.resources.workspace as workspace
-import plugins.resources.resources.utils as utils
+logger = logging.getLogger('resources')
 
 def getDefault():
     global default
@@ -67,6 +65,11 @@ class Resource(object):
 
     def isShared(self):
         return self.location.find(getDefault().getWorkspace().getSharedLocation()) >= 0
+
+
+# Per evitar un import circular ho posem aqui
+import plugins.resources.resources.workspace as workspace
+import plugins.resources.resources.utils as utils
 
 
 class ResourcesPlugin(lib.kernel.plugin.Plugin):

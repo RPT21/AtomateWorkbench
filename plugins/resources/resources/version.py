@@ -4,7 +4,7 @@
 # Embedded file name: ../plugins/resources/src/resources/version.py
 # Compiled at: 2004-11-02 23:11:18
 import lib.kernel, os, plugins.core.core.recipe, plugins.core.core.utils
-import plugins.resources.resources.__init__ as resources
+import plugins.resources.resources as resources
 import plugins.resources.resources.workspace as workspace
 
 RECIPE_METADATA_FILENAME = '.recipe'
