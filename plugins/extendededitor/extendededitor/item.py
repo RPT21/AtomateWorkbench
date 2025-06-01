@@ -26,7 +26,7 @@ class RoundedGradedHeader(object):
 
     def createCachedGradient(self):
         size = self.control.GetSize()
-        self.cachedGradient = wx.EmptyBitmap(size[0], size[1])
+        self.cachedGradient = wx.Bitmap(size[0], size[1])
         dc = wx.MemoryDC()
         dc.SelectObject(self.cachedGradient)
         dc.SetPen(wx.WHITE_PEN)
@@ -102,7 +102,7 @@ class RoundedGradedHeader(object):
             height += self.image.GetHeight()
         if self.text is not None:
             dc = wx.MemoryDC()
-            bmp = wx.EmptyBitmap(10, 10)
+            bmp = wx.Bitmap(10, 10)
             dc.SelectObject(bmp)
             ext = dc.GetFullTextExtent(self.text)
             width += ext[0]

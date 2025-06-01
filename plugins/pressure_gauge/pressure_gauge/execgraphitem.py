@@ -220,7 +220,7 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
         if w == 0 or h == 0:
             (w, h) = (
              1, 1)
-        self.graphBuffer = wx.EmptyBitmap(w, h)
+        self.graphBuffer = wx.Bitmap(w, h)
         self.drawPoints()
 
     def drawBorder(self, dc):
@@ -311,18 +311,15 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
         return out
 
     def Draw(self, dc):
-        dc.BeginDrawing()
         dc.Clear()
         if False:
             dc.SetPen(wx.LIGHT_GREY_PEN)
             dc.DrawLine(self.width - self.extensionLength, 0, self.width - self.extensionLength, self.height)
         self.drawLatestPoints()
         dc.DrawBitmap(self.graphBuffer, 0, 0)
-        dc.EndDrawing()
 
     def GetBestSize(self):
-        return (
-         200, 200)
+        return (200, 200)
 
     def engineInit(self, engine):
         self.engine = engine

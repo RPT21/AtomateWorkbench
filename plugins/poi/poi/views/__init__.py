@@ -152,7 +152,7 @@ class StackedViewHeader(object):
 
     def createCachedBackground(self):
         (w, h) = self.control.GetSize()
-        self.cachedBackground = wx.EmptyBitmap(w, h)
+        self.cachedBackground = wx.Bitmap(w, h)
         dc = wx.MemoryDC()
         dc.SelectObject(self.cachedBackground)
         dc.SetPen(wx.TRANSPARENT_PEN)
@@ -189,7 +189,7 @@ class StackedViewHeader(object):
         xoffset = self.radius
         if self.titleImage is not None:
             top = self.calcCenter(self.titleImage.GetHeight(), height)
-            dc.DrawBitmap(self.titleImage, xoffset, top, True)
+            dc.DrawBitmap(self.titleImage, xoffset, int(top), True)
             xoffset += self.titleImage.GetWidth() + 3
         if self.focused:
             color = self.activetextcolor

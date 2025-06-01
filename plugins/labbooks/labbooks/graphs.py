@@ -40,7 +40,7 @@ class GraphPanel(wx.Window):
 
     def createBuffer(self):
         (w, h) = self.canvas.GetSize()
-        self.canvasBuffer = wx.EmptyBitmap(w, h)
+        self.canvasBuffer = wx.Bitmap(w, h)
         self.updateDrawing()
 
     def updateDrawing(self):

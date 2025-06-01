@@ -11,7 +11,7 @@ logger = logging.getLogger('core')
 
 def loadFromFile(filename):
     logger.debug("Loading recipe from '%s'" % filename)
-    f = open(filename, 'rU')
+    f = open(filename, 'r', newline='')
     buff = f.read()
     f.close()
     try:

@@ -200,7 +200,7 @@ class MessageHeaderDialog(Dialog):
         if title is None:
             self.title = ''
         if image is None:
-            self.image = wx.EmptyBitmap(1, 1)
+            self.image = wx.Bitmap(1, 1)
         return
 
     def getBody(self):
@@ -236,7 +236,7 @@ class MessageHeaderDialog(Dialog):
         self.errorMessageLabel.Hide()
         self.errorIcon = wx.StaticBitmap(p, -1, images.getImage(images.ERROR_ICON))
         self.errorIcon.Hide()
-        emptybmp = wx.EmptyBitmap(1, 1)
+        emptybmp = wx.Bitmap(1, 1)
         self.imageLabel = wx.StaticBitmap(p, -1, self.image)
         font = self.control.GetFont()
         self.descriptionLabel.SetFont(font)

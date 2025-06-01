@@ -245,12 +245,10 @@ class LightWidget(wx.Window):
 
     def updateFontSizes(self):
         dc = wx.PaintDC(self)
-        dc.BeginDrawing()
         dc.SetFont(self.defaultFont)
         (self.fontWidth, self.fontHeight) = dc.GetTextExtent('H')
-        dc.EndDrawing()
         labelWidth = self.fontWidth * len(self.getLabel()) + self.imageWidth + self.padding
-        size = self.GetClientSizeTuple()
+        size = self.getClientSize()
         origsize = size
         size = [size[0], size[1]]
         if size[0] < labelWidth:
@@ -280,7 +278,7 @@ class LightWidget(wx.Window):
         size = self.GetSize()
         if (size[0], size[1]) <= (0, 0):
             return
-        self.buffer = wx.EmptyBitmap(size[0], size[1])
+        self.buffer = wx.Bitmap(size[0], size[1])
 
     def updateDrawing(self):
         if self.buffer is None:
@@ -293,7 +291,6 @@ class LightWidget(wx.Window):
         size = self.GetSize()
         x = self.padding
         y = 0
-        dc.BeginDrawing()
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))
         dc.Clear()
         dc.SetFont(self.defaultFont)
@@ -310,7 +307,6 @@ class LightWidget(wx.Window):
                 dc.DrawBitmap(images.getImage(images.ONOFF_DEVICE_STATUS_OFF), 0, y, True)
         else:
             dc.DrawBitmap(images.getImage(images.ONOFF_DEVICE_STATUS_UNKNOWN), 0, y, True)
-        dc.EndDrawing()
 
     def OnPaint(self, event):
         if self.buffer is not None:
@@ -383,17 +379,15 @@ class TemperatureWidget(wx.Window):
 
     def updateFontSizes(self):
         dc = wx.PaintDC(self)
-        dc.BeginDrawing()
         dc.SetFont(self.defaultFont)
         (self.fontWidth, self.fontHeight) = dc.GetTextExtent('H')
-        dc.EndDrawing()
         del dc
         labelWidth = self.fontWidth * len(self.getLabel())
         self.largestTempWidth = self.fontWidth * len('100.0')
         newwidth = self.padding + self.largestTempWidth + self.padding + 2 + self.padding + self.largestTempWidth + self.padding
         if labelWidth > newwidth:
             newwidth = labelWidth + self.padding * 2
-        size = self.GetClientSizeTuple()
+        size = self.getClientSize()
         if size[0] == newwidth:
             return
         self.SetSize((newwidth, size[1]))
@@ -408,7 +402,7 @@ class TemperatureWidget(wx.Window):
         The width is a 3rd of the total size
         The height is the total height - the height of the font
         """
-        theHeight = self.GetClientSizeTuple()[1] - self.fontHeight * 2 + self.padding
+        theHeight = self.getClientSize()[1] - self.fontHeight * 2 + self.padding
         return (self.largestTempWidth + (self.padding + 1) * 2, theHeight)
 
     def drawPill(self, dc, pen, brush):
@@ -421,24 +415,20 @@ class TemperatureWidget(wx.Window):
         dc.DrawEllipticArc(0, height - corner * 2, width - 1, (corner - 1) * 2, 180, 360)
 
     def createMask(self):
-        (width, height) = self.GetClientSizeTuple()
+        (width, height) = self.getClientSize()
         (width, height) = self.getThermoSize()
-        self.bwMaskBitmap = wx.EmptyBitmap(width, height)
+        self.bwMaskBitmap = wx.Bitmap(width, height)
         bdc = wx.MemoryDC()
         bdc.SelectObject(self.bwMaskBitmap)
-        bdc.BeginDrawing()
         bdc.SetBackground(wx.Brush(wx.BLACK))
         bdc.Clear()
         self.drawPill(bdc, wx.WHITE_PEN, wx.WHITE_BRUSH)
-        bdc.EndDrawing()
-        self.wbMaskBitmap = wx.EmptyBitmap(width, height)
+        self.wbMaskBitmap = wx.Bitmap(width, height)
         bdc = wx.MemoryDC()
         bdc.SelectObject(self.wbMaskBitmap)
-        bdc.BeginDrawing()
         bdc.SetBackground(wx.Brush(wx.WHITE))
         bdc.Clear()
         self.drawPill(bdc, wx.BLACK_PEN, wx.BLACK_BRUSH)
-        bdc.EndDrawing()
 
     def updateDrawing(self):
         if self.buffer is None:
@@ -453,11 +443,10 @@ class TemperatureWidget(wx.Window):
         size = self.GetSize()
         if (size[0], size[1]) <= (0, 0):
             return
-        self.buffer = wx.EmptyBitmap(size[0], size[1])
+        self.buffer = wx.Bitmap(size[0], size[1])
 
     def DoDrawing(self, dc):
         global MONITOR_TEMP_CURRENT_INDICATOR_COLOR
-        dc.BeginDrawing()
         self.xxx += 0.5
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))
         dc.Clear()
@@ -483,14 +472,12 @@ class TemperatureWidget(wx.Window):
             extents = dc.GetFullTextExtent(strVal)
             dc.DrawText(strVal, x + (width - extents[0]) / 2, y + (height - transformedValue))
         memDC = wx.MemoryDC()
-        tempBmp = wx.EmptyBitmap(width, height)
+        tempBmp = wx.Bitmap(width, height)
         memDC.SelectObject(tempBmp)
-        memDC.BeginDrawing()
         memDC.Blit(0, 0, width, height, dc, x, y)
         twoDC = wx.MemoryDC()
         twoDC.SelectObject(self.bwMaskBitmap)
         memDC.Blit(0, 0, width, height, twoDC, 0, 0, wx.AND)
-        memDC.EndDrawing()
         twoDC.SelectObject(self.wbMaskBitmap)
         dc.Clear()
         dc.Blit(x, y, width, height, twoDC, 0, 0, wx.AND)
@@ -507,16 +494,15 @@ class TemperatureWidget(wx.Window):
             y1 = y + (height - transformedValue)
             self.drawTriangle(dc, wx.TRANSPARENT_PEN, wx.Brush(MONITOR_TEMP_CURRENT_INDICATOR_COLOR), x, y1)
             dc.DrawText(str(self.currentValue), x + 5, y1 - 5)
-            (totalWidth, totalHeight) = self.GetClientSizeTuple()
+            (totalWidth, totalHeight) = self.getClientSize()
             dc.DrawText(self.getLabel(), totalWidth - len(self.getLabel()) * self.fontWidth, totalHeight - self.fontHeight)
         dc.DrawText(str(self.maxTemp), x, 0)
         dc.DrawText(str(self.minTemp), x, height)
-        (width, height) = self.GetClientSizeTuple()
+        (width, height) = self.getClientSize()
         if False:
             dc.DrawText('H', x, 0)
             dc.DrawLine(0, self.fontHeight / 2, 500, self.fontHeight / 2)
             dc.DrawLine(0, height - self.fontHeight / 2, 500, height - self.fontHeight / 2)
-        dc.EndDrawing()
 
     def getLabel(self):
         return self.label
@@ -812,11 +798,9 @@ class MonitorWindowItem(object):
         event.Skip()
         (width, height) = self.ctrl.GetClientSize()
         dc = wx.PaintDC(self.ctrl)
-        dc.BeginDrawing()
         dc.SetPen(wx.Pen(goosemonitor.MONITOR_FOREGROUND_COLOR))
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
         dc.DrawRectangle(0, 0, width - 1, height - 1)
-        dc.EndDrawing()
 
     def getControl(self):
         return self.ctrl

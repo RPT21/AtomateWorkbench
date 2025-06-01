@@ -47,7 +47,7 @@ class AutoSaver(object):
         self.stopTimer()
 
     def stopTimer(self):
-        if self.timer is not None and self.timer.isAlive():
+        if self.timer is not None and self.timer.is_alive():
             self.called = True
             self.timer.cancel()
         return

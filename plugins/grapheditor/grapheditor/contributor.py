@@ -41,7 +41,7 @@ class GraphContributor(object):
 
     def cacheTitleBitmap(self, dc, columnWidth):
         self.cacheTitleSize()
-        self.cachedTitleBitmap = wx.EmptyBitmap(columnWidth, self.getHeight())
+        self.cachedTitleBitmap = wx.Bitmap(columnWidth, self.getHeight())
         dc = wx.MemoryDC()
         dc.SelectObject(self.cachedTitleBitmap)
         self.drawTitle(dc, (0, 0), columnWidth)
@@ -68,7 +68,7 @@ class GraphContributor(object):
             (tw, th) = (
              1, 1)
         mdc = wx.MemoryDC()
-        bmp = wx.EmptyBitmap(tw, th)
+        bmp = wx.Bitmap(tw, th)
         mdc.SelectObject(bmp)
         mdc.SetBackground(dc.GetBackground())
         mdc.Clear()
@@ -81,7 +81,7 @@ class GraphContributor(object):
 
     def cacheTitleSize(self):
         dc = wx.MemoryDC()
-        bmp = wx.EmptyBitmap(50, 50)
+        bmp = wx.Bitmap(50, 50)
         dc.SelectObject(bmp)
         self.cachedTitleSize = dc.GetFullTextExtent(self.title)
 

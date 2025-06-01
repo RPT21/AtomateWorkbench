@@ -202,7 +202,7 @@ class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
         self.contentprovider = grideditor_recipegridviewercontentprovider.RecipeGridViewerContentProvider()
         self.wxtable = grideditor_recipegrideditortable.RecipeGridEditorTable(self.contentprovider)
         self.contentprovider.setManagedTable(self.wxtable)
-        self.grid = wx.Grid(self.control, -1)
+        self.grid = wx.grid.Grid(self.control, -1)
         self.grid.SetHelpText(grideditor_constants.HELP_GRIDEDITOR)
         self.grid.SetScrollRate(10, 10)
         self.grid.SetDefaultRowSize(20, True)

@@ -329,7 +329,7 @@ class StringCellRenderer(CellRenderer):
 
     def __init__(self):
         super().__init__()
-        self.font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        self.font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         self.inset = 5
 
     def draw(self, grid, value, dc, isSelected, rect, row, isCurrentStep):

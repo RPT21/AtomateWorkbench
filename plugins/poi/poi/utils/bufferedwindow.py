@@ -29,7 +29,7 @@ class BufferedWindow(wx.Window):
 
     def createBuffer(self):
         (self.width, self.height) = self.GetClientSize()
-        self._buffer = wx.EmptyBitmap(self.width, self.height)
+        self._buffer = wx.Bitmap(self.width, self.height)
         self.updateDrawing()
 
     def updateDrawing(self):

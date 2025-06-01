@@ -66,7 +66,7 @@ class GraphItem(wx.Panel):
         if self.width == 0 or self.height == 0:
             (w, h) = (
              1, 1)
-        self.graphBuffer = wx.EmptyBitmap(w, h)
+        self.graphBuffer = wx.Bitmap(w, h)
         self.recreateGraphBuffer()
 
     def saveSnapshot(self, width, height):
@@ -74,7 +74,7 @@ class GraphItem(wx.Panel):
          self.width, self.height)
         self.width = width
         self.height = height
-        self.graphBuffer = wx.EmptyBitmap(self.width, self.height)
+        self.graphBuffer = wx.Bitmap(self.width, self.height)
         self.recreateGraphBuffer()
         snapshot = wx.ImageFromBitmap(self.graphBuffer)
         (self.width, self.height) = (
@@ -127,7 +127,6 @@ class GraphItem(wx.Panel):
         self.spp = w / self.timeRange
 
     def Draw(self, dc):
-        dc.BeginDrawing()
         dc.Clear()
         dc.DrawBitmap(self.graphBuffer, 0, 0, False)
 
@@ -152,7 +151,6 @@ class GraphItem(wx.Panel):
         dc.SetPen(wx.Pen(wx.LIGHT_GREY, style=wx.DOT))
         r = self.height - self.device.getRange() * self.tpp
         dc.DrawLine(0, r, self.width, r)
-        dc.EndDrawing()
 
     def incrementPoint(self, dc):
         """Only draw the very last segment"""

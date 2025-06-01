@@ -24,7 +24,7 @@ class ResizableBitmap(wx.Panel):
     def __init__(self, parent, bitmap):
         self.bitmap = bitmap
         self.image = bitmap.ConvertToImage()
-        self.drawbitmap = wx.EmptyBitmap(1, 1)
+        self.drawbitmap = wx.Bitmap(1, 1)
         wx.Panel.__init__(self, parent, -1)
         self.bs = (1, 1)
         self.sized = False

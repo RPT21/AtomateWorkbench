@@ -206,7 +206,7 @@ class StringHeaderCellRenderer(HeaderCellRenderer):
         return self.font
 
     def draw(self, dc, rect):
-        bkgcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        bkgcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         x = rect[0][0]
         y = rect[0][1]
         width = rect[1][0]
@@ -218,8 +218,8 @@ class StringHeaderCellRenderer(HeaderCellRenderer):
         dc.SetPen(wx.NullPen)
         self.drawImage(dc, x, y, width, height)
         self.drawText(dc, x, y, width, height, self.column.getHeaderLabel())
-        shadowcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_3DDKSHADOW)
-        hlcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
+        shadowcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DDKSHADOW)
+        hlcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
         dc.SetPen(wx.Pen(shadowcolor))
         dc.DrawLine(x + width - 1, y, x + width - 1, y + height)
         dc.DrawLine(x, y + height - 1, x + width, y + height - 1)
@@ -251,7 +251,7 @@ class StringHeaderCellRenderer(HeaderCellRenderer):
     def cacheBestSize(self):
         self.lastLabel = self.column.getHeaderLabel()
         mdc = wx.MemoryDC()
-        mdc.SelectObject(wx.EmptyBitmap(100, 100))
+        mdc.SelectObject(wx.Bitmap(100, 100))
         mdc.SetFont(self.getFont())
         (w, h) = mdc.GetTextExtent(self.lastLabel)
         self.cachedBestSize = (w + self.insets[0] + self.insets[2], h + self.insets[1] + self.insets[3])
@@ -276,7 +276,7 @@ class StringCellRenderer(CellRenderer):
     __module__ = __name__
 
     def __init__(self):
-        self.font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        self.font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         self.inset = 5
 
     def draw(self, grid, value, dc, isSelected, rect, row=-1, col=-1, isColSelected=False, isRowSelected=False):

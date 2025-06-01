@@ -198,7 +198,7 @@ class EditorViewer(object):
             size[0] = DEFAULT_SB_WIDTH + 5
         if size[1] < DEFAULT_SB_WIDTH:
             size[1] = DEFAULT_SB_WIDTH + 5
-        self._Buffer = wx.EmptyBitmap(size[0] - DEFAULT_SB_WIDTH, size[1] - DEFAULT_SB_WIDTH)
+        self._Buffer = wx.Bitmap(size[0] - DEFAULT_SB_WIDTH, size[1] - DEFAULT_SB_WIDTH)
         self.updateDrawing()
 
     def addItemContributor(self, contributor):
@@ -354,10 +354,8 @@ class EditorViewer(object):
         dc = wx.BufferedDC(wx.ClientDC(self.control), self._Buffer)
         interval = (
          self.pixelToMillis(self.scrolledX), self.pixelToMillis(self.getWidth() + self.scrolledX))
-        dc.BeginDrawing()
         dc.Clear()
         self.update(dc, interval)
-        dc.EndDrawing()
         now = time.time()
 
     def OnSize(self, event):
@@ -404,8 +402,8 @@ class EditorViewer(object):
         return total
 
     def updateColors(self):
-        self.hilitecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
-        self.shadowcolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNSHADOW)
+        self.hilitecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
+        self.shadowcolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNSHADOW)
 
     def createControl(self, parent):
         self.updateColors()
@@ -539,7 +537,6 @@ class EditorViewer(object):
             return
         self.selectedEvent.duration = now - previousDuration
         dc = wx.BufferedDC(wx.ClientDC(self.control), self._Buffer)
-        dc.BeginDrawing()
         y = self.timelineHeader.getHeight()
         if delta < 0:
             srcX = lt + (position[0] - delta) - self.scrolledX
@@ -592,7 +589,6 @@ class EditorViewer(object):
                 dc.DrawRectangle((left + lt - self.scrolledX, y), (
                  right - left - self.scrolledX, self.getHeight()))
                 dc.SetPen(wx.NullPen)
-        dc.EndDrawing()
         self.calculateDuration()
         self.updateScrollbars()
 
@@ -684,7 +680,7 @@ class EditorViewer(object):
 
     def setZoomControl(self, scale):
         pos = scale * 100.0 / float(self.zoomRange) * 100.0
-        self.zoomControl.SetValue(pos)
+        self.zoomControl.SetValue(int(pos))
 
     def OnZoomControl(self, event):
         actualZoom = float(event.GetPosition() / 100.0) * self.zoomRange / 100.0
@@ -755,9 +751,9 @@ class TimelineHeader(object):
         self.owner = owner
         self.height = 20
         self.radius = 4
-        self.outlinecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNSHADOW)
-        self.hilitecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
-        self.facecolor = wx.SystemSettings_GetColour(wx.SYS_COLOUR_BTNFACE)
+        self.outlinecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNSHADOW)
+        self.hilitecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNHIGHLIGHT)
+        self.facecolor = wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE)
         self.minimumNumberInterval = 100
         self.currentIntervalUnit = 1000
         self.currentIntervalUnitString = 's'

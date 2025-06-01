@@ -9,13 +9,13 @@ class ImageButton(wx.BitmapButton):
     __module__ = __name__
 
     def __init__(self, parent, id, bitmap, label):
-        wx.BitmapButton.__init__(self, parent, id, wx.EmptyBitmap(2, 2))
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(2, 2))
         self.bmp = self.__createLabel(bitmap, label)
         self.SetBitmapLabel(self.bmp)
 
     def __createLabel(self, bitmap, label):
         (w, h) = self.__calcDimensions(bitmap, label)
-        bmp = wx.EmptyBitmap(w, h)
+        bmp = wx.Bitmap(w, h)
         dc = wx.MemoryDC()
         dc.SelectObject(bmp)
         dc.SetBackground(wx.Brush(self.GetBackgroundColour()))

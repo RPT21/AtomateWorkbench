@@ -40,7 +40,7 @@ class GradientLabel(wx.Window):
 
     def createGradient(self):
         (w, h) = self.GetSize()
-        self.cachedBackground = wx.EmptyBitmap(w, h)
+        self.cachedBackground = wx.Bitmap(w, h)
         dc = wx.MemoryDC()
         dc.SelectObject(self.cachedBackground)
         dc.SetBrush(wx.Brush(self.color))
