@@ -178,7 +178,7 @@ class MainEditorItem(extendededitor_item.ExtendedEditorItem):
             self.suppress = False
             return
         step = self.currentStep
-        self.duration.SetValue(wx.TimeSpan.Seconds(step.getDuration()))
+        self.duration.SetValue(wx.TimeSpan.Seconds(int(step.getDuration())))
         self.repeatCheck.SetValue(step.doesRepeat())
         self.enclosingStepsText.SetValue(step.getRepeatEnclosingSteps() + 1)
         self.numberRepsText.SetValue(step.getRepeatCount())

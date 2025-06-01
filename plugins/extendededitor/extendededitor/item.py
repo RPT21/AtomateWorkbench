@@ -40,7 +40,7 @@ class RoundedGradedHeader(object):
         inset = self.radius / 2
         for i in range(size[1]):
             dc.SetPen(wx.Pen(wx.Colour(startColour[0], startColour[1], startColour[2])))
-            dc.DrawLine(inset, i, size[0] - inset * 2, i)
+            dc.DrawLine(int(inset), i, int(size[0] - inset * 2), i)
             if startColour[0] + jump < 255:
                 startColour[0] += jump
             if startColour[1] + jump < 255:
@@ -137,7 +137,7 @@ class RoundedGradedHeader(object):
         offset = 3
         if self.image is not None:
             top = self.calcCenter(self.image.GetHeight())
-            dc.DrawBitmap(self.image, offset, top, True)
+            dc.DrawBitmap(self.image, offset, int(top), True)
             offset += self.image.GetWidth() + offset
         if self.text is not None:
             top = self.calcCenter(dc.GetTextExtent(self.text)[1])

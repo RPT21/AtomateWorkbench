@@ -406,8 +406,8 @@ class CellEditorWrapper(gridlib.GridCellEditor):
 class ColumnContribution(object):
     __module__ = __name__
 
-    def __init__(self, column):
-        self.celleditor = self.createCellEditor(column)
+    def __init__(self):
+        self.celleditor = self.createCellEditor()
         self.cellrenderer = self.createCellRenderer()
         self.cellEditorWrapper = CellEditorWrapper(self.celleditor, self)
         self.cellRendererWrapper = CellRendererWrapper(self.cellrenderer, self)
@@ -437,8 +437,8 @@ class ColumnContribution(object):
     def createCellRenderer(self):
         return StringCellRenderer()
 
-    def createCellEditor(self, column):
-        return TextCellEditor(column)
+    def createCellEditor(self):
+        return TextCellEditor()
 
     def getDevice(self):
         return self.device

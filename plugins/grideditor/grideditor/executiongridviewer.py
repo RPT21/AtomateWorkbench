@@ -339,7 +339,7 @@ class StringCellRenderer(CellRenderer):
         x = self.inset
         y = (rect.height - h) * 0.5
         self.drawBackground(grid, dc, rect, isSelected, isCurrentStep)
-        dc.DrawText(text, rect.x + x, rect.y + y)
+        dc.DrawText(text, int(rect.x + x), int(rect.y + y))
 
     def getSelectedRowColor(self, grid):
         return wx.RED
@@ -374,7 +374,7 @@ class DurationCellRenderer(StringCellRenderer):
         x = self.inset
         y = (rect.height - h) * 0.5
         self.drawBackground(grid, dc, rect, isSelected, isCurrentStep)
-        dc.DrawText(text, rect.x + x, rect.y + y)
+        dc.DrawText(text, int(rect.x + x), int(rect.y + y))
 
 
 class CellRendererWrapper(wx.grid.GridCellRenderer):

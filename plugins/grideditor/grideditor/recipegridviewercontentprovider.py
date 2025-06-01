@@ -5,7 +5,7 @@
 # Compiled at: 2004-11-19 02:29:39
 from wx.grid import *
 from wx import *
-import wx, logging
+import wx, logging, wx.grid
 import plugins.grideditor.grideditor.durationcolumn as grideditor_durationcolumn
 import plugins.grideditor.grideditor.recipemodel as grideditor_recipemodel
 import plugins.grideditor.grideditor.tablecolumn as grideditor_tablecolumn
@@ -72,14 +72,14 @@ class RecipeGridViewerContentProvider(grideditor_recipemodel.RecipeModelEventLis
         realIndex = self.getRealIndexOfCol(col)
         column = self.visibleColumns[col]
         if not column in self.colattrs:
-            attr = wx.GridCellAttr()
+            attr = wx.grid.GridCellAttr()
             self.colattrs[column] = attr
             attr.SetEditor(column.getCellEditor())
             attr.SetRenderer(column.getCellRenderer())
         else:
             attr = self.colattrs[column]
         if attr == None:
-            attr = wx.GridCellAttr()
+            attr = wx.grid.GridCellAttr()
             self.colattrs[column] = attr
             attr.SetEditor(column.getCellEditor())
             attr.SetRenderer(column.getCellRenderer())

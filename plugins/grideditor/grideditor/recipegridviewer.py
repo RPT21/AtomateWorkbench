@@ -4,6 +4,7 @@
 # Embedded file name: ../plugins/grideditor/src/grideditor/recipegridviewer.py
 # Compiled at: 2004-12-07 12:28:55
 from wx.grid import *
+import wx.grid
 from wx import *
 import logging, plugins.poi.poi.views.viewers, wx, plugins.poi.poi.actions.menumanager
 import plugins.ui.ui.undomanager, plugins.grideditor.grideditor.constants as grideditor_constants
@@ -454,9 +455,9 @@ class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
     def updateRowSelection(self, last, current):
         self.grid.BeginBatch()
         cols = self.grid.GetNumberCols()
-        msg = wx.GridTableMessage(self.grid.GetTable(), wx.GRIDTABLE_REQUEST_VIEW_GET_VALUES, last, 1)
+        msg = wx.grid.GridTableMessage(self.grid.GetTable(), wx.grid.GRIDTABLE_REQUEST_VIEW_GET_VALUES, last, 1)
         self.grid.ProcessTableMessage(msg)
-        msg = wx.GridTableMessage(self.grid.GetTable(), wx.GRIDTABLE_REQUEST_VIEW_GET_VALUES, current, 1)
+        msg = wx.grid.GridTableMessage(self.grid.GetTable(), wx.grid.GRIDTABLE_REQUEST_VIEW_GET_VALUES, current, 1)
         self.grid.ProcessTableMessage(msg)
         self.grid.EndBatch()
 

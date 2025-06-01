@@ -457,16 +457,16 @@ class EditorViewer(object):
         return
 
     def createCursors(self):
-        self.cursorNormal = wx.StockCursor(wx.CURSOR_ARROW)
+        self.cursorNormal = wx.Cursor(wx.CURSOR_ARROW)
         try:
-            image = wx.ImageFromBitmap(images.getImage(images.RESIZE_WE))
+            image = wx.Bitmap.ConvertToImage(images.getImage(images.RESIZE_WE))
             image.SetMaskColour(255, 0, 0)
-            image.SetOptionInt(wx.IMAGE_OPTION_CUR_HOTSPOT_X, image.GetWidth() / 2)
-            image.SetOptionInt(wx.IMAGE_OPTION_CUR_HOTSPOT_Y, image.GetHeight() / 2)
+            image.SetOption(wx.IMAGE_OPTION_CUR_HOTSPOT_X, int(image.GetWidth() / 2))
+            image.SetOption(wx.IMAGE_OPTION_CUR_HOTSPOT_Y, int(image.GetHeight() / 2))
             self.cursorResizeWE = wx.CursorFromImage(image)
         except Exception as msg:
             logger.exception(msg)
-            self.cursorResizeWE = wx.StockCursor(wx.CURSOR_SIZEWE)
+            self.cursorResizeWE = wx.Cursor(wx.CURSOR_SIZEWE)
 
     def paintEvents(self, dc, interval):
         """Draw events from interval to interval only"""
@@ -651,7 +651,6 @@ class EditorViewer(object):
             atY += item.getHeight()
 
         return None
-        return
 
     def posInTimeline(self, pos):
         return 0 < pos[1] < self.timelineHeader.getHeight()
@@ -666,14 +665,13 @@ class EditorViewer(object):
                 return event
 
         return None
-        return
 
     def createTimelineHeader(self):
         self.timelineHeader = TimelineHeader(self)
 
     def createZoomControl(self):
         self.zoomControl = wx.Slider(self.control, -1, self.defaultZoomPosition, 1, 100)
-        self.zoomControl.SetToolTipString('Adjust the horizontal scale of the timeline')
+        self.zoomControl.SetToolTip('Adjust the horizontal scale of the timeline')
         self.zoomSmallLeft = wx.StaticBitmap(self.control, -1, images.getImage(images.ZOOM_SMALL))
         self.zoomSmallRight = wx.StaticBitmap(self.control, -1, images.getImage(images.ZOOM_LARGE))
         self.control.Bind(wx.EVT_SCROLL, self.OnZoomControl, self.zoomControl)
@@ -695,19 +693,19 @@ class EditorViewer(object):
         (left, right) = (
          self.zoomSmallLeft.GetSize(), self.zoomSmallRight.GetSize())
         ypos = size[1] - DEFAULT_SB_WIDTH
-        self.zoomSmallLeft.SetPosition((self.getTitleColumnWidth(), ypos))
-        self.zoomSmallRight.SetPosition((self.getTitleColumnWidth() + (ZOOMCONTROL_WIDTH - right[0]), ypos))
-        self.zoomControl.SetPosition((self.getTitleColumnWidth() + left[0], ypos))
-        self.zoomControl.SetSize((ZOOMCONTROL_WIDTH - (left[0] + right[0]), DEFAULT_SB_WIDTH))
+        self.zoomSmallLeft.SetPosition(wx.Point(self.getTitleColumnWidth(), ypos))
+        self.zoomSmallRight.SetPosition(wx.Point(self.getTitleColumnWidth() + (ZOOMCONTROL_WIDTH - right[0]), ypos))
+        self.zoomControl.SetPosition(wx.Point(self.getTitleColumnWidth() + left[0], ypos))
+        self.zoomControl.SetSize(wx.Size(ZOOMCONTROL_WIDTH - (left[0] + right[0]), DEFAULT_SB_WIDTH))
 
     def positionScrollbars(self):
         global LABEL_COLUMN_WIDTH
         size = self.control.GetClientSize()
         size = (size[0] - self.getTitleColumnWidth(), size[1])
-        self.horizSB.SetPosition((LABEL_COLUMN_WIDTH + ZOOMCONTROL_WIDTH, size[1] - DEFAULT_SB_WIDTH))
-        self.horizSB.SetSize((size[0] - (ZOOMCONTROL_WIDTH + DEFAULT_SB_WIDTH), DEFAULT_SB_WIDTH))
-        self.vertSB.SetPosition((self.getTitleColumnWidth() + (size[0] - DEFAULT_SB_WIDTH), self.timelineHeader.getHeight()))
-        self.vertSB.SetSize((DEFAULT_SB_WIDTH, size[1] - (DEFAULT_SB_WIDTH + self.timelineHeader.getHeight())))
+        self.horizSB.SetPosition(wx.Point(LABEL_COLUMN_WIDTH + ZOOMCONTROL_WIDTH, size[1] - DEFAULT_SB_WIDTH))
+        self.horizSB.SetSize(wx.Size(size[0] - (ZOOMCONTROL_WIDTH + DEFAULT_SB_WIDTH), DEFAULT_SB_WIDTH))
+        self.vertSB.SetPosition(wx.Point(self.getTitleColumnWidth() + (size[0] - DEFAULT_SB_WIDTH), self.timelineHeader.getHeight()))
+        self.vertSB.SetSize(wx.Size(DEFAULT_SB_WIDTH, size[1] - (DEFAULT_SB_WIDTH + self.timelineHeader.getHeight())))
 
     def createScrollbars(self):
         self.horizSB = wx.ScrollBar(self.control, -1)

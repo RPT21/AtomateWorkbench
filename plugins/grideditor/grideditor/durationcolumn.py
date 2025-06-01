@@ -122,7 +122,7 @@ class DurationCellRenderer(grideditor_tablecolumn.StringCellRenderer):
         x = self.inset
         y = (rect.height - h) * 0.5
         self.drawBackground(grid, dc, rect, isSelected, isColSelected, isRowSelected, value)
-        dc.DrawText(text, rect.x + x, rect.y + y)
+        dc.DrawText(text, int(rect.x + x), int(rect.y + y))
 
 
 class DurationColumn(grideditor_tablecolumn.TableColumn):
