@@ -42,7 +42,9 @@ def fireBootSequenceComplete():
 
 def getPluginPath():
     """Returns path to the plugins"""
-    return os.path.join(os.getcwd(), 'plugins')
+    cwd = os.getcwd()
+    parent = os.path.abspath(os.path.join(cwd, os.pardir))
+    return os.path.join(parent, 'plugins')
 
 
 def debugPrintPluginList(pluginList):

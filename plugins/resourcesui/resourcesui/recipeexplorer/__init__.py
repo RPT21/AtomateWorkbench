@@ -254,7 +254,7 @@ class RecipeExplorer(poi.dialogs.Dialog):
         size = self.control.GetSize()
         memento.set('layout', 'size', '%s,%s' % (size[0], size[1]))
         for (key, view) in list(self.sectors.items()):
-            if key is 'versions':
+            if key == 'versions':
                 continue
             width = view.GetSize()[0]
             memento.set('layout', '.'.join(['sector', key]), '%i' % width)

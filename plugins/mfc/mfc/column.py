@@ -195,7 +195,7 @@ class MFCColumn(grideditor.tablecolumn.ColumnContribution):
     def setValueAt(self, stepIndex, value):
         entry = self.recipeModel.getEntryAt(stepIndex, self.device)
         realvalue = value
-        if self.useGCF and value is not 0:
+        if self.useGCF and value != 0:
             realvalue = value / (self.GCF / 100.0)
         entry.setFlow(float(realvalue))
 

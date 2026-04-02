@@ -1,0 +1,51 @@
+version = 1
+revision = 3
+requires-python = ">=3.14"
+
+[[package]]
+name = "atomateworkbench"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "pwdpy" },
+    { name = "pyserial" },
+    { name = "wxpython" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pwdpy", specifier = ">=1.0.1" },
+    { name = "pyserial", specifier = ">=3.5" },
+    { name = "wxpython", specifier = ">=4.2.5" },
+]
+
+[[package]]
+name = "pwdpy"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ea/99/c7a7ab60474851570ebffda9114a6e48ad8e85fb9e7eab1634f5a2089263/pwdpy-1.0.1.tar.gz", hash = "sha256:e15405774b5bb7c47f7327f6e12c3d0a9dac64b1aa531a7470e8ed47df9e471f", size = 12272, upload-time = "2023-08-17T01:45:00.701Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/e5/b5eccd0f504bc706ec71f6566ae28b0941e35b7de619b55d0ecf8d365128/pwdpy-1.0.1-py3-none-any.whl", hash = "sha256:78fe6e115d79d223a3d77da57535ab03c2e377066632634f74fdca4299162132", size = 11539, upload-time = "2023-08-17T01:44:59.063Z" },
+]
+
+[[package]]
+name = "pyserial"
+version = "3.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1e/7d/ae3f0a63f41e4d2f6cb66a5b57197850f919f59e558159a4dd3a818f5082/pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb", size = 159125, upload-time = "2020-11-23T03:59:15.045Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/bc/587a445451b253b285629263eb51c2d8e9bcea4fc97826266d186f96f558/pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0", size = 90585, upload-time = "2020-11-23T03:59:13.41Z" },
+]
+
+[[package]]
+name = "wxpython"
+version = "4.2.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/22/43/81657a6b126ffc19163500a8184d683cec08eb4e1d06905cd0c371c702d0/wxpython-4.2.5.tar.gz", hash = "sha256:44e836d1bccd99c38790bb034b6ecf70d9060f6734320560f7c4b0d006144793", size = 58732217, upload-time = "2026-02-08T20:40:42.086Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e5/a1/9d8a7c5f60bb311257b04e3a3d9bbf12e4ab1fcc92811a007bbdf43b1e5f/wxpython-4.2.5-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:af2d8388eb3f0d8eaae0713a35c307293435ec279f215a2bbf521b738d7fc91b", size = 17783876, upload-time = "2026-02-08T20:40:27.739Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/9c/32862d321db8927f37d2572e606cf480e013942e5c6ce39fef37c4a713cb/wxpython-4.2.5-cp314-cp314-macosx_14_0_x86_64.whl", hash = "sha256:1925485c9b90e79f869272eff2b99438538b00505f9d148d51358dc8e92116b6", size = 18864211, upload-time = "2026-02-08T20:40:30.523Z" },
+    { url = "https://files.pythonhosted.org/packages/51/a7/261bf54686192ebefc42b494da97ba3312bd01c1d37a964f0cb83f271cf0/wxpython-4.2.5-cp314-cp314-win32.whl", hash = "sha256:230ecb4de65a8d2f8bc30bccd4d64366ac3a7cf53759b77920de927d156ad9c5", size = 14859697, upload-time = "2026-02-08T20:40:33.108Z" },
+    { url = "https://files.pythonhosted.org/packages/fd/9a/73f12041178db3728a809ce37c2b64409291cb45567b2918df478f0ceb20/wxpython-4.2.5-cp314-cp314-win_amd64.whl", hash = "sha256:eb1c228f0c20ed93f2799ebd81780abc7fd65cfa8f6b65e989b68c0c18c52707", size = 16947346, upload-time = "2026-02-08T20:40:35.583Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/49/3a39f5fe78a7194c848919c4b681f432fe937006e2e5182a17dd519f8c91/wxpython-4.2.5-cp314-cp314-win_arm64.whl", hash = "sha256:d4439bf4b18ac720afbcf51c37d7822ba62ab6999501e96cce1dfc2f55a19344", size = 15809574, upload-time = "2026-02-08T20:40:38.859Z" },
+]

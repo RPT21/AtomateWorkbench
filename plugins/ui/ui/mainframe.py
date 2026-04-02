@@ -335,7 +335,7 @@ class MainFrame(object):
                     size[0] = 20
                 if size[1] < 20:
                     size[1] = 20
-                if sectorName is not 'center':
+                if sectorName != 'center':
                     window.getControl().SetDefaultSize(tuple(size))
 
             self.updateSashPositions()

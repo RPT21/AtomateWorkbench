@@ -245,7 +245,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
         page = None
         if len(pages) > 0:
             page = pages[0]
-        if selectedNode.lower() is not 'none':
+        if selectedNode.lower() != 'none':
             found = ui.preferences.getDefault().findPage(selectedNode)
             if found is not None:
                 page = found

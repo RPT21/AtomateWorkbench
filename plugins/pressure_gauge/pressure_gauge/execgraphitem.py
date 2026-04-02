@@ -259,7 +259,7 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
             if device.getRange() > max:
                 max = device.getRange()
 
-        if max is 0:
+        if max == 0:
             max = 500
         self.maxRange = max
         self.calcTimePerPixel()

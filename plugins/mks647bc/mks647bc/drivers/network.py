@@ -209,7 +209,7 @@ class NetworkDeviceDriver(mks647bc_drivers.DeviceDriver):
                     self.cv.release()
                     raise Exception('Blocking network call was interrupted')
                 now = time.time()
-                if not timeout is 0:
+                if not timeout == 0:
                     if (now - then) * 1000.0 > timeout:
                         self.cv.release()
                         raise Exception('Timeout while waiting for reply from host')

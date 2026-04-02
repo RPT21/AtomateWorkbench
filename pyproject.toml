@@ -1,0 +1,9 @@
+[project]
+name = "atomateworkbench"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "pwdpy>=1.0.1",
+    "pyserial>=3.5",
+    "wxpython>=4.2.5",
+]

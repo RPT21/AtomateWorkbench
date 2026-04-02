@@ -1,0 +1,4 @@
+.venv
+.idea
+syslib/.metadata
+syslib/logs/errors.log

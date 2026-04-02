@@ -71,9 +71,9 @@ def updateActions():
         if execstate is None:
             runAction.setEnabled(recipe is not None)
         else:
-            runAction.setEnabled(execstate is 'stopped' and recipe is not None)
-            pauseAction.setEnabled(execstate is 'running')
-            resumeAction.setEnabled(execstate is 'paused')
+            runAction.setEnabled(execstate == 'stopped' and recipe is not None)
+            pauseAction.setEnabled(execstate == 'running')
+            resumeAction.setEnabled(execstate == 'paused')
             advanceAction.setEnabled(execstate in ('paused', 'running'))
             abortAction.setEnabled(execstate in ('paused', 'running'))
     tbm = plugins.ui.ui.getDefault().getToolBarManager()
