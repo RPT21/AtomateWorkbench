@@ -85,6 +85,7 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
         self.currentWork = 0
         self.closeId = wx.NewId()
         self.openId = wx.NewId()
+        self._handlerPushed = False
         logger.debug('Creating progress dialog %d/%d/%s' % (self.closeId, self.openId, self))
         return
 
@@ -138,6 +139,7 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
         self.control.SetSize(wx.Size(300, 300))
         self.control.CentreOnScreen()
         self.control.PushEventHandler(self)
+        self._handlerPushed = True
         self.Bind(wx.EVT_ACTIVATE, self.OnActivate, self.control)
         return self.control
 
@@ -181,9 +183,21 @@ class ProgressDialog(Dialog, plugins.poi.poi.operation.ProgressMonitor, wx.EvtHa
         self.lock.notify()
         self.lock.release()
         self.done = True
+        self._detachEventHandler()
         self.control.Destroy()
         self.control = None
         return
+
+    def _detachEventHandler(self):
+        if not self._handlerPushed or self.control is None:
+            return
+        try:
+            if hasattr(wx, 'IsDestroyed') and wx.IsDestroyed(self.control):
+                return
+            self.control.PopEventHandler(False)
+            self._handlerPushed = False
+        except Exception as e:
+            raise Exception(f"detachEventHandler error: {e}")
 
     def aboutToRun(self):
         pass

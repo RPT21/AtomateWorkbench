@@ -230,18 +230,14 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         for child in self.driverConfigPanel.GetChildren():
             self.driverConfigPanel.RemoveChild(child)
             if sizer is not None:
-                sizer.Remove(child)
+                sizer.Detach(child)
             child.Destroy()
 
         page.createControl(self.driverConfigPanel)
         if sizer is not None:
             sizer.Add(page.getControl(), 1, wx.EXPAND | wx.ALL, 0)
-            s = self.driverConfigPanel.GetSizer()
-            s.SetItemMinSize(page.getControl(), page.getControl().GetSize())
-            self.driverConfigPanel.SetSize(page.getControl().GetSize())
-            s.RecalcSizes()
-            size = self.driverConfigPanel.GetSize()
-            sizer.SetItemMinSize(page.getControl(), size)
+            sizer.Layout()
+            self.driverConfigPanel.Layout()
         return page
 
     def getDriverOptions(self):
@@ -387,4 +383,13 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
 
     def dispose(self):
         hardware.userinterface.configurator.ConfigurationPage.dispose(self)
-        self.control.Destroy()
+        if self.control is None:
+            return
+        try:
+            if hasattr(wx, 'IsDestroyed') and wx.IsDestroyed(self.control):
+                self.control = None
+                return
+            self.control.Destroy()
+        except Exception:
+            pass
+        self.control = None

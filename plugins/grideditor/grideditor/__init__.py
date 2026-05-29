@@ -298,9 +298,23 @@ class GridEditorPlugin(kernel.plugin.Plugin):
         versionNumber = None
         shared = False
         try:
+            if not self.config.has_section('main'):
+                logger.debug('No previous recipe specified')
+                return
+            if not self.config.has_option('main', 'projectname'):
+                logger.debug('No previous recipe specified')
+                return
+            if not self.config.has_option('main', 'versionnumber'):
+                logger.debug('No previous recipe specified')
+                return
             projectName = self.config.get('main', 'projectname')
-            versionNumber = int(self.config.get('main', 'versionnumber'))
-            shared = self.config.get('main', 'shared').lower() == 'true'
+            versionText = self.config.get('main', 'versionnumber')
+            if versionText is None or versionText.strip() == '':
+                logger.debug('No previous recipe specified')
+                return
+            versionNumber = int(versionText)
+            if self.config.has_option('main', 'shared'):
+                shared = self.config.get('main', 'shared').lower() == 'true'
         except Exception as msg:
             logger.exception(msg)
             logger.debug('No previous recipe specified')

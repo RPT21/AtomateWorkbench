@@ -54,6 +54,12 @@ class EditorViewer(object):
         self.minimumGapMillis = 60 * 1000
         self.deviceToContribution = {}
         self.selectedIndex = 0
+        self.zoomControl = None
+        self.zoomSmallLeft = None
+        self.zoomSmallRight = None
+        self.horizSB = None
+        self.vertSB = None
+        self._destroying = False
         return
 
     def setEditor(self, editor):
@@ -79,6 +85,8 @@ class EditorViewer(object):
         self.zoomRange = int(newFullFactor)
 
     def dispose(self):
+        self._destroying = True
+        self._unbindUiHandlers()
         self.disposeContributors()
         self.editor.removeInputChangedListener(self)
         self.editor.removeSelectionChangedListener(self)
@@ -360,6 +368,8 @@ class EditorViewer(object):
 
     def OnSize(self, event):
         event.Skip()
+        if self._destroying or self.control is None:
+            return
         self.updateScrollbars()
         self.positionScrollbars()
         self.positionZoomControl()
@@ -367,6 +377,8 @@ class EditorViewer(object):
         self.updateDrawing()
 
     def updateScrollbars(self):
+        if self._destroying or self.horizSB is None or self.vertSB is None:
+            return
         width = self.getWidth()
         size = self.millisToPixels(self.getDuration()) + 100
         thumbsize = width
@@ -422,10 +434,45 @@ class EditorViewer(object):
         self.control.Bind(wx.EVT_MOTION, self.OnMouseMotion, self.control)
         self.control.Bind(wx.EVT_LEFT_DOWN, self.OnMouseLeftDown, self.control)
         self.control.Bind(wx.EVT_LEFT_UP, self.OnMouseLeftUp, self.control)
+        self.control.Bind(wx.EVT_WINDOW_DESTROY, self.OnDestroy, self.control)
         self.viewcontrol = self.view.getControl()
         self.view.setTitle(messages.get('view.title'))
         self.view.setTitleImage(images.getImage(images.VIEW_ICON))
         return self.viewcontrol
+
+    def OnDestroy(self, event):
+        self._destroying = True
+        self._unbindUiHandlers()
+        self.zoomSmallLeft = None
+        self.zoomSmallRight = None
+        self.zoomControl = None
+        self.horizSB = None
+        self.vertSB = None
+        event.Skip()
+
+    def _unbindUiHandlers(self):
+        try:
+            if self.control is not None:
+                self.control.Unbind(wx.EVT_PAINT, handler=self.OnPaint)
+                self.control.Unbind(wx.EVT_SIZE, handler=self.OnSize)
+                self.control.Unbind(wx.EVT_MOTION, handler=self.OnMouseMotion)
+                self.control.Unbind(wx.EVT_LEFT_DOWN, handler=self.OnMouseLeftDown)
+                self.control.Unbind(wx.EVT_LEFT_UP, handler=self.OnMouseLeftUp)
+                self.control.Unbind(wx.EVT_WINDOW_DESTROY, handler=self.OnDestroy)
+        except Exception:
+            pass
+        try:
+            if self.zoomControl is not None:
+                self.control.Unbind(wx.EVT_SCROLL, handler=self.OnZoomControl, source=self.zoomControl)
+        except Exception:
+            pass
+        try:
+            if self.horizSB is not None:
+                self.control.Unbind(wx.EVT_SCROLL, handler=self.OnHorizScroll, source=self.horizSB)
+            if self.vertSB is not None:
+                self.control.Unbind(wx.EVT_SCROLL, handler=self.OnVertScroll, source=self.vertSB)
+        except Exception:
+            pass
 
     def OnMouseLeftUp(self, event):
         event.Skip()
@@ -689,6 +736,8 @@ class EditorViewer(object):
 
     def positionZoomControl(self):
         global ZOOMCONTROL_WIDTH
+        if self._destroying or self.zoomSmallLeft is None or self.zoomSmallRight is None or self.zoomControl is None:
+            return
         size = self.control.GetClientSize()
         (left, right) = (
          self.zoomSmallLeft.GetSize(), self.zoomSmallRight.GetSize())
@@ -700,6 +749,8 @@ class EditorViewer(object):
 
     def positionScrollbars(self):
         global LABEL_COLUMN_WIDTH
+        if self._destroying or self.horizSB is None or self.vertSB is None:
+            return
         size = self.control.GetClientSize()
         size = (size[0] - self.getTitleColumnWidth(), size[1])
         self.horizSB.SetPosition(wx.Point(LABEL_COLUMN_WIDTH + ZOOMCONTROL_WIDTH, size[1] - DEFAULT_SB_WIDTH))

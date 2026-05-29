@@ -41,16 +41,16 @@ class SerialConfigurationSegment(object):
             sizer.AddGrowableCol(1)
 
             def add(num):
-                return num + 1
+                return str(num + 1)
 
             portLabel = wx.StaticText(self.control, -1, 'Port:')
             self.portChoice = wx.ComboBox(self.control, -1, choices=list(map(add, CHOICES_PORTS)), style=wx.CB_READONLY)
             baudLabel = wx.StaticText(self.control, -1, 'Baud Rate:')
-            self.baudChoice = wx.ComboBox(self.control, -1, choices=CHOICES_BAUDRATE, style=wx.CB_READONLY)
+            self.baudChoice = wx.ComboBox(self.control, -1, choices=list(map(str, CHOICES_BAUDRATE)), style=wx.CB_READONLY)
             parityLabel = wx.StaticText(self.control, -1, 'Parity:')
             self.parityChoice = wx.ComboBox(self.control, -1, choices=CHOICES_PARITY_TEXT, style=wx.CB_READONLY)
             stopbitsLabel = wx.StaticText(self.control, -1, 'Stop Bits:')
-            self.stopbitsChoice = wx.ComboBox(self.control, -1, choices=CHOICES_STOPBITS, style=wx.CB_READONLY)
+            self.stopbitsChoice = wx.ComboBox(self.control, -1, choices=list(map(str, CHOICES_STOPBITS)), style=wx.CB_READONLY)
             sizer.Add(portLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
             sizer.Add(self.portChoice, 1, wx.ALIGN_CENTRE_VERTICAL)
             sizer.Add(baudLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
@@ -172,13 +172,20 @@ class SerialNetworkDriver(DeviceDriver):
         global SERIAL_PARITY
         DeviceDriver.setConfiguration(self, configuration)
         try:
-            self.portnum = int(configuration.get('driver', 'port'))
+            self.portnum = self._formatPort(configuration.get('driver', 'port'))
             self.baudrate = int(configuration.get('driver', 'baudrate'))
             self.parity = SERIAL_PARITY[configuration.get('driver', 'parity')]
             self.stopbits = int(configuration.get('driver', 'stopbits'))
         except Exception as msg:
             print(('* ERROR: Cannot configure network device driver:', msg))
             raise Exception('* ERROR: Cannot configure network device driver: %s' % msg)
+
+    def _formatPort(self, portValue):
+        try:
+            port_int = int(portValue)
+            return 'COM%d' % (port_int + 1)
+        except Exception:
+            return str(portValue)
 
     def initialize(self):
         try:
@@ -187,8 +194,12 @@ class SerialNetworkDriver(DeviceDriver):
             print(('\tBaud Rate:', self.baudrate))
             print(('\tParity:', self.parity))
             print(('\tStop Bits:', self.stopbits))
+            if self.port is not None and getattr(self.port, 'is_open', False):
+                self.status = rs485_drivers.STATUS_INITIALIZED
+                return
             self.port = serial.Serial(port=self.portnum, baudrate=self.baudrate, parity=self.parity, stopbits=self.stopbits)
-            self.port.open()
+            if not self.port.is_open:
+                self.port.open()
             self.status = rs485_drivers.STATUS_INITIALIZED
         except Exception as msg:
             import traceback
@@ -219,6 +230,9 @@ class SerialNetworkDriver(DeviceDriver):
         logger.debug('shutdown')
         if not self.status == rs485_drivers.STATUS_INITIALIZED:
             print('returning not intialized')
+            return
+        if self.port is None:
+            self.status = rs485_drivers.STATUS_UNINITIALIZED
             return
         self.port.close()
         self.status = rs485_drivers.STATUS_UNINITIALIZED

@@ -273,7 +273,13 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         self.setHardwareInfo(config)
         self.updateStatus()
         try:
-            numChannels = config.get('main', 'channels')
+            if not config.has_section('main'):
+                config.add_section('main')
+            if config.has_option('main', 'channels'):
+                numChannels = config.get('main', 'channels')
+            else:
+                numChannels = CHANNEL_CHOICES[0]
+                config.set('main', 'channels', numChannels)
             self.channelsChoice.SetSelection(CHANNEL_CHOICES.index(numChannels))
         except Exception as msg:
             print(('* WARNING: Exception while setting channel numbers:', msg))
@@ -446,4 +452,13 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
 
     def dispose(self):
         hardware.userinterface.configurator.ConfigurationPage.dispose(self)
-        self.control.Destroy()
+        if self.control is None:
+            return
+        try:
+            if hasattr(wx, 'IsDestroyed') and wx.IsDestroyed(self.control):
+                self.control = None
+                return
+            self.control.Destroy()
+        except Exception:
+            pass
+        self.control = None

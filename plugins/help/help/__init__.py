@@ -48,7 +48,10 @@ class HelpPlugin(lib.kernel.plugin.Plugin):
         helpManager = ui.getDefault().getMenuManager().findByPath('atm.help')
         helpManager.appendToGroup('help-additions-begin', poi.actions.ActionContributionItem(help_actions.HelpContentsAction(self)))
         helpManager.update()
-        wx.FileSystem.AddHandler(wx.ZipFSHandler())
+        try:
+            wx.FileSystem.AddHandler(wx.ArchiveFSHandler())
+        except Exception:
+            wx.FileSystem.AddHandler(wx.ZipFSHandler())
         provider = wx.SimpleHelpProvider()
         wx.HelpProvider.Set(provider)
         self.loadPredefinedBooks()
@@ -77,7 +80,10 @@ class HelpPlugin(lib.kernel.plugin.Plugin):
         if self.controller is None:
             return
         logger.debug('Adding direct book %s to help controller' % bookPath)
-        self.controller.addBook(bookPath)
+        try:
+            self.controller.addBook(bookPath)
+        except Exception as msg:
+            logger.warning("Skipping invalid help book '%s': %s" % (bookPath, msg))
         return
 
     def addBooks(self):
@@ -86,7 +92,7 @@ class HelpPlugin(lib.kernel.plugin.Plugin):
                 logger.debug("Adding cached book '%s' to help controller" % book)
                 self.controller.addBook(book)
             except Exception as msg:
-                logger.exception(msg)
+                logger.warning("Skipping invalid help book '%s': %s" % (book, msg))
 
     def xcreateController(self):
         self.controller = wx.html.HtmlHelpController()

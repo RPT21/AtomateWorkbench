@@ -37,6 +37,14 @@ class RecipeExplorer(poi.dialogs.Dialog):
 
     def workspaceChanged(self, event):
         resource = event.getRoot()
+        if isinstance(resource, resources.project.Project):
+            self.updateRecipes()
+            selection = self.getView('recipes').getViewer().getSelection()
+            if len(selection) == 0:
+                self.views['runlogs'].getViewer().clear()
+                self.views['versions'].getViewer().clear()
+                self.views['snapshot'].clear()
+            return
         selection = self.getView('recipes').getViewer().getSelection()
         if len(selection) == 0:
             return
@@ -46,8 +54,6 @@ class RecipeExplorer(poi.dialogs.Dialog):
             if not selection.equals(project):
                 return
             self.updateVersions(project)
-        elif isinstance(resource, resources.project.Project):
-            self.updateRecipes()
         elif isinstance(resource, resources.project.RunLog):
             pass
 
@@ -245,7 +251,7 @@ class RecipeExplorer(poi.dialogs.Dialog):
             window.SetDefaultSize(wx.Size(width, currsize[1]))
             self.performLayout()
 
-        wx.adv.EVT_SASH_DRAGGED_RANGE(self.stage, 1000, 1003, draggedSash)
+        self.stage.Bind(wx.adv.EVT_SASH_DRAGGED_RANGE, draggedSash, id=1000, id2=1003)
 
     def getMementoID(self):
         return 'recipeexplorer.prefs'

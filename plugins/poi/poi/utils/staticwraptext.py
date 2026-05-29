@@ -24,7 +24,7 @@ class StaticWrapText(wx.StaticText):
     def __wrap(self):
         words = self.__label.split()
         lines = []
-        max_width = self.GetParent().GetVirtualSizeTuple()[0]
+        max_width = self.GetParent().GetVirtualSize()[0]
         index = 0
         current = []
         for word in words:

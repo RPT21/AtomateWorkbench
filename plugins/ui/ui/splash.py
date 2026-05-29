@@ -17,6 +17,7 @@ class SplashPage(wx.adv.SplashScreen):
         self.internal = False
         self.statustext = ''
         self.timer = None
+        self._destroying = False
 
         def ignored(e):
             pass
@@ -77,20 +78,29 @@ class SplashPage(wx.adv.SplashScreen):
 
     def done(self):
         self.internal = True
+        self._destroying = True
         wx.CallAfter(self.__internalDone)
 
     def __internalDone(self):
+        if self._isDestroyed():
+            return
         self.hide()
         self.Close(True)
 
     def hide(self):
+        if self._isDestroyed():
+            return
         self.Hide()
 
     def show(self):
+        if self._isDestroyed():
+            return
         self.Show()
         self.Refresh()
 
     def setStatus(self, text):
+        if self._isDestroyed():
+            return
         self.statustext = text
         wx.CallAfter(self.Refresh)
 
@@ -99,3 +109,13 @@ class SplashPage(wx.adv.SplashScreen):
 
     def setBuild(self, build):
         pass
+
+    def _isDestroyed(self):
+        if self._destroying:
+            return True
+        if hasattr(wx, 'IsDestroyed'):
+            try:
+                return wx.IsDestroyed(self)
+            except Exception:
+                return True
+        return False

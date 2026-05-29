@@ -290,7 +290,15 @@ class ActionContributionItem(ContributionItem):
         if image is None:
             image = NullBitmap
         try:
-            self.widget = toolbar.AddLabelTool(NewId(), label, image, shortHelp=toolTipText, longHelp=extendedText)
+            tool_id = NewId()
+            try:
+                self.widget = toolbar.AddTool(tool_id, label, image)
+            except TypeError:
+                self.widget = toolbar.AddTool(tool_id, label, image, NullBitmap)
+            if toolTipText and hasattr(toolbar, 'SetToolShortHelp'):
+                toolbar.SetToolShortHelp(tool_id, toolTipText)
+            if extendedText and hasattr(toolbar, 'SetToolLongHelp'):
+                toolbar.SetToolLongHelp(tool_id, extendedText)
             toolbar.EnableTool(self.widget.GetId(), self.action.isEnabled())
         except Exception as msg:
             print(("* ERROR: Unable to create tool for toolbar('%s'):'%s'" % (self.action, msg)))

@@ -97,7 +97,7 @@ class HardwareTypeSelectionPage(plugins.poi.poi.wizards.WizardPage):
         nameGroup.SetSizer(sizer)
         nameGroup.SetAutoLayout(True)
         self.nameField.Enable(False)
-        wx.EVT_TEXT(composite, self.nameField.GetId(), self.OnNameFieldChange)
+        self.nameField.Bind(wx.EVT_TEXT, self.OnNameFieldChange)
         self.viewer = plugins.poi.poi.views.viewers.TableViewer(self.control)
         self.viewer.setContentProvider(plugins.hardware.hardware.userinterface.HardwareTypesContentProvider())
         self.viewer.setLabelProvider(plugins.hardware.hardware.userinterface.HardwareTypesLabelProvider())

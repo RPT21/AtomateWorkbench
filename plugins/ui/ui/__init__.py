@@ -171,7 +171,12 @@ class UIPlugin(lib.kernel.plugin.Plugin):
     def setSplashText(self, text):
         if self.splash is None:
             return
-        self.splash.setStatus(text)
+        try:
+            if hasattr(wx, 'IsDestroyed') and wx.IsDestroyed(self.splash):
+                return
+            self.splash.setStatus(text)
+        except Exception as e:
+            raise Exception(f"setSplashText Exception: {e}")
         return
 
     def getContextBundle(self):

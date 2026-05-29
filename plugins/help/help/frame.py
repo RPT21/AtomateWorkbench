@@ -4,6 +4,7 @@
 # Embedded file name: ../plugins/help/src/help/frame.py
 # Compiled at: 2004-11-23 08:00:49
 import wx, wx.html, configparser, logging
+import os
 logger = logging.getLogger('help.controller')
 
 class BookControl(wx.TreeCtrl):
@@ -143,7 +144,11 @@ class HelpFrame(wx.Frame):
     def showHelpIDWithBook(self, bookname, sid):
         logger.debug('Going to show book name %s - %s' % (bookname, sid))
         if bookname not in self.books:
-            bookname = 'help'
+            if 'help' in self.books:
+                bookname = 'help'
+            else:
+                logger.error("No help books loaded; cannot show '%s'" % bookname)
+                return
         book = self.books[bookname]
         logger.debug('Showing book: %s' % book.path)
         filepath = ''
@@ -172,9 +177,9 @@ class Book(object):
     __module__ = __name__
 
     def __init__(self, bookpath):
-        self.path = bookpath
+        self.path = self._normalizePath(bookpath)
         self.fh = wx.FileSystem()
-        props = self.fh.OpenFile('file:%s#zip:book.props' % bookpath)
+        props = self._openProps()
         if props is None:
             raise Exception('Not a properly formatted help file: %s' % bookpath)
         cp = configparser.ConfigParser()
@@ -243,3 +248,21 @@ class Book(object):
 
     def getId(self):
         return self.id
+
+    def _normalizePath(self, path):
+        return os.path.abspath(path).replace('\\', '/')
+
+    def _openProps(self):
+        candidates = [
+            'file:%s#zip:book.props' % self.path,
+            'zip:%s#book.props' % self.path,
+            'file://%s#zip:book.props' % self.path,
+        ]
+        for uri in candidates:
+            try:
+                props = self.fh.OpenFile(uri)
+                if props is not None:
+                    return props
+            except Exception as msg:
+                logger.debug("Help book open failed '%s': %s" % (uri, msg))
+        return None

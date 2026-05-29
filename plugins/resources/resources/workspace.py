@@ -56,7 +56,8 @@ def removeWorkspaceChangeListener(listener):
 def fireWorkspaceChangeEvent(event):
     global suppress
     if suppress:
-        return list(map((lambda listener: listener.workspaceChanged(event)), workspaceChangeListeners))
+        return
+    return list(map((lambda listener: listener.workspaceChanged(event)), workspaceChangeListeners))
 
 
 def suppressWorkspaceChangeEvents(doit):
@@ -143,7 +144,17 @@ def cmpOnNumber(x, y):
 def getRecipeVersions(project):
     location = project.getLocation()
     results = []
-    for filename in os.listdir(location):
+    if not os.path.isdir(location):
+        logger.warning("Workspace project folder missing: '%s'" % location)
+        fireWorkspaceChangeEvent(WorkspaceChangeEvent(TYPE_REMOVE, project))
+        return results
+    try:
+        filenames = os.listdir(location)
+    except Exception as msg:
+        logger.exception(msg)
+        fireWorkspaceChangeEvent(WorkspaceChangeEvent(TYPE_REMOVE, project))
+        return results
+    for filename in filenames:
         fullpath = os.path.join(location, filename)
         if not os.path.isdir(fullpath):
             continue
@@ -216,7 +227,11 @@ def getSharedLocation():
 def remove(resource):
     global TYPE_REMOVE
     resource.remove()
-    shutil.rmtree(resource.getLocation())
+    location = resource.getLocation()
+    if os.path.exists(location):
+        shutil.rmtree(location)
+    else:
+        logger.warning("Workspace resource folder already missing: '%s'" % location)
     fireWorkspaceChangeEvent(WorkspaceChangeEvent(TYPE_REMOVE, resource))
 
 

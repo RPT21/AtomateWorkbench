@@ -318,13 +318,15 @@ class HardwareConfigurator(poi.dialogs.MessageHeaderDialog):
 
     def removeCurrentConfigPage(self):
         self.configBody.Hide()
+        sizer = self.configBody.GetSizer()
         for child in self.configBody.GetChildren():
             self.configBody.RemoveChild(child)
-            self.configBody.GetSizer().Remove(child)
-            if self.currentPage is not None:
-                self.currentPage.dispose()
-                self.currentPage = None
-
+            if sizer is not None:
+                sizer.Detach(child)
+            child.Destroy()
+        if self.currentPage is not None:
+            self.currentPage.dispose()
+            self.currentPage = None
         self.configBody.Show()
         return
 

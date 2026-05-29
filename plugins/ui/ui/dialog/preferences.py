@@ -76,7 +76,7 @@ class PreferencesDialog(poi_dialogs.Dialog):
     def OnTreeSelChanged(self, event):
         event.Skip()
         item = event.GetItem()
-        page = self.tree.GetPyData(item)
+        page = self.tree.GetItemData(item)
         if page != self.currentPage:
             self.setCurrentPage(page)
 

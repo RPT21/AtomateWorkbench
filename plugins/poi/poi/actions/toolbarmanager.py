@@ -58,13 +58,27 @@ class ToolBarManager(poi.actions.ContributionManager, poi.actions.ContributionIt
         if wx.Platform not in ['__WXGTK__']:
             self.widget.ClearTools()
         for item in self.items:
+            if not hasattr(item, 'widget'):
+                continue
             try:
-                if hasattr(item, 'widget'):
-                    if not isinstance(item.widget, wx.Control):
-                        worked = self.widget.DeleteTool(item.widget.GetId())
-                    else:
-                        self.widget.RemoveChild(item.widget)
-                        item.widget.Destroy()
+                widget = item.widget
+                if hasattr(wx, 'IsDestroyed'):
+                    try:
+                        if wx.IsDestroyed(widget):
+                            continue
+                    except Exception:
+                        continue
+                if not isinstance(widget, wx.Control):
+                    self.widget.DeleteTool(widget.GetId())
+                else:
+                    try:
+                        if widget.GetParent() == self.widget:
+                            self.widget.RemoveChild(widget)
+                    except Exception:
+                        pass
+                    widget.Destroy()
+            except RuntimeError:
+                continue
             except Exception as msg:
                 logger.exception(msg)
 
