@@ -110,7 +110,7 @@ class RecipeVersion(resources.Resource):
         filename = self.getRecipeDataFilename()
         try:
             lib.kernel.setAtomateGroupID()
-            f = open(filename, 'wU')
+            f = open(filename, 'wt')
             f.write(self.buff)
             f.close()
             lib.kernel.resetUserGroupID()
