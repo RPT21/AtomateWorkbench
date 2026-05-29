@@ -122,16 +122,26 @@ class HelpFrame(wx.Frame):
 
     def navigateToNode(self, book, data):
         sid = None
+
+        # 1. Check if data is a Book object
         if isinstance(data, Book):
             sid = data.indexid
+
+        # 2. If it's a dictionary, make sure it has an 'id'
         elif 'id' not in data:
             logger.debug('No id specified for book %s' % book.getTitle())
             return
-        sid = data['id']
+
+        # 3. If it is a dictionary and has an 'id', extract it safely
+        else:
+            sid = data['id']
+
+        # The rest of your function remains exactly the same
         items = book.getItems()
         if sid not in items:
             logger.debug('No id %s in book %s' % (sid, book.getTitle()))
             return
+
         self.showHelpIDWithBook(book.getId(), sid)
         return
 
@@ -154,7 +164,8 @@ class HelpFrame(wx.Frame):
         filepath = ''
         if sid in book.getItems():
             filepath = book.getItems()[sid]
-        fp = 'file:%s#zip:%s' % (book.path, filepath)
+        # fp = 'file:%s#zip:%s' % (book.path, filepath)
+        fp = f"{book.path}#zip:{filepath}"
         self.content.LoadPage(fp)
 
     def setTitle(self, title):
@@ -177,9 +188,22 @@ class Book(object):
     __module__ = __name__
 
     def __init__(self, bookpath):
-        self.path = self._normalizePath(bookpath)
+
+        # To be able to access files inside other files, we need to add the zip handler to the file system
+        wx.FileSystem.AddHandler(wx.ArchiveFSHandler())
+
+        # Normalize the path
+        bookpath = os.path.abspath(bookpath).replace('\\', '/')
+        self.path = wx.FileSystem.FileNameToURL(bookpath)
+        self.book_props = f"{self.path}#zip:book.props"
+
         self.fh = wx.FileSystem()
-        props = self._openProps()
+
+        try:
+            props = self.fh.OpenFile(self.book_props)
+        except Exception as msg:
+            logger.debug("Help book open failed '%s': %s" % (self.path, msg))
+
         if props is None:
             raise Exception('Not a properly formatted help file: %s' % bookpath)
         cp = configparser.ConfigParser()
@@ -190,9 +214,27 @@ class Book(object):
             def __init__(self, fh):
                 self.fh = fh
 
+            # Add support to make this object iterable (e.g., for a for-loop)
+            def __iter__(self):
+                return self
+
+            # Python 3 calls __next__ to get the next item in a loop
+            def __next__(self):
+                line = self.readline()
+                # If readline() returns an empty string, we have reached the end of the file (EOF)
+                if not line:
+                    raise StopIteration
+                return line
+
             def readline(self):
                 x = self.fh.readline()
-                if x.find('\x08') >= 0:
+
+                # NOTE: Depending on how wxPython returns the data (bytes or string),
+                # you might need to decode it. We ensure it's a string here.
+                if isinstance(x, bytes):
+                    x = x.decode('utf-8', errors='ignore')  # Convert bytes to string if necessary
+
+                if '\x08' in x:
                     x = x.replace('\x08', '')
                 return x
 
@@ -248,21 +290,3 @@ class Book(object):
 
     def getId(self):
         return self.id
-
-    def _normalizePath(self, path):
-        return os.path.abspath(path).replace('\\', '/')
-
-    def _openProps(self):
-        candidates = [
-            'file:%s#zip:book.props' % self.path,
-            'zip:%s#book.props' % self.path,
-            'file://%s#zip:book.props' % self.path,
-        ]
-        for uri in candidates:
-            try:
-                props = self.fh.OpenFile(uri)
-                if props is not None:
-                    return props
-            except Exception as msg:
-                logger.debug("Help book open failed '%s': %s" % (uri, msg))
-        return None
