@@ -12,7 +12,7 @@ import plugins.resources.resources as resources
 import plugins.labbooks.labbooks.caching as labbooks_caching
 
 logger = logging.getLogger('labbooks')
-global instance
+instance = None
 
 def getDefault():
     global instance

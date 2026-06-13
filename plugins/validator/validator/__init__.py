@@ -11,6 +11,7 @@ import logging, plugins.validator.validator.userinterface.preferences
 
 logger = logging.getLogger('validator')
 PLUGIN_ID = 'validator'
+instance = None
 
 
 def _safeCallAfter(func, *args, **kwargs):

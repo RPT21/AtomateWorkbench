@@ -45,8 +45,12 @@ class MFCDevicePlugin(kernel.plugin.Plugin):
         extendededitor.addContributionFactory(mfc_device.DEVICE_ID, MFCExtendedEditorContributionFactory())
 
     validation.init()
-    graphview.getDefault().registerViewFactory(mfc_device.DEVICE_ID, mfc_execgraphitem.graphViewFactory)
-    labbooks.getDefault().registerDeviceParticipant(mfc_participant.MFCRunLogParticipant())
+    gv = graphview.getDefault()
+    if gv is not None:
+        gv.registerViewFactory(mfc_device.DEVICE_ID, mfc_execgraphitem.graphViewFactory)
+    lb = labbooks.getDefault()
+    if lb is not None:
+        lb.registerDeviceParticipant(mfc_participant.MFCRunLogParticipant())
 
 
 class MFCPanelViewContributionFactory(object):

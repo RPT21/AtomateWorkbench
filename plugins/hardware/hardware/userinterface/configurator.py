@@ -317,16 +317,38 @@ class HardwareConfigurator(poi.dialogs.MessageHeaderDialog):
         return
 
     def removeCurrentConfigPage(self):
+        """Remove currently shown config page.
+
+        Defensive behaviour: some ConfigurationPage implementations call Destroy()
+        on their control inside their dispose() implementation while others do
+        not. To avoid a double-destroy RuntimeError we call dispose() first and
+        then remove/destroy any remaining children. When destroying children we
+        guard against RuntimeError raised when the underlying C++ object has
+        already been deleted and ignore it.
+        """
         self.configBody.Hide()
+        # First allow the page to perform its dispose logic (listeners, etc.)
+        if self.currentPage is not None:
+            try:
+                self.currentPage.dispose()
+            except Exception:
+                logger.exception('Exception while disposing current page')
+            self.currentPage = None
+
         sizer = self.configBody.GetSizer()
         for child in self.configBody.GetChildren():
-            self.configBody.RemoveChild(child)
-            if sizer is not None:
-                sizer.Detach(child)
-            child.Destroy()
-        if self.currentPage is not None:
-            self.currentPage.dispose()
-            self.currentPage = None
+            try:
+                self.configBody.RemoveChild(child)
+                if sizer is not None:
+                    sizer.Detach(child)
+                try:
+                    child.Destroy()
+                except RuntimeError:
+                    # Underlying C++ object already destroyed; ignore
+                    logger.debug('Child already destroyed, ignoring')
+            except Exception:
+                logger.exception('Error while removing child from configBody')
+
         self.configBody.Show()
         return
 

@@ -66,7 +66,8 @@ class FirstRecipeWizardPage(poi.wizards.WizardPage):
         sizer = wx.BoxSizer(wx.VERTICAL)
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer.Add(wx.StaticText(self.control, -1, 'To dir:'), 0, wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
-        hsizer.Add(self.destinationDirField, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTRE_VERTICAL)
+        # Avoid combining wx.EXPAND with alignment flags
+        hsizer.Add(self.destinationDirField, 1, wx.ALL | wx.EXPAND)
         hsizer.Add(browseButton, 0, wx.LEFT | wx.ALIGN_CENTRE_VERTICAL, 5)
         sizer.Add(hsizer, 0, wx.ALL | wx.EXPAND, 5)
         self.control.SetSizer(sizer)

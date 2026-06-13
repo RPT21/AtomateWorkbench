@@ -10,6 +10,9 @@ import plugins.ui.ui as ui
 import plugins.poi.poi as poi
 import plugins.grideditor.grideditor as grideditor
 import plugins.grideditor.grideditor.adddevicedialog as grideditor_adddevicedialog
+import logging
+
+logger = logging.getLogger(__name__)
 
 DIALOG_PREFS_FILE = 'recipeoptions.prefs'
 
@@ -176,10 +179,11 @@ class RecipeOptionsDialog(poi.dialogs.MessageHeaderDialog):
 
     def insertDeviceEntry(self, device):
         idx = self.listctrl.GetItemCount()
-        self.listctrl.InsertStringItem(idx, device.getType())
+        # Use InsertItem and SetItem instead of deprecated InsertStringItem and SetStringItem
+        self.listctrl.InsertItem(idx, device.getType())
         label = device.getLabel()
-        self.listctrl.SetStringItem(idx, 1, label)
-        self.listctrl.SetStringItem(idx, 2, device.getDeviceStr())
+        self.listctrl.SetItem(idx, 1, label)
+        self.listctrl.SetItem(idx, 2, device.getDeviceStr())
         self.listctrl.SetItemData(idx, idx)
         self.id2objects[idx] = device
 
@@ -271,12 +275,31 @@ class RecipeOptionsDialog(poi.dialogs.MessageHeaderDialog):
 
     def editDevice(self, selection):
         """Passes the selection, which is a device, to the editor dialog"""
-        dlg = DeviceEditorDialog(selection[0])
+        if not selection:
+            logger.debug('editDevice called with empty selection')
+            return
+        device = selection[0]
+        dlg = DeviceEditorDialog(device)
         dlg.createControl(self.control)
-        if dlg.showModal() == wx.ID_OK:
-            recipeModel = self.editor.getRecipeModel()
-            recipeModel.tagDeviceModified(selection[0])
-        dlg.dispose()
+        try:
+            if dlg.showModal() == wx.ID_OK:
+                recipeModel = None
+                try:
+                    recipeModel = self.editor.getRecipeModel()
+                except Exception:
+                    logger.exception('Error obtaining recipe model from editor')
+                if recipeModel is not None:
+                    try:
+                        recipeModel.tagDeviceModified(device)
+                    except Exception:
+                        logger.exception('Error tagging device as modified on recipe model')
+                else:
+                    logger.warning('No recipe model available; device modification not tagged')
+        finally:
+            try:
+                dlg.dispose()
+            except Exception:
+                logger.exception('Error disposing device editor dialog')
         self.fillRecipeData()
 
     def getItemSelected(self):

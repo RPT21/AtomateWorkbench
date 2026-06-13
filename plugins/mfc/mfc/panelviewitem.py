@@ -81,7 +81,14 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
         try:
             hwid = self.device.hardwarehints.getChildNamed('id').getValue()
             desc = plugins.hardware.hardware.hardwaremanager.getHardwareByName(hwid)
-            inst = desc.getInstance()
+            if desc is None:
+                logger.warning("Configured hardware '%s' not found", hwid)
+                return None
+            try:
+                inst = desc.getInstance()
+            except Exception:
+                logger.exception('Error getting instance for hardware %s', hwid)
+                return None
             return inst
         except Exception as msg:
             logger.exception(msg)
@@ -146,8 +153,16 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
             else:
                 flow = float(flowval * self.range / 1000) * (self.gcf / 100.0)
             self.ledCtrl.setValue(self.formatFlow(flow))
-            setpoint = self.getConfiguredHardware().getSetpoint(self.device.getChannelNumber())
-            if setpoint is None:
+            inst = self.getConfiguredHardware()
+            try:
+                if inst is None:
+                    setpoint = ''
+                else:
+                    setpoint = inst.getSetpoint(self.device.getChannelNumber())
+                    if setpoint is None:
+                        setpoint = ''
+            except Exception:
+                logger.exception('Error obtaining setpoint from hardware instance')
                 setpoint = ''
             self.ledCtrl.setSetpointValue(str(setpoint))
         except Exception as msg:

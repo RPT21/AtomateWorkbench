@@ -289,7 +289,11 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
                 continue
             if device == self.device:
                 continue
-            if hwid != device.getHardwareHints().getChildNamed('id').getValue():
+            device_hints = device.getHardwareHints()
+            id_hint = device_hints.getChildNamed('id') if device_hints else None
+            if id_hint is None:
+                continue
+            if hwid != id_hint.getValue():
                 continue
             valid = False
 
@@ -421,7 +425,11 @@ class FurnaceZoneDevice(core.device.Device):
 
     def getRange(self):
         try:
-            return int(self.getHardwareHints().getChildNamed('range').getValue())
+            hints = self.getHardwareHints()
+            range_hint = hints.getChildNamed('range')
+            if range_hint is not None:
+                return int(range_hint.getValue())
+            return 1000
         except Exception as msg:
             return 1000
 
@@ -429,11 +437,40 @@ class FurnaceZoneDevice(core.device.Device):
         try:
             hwhints = self.getHardwareHints()
             hardwareName = hwhints.getChildNamed('id').getValue()
+            logger.debug(f"FurnaceZone looking for hardware: '{hardwareName}'")
             description = hardware.hardwaremanager.getHardwareByName(hardwareName)
-            hwtype = description.getHardwareType()
-            hwtype = hardware.hardwaremanager.getHardwareType(hwtype)
-            description = hwtype.getDescription()
-            return '%s (%s)' % (hardwareName, description)
+            if description is None:
+                logger.warning("Hardware description not found for '%s'", hardwareName)
+                # Log available hardware for debugging
+                try:
+                    available = hardware.hardwaremanager.getAvailableHardware()
+                    logger.debug("Available hardware: %s", [h.getName() if hasattr(h, 'getName') else str(h) for h in available])
+                except Exception:
+                    pass
+                return hardwareName
+            # ...existing code...
+            try:
+                hwtype_id = description.getHardwareType()
+            except Exception:
+                hwtype_id = None
+            if hwtype_id is not None:
+                hwtype = hardware.hardwaremanager.getHardwareType(hwtype_id)
+            else:
+                hwtype = None
+            if hwtype is not None:
+                try:
+                    desc_text = hwtype.getDescription()
+                except Exception:
+                    try:
+                        desc_text = hwtype.getName()
+                    except Exception:
+                        desc_text = str(hwtype)
+            else:
+                try:
+                    desc_text = description.getName()
+                except Exception:
+                    desc_text = str(description)
+            return '%s (%s)' % (hardwareName, desc_text)
         except Exception as msg:
             logger.exception(msg)
 

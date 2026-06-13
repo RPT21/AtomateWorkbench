@@ -6,6 +6,9 @@
 import traceback, wx, plugins.up150.up150 as up150, plugins.core.core.device
 import plugins.hardware.hardware.hardwaremanager
 import plugins.hardware.hardware as hardware
+import logging
+
+logger = logging.getLogger('et2216e')
 import plugins.core.core as core
 import plugins.up150.up150.stepentry
 DEVICE_ID = 'up150'
@@ -110,9 +113,20 @@ class UP150DeviceEditor(core.device.DeviceEditor):
     def selectHardware(self, hwid):
         self.hardwareChoice.SetStringSelection(hwid)
         description = hardware.hardwaremanager.getHardwareByName(hwid)
-        hwtype = hardware.hardwaremanager.getHardwareType(description.getHardwareType())
+        if description is None:
+            logger.warning("Configured hardware '%s' not found", hwid)
+            self.description = None
+            return
+        try:
+            hwtype = hardware.hardwaremanager.getHardwareType(description.getHardwareType())
+        except Exception:
+            hwtype = None
         self.description = description
-        self.setHardwareEditor(hwtype.getDeviceHardwareEditor())
+        if hwtype is not None:
+            try:
+                self.setHardwareEditor(hwtype.getDeviceHardwareEditor())
+            except Exception:
+                logger.exception('Error creating hardware editor for %s', hwid)
 
     def removeHardwareEditor(self):
         sizer = self.hardwarePanel.GetSizer()
@@ -124,12 +138,23 @@ class UP150DeviceEditor(core.device.DeviceEditor):
     def setHardwareEditor(self, editor):
         print(('set hardare editor', editor))
         self.removeHardwareEditor()
-        editor.setInstance(self.description.getInstance())
-        editor.createControl(self.hardwarePanel)
-        sizer = self.hardwarePanel.GetSizer()
-        sizer.Add(editor.getControl(), 1, wx.EXPAND | wx.ALL, 0)
-        sizer.Layout()
-        self.currentHardwareEditor = editor
+        if self.description is None:
+            logger.warning('No description available when setting hardware editor')
+            return
+        try:
+            instance = self.description.getInstance()
+        except Exception:
+            logger.exception('Error getting hardware instance for editor')
+            return
+        try:
+            editor.setInstance(instance)
+            editor.createControl(self.hardwarePanel)
+            sizer = self.hardwarePanel.GetSizer()
+            sizer.Add(editor.getControl(), 1, wx.EXPAND | wx.ALL, 0)
+            sizer.Layout()
+            self.currentHardwareEditor = editor
+        except Exception:
+            logger.exception('Error creating hardware editor control')
 
     def getData(self, data):
         try:
@@ -159,8 +184,12 @@ class UP150Device(core.device.Device):
             hardwareName = hwhints.getChildNamed('id').getValue()
             hardwareAddress = hwhints.getChildNamed('address').getValue()
             description = hardware.hardwaremanager.getHardwareByName(hardwareName)
-            hwtype = description.getHardwareType()
-            hwtype = hardware.hardwaremanager.getHardwareType(hwtype)
+            if description is None:
+                return '%s - address %s' % (hardwareName, hardwareAddress)
+            hwtype_id = description.getHardwareType()
+            hwtype = hardware.hardwaremanager.getHardwareType(hwtype_id)
+            if hwtype is None:
+                return '%s - address %s' % (hardwareName, hardwareAddress)
             description = hwtype.getDescription()
             return '%s (%s) - address %s' % (hardwareName, description, hardwareAddress)
         except Exception as msg:

@@ -158,7 +158,7 @@ class SerialNetworkDriver(DeviceDriver):
 
     def debugDumpLockStatus(self):
         logger.debug('DUMPING LOCK STATUS')
-        logger.debug('\tSerial Lock: %s' % self.seriallock.locked_lock())
+        logger.debug('\tSerial Lock: %s' % self.seriallock.locked())
         logger.debug('\tCV Lock: %s' % self.cv._is_owned())
         logger.debug('DONE DUMPING LOCK')
 
@@ -201,15 +201,25 @@ class SerialNetworkDriver(DeviceDriver):
             if not self.port.is_open:
                 self.port.open()
             self.status = rs485_drivers.STATUS_INITIALIZED
-        except Exception as msg:
-            import traceback
-            traceback.print_exc()
+        except serial.SerialException as msg:
+            logger.warning("Unable to open serial port '%s': %s", self.portnum, msg)
             try:
-                self.port.close()
-            except:
-                pass
-            else:
-                raise Exception(msg)
+                if self.port is not None:
+                    self.port.close()
+            except Exception:
+                logger.debug('Serial port close after failed initialize raised an exception', exc_info=True)
+            self.port = None
+            self.status = rs485_drivers.STATUS_UNINITIALIZED
+        except Exception as msg:
+            logger.exception('Unexpected error while initializing serial driver')
+            try:
+                if self.port is not None:
+                    self.port.close()
+            except Exception:
+                logger.debug('Serial port close after unexpected initialize failure raised an exception', exc_info=True)
+            self.port = None
+            self.status = rs485_drivers.STATUS_UNINITIALIZED
+            raise Exception(msg)
 
     def checkError(self, retval):
         """

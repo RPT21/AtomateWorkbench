@@ -271,16 +271,18 @@ class GridEditorPlugin(kernel.plugin.Plugin):
                 (view, where) = mainframe.findView(grapheditor.VIEW_ID)
                 view.getViewer().setEditor(editor)
                 validator.getDefault().setupRecipe(None, recipeModel)
-            elif event.getOldValue() is None:
-                return
-            (view, where) = ui.getDefault().getMainFrame().findView(VIEW_ID)
-            ui.getDefault().removeView(VIEW_ID)
-            ui.getDefault().removeView(grapheditor.VIEW_ID)
-            ui.getDefault().removeView(extendededitor.VIEW_ID)
-            ui.getDefault().removeView(plugins.panelview.panelview.VIEW_ID)
-            self.recipeModel = None
-            validator.getDefault().setupRecipe(None, None)
-            grideditor_actions.handleActionContextChange(value, event.getOldValue())
+            else:
+                # Only remove views if recipe is being closed (value is None)
+                if event.getOldValue() is None:
+                    return
+                (view, where) = ui.getDefault().getMainFrame().findView(VIEW_ID)
+                ui.getDefault().removeView(VIEW_ID)
+                ui.getDefault().removeView(grapheditor.VIEW_ID)
+                ui.getDefault().removeView(extendededitor.VIEW_ID)
+                ui.getDefault().removeView(plugins.panelview.panelview.VIEW_ID)
+                self.recipeModel = None
+                validator.getDefault().setupRecipe(None, None)
+                grideditor_actions.handleActionContextChange(value, event.getOldValue())
         return
 
     def handlePartInit(self, part):

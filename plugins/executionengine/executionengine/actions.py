@@ -7,6 +7,8 @@ import plugins.poi.poi.actions, plugins.executionengine.executionengine.messages
 import plugins.executionengine.executionengine.images as images, plugins.ui.ui.context
 import plugins.resources.resources, plugins.executionengine.executionengine.purgemanager
 import plugins.ui.ui as ui
+import logging
+logger = logging.getLogger('executionengine.actions')
 isValid = False
 oldValidValue = True
 enablementState = True
@@ -59,7 +61,9 @@ def updateActions():
     purging = len(plugins.executionengine.executionengine.purgemanager.getPurgeWorkers()) > 0
     stopPurgeAction.setEnabled(purging)
     plugins.executionengine.executionengine.getDefault().fireEnablementState()
+    logger.debug('updateActions: isValid=%s, purging=%s, enablementState=%s' % (isValid, purging, enablementState))
     if not isValid or purging or not enablementState:
+        logger.debug('Run action disabled: isValid=%s, purging=%s, enablementState=%s' % (isValid, purging, enablementState))
         runAction.setEnabled(False)
         pauseAction.setEnabled(False)
         resumeAction.setEnabled(False)
@@ -68,6 +72,7 @@ def updateActions():
     else:
         execstate = ui.context.getProperty('execution')
         recipe = ui.context.getProperty('recipe')
+        logger.debug('updateActions: execstate=%s, recipe=%s' % (execstate, recipe is not None))
         if execstate is None:
             runAction.setEnabled(recipe is not None)
         else:

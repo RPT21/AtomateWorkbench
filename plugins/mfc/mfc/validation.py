@@ -94,4 +94,7 @@ class CompositeValidationParticipant(validator.participant.ValidationParticipant
 
 
 def init():
-    validator.getDefault().addValidationParticipant(CompositeValidationParticipant())
+    inst = validator.getDefault()
+    if inst is None:
+        return
+    inst.addValidationParticipant(CompositeValidationParticipant())

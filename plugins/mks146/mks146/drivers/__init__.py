@@ -148,3 +148,10 @@ class DeviceDriver(object):
             self.cv.wait()
         self.cv.release()
         self.discardAllInput()
+
+
+# Import bundled drivers so they register themselves in DRIVERS at package load time.
+# This must happen after DeviceDriver is defined because the driver modules import
+# this package and inherit from DeviceDriver during module import.
+from plugins.mks146.mks146.drivers import ser, network, emulation
+

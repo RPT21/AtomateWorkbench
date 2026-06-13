@@ -78,7 +78,7 @@ class ErrorViewer(object):
             iteminfo.SetText('N/A')
         iteminfo.SetId(itemCount)
         self.list.InsertItem(iteminfo)
-        self.list.SetStringItem(itemCount, 1, error.getDescription())
+        self.list.SetItem(itemCount, 1, error.getDescription())
         self.list.EnsureVisible(itemCount)
         self.stepIndices.append(stepidx)
         return

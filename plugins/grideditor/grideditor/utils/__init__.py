@@ -32,7 +32,9 @@ class ExecutionListener(object):
 
     def __init__(self):
         self.engine = None
-        executionengine.getDefault().addEngineInitListener(self)
+        engine = executionengine.getDefault()
+        if engine is not None:
+            engine.addEngineInitListener(self)
         return
 
     def engineInit(self, engine):

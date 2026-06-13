@@ -82,6 +82,12 @@ def setProperty(key, value):
     oldValue = None
     if key in properties:
         oldValue = properties[key]
+    if key == 'recipe':
+        try:
+            logger.debug("SET recipe: old=%s new=%s", oldValue, value)
+            # logger.debug('SET recipe stack:\n%s', ''.join(__import__('traceback').format_stack(limit=12)))
+        except Exception:
+            pass
     properties[key] = value
     wx.PostEvent(ui.invisibleFrame, InternalContextChangeEvent(key, oldValue, value))
     return

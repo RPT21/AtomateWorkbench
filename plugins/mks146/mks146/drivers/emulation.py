@@ -6,8 +6,7 @@
 import wx, plugins.poi.poi.actions, logging
 import plugins.ui.ui as ui
 import plugins.poi.poi as poi
-import plugins.mks647bc.mks647bc.drivers
-import plugins.mks647bc.mks647bc as mks647bc
+import plugins.mks146.mks146.drivers as mks146_drivers
 
 logger = logging.getLogger('mks647bc.drivers.emulation')
 
@@ -44,10 +43,10 @@ class UserInterface(object):
             label = wx.StaticText(self.window, -1, 'Channel %i:       ' % (i + 1))
             setpoint = wx.StaticText(self.window, -1, 'Set Point:       ')
             vsizer = wx.BoxSizer(wx.VERTICAL)
-            vsizer.Add(setpoint, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTRE_HORIZONTAL, 5)
+            vsizer.Add(setpoint, 0, wx.ALL | wx.ALIGN_CENTRE_HORIZONTAL, 5)
             vsizer.Add(slider, 1, wx.ALL | wx.ALIGN_CENTRE_HORIZONTAL, 5)
-            vsizer.Add(label, 0, wx.EXPAND | wx.ALL | wx.ALIGN_CENTRE_HORIZONTAL, 5)
-            slidersizer.AddSizer(vsizer, 0, wx.ALL, 5)
+            vsizer.Add(label, 0, wx.ALL | wx.ALIGN_CENTRE_HORIZONTAL, 5)
+            slidersizer.Add(vsizer, 0, wx.ALL, 5)
             self.channelSliders.append(slider)
             self.channelSetpoints.append(setpoint)
             self.channelLabels.append(label)
@@ -63,7 +62,7 @@ class UserInterface(object):
 
         mainsizer = wx.BoxSizer(wx.VERTICAL)
         mainsizer.Add(self.respondToggle, 0, wx.EXPAND | wx.ALL, 10)
-        mainsizer.AddSizer(slidersizer, 1, wx.EXPAND | wx.ALL, 10)
+        mainsizer.Add(slidersizer, 1, wx.EXPAND | wx.ALL, 10)
         mainsizer.Fit(self.window)
         mainsizer.Layout()
         self.window.SetSizer(mainsizer)
@@ -150,11 +149,11 @@ class ShowEmulationControl(poi.actions.Action):
         self.owner.toggleDisplay()
 
 
-class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
+class EmulationDeviceDriver(mks146_drivers.DeviceDriver):
     __module__ = __name__
 
     def __init__(self):
-        mks647bc.drivers.DeviceDriver.__init__(self)
+        mks146_drivers.DeviceDriver.__init__(self)
         self.wnd = UserInterface(self)
         self.channelValues = [0, 0, 0, 0]
         self.respond = True
@@ -199,6 +198,23 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
             return 0
         return self.channelValues[channelNum]
 
+    def getChannelCondition(self, channelNum, timeout=None):
+        """Return a (status, value) tuple for the requested channel.
+
+        Emulation driver keeps an internal channelValues list; return a simple
+        status string and the numeric value so callers that expect
+        (code, data) can proceed.
+        """
+        # channelNum is expected to be 1-based in the caller; convert to 0-based
+        idx = int(channelNum) - 1
+        try:
+            if idx < 0 or idx >= len(self.channelValues):
+                return ('disconnected', None)
+            return ('on', self.channelValues[idx])
+        except Exception as msg:
+            logger.exception(msg)
+            return ('error', None)
+
     def checkInterrupt(self):
         if self.ir:
             print((self, 'checkInterrupt - Acquire'))
@@ -216,7 +232,7 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
 
     def displayUI(self):
         logger.debug('Display UI')
-        if self.getStatus() != mks647bc.drivers.STATUS_INITIALIZED:
+        if self.getStatus() != mks146_drivers.STATUS_INITIALIZED:
             logger.debug('Not initialized')
             return
         logger.debug('Asking to create control')
@@ -236,23 +252,23 @@ class EmulationDeviceDriver(mks647bc.drivers.DeviceDriver):
         print(('is window disposed?', self.wnd.isDisposed()))
         if not self.wnd.isDisposed():
             self.wnd.restore()
-        if self.status == mks647bc.drivers.STATUS_INITIALIZED:
+        if self.status == mks146_drivers.STATUS_INITIALIZED:
             logger.debug('Driver already initialized')
             return
         self.channelValues = list(map((lambda x: 0), list(range(int(self.configuration.get('main', 'channels'))))))
         if self.checkInterrupt():
             logger.debug('Interrupted')
             return
-        self.status = mks647bc.drivers.STATUS_INITIALIZED
+        self.status = mks146_drivers.STATUS_INITIALIZED
         if self.wnd.isDisposed():
             self.displayUI()
 
     def shutdown(self):
         if self.checkInterrupt():
             return
-        self.status = mks647bc.drivers.STATUS_UNINITIALIZED
+        self.status = mks146_drivers.STATUS_UNINITIALIZED
         if not self.wnd.isDisposed():
             self.wnd.dispose()
 
 
-mks647bc.drivers.registerDriver('emulation', EmulationDeviceDriver, EmulationConfigurationSegment, 'Emulation')
+mks146_drivers.registerDriver('emulation', EmulationDeviceDriver, EmulationConfigurationSegment, 'Emulation')

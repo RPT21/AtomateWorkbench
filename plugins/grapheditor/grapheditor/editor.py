@@ -89,6 +89,7 @@ class EditorViewer(object):
         self.horizSB = None
         self.vertSB = None
         self._destroying = False
+        self._pendingDevices = {}  # Maps device to device.getType() for retry
         return
 
     def setEditor(self, editor):
@@ -117,6 +118,9 @@ class EditorViewer(object):
 
     def dispose(self):
         self._destroying = True
+        # ...existing code...
+        from plugins.grapheditor.grapheditor import _unregisterPendingViewer
+        _unregisterPendingViewer(self)
         self._unbindUiHandlers()
         self.disposeContributors()
         self.editor.removeInputChangedListener(self)
@@ -190,12 +194,41 @@ class EditorViewer(object):
         factory = getGraphContributionFactory(device.getType())
         logger.debug('Contributing to graph factory: %s- %s' % (factory, device))
         if factory is None:
+            # Factory not yet registered, add to pending list for retry
+            logger.debug('Factory for %s not registered yet, adding to pending' % device.getType())
+            self._pendingDevices[device] = device.getType()
+            from plugins.grapheditor.grapheditor import _registerPendingViewer
+            _registerPendingViewer(self)
             return
+        # Remove from pending if it was there
+        if device in self._pendingDevices:
+            logger.debug('Device %s factory is now registered, removing from pending' % device)
+            del self._pendingDevices[device]
+        logger.debug('Creating contribution for device: %s' % device)
         contribution = factory.getInstance(device.getType())
         self.addItemContributor(contribution)
         contribution.setDevice(device)
         self.deviceToContribution[device] = contribution
         return
+
+    def _retryPendingDevices(self):
+        """Retry loading contributions for devices that were pending factory registration"""
+        logger.debug('_retryPendingDevices called, pending devices: %d' % len(self._pendingDevices))
+        if self._destroying or _isDestroyed(self.control) or not self._pendingDevices:
+            logger.debug('_retryPendingDevices: skipping (destroying=%s, destroyed=%s, empty=%s)' % (
+                self._destroying, _isDestroyed(self.control), not self._pendingDevices))
+            return
+        # Make a copy of pending devices since the dict may change during iteration
+        pending = list(self._pendingDevices.keys())
+        logger.debug('Retrying %d pending devices' % len(pending))
+        for device in pending:
+            logger.debug('Retrying device: %s, type: %s' % (device, device.getType()))
+            self.addGraphItemContributionForDevice(device)
+        # If all devices are now loaded, unregister from pending viewers
+        if not self._pendingDevices:
+            logger.debug('All pending devices loaded, unregistering viewer')
+            from plugins.grapheditor.grapheditor import _unregisterPendingViewer
+            _unregisterPendingViewer(self)
 
     def calculateDuration(self):
         total = 0

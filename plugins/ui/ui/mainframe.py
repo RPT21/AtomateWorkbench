@@ -303,6 +303,10 @@ class MainFrame(object):
             child = self.sectors2Views[sectorID]
             logger.debug("Closing sector '%s'" % str(child))
             logger.debug('\tSelf %s' % child.getControl())
+            # try:
+                # logger.debug('Closing sector stack:\n%s', ''.join(__import__('traceback').format_stack(limit=12)))
+            # except Exception:
+                # pass
             if hasattr(child, 'dispose'):
                 child.dispose()
                 del child

@@ -14,17 +14,40 @@ import plugins.poi.poi.views as poi_views
 VIEW_ID = 'graph.editor'
 logger = logging.getLogger('grapheditor')
 contributionFactories = {}
+_pendingViewers = []  # Viewers waiting for factories to be registered
 
 def addGraphContributionFactory(deviceType, factory):
-    global contributionFactories
+    global contributionFactories, _pendingViewers
+    logger.debug('Registering graph contribution factory for device type: %s' % deviceType)
     if not deviceType in contributionFactories:
         contributionFactories[deviceType] = factory
+        logger.debug('Factory registered for %s, retrying %d pending viewers' % (deviceType, len(_pendingViewers)))
+        # Notify any pending viewers that a new factory has been registered
+        # so they can retry loading contributions
+        for viewer in _pendingViewers[:]:
+            try:
+                logger.debug('Retrying pending devices for viewer: %s' % viewer)
+                viewer._retryPendingDevices()
+            except Exception as e:
+                logger.debug(f"Error retrying pending devices: {e}")
 
 
 def getGraphContributionFactory(deviceType):
     if not deviceType in contributionFactories:
         return None
     return contributionFactories[deviceType]
+
+
+def _registerPendingViewer(viewer):
+    """Register a viewer that has pending devices waiting for factories"""
+    if viewer not in _pendingViewers:
+        _pendingViewers.append(viewer)
+
+
+def _unregisterPendingViewer(viewer):
+    """Unregister a viewer from pending list"""
+    if viewer in _pendingViewers:
+        _pendingViewers.remove(viewer)
 
 
 class GraphEditorPlugin(kernel.plugin.Plugin):

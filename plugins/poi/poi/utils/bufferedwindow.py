@@ -34,6 +34,7 @@ class BufferedWindow(wx.Window):
         self._sizeHandler = SizeHandler()
         self.PushEventHandler(self._sizeHandler)
         (self.width, self.height) = (0, 0)
+        self._buffer = None
         self.createBuffer()
 
     def handleResize(self):
@@ -43,11 +44,24 @@ class BufferedWindow(wx.Window):
         if _isDestroyed(self):
             return
         (self.width, self.height) = self.GetClientSize()
-        self._buffer = wx.Bitmap(self.width, self.height)
+        # Guard against invalid bitmap sizes (wx asserts on width/height <= 0)
+        try:
+            if self.width <= 0 or self.height <= 0:
+                # No drawable area yet - skip creating the buffer
+                self._buffer = None
+                return
+            self._buffer = wx.Bitmap(self.width, self.height)
+        except Exception:
+            # If creation failed for any reason, ensure we don't keep a broken buffer
+            self._buffer = None
+            return
         self.updateDrawing()
 
     def updateDrawing(self):
         if _isDestroyed(self):
+            return
+        # If no buffer is available (e.g. zero-sized client area), skip drawing
+        if not hasattr(self, '_buffer') or self._buffer is None:
             return
         if self.useBufferedDC:
             dc = wx.BufferedDC(wx.ClientDC(self), self._buffer)
@@ -68,6 +82,9 @@ class BufferedWindow(wx.Window):
     def OnPaint(self, event):
         event.Skip()
         if _isDestroyed(self):
+            return
+        # If no buffer (e.g. window not yet laid out) fall back to default paint
+        if not hasattr(self, '_buffer') or self._buffer is None:
             return
         if self.useBufferedDC:
             dc = wx.BufferedPaintDC(self, self._buffer)

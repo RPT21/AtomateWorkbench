@@ -37,11 +37,19 @@ def openRecipeVersion(version):
     """
     Opens the recipe version, just sets the can-edit to true
     """
-    resourcesui_utils.closeRecipe()
+    # Get the old recipe first
+    oldrecipe = ui.context.getProperty('recipe')
+    
+    # Load and set the new recipe BEFORE closing the old one
+    # This prevents intermediate events where recipe becomes None
     recipe = core.recipe.loadFromFile(version.getRecipeDataFilename())
     recipe.setUnderlyingResource(version)
     ui.context.setProperty('recipe', recipe)
     ui.context.setProperty('can-edit', True)
+    
+    # Now dispose the old recipe after the new one is set
+    if oldrecipe is not None:
+        oldrecipe.dispose()
 
 
 def getRecipeFromVersion(version):

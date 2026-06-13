@@ -234,17 +234,30 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         for child in self.driverConfigPanel.GetChildren():
             self.driverConfigPanel.RemoveChild(child)
             if sizer is not None:
-                sizer.Remove(child)
-            child.Destroy()
+                try:
+                    sizer.Detach(child)
+                except Exception:
+                    # Older wx versions or unexpected sizer types may raise; fall back to Remove
+                    try:
+                        sizer.Remove(child)
+                    except Exception:
+                        logger.debug('Could not detach/remove child from sizer')
+            try:
+                child.Destroy()
+            except RuntimeError:
+                logger.debug('Child already destroyed, ignoring')
 
         page.createControl(self.driverConfigPanel)
-        s = page.getControl().GetSizer()
         if sizer is not None:
             sizer.Add(page.getControl(), 1, wx.EXPAND | wx.ALL, 0)
-            s = self.driverConfigPanel.GetSizer()
-            s.SetItemMinSize(page.getControl(), page.getControl().GetSize())
+            s = page.getControl().GetSizer()
+            if s is not None:
+                s.SetItemMinSize(page.getControl(), page.getControl().GetSize())
             self.driverConfigPanel.SetSize(page.getControl().GetSize())
-            s.RecalcSizes()
+            if s is not None:
+                s.Layout()
+            page.getControl().Layout()
+            self.driverConfigPanel.Layout()
             size = self.driverConfigPanel.GetSize()
             sizer.SetItemMinSize(page.getControl(), size)
             self.control.SetupScrolling()

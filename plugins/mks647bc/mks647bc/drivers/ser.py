@@ -66,13 +66,13 @@ class SerialConfigurationSegment(object):
                 return num + 1
 
             portLabel = wx.StaticText(self.control, -1, 'Port:')
-            self.portChoice = wx.ComboBox(self.control, -1, choices=list(map(add, CHOICES_PORTS)), style=wx.CB_READONLY)
+            self.portChoice = wx.ComboBox(self.control, -1, choices=list(map(str, map(add, CHOICES_PORTS))), style=wx.CB_READONLY)
             baudLabel = wx.StaticText(self.control, -1, 'Baud Rate:')
-            self.baudChoice = wx.ComboBox(self.control, -1, choices=CHOICES_BAUDRATE, style=wx.CB_READONLY)
+            self.baudChoice = wx.ComboBox(self.control, -1, choices=list(map(str, CHOICES_BAUDRATE)), style=wx.CB_READONLY)
             parityLabel = wx.StaticText(self.control, -1, 'Parity:')
             self.parityChoice = wx.ComboBox(self.control, -1, choices=CHOICES_PARITY_TEXT, style=wx.CB_READONLY)
             stopbitsLabel = wx.StaticText(self.control, -1, 'Stop Bits:')
-            self.stopbitsChoice = wx.ComboBox(self.control, -1, choices=CHOICES_STOPBITS, style=wx.CB_READONLY)
+            self.stopbitsChoice = wx.ComboBox(self.control, -1, choices=list(map(str, CHOICES_STOPBITS)), style=wx.CB_READONLY)
             self.lockoutPanel = wx.CheckBox(self.control, -1, 'Lock out panel on initialization')
             sizer.Add(portLabel, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
             sizer.Add(self.portChoice, 1, wx.ALIGN_CENTRE_VERTICAL)

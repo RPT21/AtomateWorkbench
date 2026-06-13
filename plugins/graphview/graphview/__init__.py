@@ -14,6 +14,7 @@ import plugins.grideditor.grideditor as grideditor
 
 VIEW_ID = 'graphview.view'
 logger = logging.getLogger('graphview')
+instance = None
 
 def getDefault():
     global instance

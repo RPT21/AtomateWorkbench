@@ -108,7 +108,9 @@ class FurnaceZoneColumn(grideditor.tablecolumn.ColumnContribution):
         rng = 1000
         try:
             hints = self.device.getHardwareHints()
-            rng = int(hints.getChildNamed('range').getValue())
+            range_hint = hints.getChildNamed('range')
+            if range_hint is not None:
+                rng = int(range_hint.getValue())
         except Exception as msg:
             logger.exception(msg)
             rng = 1000

@@ -83,7 +83,7 @@ class SimulationDeviceDriver(up150_drivers.DeviceDriver):
         sizer = wx.BoxSizer(wx.VERTICAL)
         s = wx.BoxSizer(wx.HORIZONTAL)
         s.Add(wx.StaticText(self.dlg, -1, 'Temperature:'), 0, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
-        s.Add(tempSlider, 1, wx.EXPAND | wx.ALIGN_CENTRE_VERTICAL)
+        s.Add(tempSlider, 1, wx.EXPAND)
         sizer.Add(s, 0, wx.EXPAND | wx.ALL, 5)
         sizer.Add(self.lockoutPanel, 0, wx.EXPAND | wx.ALL, 5)
         s = wx.BoxSizer(wx.HORIZONTAL)

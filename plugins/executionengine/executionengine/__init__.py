@@ -19,6 +19,7 @@ import plugins.executionengine.executionengine.actions as execution_actions
 logger = logging.getLogger('executionengine')
 DEFAULT_RESOLUTION = 0.2
 PLUGIN_ID = 'executionengine'
+instance = None
 
 def getDefault():
     global instance
@@ -162,6 +163,7 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
         wx.CallAfter(self.internalValidationEvent, valid, errors)
 
     def internalValidationEvent(self, valid, errors):
+        logger.debug('internalValidationEvent: valid=%s, errors=%s' % (valid, len(errors)))
         plugins.executionengine.executionengine.actions.isValid = valid
         plugins.executionengine.executionengine.actions.updateActions()
 
@@ -186,6 +188,7 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
     def fireEnablementState(self):
         participants = copy.copy(self.enablementStateParticipants)
         if self.engine is not None:
+            logger.debug('fireEnablementState: Engine is running, returning early')
             return
         for participant in participants:
             if not participant.canEnable():
@@ -193,6 +196,7 @@ class ExecutionEnginePlugin(lib.kernel.plugin.Plugin):
                 plugins.executionengine.executionengine.actions.enablementState = False
                 return
 
+        logger.debug('fireEnablementState: All participants allow run, enabling')
         plugins.executionengine.executionengine.actions.enablementState = True
         return
 

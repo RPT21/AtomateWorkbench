@@ -5,7 +5,7 @@
 # Compiled at: 2004-11-23 22:00:44
 import plugins.validator.validator as validator, wx, plugins.ui.ui as ui, time, logging
 import plugins.core.core.utils, plugins.poi.poi.dialogs
-import plugins.hardware.hardware.userinterface.configurator, plugins.hardware.hardware.hardwaremanager
+import plugins.hardware.hardware.userinterface.configurator
 import plugins.up150.up150.drivers as up150_drivers, plugins.up150.up150.userinterface.initdialog
 import plugins.up150.up150.messages as messages, threading,  plugins.poi.poi.operation
 import plugins.poi.poi.dialogs.progress, wx.lib.colourselect as colourselect
@@ -179,7 +179,7 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         self.pidControls['i'] = wx.TextCtrl(panel, -1, '')
         self.pidControls['d'] = wx.TextCtrl(panel, -1, '')
         h2sizer = wx.BoxSizer(wx.HORIZONTAL)
-        h2sizer.Add(wx.StaticText(panel, -1, 'PID Settings:'), 0, wx.ALIGN_RIGHT | wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
+        h2sizer.Add(wx.StaticText(panel, -1, 'PID Settings:'), 0, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
         h2sizer.Add(self.pidControls['p'], 1, wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
         h2sizer.Add(self.pidControls['i'], 1, wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
         h2sizer.Add(self.pidControls['d'], 1, wx.ALIGN_CENTRE_VERTICAL)
@@ -252,9 +252,13 @@ class ConfigurationPage(hardware.userinterface.configurator.ConfigurationPage):
         if sizer is not None:
             sizer.Add(page.getControl(), 1, wx.EXPAND | wx.ALL, 0)
             s = page.getControl().GetSizer()
-            s.SetItemMinSize(page.getControl(), page.getControl().GetSize())
+            if s is not None:
+                s.SetItemMinSize(page.getControl(), page.getControl().GetSize())
             self.driverConfigPanel.SetSize(page.getControl().GetSize())
-            s.RecalcSizes()
+            if s is not None:
+                s.Layout()
+            page.getControl().Layout()
+            self.driverConfigPanel.Layout()
             size = self.driverConfigPanel.GetSize()
             sizer.SetItemMinSize(page.getControl(), size)
             self.control.Layout()

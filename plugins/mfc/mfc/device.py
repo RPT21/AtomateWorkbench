@@ -207,7 +207,11 @@ class MFCDeviceEditor(core.device.DeviceEditor):
         self.purgeCheckbox.SetValue(purgeActive)
         self.columnActualFlowRadio.SetValue(usegcf)
         self.columnSetpointRadio.SetValue(not usegcf)
-        self.purgeDuration.SetValue(wx.TimeSpan.Seconds(purgeDuration))
+        try:
+            purgeDuration = int(float(purgeDuration))
+        except Exception:
+            purgeDuration = 0
+        self.purgeDuration.SetValue('{:02d}:00:00'.format(max(0, purgeDuration)))
         self.purgeSetpointText.SetValue(purgeSetpoint)
         self.update()
         if self.currentHardwareEditor is not None:
@@ -228,7 +232,11 @@ class MFCDeviceEditor(core.device.DeviceEditor):
                 continue
             if device == self.device:
                 continue
-            if hwid != device.getHardwareHints().getChildNamed('id').getValue():
+            device_hints = device.getHardwareHints()
+            id_hint = device_hints.getChildNamed('id') if device_hints else None
+            if id_hint is None:
+                continue
+            if hwid != id_hint.getValue():
                 continue
             if device.getChannelNumber() == channel:
                 valid = False
@@ -248,10 +256,26 @@ class MFCDeviceEditor(core.device.DeviceEditor):
         except Exception as msg:
             logger.exception(msg)
 
+        logger.debug(f"MFC selecting hardware: '{hwid}'")
         description = plugins.hardware.hardware.hardwaremanager.getHardwareByName(hwid)
-        hwtype = plugins.hardware.hardware.hardwaremanager.getHardwareType(description.getHardwareType())
+        if description is None:
+            logger.warning("Hardware description not found for '%s'", hwid)
+            # Log available hardware for debugging
+            try:
+                available = plugins.hardware.hardware.hardwaremanager.getAvailableHardware()
+                logger.debug("Available hardware: %s", [h.getName() if hasattr(h, 'getName') else str(h) for h in available])
+            except Exception:
+                pass
+            return
+        try:
+            hwtype_id = description.getHardwareType()
+            hwtype = plugins.hardware.hardware.hardwaremanager.getHardwareType(hwtype_id)
+        except Exception as msg:
+            logger.exception(msg)
+            hwtype = None
         self.description = description
-        self.setHardwareEditor(hwtype.getDeviceHardwareEditor())
+        if hwtype is not None:
+            self.setHardwareEditor(hwtype.getDeviceHardwareEditor())
 
     def getSelectedHardwareInstance(self):
         s = self.getHardwareChoicesName()[self.hardwareChoice.GetSelection()]
@@ -322,12 +346,15 @@ class MFCDeviceEditor(core.device.DeviceEditor):
 
             purgeNode.setAttribute('active', str(self.purgeCheckbox.IsChecked()))
             purgeNode.setAttribute('setpoint', purgeSetpoint)
-            purgeDuration = self.purgeDuration.GetValue(as_wxTimeSpan=True)
+            purgeDurationValue = self.purgeDuration.GetValue(as_wxTimeSpan=True)
             try:
-                purgeDuration = str(purgeDuration.GetSeconds())
+                purgeDuration = str(int(getattr(purgeDurationValue, 'GetSeconds')()))
             except Exception as msg:
                 logger.exception(msg)
-                purgeDuration = 0
+                try:
+                    purgeDuration = str(int(float(self.purgeDuration.GetValue())))
+                except Exception:
+                    purgeDuration = '0'
 
             purgeNode.setAttribute('duration', purgeDuration)
             logger.debug('setting ui hints: %s' % str(usegcf))
@@ -393,6 +420,9 @@ class MFCDevice(core.device.Device):
             hardwareName = hwhints.getChildNamed('id').getValue()
             hardwareChannel = int(hwhints.getChildNamed('channel').getValue())
             description = plugins.hardware.hardware.hardwaremanager.getHardwareByName(hardwareName)
+            if description is None:
+                # Return with just the name and channel if hardware not found
+                return '%s - Channel %s' % (hardwareName, str(hardwareChannel))
             hwtype = description.getHardwareType()
             hwtype = plugins.hardware.hardware.hardwaremanager.getHardwareType(hwtype)
             description = hwtype.getDescription()
@@ -451,7 +481,10 @@ class MFCDevice(core.device.Device):
         uihints = self.getUIHints()
         try:
             colors = uihints.getChildNamed('colors')
-            self.colors['plot'] = self.parseColor(colors.getChildNamed('plot').getValue())
+            if colors is not None:
+                plot_color = colors.getChildNamed('plot')
+                if plot_color is not None:
+                    self.colors['plot'] = self.parseColor(plot_color.getValue())
         except Exception as msg:
             logger.exception(msg)
             self.colors['plot'] = wx.Colour(0, 0, 0)

@@ -66,7 +66,8 @@ class ConditionalEditor(object):
         rbsizer.Add(self.deleteButton, 0, wx.EXPAND | wx.TOP, 5)
         rbsizer.Add(self.moveUpButton, 0, wx.EXPAND | wx.TOP, 30)
         rbsizer.Add(self.moveDownButton, 0, wx.EXPAND | wx.BOTTOM, 10)
-        hsizer.Add(rbsizer, 0, wx.EXPAND | wx.ALIGN_RIGHT)
+        # wx.EXPAND overrides alignment flags in BoxSizers; avoid ALIGN_RIGHT here
+        hsizer.Add(rbsizer, 0, wx.EXPAND)
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(hsizer, 1, wx.EXPAND | wx.LEFT | wx.TOP | wx.BOTTOM, 5)
         sizer.Add(wx.StaticLine(self.control, -1), 0, wx.EXPAND)

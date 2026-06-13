@@ -76,7 +76,14 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
             if hwid is None:
                 return None
             desc = hardware.hardwaremanager.getHardwareByName(hwid)
-            inst = desc.getInstance()
+            if desc is None:
+                logger.warning("Configured hardware '%s' not found", hwid)
+                return None
+            try:
+                inst = desc.getInstance()
+            except Exception:
+                logger.exception('Error getting instance for hardware %s', hwid)
+                return None
             return inst
         except Exception as msg:
             logger.exception(msg)
@@ -113,8 +120,16 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
             elif event.etype == furnacezone_hw.STOPPED:
                 tempval = ''
             self.temperatureLED.setValue(str(tempval))
-            setpoint = self.getConfiguredHardware().getSetpoint()
-            if setpoint is None:
+            inst = self.getConfiguredHardware()
+            try:
+                if inst is None:
+                    setpoint = ''
+                else:
+                    setpoint = inst.getSetpoint()
+                    if setpoint is None:
+                        setpoint = ''
+            except Exception:
+                logger.exception('Error obtaining setpoint from hardware instance')
                 setpoint = ''
             self.temperatureLED.setSetpointValue(str(setpoint))
         except Exception as msg:

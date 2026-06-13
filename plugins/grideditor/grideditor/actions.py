@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/grideditor/src/grideditor/actions.py
 # Compiled at: 2004-12-01 23:27:38
-import logging, plugins.poi.poi.actions, plugins.poi.poi.views, plugins.resources.resources, plugins.core.core.recipe
+import logging, traceback, plugins.poi.poi.actions, plugins.poi.poi.views, plugins.resources.resources, plugins.core.core.recipe
 import wx, plugins.ui.ui.clipboard, plugins.ui.ui.undomanager, plugins.grideditor.grideditor
 import plugins.grideditor.grideditor.utils, plugins.grideditor.grideditor.images as images
 import plugins.hardware.hardware.hardwaremanager
@@ -144,6 +144,7 @@ def handleActionContextChange(newValue, oldValue):
 
 def removeActions():
     global saveRecipeAction
+    global recipeOptionsAction
     global visibilityStateActions
     tbm = ui.getDefault().getToolBarManager()
     visibilityStateActions = []
@@ -166,6 +167,10 @@ def removeActions():
     editManager.update()
     if saveRecipeAction is not None:
         saveRecipeAction.dispose()
+        saveRecipeAction = None
+    if recipeOptionsAction is not None:
+        recipeOptionsAction.dispose()
+        recipeOptionsAction = None
     return
 
 
@@ -245,10 +250,23 @@ class RecipeOptionsAction(poi.actions.Action):
     def __init__(self):
         poi.actions.Action.__init__(self, 'Recipe Options ...', '', '')
         self.setImage(images.getImage(images.RECIPE_OPTIONS))
+        ui.context.addContextChangeListener(self)
+        self.setEnabled(False)
+
+    def contextChanged(self, event):
+        key = event.getKey()
+        value = event.getNewValue()
+        if key != 'recipe':
+            return
+        self.setEnabled(value != None)
+        return
 
     def run(self):
         grideditor.utils.showRecipeOptions(None)
         return
+
+    def dispose(self):
+        ui.context.removeContextChangeListener(self)
 
 
 class CutStepAction(SelectionDispatchAction):
@@ -484,6 +502,10 @@ class BundkDebugOpenRecipe(poi.actions.Action):
     def run(self):
         """Open a file dialog and finds a recipe to execute, prepares all user interfaces for debug session"""
         item = ui.context.getProperty('recipe')
+        try:
+            logger.debug('BundkDebugOpenRecipe.run stack:\n%s', ''.join(traceback.format_stack(limit=12)))
+        except Exception:
+            pass
         if item is None:
             dlg = wx.FileDialog(ui.getDefault().getMainFrame().getControl(), 'Select a recipe file', plugins.resources.resources.getDefault().getWorkspace().getSharedLocation(), wildcard='Recipe Files (*.recipe)|*.recipe', style=wx.OPEN)
             dlg.CentreOnScreen()

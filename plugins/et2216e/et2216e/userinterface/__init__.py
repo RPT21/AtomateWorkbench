@@ -172,7 +172,7 @@ class ConfigurationPage(plugins.hardware.hardware.userinterface.configurator.Con
         self.pidControls['i'] = wx.TextCtrl(panel, -1, '')
         self.pidControls['d'] = wx.TextCtrl(panel, -1, '')
         h2sizer = wx.BoxSizer(wx.HORIZONTAL)
-        h2sizer.Add(wx.StaticText(panel, -1, 'PID Settings:'), 0, wx.ALIGN_RIGHT | wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
+        h2sizer.Add(wx.StaticText(panel, -1, 'PID Settings:'), 0, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 5)
         h2sizer.Add(self.pidControls['p'], 1, wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
         h2sizer.Add(self.pidControls['i'], 1, wx.RIGHT | wx.ALIGN_CENTRE_VERTICAL, 5)
         h2sizer.Add(self.pidControls['d'], 1, wx.ALIGN_CENTRE_VERTICAL)

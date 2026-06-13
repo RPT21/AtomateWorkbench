@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/resourcesui/src/resourcesui/utils.py
 # Compiled at: 2004-11-02 23:05:03
-import logging, plugins.ui.ui.context
+import logging, traceback
 import plugins.ui.ui as ui
 
 logger = logging.getLogger('resources.ui')
@@ -17,12 +17,19 @@ def setHasRun(hasit):
 
 def closeRecipe():
     global logger
-    logger.debug("Closing recipe: '%s'" % ui.context.getProperty('recipe'))
     oldrecipe = ui.context.getProperty('recipe')
+    logger.debug("Closing recipe: '%s'" % oldrecipe)
+    try:
+        logger.debug('closeRecipe stack:\n%s', ''.join(traceback.format_stack(limit=12)))
+    except Exception:
+        pass
+    # Make closeRecipe idempotent - only trigger context change if recipe is not already None
     if oldrecipe is not None:
         oldrecipe.dispose()
-    ui.context.setProperty('recipe', None)
-    ui.context.setProperty('can-edit', False)
+        ui.context.setProperty('recipe', None)
+        ui.context.setProperty('can-edit', False)
+    else:
+        logger.debug("Recipe already closed, skipping redundant closeRecipe() call")
     return
 
 
