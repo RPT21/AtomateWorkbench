@@ -10,6 +10,24 @@ import plugins.extendededitor.extendededitor.conditionals as extendededitor_cond
 
 logger = logging.getLogger('extendededitor')
 
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
 class ActionRowItem(object):
     __module__ = __name__
 
@@ -163,7 +181,7 @@ class TestRowItem(object):
         self.currentCtrl = ctrl
         sizer = self.rightOperatorPanel.GetSizer()
         sizer.Add(ctrl.getControl(), 1, wx.EXPAND)
-        wx.CallAfter(sizer.Layout)
+        _safeCallAfter(sizer.Layout)
 
     def clearRightOperandPanel(self):
         sizer = self.rightOperatorPanel.GetSizer()
@@ -335,7 +353,7 @@ class TestEditor(object):
                 if item.handles(action):
                     item.setConditionalAction(action)
 
-        wx.CallAfter(self.testsGridSizer.Layout)
+        _safeCallAfter(self.testsGridSizer.Layout)
         return
 
     def populateConditionalActionContributions(self):
@@ -460,7 +478,6 @@ class TestEditor(object):
                 parent = parent.GetParent()
 
         return None
-        return
 
     def setRowFocus(self, focused):
         for row in self.rows:
@@ -476,7 +493,7 @@ class TestEditor(object):
 
         def killit(child):
             sizer.Remove(child)
-            self.actionGrid.RemoveChild(child)
+            self.actionsGrid.RemoveChild(child)
 
         list(map(killit, self.actionsGrid.GetChildren()))
         for actionRow in self.actionRows:
@@ -520,7 +537,7 @@ class TestEditor(object):
         self.actionsGrid.SetupScrolling()
         item.getControl().SetFocus()
         if refresh:
-            wx.CallAfter(self.actionsGridSizer.Layout)
+            _safeCallAfter(self.actionsGridSizer.Layout)
 
     def addTestRowItem(self, item, refresh=True):
         self.rows.append(item)
@@ -528,7 +545,7 @@ class TestEditor(object):
         self.testsGrid.SetupScrolling()
         item.getControl().SetFocus()
         if refresh:
-            wx.CallAfter(self.testsGridSizer.Layout)
+            _safeCallAfter(self.testsGridSizer.Layout)
 
     def removeTestRowItem(self, item):
         if not item in self.rows:

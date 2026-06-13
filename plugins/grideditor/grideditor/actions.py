@@ -431,6 +431,20 @@ class ActionButton(object):
     def getControl(self):
         return self.button
 
+    def dispose(self):
+        if self.button is not None:
+            try:
+                if hasattr(wx, 'IsDestroyed') and not wx.IsDestroyed(self.button):
+                    self.button.PopEventHandler(False)
+            except Exception:
+                pass
+            try:
+                if hasattr(wx, 'IsDestroyed') and not wx.IsDestroyed(self.button):
+                    self.button.Destroy()
+            except Exception:
+                pass
+            self.button = None
+
 
 class SaveRecipeAction(poi.actions.Action):
     __module__ = __name__

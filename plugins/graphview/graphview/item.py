@@ -10,6 +10,24 @@ import plugins.executionengine.executionengine.engine, plugins.executionengine.e
 logger = logging.getLogger('panelview.mainitem')
 
 
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
+
 class NotImplementedException(Exception):
     pass
 
@@ -104,7 +122,7 @@ class ExecutionStatusPanelItem(PanelViewItem):
             self.updateFields(txt, str2time(self.engine.getStepTime()), str2time(self.engine.getRecipeTime()), str2time(self.engine.getTotalTime()), self.engine.getCurrentStepIndex() + 1)
 
     def updateFields(self, status, stepTime='', recipeTime='', totalTime='', stepIndex=''):
-        wx.CallAfter(self.internalUpdateFields, status, stepTime, recipeTime, totalTime, stepIndex)
+        _safeCallAfter(self.internalUpdateFields, status, stepTime, recipeTime, totalTime, stepIndex)
 
     def internalUpdateFields(self, status, stepTime='', recipeTime='', totalTime='', stepIndex=''):
         try:

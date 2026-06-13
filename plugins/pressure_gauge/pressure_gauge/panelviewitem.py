@@ -13,6 +13,31 @@ import plugins.panelview.panelview as panelview
 
 logger = logging.getLogger('pressure_gauge.panelview')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            return
+        except Exception as msg:
+            try:
+                logger.debug(f'Callback exception: {msg}')
+            except Exception:
+                pass
+    return wx.CallAfter(wrapper)
+
 class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
     __module__ = __name__
 
@@ -91,7 +116,9 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
         return
 
     def hardwareStatusChanged(self, event):
-        wx.CallAfter(self.internalHardwareUpdate, event)
+        if _isDestroyed(self.control):
+            return
+        _safeCallAfter(self.internalHardwareUpdate, event)
 
     def formatFlow(self, flow):
         if flow is None:
@@ -105,6 +132,8 @@ class PressureGaugePanelViewItem(panelview.devicemediator.DevicePanelViewContrib
 
     def internalHardwareUpdate(self, event):
         try:
+            if _isDestroyed(self.control):
+                return
             if event.etype == pressure_gauge_hardwarestatusprovider.PRESSURE:
                 pressure = event.data
             elif event.etype == pressure_gauge_hardwarestatusprovider.STOPPED:

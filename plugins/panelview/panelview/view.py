@@ -9,6 +9,35 @@ import plugins.panelview.panelview.devicemediator as panelview_devicemediator
 
 logger = logging.getLogger('panelview.viewer')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+    
+    return wx.CallAfter(wrapper)
+
 class ViewerView(object):
     __module__ = __name__
 
@@ -35,14 +64,24 @@ class ViewerView(object):
 
             def OnSize(self, event):
                 event.Skip()
-                sizer = self.win.GetSizer()
-                for item in self.view.panelitems:
-                    panel = item.getControl()
+                if _isDestroyed(self.win):
+                    return
+                try:
+                    sizer = self.win.GetSizer()
+                    if sizer is None:
+                        return
+                    for item in self.view.panelitems:
+                        panel = item.getControl()
 
-                sizer.Layout()
+                    sizer.Layout()
+                except RuntimeError:
+                    return
+                except Exception:
+                    return
 
         self.panelitems = []
-        self.control.PushEventHandler(SizeHandler(self.control, self))
+        self._sizeHandler = SizeHandler(self.control, self)
+        self.control.PushEventHandler(self._sizeHandler)
         l = wx.VERTICAL
         if self.horizontal:
             l = wx.HORIZONTAL
@@ -54,51 +93,61 @@ class ViewerView(object):
 
     def addItem(self, item, refresh=True):
         logger.debug('Add Item: %s creating control in %s' % (item, threading.current_thread()))
+        if _isDestroyed(self.control):
+            return
         if not item in self.panelitems:
             self.panelitems.append(item)
             sizer = self.control.GetSizer()
             item.createControl(self.control, self.horizontal)
             control = item.getControl()
+            if _isDestroyed(control):
+                return
             logger.debug('control size: %s' % control.GetSize())
             sizer.Add(control, 0, wx.EXPAND | wx.RIGHT, 3)
             if refresh:
-                wx.CallAfter(self.updateMe)
+                _safeCallAfter(self.updateMe)
 
     def updateMe(self, event=None):
         if event is not None:
             event.Skip()
-        width = 80
-        if len(self.panelitems) > 0:
-            width = self.control.GetClientSize()[0] / len(self.panelitems)
-        minwidth = 80
-        maxwidth = 200
-        if width > maxwidth:
-            width = maxwidth
-        if width < minwidth:
-            width = minwidth
-        for item in self.panelitems:
-            control = item.getControl()
-            control.SetSize((width, -1))
+        if _isDestroyed(self.control):
+            return
+        try:
+            width = 80
+            if len(self.panelitems) > 0:
+                width = self.control.GetClientSize()[0] / len(self.panelitems)
+            minwidth = 80
+            maxwidth = 200
+            if width > maxwidth:
+                width = maxwidth
+            if width < minwidth:
+                width = minwidth
+            for item in self.panelitems:
+                control = item.getControl()
+                if not _isDestroyed(control):
+                    control.SetSize((width, -1))
 
-        self.control.SetupScrolling()
+            self.control.SetupScrolling()
+        except RuntimeError:
+            return
         return
 
     def removeItem(self, item, refresh=True):
         logger.debug('Remove item: %s' % item)
         if item in self.panelitems:
             self.panelitems.remove(item)
-            try:
-                sizer = self.control.GetSizer()
-                control = item.getControl()
-                self.control.RemoveChild(control)
-                sizer.Remove(control)
-                sizer.Layout()
-            except Exception as msg:
-                logger.exception(msg)
-            else:
-                item.dispose()
-                if refresh:
-                    wx.CallAfter(self.updateMe)
+            if not _isDestroyed(self.control):
+                try:
+                    sizer = self.control.GetSizer()
+                    control = item.getControl()
+                    self.control.RemoveChild(control)
+                    sizer.Remove(control)
+                    sizer.Layout()
+                except Exception as msg:
+                    logger.exception(msg)
+            item.dispose()
+            if refresh and not _isDestroyed(self.control):
+                _safeCallAfter(self.updateMe)
 
     def removeAllItems(self):
         items = copy.copy(self.panelitems)
@@ -106,7 +155,7 @@ class ViewerView(object):
             self.removeItem(item, refresh=False)
 
         if not wx.IsMainThread():
-            wx.CallAfter(self.updateMe)
+            _safeCallAfter(self.updateMe)
         else:
             self.updateMe()
 
@@ -116,11 +165,33 @@ class ViewerView(object):
         for item in items:
             self.removeItem(item, refresh=False)
 
+        if self.control is not None and hasattr(self, '_sizeHandler') and self._sizeHandler is not None:
+            try:
+                if not _isDestroyed(self.control):
+                    self.control.PopEventHandler(False)
+            except Exception:
+                pass
+            self._sizeHandler = None
+
+        # Destroy the control
+        if self.control is not None:
+            try:
+                if not _isDestroyed(self.control):
+                    self.control.Destroy()
+            except Exception:
+                pass
+            self.control = None
+
         logger.debug("\tLeft over: '%s'" % self.panelitems)
         plugins.panelview.panelview.devicemediator.removeView(self)
 
     def setFocus(self, focused):
-        self.view.setFocus(focused)
+        if not focused or _isDestroyed(self.control):
+            return
+        try:
+            self.control.SetFocus()
+        except RuntimeError:
+            return
 
     def getControl(self):
         return self.control
@@ -142,9 +213,16 @@ class ViewerView(object):
         if newInput is None:
             return
         model = newInput
-        wx.CallAfter(self.internalPrepareNewPanels, model)
+        _safeCallAfter(self.internalPrepareNewPanels, model)
         return
 
     def internalPrepareNewPanels(self, model):
-        panelview_devicemediator.setRecipeModel(model)
-        self.updateMe()
+        if _isDestroyed(self.control):
+            return
+        try:
+            panelview_devicemediator.setRecipeModel(model)
+            self.updateMe()
+        except RuntimeError:
+            return
+        except Exception as msg:
+            logger.exception(msg)

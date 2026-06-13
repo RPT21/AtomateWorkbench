@@ -12,6 +12,24 @@ import logging, plugins.validator.validator.userinterface.preferences
 logger = logging.getLogger('validator')
 PLUGIN_ID = 'validator'
 
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
 def getDefault():
     global instance
     return instance
@@ -60,7 +78,7 @@ class ValidatorPlugin(lib.kernel.plugin.Plugin):
             self.validationListeners.remove(listener)
 
     def fireValidationEvent(self, valid, errors):
-        wx.CallAfter(self.internalFireValidationEvent, valid, errors)
+        _safeCallAfter(self.internalFireValidationEvent, valid, errors)
 
     def internalFireValidationEvent(self, valid, errors):
         list(map((lambda listener: listener.validationEvent(valid, errors)), self.validationListeners))

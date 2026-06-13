@@ -6,6 +6,17 @@
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
 class SelectionProvider(object):
     __module__ = __name__
 
@@ -215,7 +226,12 @@ class TableViewer(StructuredViewer):
         item.SetState(item.GetState() | wx.LIST_STATE_SELECTED)
 
     def revealSelection(self, selection):
-        self.control.Refresh()
+        if _isDestroyed(self.control):
+            return
+        try:
+            self.control.Refresh()
+        except RuntimeError:
+            return
 
     def getStyle(self):
         return wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.SUNKEN_BORDER
@@ -227,36 +243,40 @@ class TableViewer(StructuredViewer):
         return self.control
 
     def refresh(self):
+        if _isDestroyed(self.control):
+            return
         wx.CallAfter(self.internalRefresh)
 
     def internalRefresh(self):
-        if self.contentProvider != None:
-            oldSelection = self.getSelection()
-            self.control.DeleteAllItems()
-            elems = self.contentProvider.getElements(self.getInput())
-            i = 0
-            self.id2objects.clear()
-            for elem in elems:
-                image = None
-                text = elem
-                if self.labelProvider is not None:
-                    text = self.labelProvider.getText(elem)
-                    image = self.labelProvider.getImage(elem)
-                newItem = wx.ListItem()
-                newItem.SetData(i)
-                self.id2objects[i] = elem
-                if image is not None:
-                    if image not in self.imageList:
-                        if image.GetWidth() == 16 and image.GetHeight() == 16:
-                            self.imageList[image] = self.control.GetImageList(wx.IMAGE_LIST_SMALL).Add(image)
-                    if image in self.imageList:
-                        newItem.SetImage(self.imageList[image])
-                newItem.SetText(text)
-                newItem.SetId(i)
-                newItem.SetColumn(0)
-                newItem.SetMask(wx.LIST_MASK_TEXT | wx.LIST_MASK_DATA | wx.LIST_MASK_IMAGE)
-                self.control.InsertItem(newItem)
-                self.objects2id[elem] = i
-                i += 1
+        if _isDestroyed(self.control) or self.contentProvider is None:
+            return
+        oldSelection = self.getSelection()
+        self.control.DeleteAllItems()
+        elems = self.contentProvider.getElements(self.getInput())
+        i = 0
+        self.id2objects.clear()
+        self.objects2id.clear()
+        for elem in elems:
+            image = None
+            text = elem
+            if self.labelProvider is not None:
+                text = self.labelProvider.getText(elem)
+                image = self.labelProvider.getImage(elem)
+            newItem = wx.ListItem()
+            newItem.SetData(i)
+            self.id2objects[i] = elem
+            if image is not None:
+                if image not in self.imageList:
+                    if image.GetWidth() == 16 and image.GetHeight() == 16:
+                        self.imageList[image] = self.control.GetImageList(wx.IMAGE_LIST_SMALL).Add(image)
+                if image in self.imageList:
+                    newItem.SetImage(self.imageList[image])
+            newItem.SetText(text)
+            newItem.SetId(i)
+            newItem.SetColumn(0)
+            newItem.SetMask(wx.LIST_MASK_TEXT | wx.LIST_MASK_DATA | wx.LIST_MASK_IMAGE)
+            self.control.InsertItem(newItem)
+            self.objects2id[elem] = i
+            i += 1
 
         return

@@ -5,6 +5,17 @@
 # Compiled at: 2005-06-10 18:51:25
 import wx
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
 class BufferedWindow(wx.Window):
     __module__ = __name__
 
@@ -20,7 +31,8 @@ class BufferedWindow(wx.Window):
                 wx.EvtHandler.__init__(innerself)
                 innerself.Bind(wx.EVT_SIZE, self.OnSize, self)
 
-        self.PushEventHandler(SizeHandler())
+        self._sizeHandler = SizeHandler()
+        self.PushEventHandler(self._sizeHandler)
         (self.width, self.height) = (0, 0)
         self.createBuffer()
 
@@ -28,11 +40,15 @@ class BufferedWindow(wx.Window):
         pass
 
     def createBuffer(self):
+        if _isDestroyed(self):
+            return
         (self.width, self.height) = self.GetClientSize()
         self._buffer = wx.Bitmap(self.width, self.height)
         self.updateDrawing()
 
     def updateDrawing(self):
+        if _isDestroyed(self):
+            return
         if self.useBufferedDC:
             dc = wx.BufferedDC(wx.ClientDC(self), self._buffer)
             self.Draw(dc)
@@ -44,17 +60,30 @@ class BufferedWindow(wx.Window):
 
     def OnSize(self, event):
         event.Skip()
+        if _isDestroyed(self):
+            return
         self.createBuffer()
         self.handleResize()
 
     def OnPaint(self, event):
         event.Skip()
+        if _isDestroyed(self):
+            return
         if self.useBufferedDC:
             dc = wx.BufferedPaintDC(self, self._buffer)
         else:
             dc = wx.PaintDC(self)
             dc.DrawBitmap(self._buffer, 0, 0)
         self.Draw(dc)
+
+    def dispose(self):
+        if hasattr(self, '_sizeHandler') and self._sizeHandler is not None:
+            try:
+                if not _isDestroyed(self):
+                    self.PopEventHandler(False)
+            except Exception:
+                pass
+            self._sizeHandler = None
 
     def Draw(self, dc):
         pass

@@ -11,6 +11,24 @@ devices = {}
 recipeModel = None
 view = None
 
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
 def setView(newview):
     global view
     view = newview
@@ -48,7 +66,7 @@ def deviceAdded(device):
     factory = getContributionFactory(device.getType())
     if factory is None:
         return
-    wx.CallAfter(addContribution, factory, device)
+    _safeCallAfter(addContribution, factory, device)
     return
 
 
@@ -68,7 +86,7 @@ def deviceRemoved(device):
         return
     item = devices[device]
     del devices[device]
-    wx.CallAfter(view.removeItem, item)
+    _safeCallAfter(view.removeItem, item)
 
 
 def getContributionFactory(typestr):

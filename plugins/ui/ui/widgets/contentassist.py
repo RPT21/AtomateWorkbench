@@ -6,6 +6,17 @@
 import wx, plugins.ui.ui.images
 import plugins.ui.ui as ui
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
 class ContentAssistant(object):
     __module__ = __name__
 
@@ -35,7 +46,7 @@ class ContentAssistant(object):
 
     def OnMouseMotion(self, event):
         event.Skip()
-        if not self.warning:
+        if not self.warning or _isDestroyed(self.control):
             return
         (w, h) = self.control.GetSize()
         (x, y) = self.control.ClientToScreen((0, 0))
@@ -56,13 +67,21 @@ class ContentAssistant(object):
         self.warningText = text
 
     def update(self):
+        if _isDestroyed(self.control):
+            return
         wx.CallAfter(self.internalUpdate)
 
     def internalUpdate(self):
         try:
+            if _isDestroyed(self.control):
+                return
             if not self.control.IsShown() and self.warning:
                 self.control.Show(self.warning)
             if not self.warning:
                 self.control.Hide()
-        except wx.PyDeadObjectError as msg:
+        except RuntimeError as msg:
+            if _isDestroyed(self.control):
+                return
+            print(('Dead Object Error:', msg))
+        except Exception as msg:
             print(('Dead Object Error:', msg))

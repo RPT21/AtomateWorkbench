@@ -15,6 +15,35 @@ import plugins.grapheditor.grapheditor.images as images, logging
 import plugins.grapheditor.grapheditor.messages as messages
 from plugins.grapheditor.grapheditor.__init__ import getGraphContributionFactory
 logger = logging.getLogger('grapheditor.editor')
+
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+    
+    return wx.CallAfter(wrapper)
 DEFAULT_SB_WIDTH = 18
 ZOOMCONTROL_WIDTH = 100
 LABEL_COLUMN_WIDTH = 40
@@ -79,6 +108,8 @@ class EditorViewer(object):
         return
 
     def calcZoomRange(self):
+        if self._destroying or _isDestroyed(self.control):
+            return
         width = self.getWidth()
         r = self.getDuration() / self.millisPerPixel
         newFullFactor = r / width * 100
@@ -97,6 +128,8 @@ class EditorViewer(object):
         if newInput is None:
             self.disposeContributors()
             return
+        if self._destroying or _isDestroyed(self.control):
+            return
         model = newInput
         model.addModifyListener(self)
         self.loadGraphItemContributions()
@@ -108,6 +141,8 @@ class EditorViewer(object):
             contributor.dispose()
 
     def recipeModelChanged(self, event):
+        if self._destroying or _isDestroyed(self.control):
+            return
         if event.getEventType() == event.ADD_DEVICE:
             self.addGraphItemContributionForDevice(event.getDevice())
         elif event.getEventType() == event.REMOVE_DEVICE:
@@ -128,6 +163,8 @@ class EditorViewer(object):
         return
 
     def updateVisibleEvents(self):
+        if self._destroying or _isDestroyed(self.control):
+            return
         self.events = []
         recipe = self.editor.getInput().getRecipe()
         lastDuration = 0
@@ -137,7 +174,7 @@ class EditorViewer(object):
 
         self.calculateDuration()
         self.calcZoomRange()
-        wx.CallAfter(self.refresh)
+        _safeCallAfter(self.refresh)
 
     def getContributionForDevice(self, device):
         if device not in self.deviceToContribution:
@@ -201,6 +238,8 @@ class EditorViewer(object):
 
     def updateBuffer(self):
         global DEFAULT_SB_WIDTH
+        if self._destroying or _isDestroyed(self.control):
+            return
         size = self.control.GetClientSize()
         if size[0] < DEFAULT_SB_WIDTH:
             size[0] = DEFAULT_SB_WIDTH + 5
@@ -216,10 +255,14 @@ class EditorViewer(object):
         self.refresh()
 
     def updateItem(self, item):
+        if self._destroying or _isDestroyed(self.control):
+            return
         self.updateDrawing()
         self.updateScrollbars()
 
     def refresh(self):
+        if self._destroying or _isDestroyed(self.control):
+            return
         self.updateDrawing()
         self.updateScrollbars()
 
@@ -229,7 +272,7 @@ class EditorViewer(object):
         self.refresh()
 
     def rearrangeContributor(self, fromIndex, toIndex):
-        if self.fromIndex > len(self.itemContributors):
+        if fromIndex > len(self.itemContributors):
             return
         if toIndex > len(self.itemContributors):
             toIndex = len(self.itemContributors)
@@ -258,6 +301,8 @@ class EditorViewer(object):
         dc.SetBrush(wx.NullBrush)
 
     def paintDecorations(self):
+        if self._destroying or _isDestroyed(self.control):
+            return
         dc = wx.ClientDC(self.control)
         self.paintUpperRightSquare(dc)
         self.paintLowerLeftSquare(dc)
@@ -355,20 +400,27 @@ class EditorViewer(object):
                 dc.DrawText('%d' % i, (i, 0))
 
     def OnPaint(self, event):
+        if self._destroying or _isDestroyed(self.control):
+            return
         dc = wx.BufferedPaintDC(self.control, self._Buffer)
 
     def updateDrawing(self):
-        then = time.time()
-        dc = wx.BufferedDC(wx.ClientDC(self.control), self._Buffer)
-        interval = (
-         self.pixelToMillis(self.scrolledX), self.pixelToMillis(self.getWidth() + self.scrolledX))
-        dc.Clear()
-        self.update(dc, interval)
-        now = time.time()
+        if self._destroying or _isDestroyed(self.control) or self._Buffer is None:
+            return
+        try:
+            then = time.time()
+            dc = wx.BufferedDC(wx.ClientDC(self.control), self._Buffer)
+            interval = (
+             self.pixelToMillis(self.scrolledX), self.pixelToMillis(self.getWidth() + self.scrolledX))
+            dc.Clear()
+            self.update(dc, interval)
+            now = time.time()
+        except RuntimeError:
+            return
 
     def OnSize(self, event):
         event.Skip()
-        if self._destroying or self.control is None:
+        if self._destroying or self.control is None or _isDestroyed(self.control):
             return
         self.updateScrollbars()
         self.positionScrollbars()
@@ -377,32 +429,37 @@ class EditorViewer(object):
         self.updateDrawing()
 
     def updateScrollbars(self):
-        if self._destroying or self.horizSB is None or self.vertSB is None:
+        if self._destroying or _isDestroyed(self.control) or _isDestroyed(self.horizSB) or _isDestroyed(self.vertSB):
             return
-        width = self.getWidth()
-        size = self.millisToPixels(self.getDuration()) + 100
-        thumbsize = width
-        if width > size:
-            self.horizSB.Disable()
-            if not self.scrolledX == 0:
-                self.scrolledX = 0
-                self.refresh()
-        elif not self.horizSB.IsEnabled():
-            self.horizSB.Enable()
-        self.horizSB.SetScrollbar(self.scrolledX, thumbsize, size, thumbsize, True)
-        height = self.getHeight()
-        size = self.getTotalItemHeights() + 30
-        thumbsize = height
-        if height > size:
-            self.vertSB.Disable()
-            if not self.scrolledY == 0:
-                self.scrolledY = 0
-                self.refresh()
-        elif not self.vertSB.IsEnabled():
-            self.vertSB.Enable(True)
-        self.vertSB.SetScrollbar(-1 * self.scrolledY, thumbsize, size, thumbsize, True)
+        try:
+            width = self.getWidth()
+            size = self.millisToPixels(self.getDuration()) + 100
+            thumbsize = width
+            if width > size:
+                self.horizSB.Disable()
+                if not self.scrolledX == 0:
+                    self.scrolledX = 0
+                    self.refresh()
+            elif not self.horizSB.IsEnabled():
+                self.horizSB.Enable()
+            self.horizSB.SetScrollbar(self.scrolledX, thumbsize, size, thumbsize, True)
+            height = self.getHeight()
+            size = self.getTotalItemHeights() + 30
+            thumbsize = height
+            if height > size:
+                self.vertSB.Disable()
+                if not self.scrolledY == 0:
+                    self.scrolledY = 0
+                    self.refresh()
+            elif not self.vertSB.IsEnabled():
+                self.vertSB.Enable(True)
+            self.vertSB.SetScrollbar(-1 * self.scrolledY, thumbsize, size, thumbsize, True)
+        except RuntimeError:
+            return
 
     def getHeight(self):
+        if _isDestroyed(self.control):
+            return 0
         size = self.control.GetClientSize()
         return size[1] - (self.timelineHeader.getHeight() + DEFAULT_SB_WIDTH)
 
@@ -510,7 +567,7 @@ class EditorViewer(object):
             image.SetMaskColour(255, 0, 0)
             image.SetOption(wx.IMAGE_OPTION_CUR_HOTSPOT_X, int(image.GetWidth() / 2))
             image.SetOption(wx.IMAGE_OPTION_CUR_HOTSPOT_Y, int(image.GetHeight() / 2))
-            self.cursorResizeWE = wx.CursorFromImage(image)
+            self.cursorResizeWE = wx.Cursor(image)
         except Exception as msg:
             logger.exception(msg)
             self.cursorResizeWE = wx.Cursor(wx.CURSOR_SIZEWE)
@@ -790,6 +847,8 @@ class EditorViewer(object):
         return LABEL_COLUMN_WIDTH
 
     def getWidth(self):
+        if _isDestroyed(self.control):
+            return 0
         return self.control.GetSize()[0] - (DEFAULT_SB_WIDTH + self.getTitleColumnWidth())
 
 

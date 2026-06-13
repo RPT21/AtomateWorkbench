@@ -7,6 +7,35 @@ import wx, logging, plugins.poi.poi.views
 import plugins.poi.poi as poi
 logger = logging.getLogger('extendededitor.item')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
 class RoundedGradedHeader(object):
     __module__ = __name__
 
@@ -87,7 +116,7 @@ class RoundedGradedHeader(object):
             return
         self.cacheSize()
         self.control.SetSize(self.cachedSize)
-        self.control.SetToolTipString(self.text)
+        self.control.SetToolTip(self.text)
         self.control.Refresh()
 
     def cacheSize(self):
@@ -237,12 +266,14 @@ class ExtendedEditorItem(object):
         self.update()
 
     def update(self):
-        wx.CallAfter(self.internalUpdate)
+        _safeCallAfter(self.internalUpdate)
 
     def internalUpdate(self):
-        if self.control is None:
+        if self.control is None or _isDestroyed(self.control):
             return
         try:
+            if _isDestroyed(self.body):
+                return
             size = self.control.GetSize()
             bsize = self.body.GetSize()
             inset = self.radius + self.shadowsize
@@ -253,7 +284,9 @@ class ExtendedEditorItem(object):
                 sizer.Fit(self.control)
                 self.control.Refresh()
                 self.container.resizeToFit()
-        except wx.PyDeadObjectError as msg:
+        except RuntimeError:
+            return
+        except Exception as msg:
             logger.exception(msg)
             logger.warning('Error while internally updating items:%s for %s' % (msg, self))
 
@@ -351,5 +384,10 @@ class ExtendedEditorItem(object):
 
     def dispose(self):
         editor = self.container.getEditor()
-        editor.removeSelectionChangedListener(self)
-        self.model.removeModifyListener(self)
+        if editor is not None:
+            editor.removeSelectionChangedListener(self)
+        if self.model is not None:
+            self.model.removeModifyListener(self)
+        self.control = None
+        self.body = None
+        self.container = None

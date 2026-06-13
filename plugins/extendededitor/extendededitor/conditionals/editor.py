@@ -9,6 +9,27 @@ import plugins.extendededitor.extendededitor.conditionals.testeditor as conditio
 import plugins.poi.poi.utils.listctrl
 import plugins.poi.poi as poi
 import plugins.core.core as core
+import logging
+
+logger = logging.getLogger('extendededitor')
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
 
 class ConditionalEditor(object):
     __module__ = __name__
@@ -75,7 +96,7 @@ class ConditionalEditor(object):
         conditionals.remove(selection)
         conditionals.insert(newidx, selection)
         self.populateTestsList()
-        wx.CallAfter(self.setSelected, newidx)
+        _safeCallAfter(self.setSelected, newidx)
 
     def setSelected(self, index):
         self.testsList.SetItemState(index, wx.LIST_STATE_SELECTED, wx.LIST_STATE_SELECTED)
@@ -89,7 +110,7 @@ class ConditionalEditor(object):
         conditionals.remove(selection)
         conditionals.insert(newidx, selection)
         self.populateTestsList()
-        wx.CallAfter(self.setSelected, newidx)
+        _safeCallAfter(self.setSelected, newidx)
 
     def OnDelete(self, event):
         selection = self.getSelection()
@@ -99,7 +120,7 @@ class ConditionalEditor(object):
         if index > 0:
             index -= 1
         if len(self.step.getConditionals()) > 0:
-            wx.CallAfter(self.setSelected, index)
+            _safeCallAfter(self.setSelected, index)
 
     def getSelection(self):
         itemIndex = -1

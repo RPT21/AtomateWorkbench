@@ -8,6 +8,17 @@ import plugins.validator.validator as validator
 import plugins.validator.validator.messages as messages, wx.lib.mixins.listctrl as listmix
 
 
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
     __module__ = __name__
 
@@ -28,6 +39,8 @@ class ErrorViewer(object):
         return
 
     def validationEvent(self, valid, errors):
+        if _isDestroyed(self.control):
+            return
         wx.CallAfter(self.internalValidationEvent, valid, errors)
 
     def internalValidationEvent(self, valid, errors):

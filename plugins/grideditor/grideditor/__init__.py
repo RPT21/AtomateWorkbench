@@ -34,6 +34,24 @@ VIEW_ID = 'grideditor'
 columnContributions = {}
 logger = logging.getLogger('grideditor')
 
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+    
+    return wx.CallAfter(wrapper)
+
 def getDefault():
     global instance
     return instance
@@ -388,7 +406,7 @@ class GridEditorPlugin(kernel.plugin.Plugin):
 
                 self.activeWindow = child
                 if not wx.IsMainThread():
-                    wx.CallAfter(self.resizeActiveWindow)
+                    _safeCallAfter(self.resizeActiveWindow)
                 else:
                     self.resizeActiveWindow()
 
@@ -418,7 +436,7 @@ class GridEditorPlugin(kernel.plugin.Plugin):
                     logger.debug('CLOSE LISTENER')
                     lib.kernel.debugDumpStack()
 
-                wx.EVT_CLOSE(self.control, closelistener)
+                self.control.Bind(wx.EVT_CLOSE, closelistener)
                 viewer = grideditor_recipegridviewer.RecipeGridViewer()
                 viewer.createControl(self.control)
                 self.control.show(viewer.getControl())

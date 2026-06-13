@@ -13,6 +13,35 @@ import plugins.poi.poi as poi
 
 logger = logging.getLogger('panelview.viewer')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
 class ViewerView(labbooks.RunLogParticipant):
     __module__ = __name__
 
@@ -57,7 +86,7 @@ class ViewerView(labbooks.RunLogParticipant):
             sizer.RecalcSizes()
             sizer.Layout()
             if refresh:
-                wx.CallAfter(self.updateMe)
+                _safeCallAfter(self.updateMe)
             logger.debug('past stuffs of refresh')
 
     def updateMe(self):
@@ -78,12 +107,12 @@ class ViewerView(labbooks.RunLogParticipant):
             else:
                 item.dispose()
                 if refresh:
-                    wx.CallAfter(self.updateMe)
+                    _safeCallAfter(self.updateMe)
 
     def removeAllItems(self):
         items = copy.copy(self.panelitems)
         list(map((lambda p: self.removeItem(p, refresh=False)), self.panelitems))
-        wx.CallAfter(self.updateMe)
+        _safeCallAfter(self.updateMe)
 
     def dispose(self):
         items = copy.copy(self.panelitems)
@@ -113,7 +142,7 @@ class ViewerView(labbooks.RunLogParticipant):
         if newInput != oldInput and oldInput != None:
             self.removeAllItems()
         model = newInput
-        wx.CallAfter(self.internalPrepareNewPanels, model)
+        _safeCallAfter(self.internalPrepareNewPanels, model)
         return
 
     def internalPrepareNewPanels(self, model):

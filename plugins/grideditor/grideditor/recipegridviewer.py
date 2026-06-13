@@ -239,7 +239,7 @@ class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
         self.grid.Bind(EVT_GRID_LABEL_RIGHT_CLICK, self.OnShowColumnContextMenu, self.grid)
         self.grid.Bind(EVT_GRID_CELL_CHANGED, self.OnGridCellChange, self.grid)
         self.grid.SetRowLabelSize(30)
-        wx.EVT_KEY_DOWN(self.grid, self.OnKeyDown)
+        self.grid.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         self.bindPaintEvents()
         self.createContextMenu()
         self.view.setTitle(messages.get('view.title'))
@@ -280,7 +280,7 @@ class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
     def bindPaintEvents(self):
         wnd = self.grid.GetGridRowLabelWindow()
         wnd = self.grid.GetGridColLabelWindow()
-        wx.EVT_PAINT(wnd, self.OnHeaderLabelPaint)
+        wnd.Bind(wx.EVT_PAINT, self.OnHeaderLabelPaint)
 
     def OnRowLabelPaint(self, event):
         self.rowLabelPaint(self.grid.GetGridRowLabelWindow())
@@ -607,9 +607,40 @@ class RecipeGridViewer(RecipeModelEventListener, SelectionProvider):
         if self.input is not None:
             self.input.removePreModifyListener(self)
             self.input.removeModifyListener(self)
-        self.contentprovider.dispose()
-        self.gutter.dispose()
-        self.grid = None
+        try:
+            self.contentprovider.dispose()
+        except Exception:
+            pass
+        try:
+            self.gutter.dispose()
+        except Exception:
+            pass
+        # Destroy the grid control
+        if hasattr(self, 'grid') and self.grid is not None:
+            try:
+                import wx
+                if not wx.IsDestroyed(self.grid):
+                    self.grid.Destroy()
+            except Exception:
+                pass
+            self.grid = None
+        # Destroy the StackedView if it exists
+        if hasattr(self, 'view') and self.view is not None:
+            try:
+                if hasattr(self.view, 'dispose'):
+                    self.view.dispose()
+            except Exception:
+                pass
+            self.view = None
+        # Destroy the panel control if it exists
+        if hasattr(self, 'control') and self.control is not None:
+            try:
+                import wx
+                if not wx.IsDestroyed(self.control):
+                    self.control.Destroy()
+            except Exception:
+                pass
+            self.control = None
         return
 
     def show(self, show):

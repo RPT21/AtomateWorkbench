@@ -8,6 +8,31 @@ import plugins.panelview.panelview.devicemediator, logging, plugins.ui.ui.widget
 import plugins.panelview.panelview as panelview
 logger = logging.getLogger('mfc.panelview')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            return
+        except Exception as msg:
+            try:
+                logger.debug(f'Callback exception: {msg}')
+            except Exception:
+                pass
+    return wx.CallAfter(wrapper)
+
 class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
     __module__ = __name__
 
@@ -91,7 +116,9 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
         if event.etype == plugins.mfc.mfc.hardwarestatusprovider.FLOW:
             if not event.channel == self.device.getChannelNumber():
                 return
-        wx.CallAfter(self.internalHardwareUpdate, event)
+        if _isDestroyed(self.control):
+            return
+        _safeCallAfter(self.internalHardwareUpdate, event)
 
     def formatFlow(self, flow):
         if flow is None:
@@ -105,6 +132,8 @@ class MFCPanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
 
     def internalHardwareUpdate(self, event):
         try:
+            if _isDestroyed(self.control):
+                return
             flowval = 0
             if event.etype == plugins.mfc.mfc.hardwarestatusprovider.FLOW:
                 flowval = event.data

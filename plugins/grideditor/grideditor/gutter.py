@@ -9,6 +9,38 @@ import plugins.ui.ui.widgets.contentassist
 import plugins.validator.validator as validator
 import plugins.grideditor.grideditor.utils.validation as grideditor_validation
 import plugins.validator.validator.participant
+import logging
+
+logger = logging.getLogger('grideditor.gutter')
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
 
 _DEFAULT_WIDTH = 10
 _DEBUG = True
@@ -42,7 +74,12 @@ class GutterColumn(wx.Window):
         return
 
     def validationEvent(self, valid, errors):
-        self.Refresh()
+        if _isDestroyed(self):
+            return
+        try:
+            self.Refresh()
+        except RuntimeError:
+            return
 
     def setGutter(self, gutter):
         self.gutter = gutter
@@ -61,11 +98,16 @@ class GutterColumn(wx.Window):
         return
 
     def handleSelectionChanged(self, selection):
+        if _isDestroyed(self):
+            return
         step = None
         if len(selection) > 0:
             step = selection[0]
         self.stepSelectionChanged(step)
-        self.Refresh()
+        try:
+            self.Refresh()
+        except RuntimeError:
+            return
         return
 
     def stepSelectionChanged(self, step):
@@ -82,15 +124,24 @@ class GutterColumn(wx.Window):
 
     def dispose(self):
         validator.getDefault().removeValidationListener(self)
-        self.gridviewer.removeSelectionChangedListener(self)
-        self.gridviewer.removeInputChangedListener(self)
+        if self.gridviewer is not None:
+            self.gridviewer.removeSelectionChangedListener(self)
+            self.gridviewer.removeInputChangedListener(self)
         self.step = None
         if self.model is not None:
             self.model.removeModifyListener(self)
+        self.gridviewer = None
+        self.grid = None
+        self.control = None
         return
 
     def recipeModelChanged(self, event):
-        self.Refresh()
+        if _isDestroyed(self):
+            return
+        try:
+            self.Refresh()
+        except RuntimeError:
+            return
 
     def inputChanged(self, oldInput, newInput):
         model = newInput
@@ -137,17 +188,24 @@ class Gutter(object):
         return
 
     def updateWidth(self):
-        wx.CallAfter(self.internalUpdateWidth)
+        if _isDestroyed(self.control) or _isDestroyed(self.grid):
+            return
+        _safeCallAfter(self.internalUpdateWidth)
 
     def internalUpdateWidth(self):
-        width = 0
-        for column in self.columns:
-            width += column.getWidth()
+        if _isDestroyed(self.control) or _isDestroyed(self.grid):
+            return
+        try:
+            width = 0
+            for column in self.columns:
+                width += column.getWidth()
 
-        (x, y) = self.grid.GetVirtualSize()
-        if width == 0:
-            width = _DEFAULT_WIDTH
-        self.control.SetVirtualSize((width, y))
+            (x, y) = self.grid.GetVirtualSize()
+            if width == 0:
+                width = _DEFAULT_WIDTH
+            self.control.SetVirtualSize((width, y))
+        except RuntimeError:
+            return
 
     def setGrid(self, gridviewer):
         self.gridviewer = gridviewer
@@ -171,6 +229,8 @@ class Gutter(object):
         return self.control
 
     def OnSize(self, event):
+        if _isDestroyed(self.control):
+            return
         event.Skip()
         if self.sizing:
             return
@@ -220,6 +280,8 @@ class Gutter(object):
         return self.control
 
     def handleScrolled(self, event):
+        if _isDestroyed(self.control) or _isDestroyed(self.grid):
+            return
         eventType = event.GetEventType()
         if event.GetOrientation() == wx.HORIZONTAL:
             return
@@ -249,12 +311,16 @@ class Gutter(object):
         self.control.Refresh()
 
     def updateDimensions(self):
+        if _isDestroyed(self.control) or _isDestroyed(self.grid):
+            return
         (ppx, ppy) = self.grid.GetScrollPixelsPerUnit()
         (x, y) = self.grid.GetVirtualSize()
         self.control.SetVirtualSize((_DEFAULT_WIDTH, y))
         self.old = (x, y)
 
     def scroll(self, pos):
+        if _isDestroyed(self.control) or _isDestroyed(self.grid):
+            return
         (ppx, ppy) = self.grid.GetScrollPixelsPerUnit()
         (x, y) = self.grid.GetVirtualSize()
         if (x, y) != self.old:
@@ -265,7 +331,21 @@ class Gutter(object):
         list(map((lambda column: column.SetPosition((column.GetPosition()[0], self.ypos))), self.columns))
 
     def dispose(self):
-        list(map((lambda column: column.dispose()), self.columns))
+        try:
+            list(map((lambda column: column.dispose()), self.columns))
+        except Exception:
+            pass
+        self.columns = []
+        self.gridviewer = None
+        self.grid = None
+        # Destroy the wxPython control before cleaning up references
+        if self.control is not None:
+            try:
+                if not _isDestroyed(self.control):
+                    self.control.Destroy()
+            except Exception:
+                pass
+        self.control = None
 
 
 class ErrorColumn(GutterColumn):

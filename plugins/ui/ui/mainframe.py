@@ -10,6 +10,59 @@ import plugins.poi.poi.actions as actions, logging
 import plugins.poi.poi.views as views
 logger = logging.getLogger('mainframe')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _popPushedHandlers(window):
+    if _isDestroyed(window):
+        return
+    try:
+        children = list(window.GetChildren())
+    except Exception:
+        children = []
+    for child in children:
+        _popPushedHandlers(child)
+    
+    # Aggressively clean up the event handler chain
+    # First try to pop all non-window handlers
+    try:
+        max_pops = 20
+        pop_count = 0
+        while pop_count < max_pops:
+            try:
+                handler = window.GetEventHandler()
+            except Exception:
+                # Window or handler is gone
+                break
+            if handler is None or handler == window:
+                # No more pushed handlers, we're back to the window itself
+                break
+            try:
+                # Pop the handler from the chain (don't delete it)
+                window.PopEventHandler(False)
+                pop_count += 1
+            except wx.wxAssertionError:
+                # Handler chain is corrupted, stop trying
+                logger.debug(f"Handler chain corruption detected, stopping cleanup")
+                break
+            except RuntimeError:
+                # Object was deleted, can't continue
+                break
+            except Exception:
+                # Some other error, stop
+                break
+    except Exception:
+        pass
+
 class Sector(object):
     __module__ = __name__
 
@@ -27,6 +80,8 @@ class Sector(object):
         return self.sid
 
     def refresh(self):
+        if _isDestroyed(self.stage):
+            return
         self.stage.refresh()
 
     def createControl(self, parent, sid, id, defaultSize, style, orientation, alignment, visSash=None):
@@ -55,8 +110,15 @@ class Sector(object):
         if self.stage is None:
             return
         for child in self.stage.GetChildren():
-            self.stage.RemoveChild(child)
-            child.Destroy()
+            try:
+                _popPushedHandlers(child)
+            except Exception as msg:
+                logger.exception(msg)
+            try:
+                if not _isDestroyed(child):
+                    child.Destroy()
+            except Exception:
+                pass
             del child
 
         return
@@ -72,10 +134,18 @@ class Sector(object):
 
     def removeView(self):
         for child in self.stage.GetChildren():
-            self.stage.Remove(child)
-            child.Destroy()
+            try:
+                _popPushedHandlers(child)
+            except Exception as msg:
+                logger.exception(msg)
+            try:
+                if not _isDestroyed(child):
+                    child.Destroy()
+            except Exception as msg:
+                logger.exception(msg)
 
-        self.stage.refresh()
+        if not _isDestroyed(self.stage):
+            self.stage.refresh()
 
 
 class MainFrame(object):
@@ -241,6 +311,7 @@ class MainFrame(object):
             view = self.sectors2Views[sectorID]
             del self.views[view.getId()]
             del self.sectors2Views[sectorID]
+            _popPushedHandlers(sect.getControl())
             sect.clearStage()
 
     def createSectors(self):
@@ -312,6 +383,7 @@ class MainFrame(object):
         self.control.Hide()
 
     def dispose(self):
+        _popPushedHandlers(self.control)
         self.control.Destroy()
 
     def getControl(self):

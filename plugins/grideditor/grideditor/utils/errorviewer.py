@@ -11,6 +11,27 @@ import plugins.grideditor.grideditor as grideditor
 import plugins.grideditor.grideditor.images as images
 import plugins.grideditor.grideditor.messages as messages
 import plugins.poi.poi.actions
+import logging
+
+logger = logging.getLogger('grideditor.errorviewer')
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
 
 
 class AutoSizingListCtrl(wx.ListCtrl, listmix.ListCtrlAutoWidthMixin):
@@ -33,7 +54,7 @@ class ErrorViewer(object):
         return
 
     def validationEvent(self, valid, errors):
-        wx.CallAfter(self.internalValidationEvent, valid, errors)
+        _safeCallAfter(self.internalValidationEvent, valid, errors)
 
     def internalValidationEvent(self, valid, errors):
         self.resetAll()
@@ -157,7 +178,7 @@ class ValidationListener(object):
         return
 
     def validationEvent(self, valid, errors):
-        wx.CallAfter(self.internalValidationEvent, valid, errors)
+        _safeCallAfter(self.internalValidationEvent, valid, errors)
 
     def internalValidationEvent(self, valid, errors):
         if not valid:

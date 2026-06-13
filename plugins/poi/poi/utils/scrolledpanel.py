@@ -3,7 +3,34 @@
 # Decompiled from: Python 3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]
 # Embedded file name: ../plugins/poi/src/poi/utils/scrolledpanel.py
 # Compiled at: 2005-06-10 18:51:25
-import wx
+import wx, logging
+
+logger = logging.getLogger('poi.scrolledpanel')
+
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            return
+        except Exception as msg:
+            try:
+                logger.debug(f'Callback exception: {msg}')
+            except Exception:
+                pass
+    return wx.CallAfter(wrapper)
 
 class ScrolledPanel(wx.ScrolledWindow):
     """ScrolledPanel fills a "hole" in the implementation of wx.ScrolledWindow,
@@ -41,11 +68,14 @@ as a proper class (and the demo is now converted to just use it.)
             self.SetVirtualSize(wx.Size(w, h))
             self.SetSizeHints(w, h)
         self.SetScrollRate(rate_x, rate_y)
-        wx.CallAfter(self.Scroll, wx.Point(0, 0))
+        if not _isDestroyed(self):
+            _safeCallAfter(self.Scroll, wx.Point(0, 0))
 
     def OnChildFocus(self, evt):
         evt.Skip()
         child = evt.GetWindow()
+        if _isDestroyed(self) or _isDestroyed(child):
+            return
         child = child.FindFocus()
         (sppu_x, sppu_y) = self.GetScrollPixelsPerUnit()
         (vs_x, vs_y) = self.GetViewStart()

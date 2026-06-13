@@ -8,6 +8,24 @@ from plugins.grideditor.grideditor.events import EventObject
 
 logger = logging.getLogger('recipemodel')
 
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+    
+    return wx.CallAfter(wrapper)
+
 class RecipeModelEventListener:
     __module__ = __name__
 
@@ -143,6 +161,10 @@ class RecipeModel(object):
         return entry
 
     def getStepAt(self, row):
+        if self.recipe is None:
+            return None
+        if row < 0 or row >= self.recipe.getStepsCount():
+            return None
         return self.recipe.getStep(row)
 
     def getEntryIndexFromDevice(self, device):
@@ -182,7 +204,7 @@ class RecipeModel(object):
 
     def fireRecipeModelChanged(self, event):
         """All handlers should catch their exceptions and not prevent this loop from continuing"""
-        wx.CallAfter(self.internalFireRecipeModelChanged, event)
+        _safeCallAfter(self.internalFireRecipeModelChanged, event)
 
     def internalFireRecipeModelChanged(self, event):
         if self.stopFiring:

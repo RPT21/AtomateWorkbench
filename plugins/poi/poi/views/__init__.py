@@ -5,6 +5,17 @@
 # Compiled at: 2005-06-10 18:51:25
 import wx, wx.adv
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
 def getHeaderColor():
     if '__WXGTK__' in wx.PlatformInfo:
         return wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
@@ -35,6 +46,8 @@ class OneChildWindow(wx.Window):
         return
 
     def refresh(self):
+        if _isDestroyed(self):
+            return
         children = self.GetChildren()
         if len(children) == 0:
             return
@@ -94,7 +107,7 @@ class StackedContent(OneChildWindow):
             if startColour[2] + jump < 255:
                 startColour[2] += jump
 
-        return startColour
+        return wx.Colour(startColour[0], startColour[1], startColour[2])
 
     def draw(self, dc):
         size = self.GetClientSize()
@@ -141,16 +154,25 @@ class StackedViewHeader(object):
         self.control.Bind(wx.EVT_SIZE, self.OnSize)
 
     def update(self):
+        if _isDestroyed(self.control):
+            return
         self.cachedBackground = None
-        self.control.Refresh()
+        try:
+            self.control.Refresh()
+        except RuntimeError:
+            return
         return
 
     def OnSize(self, event):
+        if _isDestroyed(self.control):
+            return
         event.Skip()
         self.cachedBackground = None
         return
 
     def createCachedBackground(self):
+        if _isDestroyed(self.control):
+            return
         (w, h) = self.control.GetSize()
         self.cachedBackground = wx.Bitmap(w, h)
         dc = wx.MemoryDC()
@@ -200,16 +222,21 @@ class StackedViewHeader(object):
         (tew, twh) = dc.GetTextExtent(self.titleText)
         top = self.calcCenter(twh, height)
         dc.DrawLabel(self.titleText, wx.Rect(xoffset, int(top), w - xoffset, h))
-        return
+        return self.cachedBackground
 
     def calcCenter(self, itemHeight, totalHeight):
         return (totalHeight - itemHeight) / 2
 
     def OnPaint(self, event):
+        if _isDestroyed(self.control):
+            return
         dc = wx.PaintDC(self.control)
-        if self.cachedBackground is None:
-            self.createCachedBackground()
-        dc.DrawBitmap(self.cachedBackground, 0, 0, False)
+        bitmap = self.cachedBackground
+        if bitmap is None:
+            bitmap = self.createCachedBackground()
+        if bitmap is None:
+            return
+        dc.DrawBitmap(bitmap, 0, 0, False)
         return
 
     def setTitle(self, title):
@@ -243,6 +270,8 @@ class StackedView(object):
     def setFocus(self, focused=True):
         if self.focused == focused:
             return
+        if self.title is None or self.content is None:
+            return
         self.title.setFocus(focused)
         self.content.setFocus(focused)
         self.focused = focused
@@ -257,15 +286,26 @@ class StackedView(object):
         return
 
     def update(self):
+        if _isDestroyed(self.control):
+            return
         wx.CallAfter(self.internalUpdate)
 
     def internalUpdate(self):
-        self.title.update()
-        self.content.update()
+        if _isDestroyed(self.control):
+            return
+        try:
+            if self.title is not None:
+                self.title.update()
+            if self.content is not None:
+                self.content.update()
+        except RuntimeError:
+            return
 
     def OnSizeControl(self, event):
         if event is not None:
             event.Skip()
+        if _isDestroyed(self.control) or self.title is None or self.content is None:
+            return
         controlSize = self.control.GetClientSize()
         self.title.getControl().SetPosition((0, 0))
         titleHeight = self.title.getHeight()
@@ -282,6 +322,11 @@ class StackedView(object):
     def createContent(self):
         self.content = StackedContent(self.control, -1)
         self.createBody(self.content)
+
+    def dispose(self):
+        self.title = None
+        self.content = None
+        self.control = None
 
     def createBody(self, parent):
         pass

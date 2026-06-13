@@ -15,6 +15,35 @@ import plugins.extendededitor.extendededitor.mediator as extendededitor_mediator
 
 logger = logging.getLogger('extendededitor')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
 class EditorViewer(object):
     __module__ = __name__
 
@@ -52,7 +81,7 @@ class EditorViewer(object):
         if key != 'can-edit':
             return
         canedit = event.getNewValue()
-        wx.CallAfter(self.updateItemsEnable, canedit)
+        _safeCallAfter(self.updateItemsEnable, canedit)
 
     def updateItemsEnable(self, enable):
         for item in self.editorPanels:

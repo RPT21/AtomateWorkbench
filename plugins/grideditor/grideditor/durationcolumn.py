@@ -60,6 +60,19 @@ class DurationCellEditor(grideditor_tablecolumn.CellEditor):
         self.control.PushEventHandler(DurationChangeHandler(self))
         return self.control
 
+    def dispose(self):
+        if self.control is None:
+            return
+        try:
+            if hasattr(wx, 'IsDestroyed') and wx.IsDestroyed(self.control):
+                return
+        except Exception:
+            return
+        try:
+            self.control.PopEventHandler(False)
+        except Exception:
+            pass
+
     def setValue(self, value):
         self.oldValue = value
         ts = wx.TimeSpan.Seconds(int(value))

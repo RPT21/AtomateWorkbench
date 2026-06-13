@@ -19,6 +19,24 @@ DEBUG = False
 logger = logging.getLogger('grideditor')
 executionGridColumnContributionsFactories = {}
 
+
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            pass
+        except Exception as msg:
+            # Log but don't block, especially during shutdown
+            try:
+                logger.debug(f"Callback exception: {msg}")
+            except:
+                pass
+
+    return wx.CallAfter(wrapper)
+
 def addExecutionGridColumnContributionFactory(strType, factory):
     global executionGridColumnContributionsFactories
     executionGridColumnContributionsFactories[strType] = factory
@@ -46,7 +64,7 @@ class ExecutionGridViewer(object):
     def engineInit(self, engine):
         engine.addEngineListener(self)
         self.engine = engine
-        wx.CallAfter(self.prepareStart)
+        _safeCallAfter(self.prepareStart)
 
     def prepareStart(self):
         try:
@@ -102,7 +120,7 @@ class ExecutionGridViewer(object):
         self.grid.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, ignore, self.grid)
         self.grid.Bind(wx.grid.EVT_GRID_LABEL_LEFT_CLICK, ignore, self.grid)
         wnd = self.grid.GetGridColLabelWindow()
-        wx.EVT_PAINT(wnd, self.OnHeaderLabelPaint)
+        wnd.Bind(wx.EVT_PAINT, self.OnHeaderLabelPaint)
         self.closeViewButton.Bind(wx.EVT_BUTTON, self.OnCloseView)
         self.panel = panel
         return self.view.getControl()

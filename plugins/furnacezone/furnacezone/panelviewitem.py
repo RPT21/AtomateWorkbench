@@ -11,6 +11,18 @@ import plugins.hardware.hardware as hardware
 
 logger = logging.getLogger('furnacezone.ui.panelview')
 
+
+def _getChildValue(node, name, default=None):
+    if node is None:
+        return default
+    child = node.getChildNamed(name)
+    if child is None:
+        return default
+    try:
+        return child.getValue()
+    except Exception:
+        return default
+
 class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribution):
     __module__ = __name__
 
@@ -60,7 +72,9 @@ class FurnaceZonePanelViewItem(panelview.devicemediator.DevicePanelViewContribut
 
     def getConfiguredHardware(self):
         try:
-            hwid = self.device.hardwarehints.getChildNamed('id').getValue()
+            hwid = _getChildValue(self.device.hardwarehints, 'id')
+            if hwid is None:
+                return None
             desc = hardware.hardwaremanager.getHardwareByName(hwid)
             inst = desc.getInstance()
             return inst

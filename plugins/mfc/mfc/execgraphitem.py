@@ -211,6 +211,12 @@ class GraphView(graphview.PanelView, poi.utils.bufferedwindow.BufferedWindow):
         snapshot.SaveFile(name, wx.BITMAP_TYPE_JPEG)
 
     def dispose(self):
+        # Pop the pushed event handler
+        try:
+            if hasattr(wx, 'IsDestroyed') and not wx.IsDestroyed(self):
+                self.PopEventHandler(False)
+        except Exception:
+            pass
         graphview.PanelView.dispose(self)
         for (device, panel) in list(self.devicePanels.items()):
             self.removeDevice(device, False)
