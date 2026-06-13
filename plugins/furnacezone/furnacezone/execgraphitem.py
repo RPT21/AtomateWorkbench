@@ -135,7 +135,7 @@ class GraphItem(wx.Panel):
         if sp == 0:
             sp = 1
         dc.SetPen(self.setpointPen)
-        sp = self.height - sp * self.tpp
+        sp = int(self.height - sp * self.tpp)
         dc.SetTextForeground(self.setpointColor)
         dc.SetFont(self.setpointFont)
         dc.DrawLine(0, sp, self.width, sp)
@@ -149,7 +149,7 @@ class GraphItem(wx.Panel):
             dc.SetPen(wx.LIGHT_GREY_PEN)
             dc.DrawLine(self.width - self.extensionLength, 0, self.width - self.extensionLength, self.height)
         dc.SetPen(wx.Pen(wx.LIGHT_GREY, style=wx.DOT))
-        r = self.height - self.device.getRange() * self.tpp
+        r = int(self.height - self.device.getRange() * self.tpp)
         dc.DrawLine(0, r, self.width, r)
 
     def incrementPoint(self, dc):
@@ -161,7 +161,7 @@ class GraphItem(wx.Panel):
         prev = self.cache.cache[li - 2]
         dc.SetPen(wx.RED_PEN)
         h = self.height
-        dc.DrawLine(prev[0] * self.spp, h - prev[1] * self.tpp, latest[0] * self.spp, h - latest[1] * self.tpp)
+        dc.DrawLine(int(prev[0] * self.spp), int(h - prev[1] * self.tpp), int(latest[0] * self.spp), int(h - latest[1] * self.tpp))
 
     def drawPoints(self, dc):
         dc.SetBackground(wx.Brush(wx.WHITE))
@@ -175,7 +175,7 @@ class GraphItem(wx.Panel):
         start = time.time()
         for (t, temp) in self.cache.cache:
             (nx, ny) = (t * self.spp, temp * self.tpp)
-            dc.DrawLine(px, self.height - py, nx, self.height - ny)
+            dc.DrawLine(int(px), int(self.height - py), int(nx), int(self.height - ny))
             (px, py) = (nx, ny)
 
     def addLatestPoint(self):

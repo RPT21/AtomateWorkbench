@@ -29,7 +29,7 @@ class EndTaskEvent(wx.PyEvent):
 
     def __init__(self):
         wx.PyEvent.__init__(self)
-        self.SetEventType(EVT_TASK_END_ID)  # No he trobat què és
+        self.SetEventType(wx.NewId())  # No he trobat què és
 
 
 def OnContextChange(event):
@@ -110,6 +110,9 @@ def fireContextChanged(key, oldValue, newValue):
         logger.debug('*** END ***')
 
     def firer(listener):
-        listener.contextChanged(event)
+        try:
+            listener.contextChanged(event)
+        except Exception as msg:
+            logger.exception(msg)
 
-    list(map(firer, contextChangeListeners))
+    list(map(firer, list(contextChangeListeners)))

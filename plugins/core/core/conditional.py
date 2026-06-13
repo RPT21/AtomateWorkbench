@@ -36,7 +36,7 @@ def addConditionalActionFactory(typestr, func):
 
 
 def getConditionalActionFactoryFor(typestr):
-    if not typestr in actionContributions:
+    if typestr in actionContributions:
         return actionContributions[typestr]
     return None
 

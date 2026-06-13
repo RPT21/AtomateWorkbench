@@ -81,16 +81,9 @@ class AddDeviceDialog(poi.dialogs.MessageHeaderDialog):
     def createList(self):
         listctrl = MixedInListCtrl(self.body, -1, style=wx.LC_REPORT | wx.LC_SINGLE_SEL | wx.SUNKEN_BORDER)
         listctrl.SetImageList(self.imageList, wx.IMAGE_LIST_SMALL)
-        info = wx.ListItem()
-        info.m_mask = wx.LIST_MASK_TEXT | wx.LIST_MASK_IMAGE | wx.LIST_MASK_FORMAT
-        info.m_format = 0
-        info.m_image = -1
-        info.m_text = 'Type'
-        listctrl.InsertColumnInfo(0, info)
+        listctrl.InsertColumn(0, 'Type', wx.LIST_FORMAT_LEFT)
         listctrl.SetColumnWidth(0, 80)
-        info.m_format = wx.LIST_FORMAT_LEFT
-        info.m_text = 'Description'
-        listctrl.InsertColumnInfo(1, info)
+        listctrl.InsertColumn(1, 'Description', wx.LIST_FORMAT_LEFT)
         self.body.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnItemSelected, listctrl)
         self.body.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.OnItemDeselected, listctrl)
         self.body.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItemDoubleClick, listctrl)

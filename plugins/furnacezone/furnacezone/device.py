@@ -20,6 +20,38 @@ def color2str(color):
 def parseColor(colorStr):
     return wx.Colour(*list(map(int, colorStr.split(','))))
 
+
+def _secondsToTimeString(seconds):
+    try:
+        seconds = int(seconds)
+    except Exception:
+        seconds = 0
+    if seconds < 0:
+        seconds = 0
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    secs = seconds % 60
+    return '%02d:%02d:%02d' % (hours, minutes, secs)
+
+
+def _timeStringToSeconds(value):
+    if value is None:
+        return 0
+    if not isinstance(value, str):
+        value = str(value)
+    value = value.strip()
+    if not value:
+        return 0
+    parts = value.split(':')
+    try:
+        if len(parts) == 3:
+            return int(parts[0]) * 3600 + int(parts[1]) * 60 + int(float(parts[2]))
+        if len(parts) == 2:
+            return int(parts[0]) * 60 + int(float(parts[1]))
+        return int(float(value))
+    except Exception:
+        return 0
+
 logger = logging.getLogger('furnacezone.userinterface')
 DEVICE_ID = 'furnacezone'
 
@@ -177,28 +209,39 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
         uihints = data.getUIHints()
         hwhints = data.getHardwareHints()
         try:
-            rng = int(hwhints.getChildNamed('range').getValue())
+            rangeNode = hwhints.getChildNamed('range')
+            rng = int(rangeNode.getValue()) if rangeNode is not None else 1000
         except Exception as msg:
             logger.warning("Unable to get range value: '%s'" % msg)
             rng = 1000
 
         self.rangeText.SetValue(str(rng))
         try:
-            self.devicePlotColor.SetValue(parseColor(uihints.getChildNamed('plot-color').getValue()))
+            colorNode = uihints.getChildNamed('plot-color')
+            if colorNode is not None:
+                self.devicePlotColor.SetValue(parseColor(colorNode.getValue()))
+            else:
+                self.devicePlotColor.SetValue(wx.RED)
         except Exception as msg:
             logger.exception(msg)
             self.devicePlotColor.SetValue(wx.RED)
 
         try:
-            hwid = hwhints.getChildNamed('id').getValue()
-            self.selectHardware(hwid)
+            idNode = hwhints.getChildNamed('id')
+            if idNode is not None:
+                self.selectHardware(idNode.getValue())
+            else:
+                self.selectHardware('None')
         except Exception as msg:
             logger.exception(msg)
             logger.warning("Cannot set hardware: '%s'" % msg)
 
         try:
-            label = uihints.getChildNamed('label').getValue()
-            self.labelField.SetValue(label)
+            labelNode = uihints.getChildNamed('label')
+            if labelNode is not None:
+                self.labelField.SetValue(labelNode.getValue())
+            else:
+                self.labelField.SetValue('')
         except Exception as msg:
             logger.exception(msg)
             logger.warning("Cannot set hardware: '%s'" % msg)
@@ -207,20 +250,23 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
         purgeSetpoint = '0'
         purgeDuration = 0
         try:
-            purgeActive = hwhints.getChildNamed('purge').getAttribute('active').lower() == 'true'
+            purgeNode = hwhints.getChildNamed('purge')
+            if purgeNode is not None:
+                purgeActive = (purgeNode.getAttribute('active') or 'false').lower() == 'true'
         except Exception as msg:
             logger.exception(msg)
 
         self.purgeCheckbox.SetValue(purgeActive)
         try:
             purgeNode = hwhints.getChildNamed('purge')
-            purgeSetpoint = purgeNode.getAttribute('setpoint')
-            purgeDuration = int(purgeNode.getAttribute('duration'))
+            if purgeNode is not None:
+                purgeSetpoint = purgeNode.getAttribute('setpoint') or '0'
+                purgeDuration = int(purgeNode.getAttribute('duration') or 0)
         except Exception as msg:
             logger.exception(msg)
             logger.warning('Cannot set purge setpoint')
 
-        self.purgeDuration.SetValue(wx.TimeSpan.Seconds(purgeDuration))
+        self.purgeDuration.SetValue(_secondsToTimeString(purgeDuration))
         self.purgeSetpointText.SetValue(purgeSetpoint)
         if self.currentHardwareEditor is not None:
             self.currentHardwareEditor.setData(None, hwhints)
@@ -253,9 +299,10 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
 
     def removeHardwareEditor(self):
         sizer = self.hardwarePanel.GetSizer()
-        for child in self.hardwarePanel.GetChildren():
-            self.hardwarePanel.Remove(child)
-            sizer.Remove(child)
+        for child in list(self.hardwarePanel.GetChildren()):
+            if sizer is not None:
+                sizer.Remove(child)
+            self.hardwarePanel.RemoveChild(child)
             child.Destroy()
 
     def setHardwareEditor(self, editor):
@@ -297,14 +344,8 @@ class FurnaceZoneDeviceEditor(core.device.DeviceEditor):
                 purgeActive = 'true'
             purgeNode.setAttribute('active', purgeActive)
             purgeNode.setAttribute('setpoint', purgeSetpoint)
-            purgeDuration = self.purgeDuration.GetValue(as_wxTimeSpan=True)
-            try:
-                purgeDuration = str(purgeDuration.GetSeconds())
-            except Exception as msg:
-                logger.exception(msg)
-                purgeDuration = 0
-
-            purgeNode.setAttribute('duration', purgeDuration)
+            purgeDuration = _timeStringToSeconds(self.purgeDuration.GetValue())
+            purgeNode.setAttribute('duration', str(purgeDuration))
             if self.currentHardwareEditor is not None:
                 self.currentHardwareEditor.getData(hwhints)
         except Exception as msg:

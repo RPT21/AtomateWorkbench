@@ -9,6 +9,20 @@ import plugins.executionengine.executionengine as executionengine
 logger = logging.getLogger('panelview.mainitem')
 
 
+def _safeCallAfter(func, *args, **kwargs):
+    """Safely call wx.CallAfter with exception handling for destroyed windows"""
+    def wrapper():
+        try:
+            return func(*args, **kwargs)
+        except RuntimeError:
+            # Widget was destroyed, silently ignore
+            return
+        except Exception as msg:
+            logger.exception(msg)
+
+    return wx.CallAfter(wrapper)
+
+
 class PanelViewItem(object):
     __module__ = __name__
 
@@ -46,112 +60,110 @@ def str2time(val):
     return wx.TimeSpan.Seconds(val).Format()
 
 
-if False:
+class ExecutionStatusPanelItem(PanelViewItem):
+    __module__ = __name__
 
-    class ExecutionStatusPanelItem(PanelViewItem):
-        __module__ = __name__
+    def __init__(self):
+        PanelViewItem.__init__(self)
+        self.engine = None
+        executionengine.getDefault().addEngineInitListener(self)
+        executionengine.purgemanager.addListener(self)
+        self.lasttext = 'Stopped'
+        return
 
-        def __init__(self):
-            PanelViewItem.__init__(self)
-            self.engine = None
-            executionengine.getDefault().addEngineInitListener(self)
-            executionengine.purgemanager.addListener(self)
-            self.lasttext = 'Stopped'
-            return
+    def dispose(self):
+        """Must remove as listener"""
+        PanelViewItem.dispose(self)
+        executionengine.getDefault().removeEngineInitListener(self)
+        executionengine.purgemanager.removeListener(self)
 
-        def dispose(self):
-            """Must remove as listener"""
-            PanelViewItem.dispose(self)
-            executionengine.getDefault().removeEngineInitListener(self)
-            executionengine.purgemanager.removeListener(self)
+    def purgeStart(self, worker):
+        self.updateFields('Purging')
 
-        def purgeStart(self, worker):
-            self.updateFields('Purging')
+    def purgePause(self, worker):
+        pass
 
-        def purgePause(self, worker):
-            pass
+    def purgeEnd(self, worker):
+        purging = len(executionengine.purgemanager.getPurgeWorkers()) > 0
+        self.updateFields('Done')
 
-        def purgeEnd(self, worker):
-            purging = len(executionengine.purgemanager.getPurgeWorkers()) > 0
-            self.updateFields('Done')
+    def workerRemoved(self, worker):
+        pass
 
-        def workerRemoved(self, worker):
-            pass
+    def workerAdded(self, worker):
+        pass
 
-        def workerAdded(self, worker):
-            pass
+    def engineInit(self, engine):
+        if self.engine is not None:
+            self.engine.removeEngineListener(self)
+        self.engine = engine
+        if engine is not None:
+            self.engine.addEngineListener(self)
+        return
 
-        def engineInit(self, engine):
-            if self.engine is not None:
-                self.engine.removeEngineListener(self)
-            self.engine = engine
-            if engine is not None:
-                self.engine.addEngineListener(self)
-            return
+    def engineEvent(self, event):
+        t = event.getType()
+        if t == executionengine.engine.TYPE_HOLD:
+            self.lasttext = 'Holding'
+        else:
+            self.lasttext = 'Playing'
+        txt = self.lasttext
+        if t == executionengine.engine.TYPE_STARTING:
+            self.updateFields('Starting ...')
+        elif t == executionengine.engine.TYPE_ENDING:
+            self.updateFields('Stopped')
+            self.engine.removeEngineListener(self)
+        else:
+            self.updateFields(txt, str2time(self.engine.getStepTime()), str2time(self.engine.getRecipeTime()), str2time(self.engine.getTotalTime()), self.engine.getCurrentStepIndex() + 1)
 
-        def engineEvent(self, event):
-            t = event.getType()
-            if t == executionengine.engine.TYPE_HOLD:
-                self.lasttext = 'Holding'
-            else:
-                self.lasttext = 'Playing'
-            txt = self.lasttext
-            if t == executionengine.engine.TYPE_STARTING:
-                self.updateFields('Starting ...')
-            elif t == executionengine.engine.TYPE_ENDING:
-                self.updateFields('Stopped')
-                self.engine.removeEngineListener(self)
-            else:
-                self.updateFields(txt, str2time(self.engine.getStepTime()), str2time(self.engine.getRecipeTime()), str2time(self.engine.getTotalTime()), self.engine.getCurrentStepIndex() + 1)
+    def updateFields(self, status, stepTime='', recipeTime='', totalTime='', stepIndex=''):
+        _safeCallAfter(self.internalUpdateFields, status, stepTime, recipeTime, totalTime, stepIndex)
 
-        def updateFields(self, status, stepTime='', recipeTime='', totalTime='', stepIndex=''):
-            wx.CallAfter(self.internalUpdateFields, status, stepTime, recipeTime, totalTime, stepIndex)
+    def internalUpdateFields(self, status, stepTime='', recipeTime='', totalTime='', stepIndex=''):
+        try:
+            self.statusText.SetLabel(status)
+            self.stepIndexText.SetLabel(str(stepIndex))
+            self.stepTimeText.SetLabel(str(stepTime))
+            self.recipeTimeText.SetLabel(str(recipeTime))
+            self.totalTimeText.SetLabel(str(totalTime))
+        except Exception as msg:
+            logger.exception(msg)
 
-        def internalUpdateFields(self, status, stepTime='', recipeTime='', totalTime='', stepIndex=''):
-            try:
-                self.statusText.SetLabel(status)
-                self.stepIndexText.SetLabel(str(stepIndex))
-                self.stepTimeText.SetLabel(str(stepTime))
-                self.recipeTimeText.SetLabel(str(recipeTime))
-                self.totalTimeText.SetLabel(str(totalTime))
-            except Exception as msg:
-                logger.exception(msg)
-
-        def createControl(self, parent):
-            self.control = wx.Panel(parent, -1)
-            self.control.SetBackgroundColour(wx.WHITE)
-            font = self.control.GetFont()
-            font.SetWeight(wx.BOLD)
-            fsizer = wx.FlexGridSizer(0, 2, 3, 3)
-            fsizer.AddGrowableCol(1)
-            label = wx.StaticText(self.control, -1, messages.get('panelview.status.label'))
-            label.SetFont(font)
-            self.statusText = wx.StaticText(self.control, -1, '')
-            fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-            fsizer.Add(self.statusText, 1, wx.ALIGN_CENTRE_VERTICAL)
-            label = wx.StaticText(self.control, -1, messages.get('panelview.stepindex.label'))
-            label.SetFont(font)
-            self.stepIndexText = wx.StaticText(self.control, -1, '')
-            fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-            fsizer.Add(self.stepIndexText, 1, wx.ALIGN_CENTRE_VERTICAL)
-            label = wx.StaticText(self.control, -1, messages.get('panelview.steptime.label'))
-            label.SetFont(font)
-            self.stepTimeText = wx.StaticText(self.control, -1, '')
-            fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-            fsizer.Add(self.stepTimeText, 1, wx.ALIGN_CENTRE_VERTICAL)
-            label = wx.StaticText(self.control, -1, messages.get('panelview.recipetime.label'))
-            label.SetFont(font)
-            self.recipeTimeText = wx.StaticText(self.control, -1, '')
-            fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-            fsizer.Add(self.recipeTimeText, 1, wx.ALIGN_CENTRE_VERTICAL)
-            label = wx.StaticText(self.control, -1, messages.get('panelview.totaltime.label'))
-            label.SetFont(font)
-            self.totalTimeText = wx.StaticText(self.control, -1, '')
-            fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
-            fsizer.Add(self.totalTimeText, 1, wx.ALIGN_CENTRE_VERTICAL)
-            sizer = wx.BoxSizer(wx.VERTICAL)
-            sizer.Add(fsizer, 1, wx.EXPAND | wx.BOTTOM, 5)
-            self.control.SetSizer(sizer)
-            self.control.SetAutoLayout(True)
-            sizer.Fit(self.control)
-            return self.control
+    def createControl(self, parent):
+        self.control = wx.Panel(parent, -1)
+        self.control.SetBackgroundColour(wx.WHITE)
+        font = self.control.GetFont()
+        font.SetWeight(wx.BOLD)
+        fsizer = wx.FlexGridSizer(0, 2, 3, 3)
+        fsizer.AddGrowableCol(1)
+        label = wx.StaticText(self.control, -1, messages.get('panelview.status.label'))
+        label.SetFont(font)
+        self.statusText = wx.StaticText(self.control, -1, '')
+        fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
+        fsizer.Add(self.statusText, 1, wx.ALIGN_CENTRE_VERTICAL)
+        label = wx.StaticText(self.control, -1, messages.get('panelview.stepindex.label'))
+        label.SetFont(font)
+        self.stepIndexText = wx.StaticText(self.control, -1, '')
+        fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
+        fsizer.Add(self.stepIndexText, 1, wx.ALIGN_CENTRE_VERTICAL)
+        label = wx.StaticText(self.control, -1, messages.get('panelview.steptime.label'))
+        label.SetFont(font)
+        self.stepTimeText = wx.StaticText(self.control, -1, '')
+        fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
+        fsizer.Add(self.stepTimeText, 1, wx.ALIGN_CENTRE_VERTICAL)
+        label = wx.StaticText(self.control, -1, messages.get('panelview.recipetime.label'))
+        label.SetFont(font)
+        self.recipeTimeText = wx.StaticText(self.control, -1, '')
+        fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
+        fsizer.Add(self.recipeTimeText, 1, wx.ALIGN_CENTRE_VERTICAL)
+        label = wx.StaticText(self.control, -1, messages.get('panelview.totaltime.label'))
+        label.SetFont(font)
+        self.totalTimeText = wx.StaticText(self.control, -1, '')
+        fsizer.Add(label, 0, wx.ALIGN_RIGHT | wx.ALIGN_CENTRE_VERTICAL)
+        fsizer.Add(self.totalTimeText, 1, wx.ALIGN_CENTRE_VERTICAL)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(fsizer, 1, wx.EXPAND | wx.BOTTOM, 5)
+        self.control.SetSizer(sizer)
+        self.control.SetAutoLayout(True)
+        sizer.Fit(self.control)
+        return self.control

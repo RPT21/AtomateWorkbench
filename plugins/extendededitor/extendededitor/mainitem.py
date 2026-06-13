@@ -14,6 +14,17 @@ import plugins.ui.ui as ui
 
 logger = logging.getLogger('extendededitor.mainitem')
 
+
+def _isDestroyed(window):
+    if window is None:
+        return True
+    if hasattr(wx, 'IsDestroyed'):
+        try:
+            return wx.IsDestroyed(window)
+        except Exception:
+            return True
+    return False
+
 class MainEditorItem(extendededitor_item.ExtendedEditorItem):
     __module__ = __name__
 
@@ -36,7 +47,10 @@ class MainEditorItem(extendededitor_item.ExtendedEditorItem):
 
     def recipeModelChanged(self, event):
         if event.getEventType() == event.CHANGE:
-            step = self.model.getStepAt(event.getRowOffset())
+            step = None
+            row = event.getRowOffset()
+            if row >= 0:
+                step = self.model.getStepAt(row)
             if step != self.currentStep:
                 return
             if not self.isFocused():
@@ -117,20 +131,23 @@ class MainEditorItem(extendededitor_item.ExtendedEditorItem):
         validator.getDefault().addValidationListener(self)
 
     def validationEvent(self, valid, errors):
-        if not self.ready:
+        if not self.ready or _isDestroyed(self.control) or _isDestroyed(self.body):
             return
-        self.durationca.clear()
-        self.enclosingstepsca.clear()
-        for error in errors:
-            if self.currentStep != error.getStep():
-                continue
-            keys = error.getKeys()
-            if 'duration' in keys:
-                self.durationca.setWarning(error.getDescription())
-                self.durationca.warn()
-            elif 'looping' in keys:
-                self.enclosingstepsca.setWarning(error.getDescription())
-                self.enclosingstepsca.warn()
+        try:
+            self.durationca.clear()
+            self.enclosingstepsca.clear()
+            for error in errors:
+                if self.currentStep != error.getStep():
+                    continue
+                keys = error.getKeys()
+                if 'duration' in keys:
+                    self.durationca.setWarning(error.getDescription())
+                    self.durationca.warn()
+                elif 'looping' in keys:
+                    self.enclosingstepsca.setWarning(error.getDescription())
+                    self.enclosingstepsca.warn()
+        except RuntimeError:
+            return
 
     def OnKillFocus(self, event):
         event.Skip()
@@ -149,7 +166,8 @@ class MainEditorItem(extendededitor_item.ExtendedEditorItem):
         self.upDownIntCtrl(keycode, self.numberRepsText)
 
     def emptyStepSelected(self):
-        self.duration.SetValue(wx.TimeSpan.Seconds(0))
+        # TimeCtrl on newer wx can route wx.TimeSpan through float-based parsing; use an explicit string instead.
+        self.duration.SetValue('00:00:00')
         self.conditionalList.clearTests()
         self.conditionalList.setStep(None)
         self.disable()
@@ -178,7 +196,12 @@ class MainEditorItem(extendededitor_item.ExtendedEditorItem):
             self.suppress = False
             return
         step = self.currentStep
-        self.duration.SetValue(wx.TimeSpan.Seconds(int(step.getDuration())))
+        # TimeCtrl on newer wx can route wx.TimeSpan through float-based parsing; use an explicit string instead.
+        duration_seconds = int(step.getDuration())
+        hours = duration_seconds // 3600
+        minutes = (duration_seconds % 3600) // 60
+        seconds = duration_seconds % 60
+        self.duration.SetValue('%02d:%02d:%02d' % (hours, minutes, seconds))
         self.repeatCheck.SetValue(step.doesRepeat())
         self.enclosingStepsText.SetValue(step.getRepeatEnclosingSteps() + 1)
         self.numberRepsText.SetValue(step.getRepeatCount())
